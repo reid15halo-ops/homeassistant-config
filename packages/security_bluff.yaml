@@ -1,0 +1,430 @@
+###############################################################################
+# Security Bluff – Attrappen-Sicherheitssystem mit Custom Alexa Skill
+#
+# Flow:
+#  1. Tür öffnet (Abwesenheit) → Alexa fordert Autorisierung via Namen
+#  2. 15s keine Antwort → Reminder + 15s Vorwarnung
+#  3. Weiter keine Antwort → 60s Fake-Alarm (Blinklicht + Alexa-Sounds)
+#  4. "Alexa, öffne Zugang: [Name]" → Access granted + Stop
+#  5. Nach 60s → Auto-Stop mit Abschlussmeldung
+#
+# Voraussetzungen:
+#  • Alexa Media Player (HACS) installiert
+#  • Home Assistant Cloud (Nabu Casa) für Webhook
+#  • AWS Lambda + Custom Alexa Skill (Anleitung separat)
+###############################################################################
+
+homeassistant:
+  customize_glob:
+    "script.sb_*":
+      friendly_name: "Security Bluff Script"
+    "automation.sb_*":
+      friendly_name: "Security Bluff Automation"
+
+# ===== ZENTRALE KONFIGURATION ================================================
+# Hier alle Entity-IDs anpassen!
+input_text:
+  sb_echo:
+    name: "SB: Echo Entity"
+    initial: "media_player.wohnzimmer"              # ← DEIN ECHO (oder media_player.blinds)
+    max: 100
+  sb_notify:
+    name: "SB: Notify Service"
+    initial: "notify.alexa_media_wohnzimmer"        # ← DEIN NOTIFY (oder notify.alexa_media_blinds)
+    max: 100
+  sb_door:
+    name: "SB: Türsensor"
+    initial: "binary_sensor.aqara_door_and_window_sensor_tur"  # ← DEINE TÜR
+    max: 100
+  sb_person:
+    name: "SB: Person"
+    initial: "person.reid15"                        # ← DEINE PERSON
+    max: 100
+  sb_lights_csv:
+    name: "SB: Sirenen-Lichter (CSV)"
+    initial: "light.kuche_birne_1,light.kuche_birne_2,light.schlafzimmer_licht,light.computer_licht,light.bett_licht,light.wohnzimmer_licht"  # ← DEINE LICHTER
+    max: 255
+  sb_mobile_notify:
+    name: "SB: Mobile Push"
+    initial: "notify.mobile_app_dein_handy"         # ← OPTIONAL: Dein Handy-Notify
+    max: 100
+  # NAMENSLISTE für Webhook (alle erlaubten Namen, durch Komma getrennt)
+  # Umlaute werden automatisch normalisiert (ä→ae, ö→oe, ü→ue)
+  sb_allowed_names:
+    name: "SB: Erlaubte Namen (CSV)"
+    initial: "niklas,michna,vanessa,ralf,ulrike,ulrike höfling,erwin,erwin glawion,marius,salome,nadine,kühner,kuehner,tobias,silvia,silvia reinhart,silvia gentil,reinhart,mia,handwerker,ableseservice,ablesen"
+    max: 255
+
+# ===== STATUS & TIMER ========================================================
+input_boolean:
+  sb_autorisierung_ok:
+    name: "Security Bluff: Autorisierung OK"
+    icon: mdi:check-circle
+  sb_autorisierung_pending:
+    name: "Security Bluff: Autorisierung ausstehend"
+    icon: mdi:clock-alert
+
+timer:
+  sb_auth_15s:
+    name: "Security Bluff: 15s Autorisierungsfenster"
+    duration: "00:00:15"
+  sb_alarm_60s:
+    name: "Security Bluff: 60s Alarmdauer"
+    duration: "00:01:00"
+
+# ===== HELPER SENSORS ========================================================
+template:
+  - sensor:
+      - name: "SB Echo Entity"
+        state: "{{ states('input_text.sb_echo') }}"
+      - name: "SB Notify Service"
+        state: "{{ states('input_text.sb_notify') }}"
+      - name: "SB Door Entity"
+        state: "{{ states('input_text.sb_door') }}"
+      - name: "SB Person Entity"
+        state: "{{ states('input_text.sb_person') }}"
+      - name: "SB Lights List"
+        state: "{{ states('input_text.sb_lights_csv') }}"
+      - name: "SB Mobile Notify"
+        state: "{{ states('input_text.sb_mobile_notify') }}"
+      - name: "SB Allowed Names"
+        state: "{{ states('input_text.sb_allowed_names') }}"
+
+# ===== SCRIPTS (LOOPS) =======================================================
+script:
+
+  # Sirenen-Licht: blinkt rot bis Autorisierung erfolgt
+  sb_siren_lights_loop:
+    alias: "SB – Sirenen-Licht Loop"
+    mode: restart
+    sequence:
+      - variables:
+          lights: >
+            {{ states('sensor.sb_lights_list').split(',') | map('trim') | reject('equalto','') | list }}
+      - repeat:
+          while:
+            - condition: state
+              entity_id: input_boolean.sb_autorisierung_pending
+              state: "on"
+            - condition: state
+              entity_id: input_boolean.sb_autorisierung_ok
+              state: "off"
+          sequence:
+            - service: light.turn_on
+              target: { entity_id: "{{ lights }}" }
+              data:
+                brightness_pct: 100
+                rgb_color: [255, 0, 0]
+            - delay: "00:00:01"
+            - service: light.turn_off
+              target: { entity_id: "{{ lights }}" }
+            - delay: "00:00:01"
+
+  # Alexa Alarm-Sound mit randomisierten Durchsagen
+  sb_alexa_alarm_loop:
+    alias: "SB – Alexa Alarm-Sound Loop"
+    mode: restart
+    sequence:
+      - variables:
+          notify: "{{ states('sensor.sb_notify_service') }}"
+      - repeat:
+          while:
+            - condition: state
+              entity_id: input_boolean.sb_autorisierung_pending
+              state: "on"
+            - condition: state
+              entity_id: input_boolean.sb_autorisierung_ok
+              state: "off"
+          sequence:
+            - variables:
+                phrases:
+                  - "Autorisierung erforderlich. Sagen Sie Alexa öffne Zugang und Ihren Namen."
+                  - "Zutritt nur für Befugte. Bitte jetzt autorisieren."
+                  - "Sicherheitsmeldung: Bitte identifizieren Sie sich per Alexa mit Ihrem Namen."
+                  - "Hinweis: Kameraüberwachung aktiv. Autorisierung jetzt erforderlich."
+                  - "Achtung. Ohne Autorisierung wird der Alarm fortgesetzt."
+                  - "Bitte nennen Sie Alexa Ihren Namen zur Identifikation."
+                  - "Warnung: Unbefugter Zutritt. Autorisierung notwendig."
+                rand_phrase: "{{ phrases | random }}"
+                ssml: >
+                  <speak>
+                    <prosody pitch="-2st" rate="88%">
+                      <audio src="soundbank://soundlibrary/alarms/beeps_and_bloops/beep_07"/>
+                      <break time="200ms"/>
+                      <audio src="soundbank://soundlibrary/alarms/beeps_and_bloops/beep_08"/>
+                      <break time="250ms"/>
+                      {{ rand_phrase }}
+                    </prosody>
+                  </speak>
+            - service: "{{ notify }}"
+              data:
+                message: "{{ ssml }}"
+                data:
+                  type: tts
+                  method: speak
+            - delay: "00:00:10"
+
+# ===== AUTOMATIONEN ==========================================================
+automation:
+
+  # WEBHOOK: Empfängt Namen von Alexa Skill, prüft gegen Whitelist
+  - id: sb_alexa_webhook_authorize
+    alias: "SB – Webhook: Autorisierung via Alexa Skill"
+    mode: single
+    trigger:
+      - platform: webhook
+        webhook_id: alexa_authorize_name          # URL: /api/webhook/alexa_authorize_name
+        allowed_methods:
+          - POST
+        local_only: false
+    variables:
+      # Namensliste aus Helper laden
+      allowed_list: >
+        {% set csv = states('sensor.sb_allowed_names') %}
+        {% set names = csv.lower().split(',') | map('trim') | list %}
+        {{ names }}
+      req: "{{ trigger.json | default({}, true) }}"
+      raw_name: "{{ (req.name | default('', true)) | string }}"
+      # Normalisierung: trim, lower, umlaute → ae/oe/ue, doppelleerzeichen entfernen
+      normalized_name: >
+        {% set s = raw_name | trim | lower %}
+        {% set s = s.replace('ä','ae').replace('ö','oe').replace('ü','ue').replace('ß','ss') %}
+        {% set s = ' '.join(s.split()) %}
+        {{ s }}
+      is_allowed: "{{ normalized_name in allowed_list }}"
+    action:
+      - choose:
+          # Name ist in Whitelist → Zugriff gewähren
+          - conditions: "{{ is_allowed }}"
+            sequence:
+              - service: input_boolean.turn_on
+                target: { entity_id: input_boolean.sb_autorisierung_ok }
+              - variables:
+                  notify: "{{ states('sensor.sb_notify_service') }}"
+                  ssml_granted: >
+                    <speak>
+                      <prosody rate="92%" pitch="-1st">
+                        Access granted. Kameraüberwachung gestartet und Alarmsystem entschärft.
+                      </prosody>
+                    </speak>
+              - service: "{{ notify }}"
+                data:
+                  message: "{{ ssml_granted }}"
+                  data:
+                    type: tts
+                    method: speak
+              - service: system_log.write
+                data:
+                  message: "Security Bluff: Autorisierung erteilt für '{{ normalized_name }}'"
+                  level: info
+        # Name NICHT in Whitelist → Ablehnung
+        default:
+          - variables:
+              notify: "{{ states('sensor.sb_notify_service') }}"
+              ssml_denied: >
+                <speak>
+                  Name nicht erkannt. Bitte wiederholen Sie die Autorisierung mit einem gültigen Namen.
+                </speak>
+          - service: "{{ notify }}"
+            data:
+              message: "{{ ssml_denied }}"
+              data:
+                type: tts
+                method: speak
+          - service: system_log.write
+            data:
+              message: "Security Bluff: Name nicht autorisiert: '{{ normalized_name }}'"
+              level: warning
+
+  # Tür öffnet bei Abwesenheit → Challenge starten
+  - id: sb_challenge_on_door
+    alias: "SB – Challenge bei Türöffnung (Abwesenheit)"
+    mode: single
+    trigger:
+      - platform: state
+        entity_id: input_text.sb_door             # dynamisch aus Helper
+        to: "on"                                   # ACHTUNG: "on" = geöffnet; ggf. "off" wenn invertiert
+    condition:
+      - condition: template
+        value_template: >
+          {% set person = states('sensor.sb_person_entity') %}
+          {{ is_state(person, 'not_home') }}
+      # Cooldown 2 min gegen Spam
+      - condition: template
+        value_template: >
+          {% set last = state_attr(this.entity_id,'last_triggered') %}
+          {{ not last or (now() - last).total_seconds() > 120 }}
+    action:
+      - service: input_boolean.turn_off
+        target: { entity_id: input_boolean.sb_autorisierung_ok }
+      - service: input_boolean.turn_on
+        target: { entity_id: input_boolean.sb_autorisierung_pending }
+      - service: timer.start
+        target: { entity_id: timer.sb_auth_15s }
+      - variables:
+          notify: "{{ states('sensor.sb_notify_service') }}"
+          echo: "{{ states('sensor.sb_echo_entity') }}"
+          ssml_challenge: >
+            <speak>
+              <prosody pitch="-2st" rate="90%">Achtung.</prosody>
+              <break time="200ms"/>
+              Bitte autorisieren Sie sich mittels <emphasis level="moderate">„Alexa"</emphasis> und Ihrem Namen.
+              <break time="200ms"/>
+              Beispiel: <emphasis level="moderate">„Alexa, öffne Zugang: Niklas"</emphasis>.
+              <break time="150ms"/>
+              Hinweis: Kameraüberwachung aktiv.
+            </speak>
+      - service: media_player.volume_set
+        target: { entity_id: "{{ echo }}" }
+        data: { volume_level: 0.65 }
+      - service: "{{ notify }}"
+        data:
+          message: "{{ ssml_challenge }}"
+          data:
+            type: tts
+            method: speak
+      - delay: "00:00:04"
+      - service: media_player.volume_set
+        target: { entity_id: "{{ echo }}" }
+        data: { volume_level: 0.45 }
+
+  # Nach 15s ohne Autorisierung → Reminder + Alarm-Timer starten
+  - id: sb_reminder_after_15s
+    alias: "SB – Reminder nach 15s ohne Autorisierung"
+    mode: single
+    trigger:
+      - platform: event
+        event_type: timer.finished
+        event_data: { entity_id: timer.sb_auth_15s }
+    condition:
+      - condition: state
+        entity_id: input_boolean.sb_autorisierung_pending
+        state: "on"
+      - condition: state
+        entity_id: input_boolean.sb_autorisierung_ok
+        state: "off"
+    action:
+      - service: timer.start
+        target: { entity_id: timer.sb_alarm_60s }    # 60s bis Auto-Stop
+      - variables:
+          notify: "{{ states('sensor.sb_notify_service') }}"
+          ssml_reminder: >
+            <speak>
+              Bitte autorisieren Sie sich mittels <emphasis level="moderate">„Alexa, öffne Zugang"</emphasis> und Ihrem Namen.
+              <break time="150ms"/>
+              Die Alarmanlage startet in <emphasis level="moderate">15 Sekunden</emphasis> ohne Autorisierung.
+              <break time="150ms"/>
+              <emphasis level="reduced">Kameraüberwachung gestartet.</emphasis>
+            </speak>
+      - service: "{{ notify }}"
+        data:
+          message: "{{ ssml_reminder }}"
+          data:
+            type: tts
+            method: speak
+      # 15 Sekunden warten, dann Alarm starten
+      - delay: "00:00:15"
+      - condition: state
+        entity_id: input_boolean.sb_autorisierung_pending
+        state: "on"
+      - condition: state
+        entity_id: input_boolean.sb_autorisierung_ok
+        state: "off"
+      # Alarm starten
+      - variables:
+          echo: "{{ states('sensor.sb_echo_entity') }}"
+          ssml_start_alarm: >
+            <speak>
+              <prosody pitch="-2st" rate="88%">
+                <audio src="soundbank://soundlibrary/alarms/beeps_and_bloops/beep_07"/>
+                <break time="200ms"/>
+                Alarm aktiviert. Autorisierung weiterhin erforderlich.
+                Sagen Sie: <emphasis level="moderate">„Alexa, öffne Zugang"</emphasis> und Ihren Namen.
+              </prosody>
+            </speak>
+      - service: media_player.volume_set
+        target: { entity_id: "{{ echo }}" }
+        data: { volume_level: 0.70 }
+      - service: "{{ notify }}"
+        data:
+          message: "{{ ssml_start_alarm }}"
+          data:
+            type: tts
+            method: speak
+      - service: script.turn_on
+        target:
+          entity_id:
+            - script.sb_siren_lights_loop
+            - script.sb_alexa_alarm_loop
+
+  # Autorisierung erteilt → Access granted + alles stoppen
+  - id: sb_access_granted
+    alias: "SB – Access Granted (Autorisierung erhalten)"
+    mode: single
+    trigger:
+      - platform: state
+        entity_id: input_boolean.sb_autorisierung_ok
+        to: "on"
+    action:
+      - service: input_boolean.turn_off
+        target:
+          entity_id:
+            - input_boolean.sb_autorisierung_pending
+            - input_boolean.sb_autorisierung_ok
+      - service: timer.cancel
+        target:
+          entity_id:
+            - timer.sb_auth_15s
+            - timer.sb_alarm_60s
+        continue_on_error: true
+      # Lichter sanft wieder an (optional)
+      - variables:
+          lights: >
+            {{ states('sensor.sb_lights_list').split(',') | map('trim') | reject('equalto','') | list }}
+      - service: light.turn_on
+        target: { entity_id: "{{ lights }}" }
+        data:
+          brightness_pct: 30
+          color_temp_kelvin: 3500
+
+  # Nach 60s → Auto-Stop mit Abschlussmeldung
+  - id: sb_alarm_auto_stop_60s
+    alias: "SB – Alarm Auto-Stop nach 60s"
+    mode: single
+    trigger:
+      - platform: event
+        event_type: timer.finished
+        event_data: { entity_id: timer.sb_alarm_60s }
+    action:
+      - variables:
+          notify: "{{ states('sensor.sb_notify_service') }}"
+          lights: >
+            {{ states('sensor.sb_lights_list').split(',') | map('trim') | reject('equalto','') | list }}
+          mobile_notify: "{{ states('sensor.sb_mobile_notify') }}"
+          ssml_end: >
+            <speak>
+              <prosody pitch="-1st" rate="92%">
+                Alarm beendet. Kameraüberwachung bleibt aktiv.
+                Relevante Stellen wurden benachrichtigt.
+              </prosody>
+            </speak>
+      - service: light.turn_off
+        target: { entity_id: "{{ lights }}" }
+      - service: input_boolean.turn_off
+        target:
+          entity_id:
+            - input_boolean.sb_autorisierung_pending
+            - input_boolean.sb_autorisierung_ok
+      - service: "{{ notify }}"
+        data:
+          message: "{{ ssml_end }}"
+          data:
+            type: tts
+            method: speak
+      # Optional: Push-Benachrichtigung
+      - condition: template
+        value_template: "{{ mobile_notify | length > 0 and not mobile_notify.startswith('notify.mobile_app_dein') }}"
+      - service: "{{ mobile_notify }}"
+        data:
+          title: "Security Bluff: Alarm beendet"
+          message: "60s Alarm ohne Autorisierung. Automatisch gestoppt."

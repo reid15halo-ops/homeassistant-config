@@ -1,0 +1,47 @@
+version: 4
+mqtt:
+  base_topic: zigbee2mqtt
+  server: mqtt://core-mosquitto:1883
+  user: addons
+  password: emeil8queeNg3vooCaiw1woox4pacheethahnaiB5outei9oocheichaje6aeph7
+serial:
+  port: /dev/ttyUSB0
+  adapter: zstack
+  baudrate: 115200
+  rtscts: false
+advanced:
+  log_level: info
+  channel: 11
+  network_key:
+    - 119
+    - 51
+    - 91
+    - 221
+    - 216
+    - 15
+    - 224
+    - 91
+    - 169
+    - 148
+    - 166
+    - 73
+    - 1
+    - 119
+    - 134
+    - 195
+  pan_id: 45809
+  ext_pan_id:
+    - 1
+    - 196
+    - 78
+    - 82
+    - 148
+    - 100
+    - 138
+    - 203
+frontend:
+  enabled: true
+  port: 8099
+homeassistant:
+  enabled: true
+onboarding: true

@@ -1,0 +1,135 @@
+# ===== AI Sandbox (Automations via REST) =====
+# Voraussetzung:
+# - In deinem Profil: Long-Lived Access Token für Benutzer "ai-bot" erzeugen
+# - In secrets.yaml:
+#     ai_bearer: "Bearer DEIN_LLAT_TOKEN"
+# - OpenAI/Perplexity-Agent: Zugriff auf script.*, input_text.*, input_boolean.ai_test_mode erlauben
+#   (Exposed entities), "Control Home Assistant" aktivieren.
+
+homeassistant:
+  customize:
+    script.ai_create_automation: { friendly_name: "AI: Automation anlegen" }
+    script.ai_update_automation: { friendly_name: "AI: Automation aktualisieren" }
+    script.ai_delete_automation: { friendly_name: "AI: Automation löschen" }
+    script.ai_trigger_automation: { friendly_name: "AI: Automation triggern" }
+
+input_boolean:
+  ai_test_mode:
+    name: AI Testmodus (nur dann laufen AI-Automationen)
+    icon: mdi:test-tube
+
+input_text:
+  ai_automation_json:
+    name: AI Automation JSON
+    max: 5000    # genug Platz für die JSON-Definition
+    mode: text
+
+rest_command:
+  # Anlegen: POST /api/config/automation/config/<id>
+  ai_create_automation:
+    url: "http://127.0.0.1:8123/api/config/automation/config/{{ id }}"
+    method: POST
+    headers:
+      Authorization: !secret ai_bearer
+      content-type: "application/json"
+    payload: "{{ payload | tojson }}"
+
+  # Aktualisieren: PUT /api/config/automation/config/<id>
+  ai_update_automation:
+    url: "http://127.0.0.1:8123/api/config/automation/config/{{ id }}"
+    method: PUT
+    headers:
+      Authorization: !secret ai_bearer
+      content-type: "application/json"
+    payload: "{{ payload | tojson }}"
+
+  # Löschen: DELETE /api/config/automation/config/<id>
+  ai_delete_automation:
+    url: "http://127.0.0.1:8123/api/config/automation/config/{{ id }}"
+    method: DELETE
+    headers:
+      Authorization: !secret ai_bearer
+
+  # Reload aller Automationen
+  ai_reload_automations:
+    url: "http://127.0.0.1:8123/api/services/automation/reload"
+    method: POST
+    headers:
+      Authorization: !secret ai_bearer
+      content-type: "application/json"
+    payload: "{}"
+
+  # Einzelne Automation triggern
+  ai_trigger_automation:
+    url: "http://127.0.0.1:8123/api/services/automation/trigger"
+    method: POST
+    headers:
+      Authorization: !secret ai_bearer
+      content-type: "application/json"
+    payload: >
+      {"entity_id":"{{ entity_id }}"}
+
+script:
+  # Liest JSON aus input_text, erzeugt ID, fügt Testmodus-Condition hinzu (Pflicht!), legt an, reload
+  ai_create_automation:
+    alias: "AI: Automation anlegen"
+    mode: single
+    sequence:
+      - variables:
+          obj: "{{ states('input_text.ai_automation_json') | from_json }}"
+          # ID: aus Alias oder Fallback
+          auto_id: >
+            {% set base = (obj.alias if obj.alias is defined else 'ai_automation') | slugify %}
+            ai_{{ base }}
+          # Testmodus-Condition einfügen (zusätzlich zu evtl. gelieferten Conditions)
+          test_cond:
+            condition: state
+            entity_id: input_boolean.ai_test_mode
+            state: "on"
+          merged: >
+            {% set base = obj.copy() %}
+            {% set existing = base.get('condition', []) %}
+            {% set conds = [test_cond] + (existing if existing is iterable else [existing] if existing else []) %}
+            {% set _ = base.update({'condition': conds}) %}
+            {{ base }}
+      - action: rest_command.ai_create_automation
+        data:
+          id: "{{ auto_id }}"
+          payload: "{{ merged }}"
+      - delay: "00:00:01"
+      - action: rest_command.ai_reload_automations
+
+  ai_update_automation:
+    alias: "AI: Automation aktualisieren"
+    mode: single
+    sequence:
+      - variables:
+          obj: "{{ states('input_text.ai_automation_json') | from_json }}"
+          auto_id: "{{ obj.id | default('ai_' ~ (obj.alias|default('automation')|slugify)) }}"
+      - action: rest_command.ai_update_automation
+        data:
+          id: "{{ auto_id }}"
+          payload: "{{ obj }}"
+      - delay: "00:00:01"
+      - action: rest_command.ai_reload_automations
+
+  ai_delete_automation:
+    alias: "AI: Automation löschen"
+    mode: single
+    sequence:
+      - variables:
+          obj: "{{ states('input_text.ai_automation_json') | from_json }}"
+          auto_id: "{{ obj.id }}"
+      - action: rest_command.ai_delete_automation
+        data:
+          id: "{{ auto_id }}"
+      - delay: "00:00:01"
+      - action: rest_command.ai_reload_automations
+
+  ai_trigger_automation:
+    alias: "AI: Automation triggern"
+    mode: single
+    sequence:
+      - action: rest_command.ai_trigger_automation
+        data:
+          entity_id: "{{ entity_id }}"

@@ -1,0 +1,1197 @@
+- id: roller_pc_anti_glare
+  alias: Rollladen Computer – Anti-Glare (FP2 + Sonne + Lux)
+  mode: restart
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence
+  - platform: numeric_state
+    entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
+    above: 600
+    for:
+      minutes: 2
+  - platform: numeric_state
+    entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
+    below: 10
+    for:
+      minutes: 5
+  - platform: time_pattern
+    minutes: /5
+  variables:
+    sun_ok: "{{ (state_attr('sun.sun','azimuth')|float(0) >= 120) and\n   (state_attr('sun.sun','azimuth')|float(0)
+      <= 240) and\n   (state_attr('sun.sun','elevation')|float(0) > 10) }}"
+    lux: '{{ states(''sensor.presence_sensor_fp2_f9cf_light_sensor_light_level'')|int(0)
+      }}'
+    present: '{{ is_state(''binary_sensor.presence_sensor_fp2_f9cf_presence'',''on'')
+      }}'
+    t_out: '{{ states(''sensor.openweathermap_temperature'')|float(0) }}'
+    pos_blend: 10
+    pos_offen: 100
+    pos_offen_tag: 85
+  action:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ present and sun_ok and lux >= 600 }}'
+      - condition: time
+        after: 08:00:00
+        before: '19:30:00'
+      sequence:
+      - condition: template
+        value_template: '{{ (states(''input_number.pos_computer'')|int) != pos_blend
+          }}'
+      - service: script.cover_fahre_zeitbasiert
+        data:
+          cover_entity: cover.rollladen_computer_vorhang
+          pos_helper: input_number.pos_computer
+          travel_time: 21
+          position: '{{ pos_blend }}'
+    - conditions:
+      - condition: time
+        after: 08:00:00
+        before: '19:30:00'
+      sequence:
+      - choose:
+        - conditions:
+          - condition: numeric_state
+            entity_id: sensor.openweathermap_temperature
+            above: 20
+          sequence:
+          - condition: template
+            value_template: '{{ (states(''input_number.pos_computer'')|int) != pos_offen_tag
+              }}'
+          - service: script.cover_fahre_zeitbasiert
+            data:
+              cover_entity: cover.rollladen_computer_vorhang
+              pos_helper: input_number.pos_computer
+              travel_time: 21
+              position: '{{ pos_offen_tag }}'
+        default:
+        - condition: template
+          value_template: '{{ (states(''input_number.pos_computer'')|int) != pos_offen
+            }}'
+        - service: script.cover_fahre_zeitbasiert
+          data:
+            cover_entity: cover.rollladen_computer_vorhang
+            pos_helper: input_number.pos_computer
+            travel_time: 21
+            position: '{{ pos_offen }}'
+- id: rollers_heat_protect_south
+  alias: Rollladen Süd – Hitzeschutz tagsüber (Küche & Yoga)
+  mode: restart
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
+    above: 600
+    for:
+      minutes: 3
+  - platform: numeric_state
+    entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
+    below: 10
+    for:
+      minutes: 10
+  - platform: time_pattern
+    minutes: /7
+  condition:
+  - condition: time
+    after: 09:00:00
+    before: '18:30:00'
+  - condition: state
+    entity_id: binary_sensor.sommerbetrieb_ortsbasiert
+    state: 'on'
+  variables:
+    sun_ok: "{{ (state_attr('sun.sun','azimuth')|float(0) >= 120) and\n   (state_attr('sun.sun','azimuth')|float(0)
+      <= 240) and\n   (state_attr('sun.sun','elevation')|float(0) > 10) }}"
+    pos_schutz: 15
+    pos_offen: 100
+  action:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ sun_ok }}'
+      - condition: numeric_state
+        entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
+        above: 600
+      sequence:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ (states(''input_number.pos_kuche'')|int) != pos_schutz
+              }}'
+          sequence:
+          - service: script.cover_fahre_zeitbasiert
+            data:
+              cover_entity: cover.kuche_blind_vorhang
+              pos_helper: input_number.pos_kuche
+              travel_time: 21
+              position: '{{ pos_schutz }}'
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ (states(''input_number.pos_yoga'')|int) != pos_schutz
+              }}'
+          sequence:
+          - service: script.cover_fahre_zeitbasiert
+            data:
+              cover_entity: cover.yoga_blind_vorhang
+              pos_helper: input_number.pos_yoga
+              travel_time: 21
+              position: '{{ pos_schutz }}'
+    default:
+    - choose:
+      - conditions:
+        - condition: template
+          value_template: '{{ (states(''input_number.pos_kuche'')|int) != pos_offen
+            }}'
+        sequence:
+        - service: script.cover_fahre_zeitbasiert
+          data:
+            cover_entity: cover.kuche_blind_vorhang
+            pos_helper: input_number.pos_kuche
+            travel_time: 21
+            position: '{{ pos_offen }}'
+    - choose:
+      - conditions:
+        - condition: template
+          value_template: '{{ (states(''input_number.pos_yoga'')|int) != pos_offen
+            }}'
+        sequence:
+        - service: script.cover_fahre_zeitbasiert
+          data:
+            cover_entity: cover.yoga_blind_vorhang
+            pos_helper: input_number.pos_yoga
+            travel_time: 21
+            position: '{{ pos_offen }}'
+- id: rollers_evening_flush_south
+  alias: Rollladen Süd – Abendliche Frischluft (Küche, Yoga, Computer)
+  mode: single
+  variables:
+    pos_luft: 85
+    wind_ok: '{{ states(''sensor.openweathermap_wind_speed'')|float(99) < 8 }}'
+    temp_ok: '{{ states(''sensor.openweathermap_temperature'')|float(99) <= 23 }}'
+    rh_ok: '{{ states(''sensor.openweathermap_humidity'')|float(0) <= 85 }}'
+    dp_ok: '{{ states(''sensor.outdoor_dewpoint'')|float(99) <= 16 }}'
+  trigger:
+  - platform: time
+    at: '18:00:00'
+    id: start
+  - platform: time
+    at: '23:30:00'
+    id: end
+  condition:
+  - condition: state
+    entity_id: binary_sensor.sommerbetrieb_ortsbasiert
+    state: 'on'
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: start
+      sequence:
+      - condition: template
+        value_template: '{{ wind_ok and temp_ok and rh_ok and dp_ok }}'
+      - service: script.cover_fahre_zeitbasiert
+        data:
+          cover_entity: cover.kuche_blind_vorhang
+          pos_helper: input_number.pos_kuche
+          travel_time: 21
+          position: '{{ pos_luft }}'
+      - service: script.cover_fahre_zeitbasiert
+        data:
+          cover_entity: cover.yoga_blind_vorhang
+          pos_helper: input_number.pos_yoga
+          travel_time: 21
+          position: '{{ pos_luft }}'
+      - service: script.cover_fahre_zeitbasiert
+        data:
+          cover_entity: cover.rollladen_computer_vorhang
+          pos_helper: input_number.pos_computer
+          travel_time: 21
+          position: '{{ pos_luft }}'
+    default:
+    - service: script.cover_fahre_zeitbasiert
+      data:
+        cover_entity: cover.kuche_blind_vorhang
+        pos_helper: input_number.pos_kuche
+        travel_time: 21
+        position: 100
+    - service: script.cover_fahre_zeitbasiert
+      data:
+        cover_entity: cover.yoga_blind_vorhang
+        pos_helper: input_number.pos_yoga
+        travel_time: 21
+        position: 100
+    - service: script.cover_fahre_zeitbasiert
+      data:
+        cover_entity: cover.rollladen_computer_vorhang
+        pos_helper: input_number.pos_computer
+        travel_time: 21
+        position: 100
+- id: schlafen_vorlueften_2100
+  alias: Schlafen – Vor-Lüften 21:00 (inkl. Ventilator Winter/Low)
+  mode: single
+  trigger:
+  - platform: time
+    at: '21:00:00'
+  variables:
+    pos_luft: 85
+  action:
+  - service: script.cover_fahre_zeitbasiert
+    data:
+      cover_entity: cover.schlafen_blind_vorhang
+      pos_helper: input_number.pos_schlafen
+      travel_time: 21
+      position: '{{ pos_luft }}'
+  - service: script.turn_on
+    target:
+      entity_id: script.ventilator_wintermodus_low
+- id: schlafen_werk_close_0455
+  alias: Schlafen – Werktags 04:55 schließen
+  triggers:
+  - at: 04:55:00
+    trigger: time
+  conditions:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  actions:
+  - data:
+      cover_entity: cover.schlafen_blind_vorhang
+      pos_helper: input_number.pos_schlafen
+      travel_time: 21
+      position: 0
+    action: script.cover_fahre_zeitbasiert
+  - device_id: e21cdce801f7b99185001e7544b1c32a
+    domain: cover
+    entity_id: ea01332b291ecc7d381e59df51600bd0
+    type: close
+  mode: single
+- id: schlafen_weekend_open_1000
+  alias: Schlafen – Wochenende 10:00 öffnen
+  triggers:
+  - at: '10:00:00'
+    trigger: time
+  conditions:
+  - condition: time
+    weekday:
+    - sat
+    - sun
+  actions:
+  - data:
+      cover_entity: cover.schlafen_blind_vorhang
+      pos_helper: input_number.pos_schlafen
+      travel_time: 21
+      position: 100
+    action: script.cover_fahre_zeitbasiert
+  - device_id: e21cdce801f7b99185001e7544b1c32a
+    domain: cover
+    entity_id: ea01332b291ecc7d381e59df51600bd0
+    type: close
+  mode: single
+- id: '1756663066410'
+  alias: Licht an 15lx
+  description: ''
+  triggers:
+  - type: illuminance
+    device_id: 2ce83ab1b7ba9e3161a4584846503d5b
+    entity_id: 87224d0f84725a00e320d1fd3701fd8a
+    domain: sensor
+    below: 15
+    for:
+      minutes: 10
+    trigger: device
+  - trigger: time_pattern
+    minutes: '30'
+  conditions: []
+  actions:
+  - type: turn_on
+    device_id: 8c0861d5de0795e1492a8eaeea69c72a
+    entity_id: 1368fea07848a80d288c0aff0af3cf1c
+    domain: light
+  - choose:
+    - conditions:
+      - condition: device
+        type: is_on
+        device_id: 8c0861d5de0795e1492a8eaeea69c72a
+        entity_id: 1368fea07848a80d288c0aff0af3cf1c
+        domain: light
+      sequence:
+      - action: script.ambient_feuerlicht_warm_flicker
+        metadata: {}
+        data: {}
+  - type: turn_on
+    device_id: dff6231b45ad4abd9fec55f83af21d78
+    entity_id: e1a3c27842ab023629bd0c3d766dc5fc
+    domain: light
+  - choose:
+    - conditions:
+      - condition: device
+        type: is_on
+        device_id: 8c0861d5de0795e1492a8eaeea69c72a
+        entity_id: 1368fea07848a80d288c0aff0af3cf1c
+        domain: light
+      sequence:
+      - action: script.ambient_feuerlicht_warm_flicker
+        metadata: {}
+        data: {}
+  - type: turn_on
+    device_id: ceb5bc29b2669f8871ae800bca1807a7
+    entity_id: a5ec8243261c2ded541e37e7638fa2b7
+    domain: light
+  - choose:
+    - conditions:
+      - condition: device
+        type: is_on
+        device_id: ceb5bc29b2669f8871ae800bca1807a7
+        entity_id: a5ec8243261c2ded541e37e7638fa2b7
+        domain: light
+      sequence:
+      - action: script.ambient_feuerlicht_warm_flicker
+        metadata: {}
+        data: {}
+  mode: single
+- id: '1756663264657'
+  alias: Heizung Aus Fenster offen
+  description: ''
+  mode: single
+  trigger:
+  - platform: device
+    type: opened
+    device_id: 1d8ac79daf016e689bf40f1499f28678
+    entity_id: 6ae39821a45e76cf38ec0e5459333954
+    domain: binary_sensor
+  - platform: device
+    type: opened
+    device_id: 5c463b96e0e706e7e78d06703972e0ee
+    entity_id: 4ab0a1216721d7ee3491dd890a83ace7
+    domain: binary_sensor
+  condition: []
+  action:
+  - type: set_hvac_mode
+    device_id: 8cec1333229554f7f822ace0168e4191
+    entity_id: 646e41b75dc2d7a8f1d0285ca94e1ac5
+    domain: climate
+    hvac_mode: 'off'
+  - type: set_hvac_mode
+    device_id: 9402ef88977fa51cf9fc7e4c5383d2cc
+    entity_id: 465b11050fd6118181722cc97f5b8183
+    domain: climate
+    hvac_mode: 'off'
+- id: '1756747296174'
+  alias: Schlafen Arbeit Bettgehlicht - Optimiert
+  description: Optimierte Version mit Entity-Triggern
+  triggers:
+  - type: motion
+    device_id: aebec0c58872e00fe8fa89b0a846a29e
+    entity_id: 58a470e22a792e2f2d7a2e13233b3d50
+    domain: binary_sensor
+    trigger: device
+  conditions:
+  - condition: time
+    after: '21:00:00'
+    before: '23:59:59'
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - sun
+  - condition: state
+    entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
+    state: 'off'
+  actions:
+  - target:
+      entity_id:
+      - fan.ceiling_fan
+      - fan.ceiling_fan_with_light
+    action: fan.turn_on
+    data: {}
+  - target:
+      entity_id:
+      - light.ceiling_fan_light
+      - light.bed_light
+      - light.bett_licht
+      - light.dc_fan_lamp
+    data:
+      brightness_pct: 100
+    action: light.turn_on
+  - wait_for_trigger:
+    - entity_id: binary_sensor.motion_sensor_bad
+      to: 'off'
+      for:
+        minutes: 2
+      trigger: state
+    timeout: 00:30:00
+  - target:
+      entity_id:
+      - light.ceiling_fan_light
+      - light.bed_light
+      - light.bett_licht
+      - light.dc_fan_lamp
+    action: light.turn_off
+    data: {}
+  - target:
+      entity_id:
+      - fan.ceiling_fan
+      - fan.ceiling_fan_with_light
+    action: fan.turn_off
+    data: {}
+  mode: restart
+  max_exceeded: silent
+- id: '1756747597052'
+  alias: Schlafen gehen Arbeit Licht aus
+  triggers:
+  - type: turned_on
+    device_id: bc3db6d06da6b18298a1755b4788e7e6
+    entity_id: ad882cbbc0c0222e4b99e39f646e26dc
+    domain: binary_sensor
+    trigger: device
+  conditions:
+  - condition: time
+    after: '21:00:00'
+    before: '23:59:59'
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - sun
+  - type: is_not_occupied
+    condition: device
+    device_id: 2ce83ab1b7ba9e3161a4584846503d5b
+    entity_id: 10610e701b173fd96fe8f66dcb695b1d
+    domain: binary_sensor
+  actions:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: binary_sensor.sommerbetrieb_ortsbasiert
+        state: 'on'
+      sequence:
+      - target:
+          entity_id: script.ventilator_wintermodus_low
+        action: script.turn_on
+        data: {}
+  - data:
+      transition: 2
+    action: light.turn_off
+    target:
+      entity_id:
+      - light.bad_2
+      - light.bad_licht
+      - light.bett_licht
+      - light.kleiderschrank
+      device_id: 24856663a72fdc78cbfa8ab36c4765d1
+  - wait_for_trigger:
+    - entity_id:
+      - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
+      to: 'on'
+      trigger: state
+    timeout: 00:01:00
+    continue_on_timeout: true
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ wait.trigger is none }}'
+      sequence:
+      - target:
+          entity_id:
+          - fan.a14baab7198c0de3311dbee8b11fedab
+          - fan.ceiling_fan_with_light
+        action: fan.turn_off
+        data: {}
+  mode: restart
+- id: '1756751836548'
+  alias: Aufstehen Arbeit ANaus
+  mode: single
+  trigger:
+  - platform: device
+    type: motion
+    device_id: aebec0c58872e00fe8fa89b0a846a29e
+    entity_id: 58a470e22a792e2f2d7a2e13233b3d50
+    domain: binary_sensor
+  - platform: device
+    type: not_occupied
+    device_id: 2ce83ab1b7ba9e3161a4584846503d5b
+    entity_id: 0cdd8c719f32cb3da3cceac4a7235bb0
+    domain: binary_sensor
+    for:
+      minutes: 5
+  condition:
+  - condition: time
+    after: 05:30:00
+    before: '11:59:59'
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - sun
+  action:
+  - type: turn_off
+    device_id: 3586709559e4e46394dfa54ebf906373
+    entity_id: a14baab7198c0de3311dbee8b11fedab
+    domain: fan
+  - type: turn_off
+    device_id: 3586709559e4e46394dfa54ebf906373
+    entity_id: fdda598413ef1d0f54a4b1efa3956174
+    domain: light
+  - type: turn_on
+    device_id: 09da8d97be4777a9a94cc9b8e53d68c4
+    entity_id: bc0d3fd25e385f3c1056ed9ead8aa858
+    domain: light
+    brightness_pct: 100
+  - type: turn_off
+    device_id: 8c0861d5de0795e1492a8eaeea69c72a
+    entity_id: 1368fea07848a80d288c0aff0af3cf1c
+    domain: light
+  - type: turn_off
+    device_id: 47e2b96815418006d76b8d1e977ba055
+    entity_id: 08a15d443a7bdfa3df511ddcfc90d9fd
+    domain: light
+  - type: turn_off
+    device_id: 05bc8157f6969d1a009e9ccedd2c202e
+    entity_id: dfc09e5a381dc9c8f135d08d9e4c917b
+    domain: light
+  - type: turn_off
+    device_id: 11599d23c3dbab6de01f8403fed0566e
+    entity_id: 14dae7d0e2ddfac00118a921d07d915e
+    domain: light
+  - type: turn_off
+    device_id: d838bde16b7234c16471507cd1cb27be
+    entity_id: 16b31f92de912e3c8cbca2876e3b1c1f
+    domain: light
+- id: '1757247694163'
+  alias: AI Automation Creator
+  description: ''
+  trigger:
+  - platform: event
+    event_type: ai_automation_request
+  action:
+  - action: conversation.process
+    data:
+      agent_id: conversation.extended_openai
+      text: 'Erstelle eine Home Assistant Automation basierend auf:  {{ trigger.event.data.request
+        }}
+
+        Verfügbare Entitäten: {{ states | list }}
+
+        '
+    response_variable: ai_response
+  - action: automation.reload
+- id: bett_licht_aus_no_motion_20s
+  alias: Bett – Licht aus nach 20s ohne Bewegung
+  triggers:
+  - type: turned_off
+    device_id: bc3db6d06da6b18298a1755b4788e7e6
+    entity_id: ad882cbbc0c0222e4b99e39f646e26dc
+    domain: binary_sensor
+    trigger: device
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 20
+  conditions:
+  - type: is_not_occupied
+    condition: device
+    device_id: 2ce83ab1b7ba9e3161a4584846503d5b
+    entity_id: 10610e701b173fd96fe8f66dcb695b1d
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  actions:
+  - type: turn_off
+    device_id: 09da8d97be4777a9a94cc9b8e53d68c4
+    entity_id: bc0d3fd25e385f3c1056ed9ead8aa858
+    domain: light
+  - type: turn_off
+    device_id: 24856663a72fdc78cbfa8ab36c4765d1
+    entity_id: 7fff5f0e94d27ad73e640bb60c73d314
+    domain: light
+  - type: turn_off
+    device_id: 76361dfbed405867437d4b94a3995bb6
+    entity_id: 188204738533536bc636218e65a74b53
+    domain: fan
+  - type: turn_off
+    device_id: ceb5bc29b2669f8871ae800bca1807a7
+    entity_id: a5ec8243261c2ded541e37e7638fa2b7
+    domain: light
+  - type: turn_off
+    device_id: dff6231b45ad4abd9fec55f83af21d78
+    entity_id: e1a3c27842ab023629bd0c3d766dc5fc
+    domain: light
+  - type: turn_off
+    device_id: 3eb1ab346e4917536b2108c5aa33c616
+    entity_id: f7aae072f642bae85c9a5b4faafb127a
+    domain: light
+  - type: turn_off
+    device_id: 3586709559e4e46394dfa54ebf906373
+    entity_id: a14baab7198c0de3311dbee8b11fedab
+    domain: fan
+  - type: turn_off
+    device_id: db2f7007d9ab40883ebc98eba9815384
+    entity_id: dc2d1b19833aaac2ea089fe8a751574f
+    domain: light
+  - type: turn_off
+    device_id: 76361dfbed405867437d4b94a3995bb6
+    entity_id: 188204738533536bc636218e65a74b53
+    domain: fan
+  - type: turn_off
+    device_id: 3586709559e4e46394dfa54ebf906373
+    entity_id: a14baab7198c0de3311dbee8b11fedab
+    domain: fan
+  - type: turn_off
+    device_id: 76361dfbed405867437d4b94a3995bb6
+    entity_id: 188204738533536bc636218e65a74b53
+    domain: fan
+  mode: restart
+- id: '1757962675739'
+  alias: Licht aus Küche
+  description: Schaltet das Licht aus, wenn FP2 sensor anwesenheit hat
+  triggers:
+  - type: no_motion
+    device_id: c29865854655cf19cc904091dfa49ab0
+    entity_id: 908b875fe48a1487586614292dd351de
+    domain: binary_sensor
+    trigger: device
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  - type: occupied
+    device_id: 2ce83ab1b7ba9e3161a4584846503d5b
+    entity_id: 10610e701b173fd96fe8f66dcb695b1d
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - type: turn_off
+    device_id: db2f7007d9ab40883ebc98eba9815384
+    entity_id: dc2d1b19833aaac2ea089fe8a751574f
+    domain: light
+  - type: turn_off
+    device_id: 274a4e3fba305eef548db23296690d2d
+    entity_id: 708363eeb019712e16145550302148ef
+    domain: light
+  - type: turn_off
+    device_id: 3eb1ab346e4917536b2108c5aa33c616
+    entity_id: f7aae072f642bae85c9a5b4faafb127a
+    domain: light
+  mode: single
+- id: wecker_lichtrampe_werktage_v2
+  alias: Schlafzimmer – Wecker-Lichtrampe (Mo–Fr 04:30→05:00)
+  description: Dimmt von ~0 % (1 %) auf 100 % in 30 Minuten (Werktage)
+  mode: single
+  trigger:
+  - platform: time
+    at: 04:30:00
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  action:
+  - service: light.turn_on
+    target:
+      entity_id: light.schlafzimmer_licht
+    data:
+      brightness_pct: 1
+  - service: light.turn_on
+    target:
+      entity_id: light.schlafzimmer_licht
+    data:
+      brightness_pct: 100
+      transition: 1800
+- id: wecker_lichtrampe_werktage_emuliert
+  alias: Schlafzimmer – Wecker-Lichtrampe (Mo–Fr, emuliert)
+  mode: single
+  variables:
+    ramp_seconds: 1800
+    steps: 100
+    step_delay: '{{ (ramp_seconds / steps) | int }}'
+  trigger:
+  - platform: time
+    at: 04:30:00
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  action:
+  - service: light.turn_on
+    target:
+      entity_id: light.schlafzimmer_licht
+    data:
+      brightness_pct: 1
+  - repeat:
+      count: '{{ steps }}'
+      sequence:
+      - service: light.turn_on
+        target:
+          entity_id: light.schlafzimmer_licht
+        data:
+          brightness_step_pct: 1
+      - delay:
+          seconds: '{{ step_delay }}'
+- id: roller_pc_lueften_warm_keine_sonne
+  alias: Rollladen Computer – Lüften bei >20°C (ohne Sonne)
+  triggers:
+  - minutes: /5
+    trigger: time_pattern
+  conditions:
+  - condition: time
+    after: '10:00:00'
+    before: '18:00:00'
+  - condition: numeric_state
+    entity_id: sensor.openweathermap_temperature
+    above: 20
+  - condition: numeric_state
+    entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
+    below: 400
+  actions:
+  - condition: template
+    value_template: '{{ (states(''input_number.pos_computer'')|int) != 100 }}'
+  - data:
+      cover_entity: cover.rollladen_computer_vorhang
+      pos_helper: input_number.pos_computer
+      travel_time: 21
+      position: 100
+    action: script.cover_fahre_zeitbasiert
+  mode: restart
+- id: nachtmodus_dimme_lichter
+  alias: Nachtmodus – Neue Lichter auf 15 % dimmen (23:30–05:00)
+  triggers:
+  - entity_id:
+    - light.schlafzimmer_licht
+    - light.ceiling_fan_light
+    - light.bed_light
+    to: 'on'
+    trigger: state
+  conditions:
+  - condition: time
+    after: '23:30:00'
+    before: 05:00:00
+  actions:
+  - data:
+      brightness_pct: 15
+      transition: 3
+    action: light.turn_on
+    target:
+      entity_id:
+      - light.schlafzimmer_licht
+      - light.ceiling_fan_light
+      - light.bed_light
+      area_id: schlafzimmer
+      label_id: schlafzimmer
+  mode: restart
+- id: '1758052166199'
+  alias: Schlafen Licht aus ohne Wecker
+  description: ''
+  triggers:
+  - type: turned_off
+    device_id: bc3db6d06da6b18298a1755b4788e7e6
+    entity_id: ad882cbbc0c0222e4b99e39f646e26dc
+    domain: binary_sensor
+    trigger: device
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 20
+  conditions:
+  - condition: time
+    after: 06:30:00
+    before: 04:30:00
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+    - sun
+  actions:
+  - type: turn_off
+    device_id: 09da8d97be4777a9a94cc9b8e53d68c4
+    entity_id: bc0d3fd25e385f3c1056ed9ead8aa858
+    domain: light
+  - type: turn_off
+    device_id: 054f3b654c081cacaf8e2610359d7229
+    entity_id: 638f7a53c21a6aeebbbe4c70bb9fa1df
+    domain: light
+  - type: turn_off
+    device_id: c1f198570580668ee450aee43a80d863
+    entity_id: 59e76beba475ff7bed49de05fc211e8a
+    domain: light
+  - type: turn_off
+    device_id: 24856663a72fdc78cbfa8ab36c4765d1
+    entity_id: 7fff5f0e94d27ad73e640bb60c73d314
+    domain: light
+  - type: turn_off
+    device_id: 76361dfbed405867437d4b94a3995bb6
+    entity_id: 188204738533536bc636218e65a74b53
+    domain: fan
+  - type: turn_off
+    device_id: 76361dfbed405867437d4b94a3995bb6
+    entity_id: c89deabc4968aea0ddb6510f196c0c0b
+    domain: light
+  mode: single
+- id: '1758083317550'
+  alias: 'Schlafen Licht aus '
+  description: ''
+  triggers:
+  - type: turned_off
+    device_id: bc3db6d06da6b18298a1755b4788e7e6
+    entity_id: ad882cbbc0c0222e4b99e39f646e26dc
+    domain: binary_sensor
+    trigger: device
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  conditions: []
+  actions:
+  - type: turn_off
+    device_id: 09da8d97be4777a9a94cc9b8e53d68c4
+    entity_id: bc0d3fd25e385f3c1056ed9ead8aa858
+    domain: light
+  mode: single
+- id: '1758128792497'
+  alias: Bad Licht an
+  description: ''
+  triggers:
+  - type: motion
+    device_id: aebec0c58872e00fe8fa89b0a846a29e
+    entity_id: 58a470e22a792e2f2d7a2e13233b3d50
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - type: turn_on
+    device_id: ffd6ad3612028069ca89a7fa557bf0e4
+    entity_id: e01337629e974472db8c867288cc1c20
+    domain: light
+  mode: single
+- id: '1758128839131'
+  alias: Bad aus
+  description: ''
+  triggers:
+  - type: no_motion
+    device_id: aebec0c58872e00fe8fa89b0a846a29e
+    entity_id: 58a470e22a792e2f2d7a2e13233b3d50
+    domain: binary_sensor
+    trigger: device
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+  conditions: []
+  actions:
+  - type: turn_off
+    device_id: ffd6ad3612028069ca89a7fa557bf0e4
+    entity_id: e01337629e974472db8c867288cc1c20
+    domain: light
+  mode: single
+- id: '1758137148626'
+  alias: Wohnzimmer Licht an Nach Sonnenuntergang
+  description: ''
+  triggers:
+  - type: occupied
+    device_id: 2ce83ab1b7ba9e3161a4584846503d5b
+    entity_id: 10610e701b173fd96fe8f66dcb695b1d
+    domain: binary_sensor
+    trigger: device
+  conditions:
+  - condition: sun
+    before: sunrise
+    after: sunset
+  actions:
+  - type: turn_off
+    device_id: 8c0861d5de0795e1492a8eaeea69c72a
+    entity_id: 1368fea07848a80d288c0aff0af3cf1c
+    domain: light
+  - choose:
+    - conditions:
+      - condition: device
+        type: is_on
+        device_id: 8c0861d5de0795e1492a8eaeea69c72a
+        entity_id: 1368fea07848a80d288c0aff0af3cf1c
+        domain: light
+      sequence:
+      - action: script.ambient_feuerlicht_warm_flicker
+        metadata: {}
+        data: {}
+  - type: turn_on
+    device_id: ceb5bc29b2669f8871ae800bca1807a7
+    entity_id: a5ec8243261c2ded541e37e7638fa2b7
+    domain: light
+  - choose:
+    - conditions:
+      - condition: device
+        type: is_on
+        device_id: 47e2b96815418006d76b8d1e977ba055
+        entity_id: 08a15d443a7bdfa3df511ddcfc90d9fd
+        domain: light
+      sequence:
+      - action: script.ambient_feuerlicht_warm_flicker
+        metadata: {}
+        data: {}
+  - type: turn_on
+    device_id: 2ce65532afcdf33a948b25a5d5d920a0
+    entity_id: d47e3ee3b53eb993b0191b02b586289b
+    domain: switch
+  mode: single
+- id: '1758304543368'
+  alias: Wohnzimmer - Abend Licht an
+  description: ''
+  triggers:
+  - type: occupied
+    device_id: 2ce83ab1b7ba9e3161a4584846503d5b
+    entity_id: 10610e701b173fd96fe8f66dcb695b1d
+    domain: binary_sensor
+    trigger: device
+  conditions:
+  - condition: sun
+    before: sunrise
+    after: sunset
+  actions:
+  - type: turn_on
+    device_id: dff6231b45ad4abd9fec55f83af21d78
+    entity_id: e1a3c27842ab023629bd0c3d766dc5fc
+    domain: light
+  - type: turn_off
+    device_id: ceb5bc29b2669f8871ae800bca1807a7
+    entity_id: a5ec8243261c2ded541e37e7638fa2b7
+    domain: light
+  mode: single
+- id: '1758396085814'
+  alias: Küche Licht ein
+  description: ''
+  triggers:
+  - type: occupied
+    device_id: 2ce83ab1b7ba9e3161a4584846503d5b
+    entity_id: 4015d6e6f31ac6889216799c4b364e1c
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - type: turn_on
+    device_id: 274a4e3fba305eef548db23296690d2d
+    entity_id: 708363eeb019712e16145550302148ef
+    domain: light
+  - type: turn_on
+    device_id: 274a4e3fba305eef548db23296690d2d
+    entity_id: 708363eeb019712e16145550302148ef
+    domain: light
+  - type: turn_on
+    device_id: db2f7007d9ab40883ebc98eba9815384
+    entity_id: dc2d1b19833aaac2ea089fe8a751574f
+    domain: light
+  mode: single
+- id: '1758396392046'
+  alias: Kiffzimmer Licht an
+  description: ''
+  triggers:
+  - type: opened
+    device_id: f93ac770d48247a87eb45dca8a25b323
+    entity_id: 3d6d3623a068fc9a1a1a1cff07e62437
+    domain: binary_sensor
+    trigger: device
+  conditions:
+  - condition: device
+    type: is_off
+    device_id: 506014673a62ba6c5f6209669bd9108e
+    entity_id: dffd9b9d1f6f62069519afe1dc9dfb1e
+    domain: light
+  actions:
+  - type: turn_on
+    device_id: 506014673a62ba6c5f6209669bd9108e
+    entity_id: dffd9b9d1f6f62069519afe1dc9dfb1e
+    domain: light
+  mode: single
+- id: '1758396434802'
+  alias: Kiffzimmer Licht aus
+  description: ''
+  triggers:
+  - type: opened
+    device_id: f93ac770d48247a87eb45dca8a25b323
+    entity_id: 3d6d3623a068fc9a1a1a1cff07e62437
+    domain: binary_sensor
+    trigger: device
+  conditions:
+  - condition: device
+    type: is_on
+    device_id: 506014673a62ba6c5f6209669bd9108e
+    entity_id: dffd9b9d1f6f62069519afe1dc9dfb1e
+    domain: light
+  actions:
+  - type: turn_off
+    device_id: 506014673a62ba6c5f6209669bd9108e
+    entity_id: dffd9b9d1f6f62069519afe1dc9dfb1e
+    domain: light
+  mode: single
+- id: '1758397268690'
+  alias: Kiffzimmer Luftfeuchte <60%
+  description: ''
+  triggers:
+  - type: humidity
+    device_id: 489c7522969073f4aebaf5f0a180e34d
+    entity_id: 607abb010b4820cb32e5de6a8cab8022
+    domain: sensor
+    trigger: device
+    above: 60
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+  conditions: []
+  actions:
+  - type: turn_on
+    device_id: 59f76e362f5e4362255fbc7a3e14661f
+    entity_id: c0d7c1a96441be922517ad7e01a9034c
+    domain: switch
+  mode: single
+- id: '1758397358395'
+  alias: Kiffzimmer Luftfeuchte >50%
+  description: ''
+  triggers:
+  - type: humidity
+    device_id: 489c7522969073f4aebaf5f0a180e34d
+    entity_id: 607abb010b4820cb32e5de6a8cab8022
+    domain: sensor
+    trigger: device
+    below: 50
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+  conditions: []
+  actions:
+  - type: turn_off
+    device_id: 59f76e362f5e4362255fbc7a3e14661f
+    entity_id: c0d7c1a96441be922517ad7e01a9034c
+    domain: switch
+  mode: single
+- id: '1758571949778'
+  alias: Nicht zuhause
+  description: ''
+  triggers:
+  - device_id: efc0fbc0e085a2eb506a22d2f5976e18
+    domain: device_tracker
+    entity_id: 36cb715257f356e7104d152159a4feef
+    type: leaves
+    trigger: device
+    zone: zone.haus
+  conditions: []
+  actions:
+  - type: turn_off
+    device_id: 09da8d97be4777a9a94cc9b8e53d68c4
+    entity_id: bc0d3fd25e385f3c1056ed9ead8aa858
+    domain: light
+  - type: turn_off
+    device_id: 054f3b654c081cacaf8e2610359d7229
+    entity_id: 638f7a53c21a6aeebbbe4c70bb9fa1df
+    domain: light
+  - type: turn_off
+    device_id: ceb5bc29b2669f8871ae800bca1807a7
+    entity_id: a5ec8243261c2ded541e37e7638fa2b7
+    domain: light
+  - type: turn_off
+    device_id: dff6231b45ad4abd9fec55f83af21d78
+    entity_id: e1a3c27842ab023629bd0c3d766dc5fc
+    domain: light
+  - type: turn_off
+    device_id: 506014673a62ba6c5f6209669bd9108e
+    entity_id: dffd9b9d1f6f62069519afe1dc9dfb1e
+    domain: light
+  - type: turn_off
+    device_id: e41e61934b62b8d7c474eddae88bc93e
+    entity_id: b2a67ac8aeeea1850c6ae4d3b41f8895
+    domain: light
+  - type: turn_off
+    device_id: 3eb1ab346e4917536b2108c5aa33c616
+    entity_id: f7aae072f642bae85c9a5b4faafb127a
+    domain: light
+  - type: turn_off
+    device_id: 76361dfbed405867437d4b94a3995bb6
+    entity_id: c89deabc4968aea0ddb6510f196c0c0b
+    domain: light
+  - type: turn_off
+    device_id: 76361dfbed405867437d4b94a3995bb6
+    entity_id: 188204738533536bc636218e65a74b53
+    domain: fan
+  - type: turn_off
+    device_id: 76361dfbed405867437d4b94a3995bb6
+    entity_id: c89deabc4968aea0ddb6510f196c0c0b
+    domain: light
+  - type: turn_off
+    device_id: 3586709559e4e46394dfa54ebf906373
+    entity_id: a14baab7198c0de3311dbee8b11fedab
+    domain: fan
+  - type: turn_off
+    device_id: 274a4e3fba305eef548db23296690d2d
+    entity_id: 708363eeb019712e16145550302148ef
+    domain: light
+  - type: turn_off
+    device_id: db2f7007d9ab40883ebc98eba9815384
+    entity_id: dc2d1b19833aaac2ea089fe8a751574f
+    domain: light
+  - type: turn_off
+    device_id: 506014673a62ba6c5f6209669bd9108e
+    entity_id: dffd9b9d1f6f62069519afe1dc9dfb1e
+    domain: light
+  mode: single
+- id: '1758657223914'
+  alias: Rollladen zu Sonnenuntergang
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunset
+    offset: 0
+  conditions: []
+  actions:
+  - device_id: a5ba8496ac9b401f09981a9877fe169f
+    domain: cover
+    entity_id: fc8f01df212c1c6f9e221f588a0cc872
+    type: close
+  - device_id: 6bb6441e87e544e859d1ca626d69e166
+    domain: cover
+    entity_id: 907f0e83e086aa3dbb94795ad8101a99
+    type: close
+  - device_id: 229f56948b85a1750d3f79623b6e471a
+    domain: cover
+    entity_id: 6bdb46108f7f0e78488ad459824254cb
+    type: close
+  mode: single
+- id: '1758657307399'
+  alias: Rollladen auf Sonnenaufgang
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunrise
+    offset: 0
+  conditions: []
+  actions:
+  - device_id: a5ba8496ac9b401f09981a9877fe169f
+    domain: cover
+    entity_id: fc8f01df212c1c6f9e221f588a0cc872
+    type: open
+  - device_id: 6bb6441e87e544e859d1ca626d69e166
+    domain: cover
+    entity_id: 907f0e83e086aa3dbb94795ad8101a99
+    type: open
+  - device_id: 229f56948b85a1750d3f79623b6e471a
+    domain: cover
+    entity_id: 6bdb46108f7f0e78488ad459824254cb
+    type: open
+  mode: single

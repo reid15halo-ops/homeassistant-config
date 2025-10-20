@@ -1,0 +1,56 @@
+# Home Assistant Git Repository
+# Sensitive data - NEVER commit these!
+secrets.yaml
+*.key
+*.pem
+ip_bans.yaml
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+
+# Log files
+*.log
+*.log.*
+
+# Backup files
+*.backup
+backups/
+
+# System/Cache files
+.DS_Store
+Thumbs.db
+.uuid
+.HA_VERSION
+.storage/
+.cloud/
+
+# Dependencies & compiled files
+deps/
+tts/
+__pycache__/
+*.pyc
+
+# Custom components (optional - only if not self-managed)
+# custom_components/
+
+# Zigbee database (contains network key!)
+zigbee.db
+
+# Temporary files
+*.tmp
+*.temp
+OZW_Log.txt
+
+# Known devices (contains MAC addresses)
+known_devices.yaml
+
+# Specific directories
+.vscode/
+.git/
+themes/
+
+# Custom components with their own git repos
+custom_components/*/

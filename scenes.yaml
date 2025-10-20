@@ -1,0 +1,25 @@
+- id: '1755544420259'
+  name: Rollladen
+  entities:
+    cover.yoga_blind_vorhang:
+      device_class: curtain
+      friendly_name: Yoga Blind Vorhang
+      supported_features: 11
+      state: unknown
+    cover.schlafen_blind_vorhang:
+      device_class: curtain
+      friendly_name: Schlafen blind Vorhang
+      supported_features: 11
+      state: unknown
+    cover.kuche_blind_vorhang:
+      device_class: curtain
+      friendly_name: Küche blind Vorhang
+      supported_features: 11
+      state: unknown
+    cover.rollladen_computer_vorhang:
+      device_class: curtain
+      friendly_name: Rollladen Computer  Vorhang
+      supported_features: 11
+      state: unknown
+  icon: mdi:roller-shade
+  metadata: {}

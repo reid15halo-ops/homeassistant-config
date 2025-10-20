@@ -1,0 +1,100 @@
+# configuration.yaml — ERSETZEN (oder 'packages' in den homeassistant-Block verschieben)
+
+homeassistant:
+  name: Zuhause
+  latitude: 49.91
+  longitude: 9.08
+  elevation: 150
+  unit_system: metric
+  time_zone: Europe/Berlin
+  packages: !include_dir_named packages   # ⇦ WICHTIG: packages gehört HIER hinein
+
+# Standard-Includes
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+# ▶️ [UMGEBUNG: Home Assistant | Datei: configuration.yaml | Aktion: EINMAL ANLEGEN/ERGÄNZEN]
+zha:
+  enable_quirks: true
+  custom_quirks_path: /config/custom_zha_quirks
+# ▶️ [UMGEBUNG: Home Assistant | Datei: configuration.yaml | Aktion: ERGÄNZEN FÜR DIAGNOSE]
+logger:
+  default: warning
+  logs:
+    homeassistant.components.zha: warning
+    zhaquirks: warning
+    zigpy: warning
+
+# Recorder Optimization - keeps DB small & fast
+recorder:
+  purge_keep_days: 7
+  commit_interval: 1
+  auto_purge: true
+  auto_repack: true
+  exclude:
+    domains:
+      - automation
+      - updater
+      - camera
+    entity_globs:
+      - sensor.*_rssi
+      - sensor.*_lqi
+      - sensor.*_linkquality
+    entities:
+      - sun.sun
+      - sensor.time
+      - sensor.date
+
+# Energy Dashboard
+energy:
+
+default_config:
+bluetooth:
+
+# Weitere Integrationen können unterhalb ergänzt werden:
+# logger:
+#   default: info
+# sensor: !include sensors.yaml
+# zone: !include zones.yaml
+
+# Hinweis: Automationen nicht direkt hier als Liste einfügen – immer über !include.
+# ============================================================================
+# INPUT NUMBER HELPER - Cover Position Tracking
+# Füge dies zu deiner configuration.yaml hinzu
+# ============================================================================
+input_number:
+  pos_computer:
+    name: "Rollladen Computer Position"
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+    mode: box
+    icon: mdi:window-shutter
+  
+  pos_kuche:
+    name: "Rollladen Küche Position"
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+    mode: box
+    icon: mdi:window-shutter
+  
+  pos_yoga:
+    name: "Rollladen Yoga Position"
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+    mode: box
+    icon: mdi:window-shutter
+  
+  pos_schlafen:
+    name: "Rollladen Schlafzimmer Position"
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+    mode: box
+    icon: mdi:window-shutter

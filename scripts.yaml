@@ -1,0 +1,354 @@
+# ============================================================================
+# IMPROVED SCRIPTS - Korrigierte Versionen mit Fehlerbehandlung
+# ============================================================================
+
+# Alle originalen Scripts bleiben erhalten
+ambient_feuerlicht_warm_flicker:
+  alias: KL430 - Random Fire (Amber + Dynamic Dim)
+  mode: restart
+  sequence:
+  - target:
+      entity_id:
+      - light.computer_licht
+      - light.buffet_lichtstreifen
+    data:
+      init_states: 30,55,62
+      backgrounds:
+      - - 28
+        - 50
+        - 62
+      - - 31
+        - 45
+        - 74
+      - - 33
+        - 35
+        - 88
+      - - 26
+        - 55
+        - 66
+      segments: 0
+      brightness: 70
+      transition: 900
+      transition_range: 500,1500
+      hue_range: 26,42
+      saturation_range: 35,70
+      brightness_range: 10,92
+      random_seed: 321
+    action: tplink.random_effect
+
+ambient_velvet_rainbow:
+  alias: Ambient – Velvet Rainbow
+  mode: restart
+  sequence:
+  - variables:
+      hue: 12
+      sat: 55
+      bri: 46
+      step_h: 2
+      t: 3
+  - repeat:
+      count: 100000
+      sequence:
+      - target:
+          entity_id: light.computer_lichtt
+        data:
+          hs_color:
+          - '{{ hue }}'
+          - '{{ sat }}'
+          brightness_pct: '{{ bri }}'
+          transition: '{{ t }}'
+        action: light.turn_on
+      - delay: '{{ t }}'
+      - variables:
+          hue: '{{ (hue + step_h) % 360 }}'
+  description: ''
+
+ai_bild:
+  sequence:
+  - action: ai_task.generate_image
+    metadata: {}
+    data:
+      task_name: open AI Bild
+  alias: AI Bild
+  description: ''
+
+openai_antwort:
+  alias: Test – OpenAI generate
+  description: Testet die OpenAI-Integration und zeigt die Antwort als Notification
+  mode: single
+  sequence:
+  - data:
+      agent_id: conversation.extended_openai
+      text: Schreibe eine sehr kurze Statusmeldung.
+    action: conversation.process
+  - variables:
+      ai_response: '{{ conversations()[0].response if conversations() else ''Keine Antwort erhalten'' }}'
+  - data:
+      title: OpenAI Antwort
+      message: '{{ ai_response }}'
+    action: persistent_notification.create
+
+openai_antwort_2:
+  sequence:
+  - action: script.openai_antwort
+    metadata: {}
+    data: {}
+  alias: OpenAI Antwort
+  description: ''
+
+# ============================================================================
+# VERBESSERTES COVER SCRIPT - Mit Fehlerbehandlung & korrekter Latenz
+# ============================================================================
+cover_fahre_zeitbasiert:
+  alias: "Cover – fahre zeitbasiert (IMPROVED)"
+  description: "Zeitbasierte Positionssteuerung mit Fehlerbehandlung und konstanter Latenz"
+  mode: restart
+  fields:
+    cover_entity:
+      description: "Cover-Entity-ID (z.B. cover.rollladen_computer_vorhang)"
+      required: true
+      example: "cover.rollladen_computer_vorhang"
+    pos_helper:
+      description: "Input Number Entity für Pseudoposition 0-100"
+      required: true
+      example: "input_number.pos_computer"
+    travel_time:
+      description: "Vollhub-Zeit in Sekunden (gemessen von 0% bis 100%)"
+      required: false
+      default: 21
+      selector:
+        number:
+          min: 5
+          max: 60
+          step: 0.5
+          unit_of_measurement: "s"
+    position:
+      description: "Zielposition 0-100 (0=geschlossen, 100=offen)"
+      required: true
+      default: 100
+      selector:
+        number:
+          min: 0
+          max: 100
+          step: 1
+          unit_of_measurement: "%"
+    invert:
+      description: "Richtung invertieren (true = open/close vertauschen)"
+      required: false
+      default: false
+      selector:
+        boolean:
+    latenz_ms:
+      description: "Cloud/WLAN Latenz in Millisekunden (typisch 200-500ms)"
+      required: false
+      default: 300
+      selector:
+        number:
+          min: 0
+          max: 2000
+          step: 50
+          unit_of_measurement: "ms"
+
+  sequence:
+    # ===== VALIDIERUNG DER ENTITIES =====
+    - condition: template
+      value_template: >
+        {% set cover_ok = cover_entity is defined
+                         and states(cover_entity) not in ['unknown', 'unavailable'] %}
+        {% set helper_ok = pos_helper is defined
+                          and states(pos_helper) not in ['unknown', 'unavailable'] %}
+        {{ cover_ok and helper_ok }}
+      alias: "Prüfe ob Cover und Helper existieren"
+
+    # ===== VARIABLEN BERECHNEN =====
+    - variables:
+        # Zielposition
+        to: "{{ position | int(0) }}"
+
+        # Aktuelle Position aus Helper
+        from_pos: >
+          {% if states(pos_helper) in ['unknown', 'unavailable'] %}
+            0
+          {% else %}
+            {{ states(pos_helper) | int(0) }}
+          {% endif %}
+
+        # Fahrtzeit gesamt
+        tt: "{{ travel_time | float(21) }}"
+
+        # Differenz (kann negativ sein)
+        diff: "{{ (to - from_pos) | float(0) }}"
+
+        # Rohe Fahrtzeit (ohne Latenzkorrektur)
+        raw_time: "{{ (diff | abs) / 100.0 * tt }}"
+
+        # Konstante Latenz (nicht prozentual!)
+        latenz_s: "{{ (latenz_ms | int(300)) / 1000.0 }}"
+
+        # Korrigierte Fahrtzeit (mindestens 0.5s)
+        dur_s: "{{ [raw_time - latenz_s, 0.5] | max }}"
+
+        # Fahrtrichtung
+        is_opening: "{{ to > from_pos }}"
+        is_closing: "{{ to < from_pos }}"
+        is_same: "{{ to == from_pos }}"
+
+    # ===== LOGGING FÜR DEBUGGING =====
+    - service: system_log.write
+      data:
+        message: >
+          Cover {{ cover_entity }}: {{ from_pos }}% → {{ to }}%
+          (Δ={{ diff | round(1) }}%, raw={{ raw_time | round(2) }}s,
+          latenz={{ latenz_s }}s, final={{ dur_s | round(2) }}s)
+        level: info
+      continue_on_error: true
+
+    # ===== CHOOSE: NICHTS / ÖFFNEN / SCHLIESSEN =====
+    - choose:
+        # ========== FALL 1: NICHTS ZU FAHREN ==========
+        - conditions:
+            - condition: template
+              value_template: "{{ is_same }}"
+          sequence:
+            - service: system_log.write
+              data:
+                message: "Cover {{ cover_entity }}: Bereits bei {{ to }}%"
+                level: debug
+              continue_on_error: true
+
+        # ========== FALL 2: NACH OBEN FAHREN (ÖFFNEN) ==========
+        - conditions:
+            - condition: template
+              value_template: "{{ is_opening }}"
+          sequence:
+            # Cover öffnen (oder schließen wenn invertiert)
+            - choose:
+                - conditions:
+                    - condition: template
+                      value_template: "{{ invert }}"
+                  sequence:
+                    - service: cover.close_cover
+                      target:
+                        entity_id: "{{ cover_entity }}"
+                      continue_on_error: true
+              default:
+                - service: cover.open_cover
+                  target:
+                    entity_id: "{{ cover_entity }}"
+                  continue_on_error: true
+
+            # Kurz warten und prüfen ob Cover reagiert hat
+            - delay:
+                milliseconds: 200
+
+            # Prüfen ob Cover tatsächlich fährt
+            - condition: template
+              value_template: >
+                {{ states(cover_entity) in ['opening', 'closing'] }}
+              alias: "Cover muss jetzt fahren"
+
+            # Fahrtzeit abwarten
+            - delay:
+                seconds: "{{ dur_s }}"
+
+            # STOP senden (nur einmal, reicht!)
+            - service: cover.stop_cover
+              target:
+                entity_id: "{{ cover_entity }}"
+              continue_on_error: true
+
+            # Kurz warten bis Cover wirklich steht
+            - delay:
+                milliseconds: 100
+
+            # Position im Helper speichern
+            - service: input_number.set_value
+              target:
+                entity_id: "{{ pos_helper }}"
+              data:
+                value: "{{ to }}"
+              continue_on_error: true
+
+            # Erfolgs-Log
+            - service: system_log.write
+              data:
+                message: "Cover {{ cover_entity }}: Erfolgreich auf {{ to }}% gefahren"
+                level: info
+              continue_on_error: true
+
+        # ========== FALL 3: NACH UNTEN FAHREN (SCHLIESSEN) ==========
+        - conditions:
+            - condition: template
+              value_template: "{{ is_closing }}"
+          sequence:
+            # Cover schließen (oder öffnen wenn invertiert)
+            - choose:
+                - conditions:
+                    - condition: template
+                      value_template: "{{ invert }}"
+                  sequence:
+                    - service: cover.open_cover
+                      target:
+                        entity_id: "{{ cover_entity }}"
+                      continue_on_error: true
+              default:
+                - service: cover.close_cover
+                  target:
+                    entity_id: "{{ cover_entity }}"
+                  continue_on_error: true
+
+            # Kurz warten
+            - delay:
+                milliseconds: 200
+
+            # Prüfen ob Cover fährt
+            - condition: template
+              value_template: >
+                {{ states(cover_entity) in ['opening', 'closing'] }}
+              alias: "Cover muss jetzt fahren"
+
+            # Fahrtzeit
+            - delay:
+                seconds: "{{ dur_s }}"
+
+            # STOP
+            - service: cover.stop_cover
+              target:
+                entity_id: "{{ cover_entity }}"
+              continue_on_error: true
+
+            # Warten
+            - delay:
+                milliseconds: 100
+
+            # Position speichern
+            - service: input_number.set_value
+              target:
+                entity_id: "{{ pos_helper }}"
+              data:
+                value: "{{ to }}"
+              continue_on_error: true
+
+            # Log
+            - service: system_log.write
+              data:
+                message: "Cover {{ cover_entity }}: Erfolgreich auf {{ to }}% gefahren"
+                level: info
+              continue_on_error: true
+
+# ============================================================================
+# NEUES SCRIPT: Ventilator Wintermodus (falls noch nicht vorhanden)
+# ============================================================================
+ventilator_wintermodus_low:
+  alias: "Ventilator – Wintermodus Low"
+  description: "Startet Ventilator im Winter-Modus (niedriger Speed)"
+  mode: single
+  sequence:
+    - service: fan.turn_on
+      target:
+        entity_id:
+          - fan.ceiling_fan
+          - fan.ceiling_fan_with_light
+      data:
+        percentage: 33  # Low speed
+      continue_on_error: true

@@ -1,0 +1,12 @@
+version: "1.0"
+locale: de-DE
+stages:
+  - name: listen
+    type: speech-to-text
+    engine: google
+  - name: understand
+    type: conversation
+    engine: extended_openai_conversation
+  - name: respond
+    type: text-to-speech
+    engine: google
