@@ -33,9 +33,6 @@ tts/
 __pycache__/
 *.pyc
 
-# Custom components (optional - only if not self-managed)
-# custom_components/
-
 # Zigbee database (contains network key!)
 zigbee.db
 
@@ -49,8 +46,9 @@ known_devices.yaml
 
 # Specific directories
 .vscode/
-.git/
 themes/
 
-# Custom components with their own git repos
-custom_components/*/
+# Ignore .git directories inside custom components (but keep the code)
+custom_components/*/.git/
+custom_components/*/.github/
+custom_components/*/.gitignore
