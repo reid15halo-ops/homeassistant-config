@@ -353,33 +353,34 @@
         metadata: {}
         data: {}
   mode: single
-- id: '1756663264657'
-  alias: Heizung Aus Fenster offen
-  description: ''
-  mode: single
-  trigger:
-  - platform: device
-    type: opened
-    device_id: 1d8ac79daf016e689bf40f1499f28678
-    entity_id: 6ae39821a45e76cf38ec0e5459333954
-    domain: binary_sensor
-  - platform: device
-    type: opened
-    device_id: 5c463b96e0e706e7e78d06703972e0ee
-    entity_id: 4ab0a1216721d7ee3491dd890a83ace7
-    domain: binary_sensor
-  condition: []
-  action:
-  - type: set_hvac_mode
-    device_id: 8cec1333229554f7f822ace0168e4191
-    entity_id: 646e41b75dc2d7a8f1d0285ca94e1ac5
-    domain: climate
-    hvac_mode: 'off'
-  - type: set_hvac_mode
-    device_id: 9402ef88977fa51cf9fc7e4c5383d2cc
-    entity_id: 465b11050fd6118181722cc97f5b8183
-    domain: climate
-    hvac_mode: 'off'
+# DEAKTIVIERT - Ersetzt durch intelligente Version "heizung_fenster_intelligent"
+# - id: '1756663264657'
+#   alias: Heizung Aus Fenster offen (ALT)
+#   description: ''
+#   mode: single
+#   trigger:
+#   - platform: device
+#     type: opened
+#     device_id: 1d8ac79daf016e689bf40f1499f28678
+#     entity_id: 6ae39821a45e76cf38ec0e5459333954
+#     domain: binary_sensor
+#   - platform: device
+#     type: opened
+#     device_id: 5c463b96e0e706e7e78d06703972e0ee
+#     entity_id: 4ab0a1216721d7ee3491dd890a83ace7
+#     domain: binary_sensor
+#   condition: []
+#   action:
+#   - type: set_hvac_mode
+#     device_id: 8cec1333229554f7f822ace0168e4191
+#     entity_id: 646e41b75dc2d7a8f1d0285ca94e1ac5
+#     domain: climate
+#     hvac_mode: 'off'
+#   - type: set_hvac_mode
+#     device_id: 9402ef88977fa51cf9fc7e4c5383d2cc
+#     entity_id: 465b11050fd6118181722cc97f5b8183
+#     domain: climate
+#     hvac_mode: 'off'
 - id: '1756747296174'
   alias: Schlafen Arbeit Bettgehlicht - Optimiert
   description: Optimierte Version mit Entity-Triggern
@@ -2420,3 +2421,526 @@
     - service: persistent_notification.create
       data:
         title: "✅ Cover Kalibrierung"
+
+# ============================================================================
+# INTELLIGENTE HEIZUNGSSTEUERUNG - Wetter-basiert & Energie-sparend
+# ============================================================================
+
+# ---------- 1. HEIZUNG AUS BEI WARMER AUSSENTEMPERATUR ----------
+- id: heizung_aus_warm_draussen
+  alias: "Energie – Heizung aus bei >18°C Außentemperatur"
+  description: "Schaltet Heizung automatisch aus wenn es draußen warm genug ist"
+  mode: restart
+  trigger:
+    # Prüfe alle 15 Minuten
+    - platform: time_pattern
+      minutes: "/15"
+
+    # Sofort wenn Temperatur steigt
+    - platform: numeric_state
+      entity_id: sensor.openweathermap_temperature
+      above: 18
+      for:
+        minutes: 10
+
+    # Sofort wenn Temperatur fällt
+    - platform: numeric_state
+      entity_id: sensor.openweathermap_temperature
+      below: 17
+      for:
+        minutes: 10
+
+  action:
+    - choose:
+        # FALL 1: Draußen >18°C → Heizung AUS
+        - conditions:
+            - condition: numeric_state
+              entity_id: sensor.openweathermap_temperature
+              above: 18
+          sequence:
+            - service: climate.set_hvac_mode
+              target:
+                entity_id:
+                  - climate.thermostat_bad
+                  - climate.thermostat_computer
+              data:
+                hvac_mode: 'off'
+
+            - service: persistent_notification.create
+              data:
+                notification_id: heizung_warm
+                title: "🌡️ Heizung aus"
+                message: >
+                  Außentemperatur: {{ states('sensor.openweathermap_temperature') }}°C
+                  Heizung automatisch ausgeschaltet (Energie sparen)
+
+        # FALL 2: Draußen <17°C → Heizung AN (wenn nicht manuell eco)
+        - conditions:
+            - condition: numeric_state
+              entity_id: sensor.openweathermap_temperature
+              below: 17
+
+            # Nur wenn nicht manuell Eco-Modus aktiviert
+            - condition: state
+              entity_id: input_boolean.heizung_eco_mode
+              state: 'off'
+
+          sequence:
+            - service: climate.set_hvac_mode
+              target:
+                entity_id:
+                  - climate.thermostat_bad
+                  - climate.thermostat_computer
+              data:
+                hvac_mode: 'heat'
+
+            # Setze auf Komfort-Temperatur
+            - service: climate.set_temperature
+              target:
+                entity_id:
+                  - climate.thermostat_bad
+                  - climate.thermostat_computer
+              data:
+                temperature: "{{ states('input_number.heizung_solltemperatur_komfort')|float(21) }}"
+
+# ---------- 2. HEIZUNG REDUZIEREN BEI SONNENEINSTRAHLUNG ----------
+- id: heizung_reduzieren_sonne
+  alias: "Energie – Heizung reduzieren bei Sonneneinstrahlung"
+  description: "Nutzt passive solare Wärme, reduziert Heizung bei Sonnenschein"
+  mode: restart
+  trigger:
+    - platform: time_pattern
+      minutes: "/10"
+
+    - platform: numeric_state
+      entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
+      above: 400
+      for:
+        minutes: 5
+
+  condition:
+    # Nur im Winter-Modus
+    - condition: state
+      entity_id: input_boolean.heizung_winter_mode
+      state: 'on'
+
+    # Nur wenn draußen kalt genug zum Heizen
+    - condition: numeric_state
+      entity_id: sensor.openweathermap_temperature
+      below: 17
+
+    # Nur tagsüber
+    - condition: sun
+      after: sunrise
+      before: sunset
+
+  variables:
+    # Sonne scheint gut ins Zimmer?
+    sun_ok: >-
+      {{ (state_attr('sun.sun','azimuth')|float(0) >= 120) and
+         (state_attr('sun.sun','azimuth')|float(0) <= 240) and
+         (state_attr('sun.sun','elevation')|float(0) > 20) }}
+
+    lux: "{{ states('sensor.presence_sensor_fp2_f9cf_light_sensor_light_level')|int(0) }}"
+
+  action:
+    - choose:
+        # FALL 1: Sonne scheint stark → Heizung reduzieren (-2°C)
+        - conditions:
+            - condition: template
+              value_template: "{{ sun_ok and lux > 600 }}"
+
+          sequence:
+            - service: climate.set_temperature
+              target:
+                entity_id:
+                  - climate.thermostat_computer  # Nur Computer-Zimmer (Süd-Seite)
+              data:
+                temperature: >
+                  {{ [states('input_number.heizung_solltemperatur_komfort')|float(21) - 2, 18]|max }}
+
+            - service: persistent_notification.create
+              data:
+                notification_id: heizung_sonne
+                title: "☀️ Passive Solarheizung"
+                message: >
+                  Sonneneinstrahlung: {{ lux }} lux
+                  Heizung reduziert (nutzt kostenlose Sonnenwärme)
+
+        # FALL 2: Keine/wenig Sonne → Normale Temperatur
+        default:
+          - service: climate.set_temperature
+            target:
+              entity_id:
+                - climate.thermostat_computer
+            data:
+              temperature: "{{ states('input_number.heizung_solltemperatur_komfort')|float(21) }}"
+
+# ---------- 3. MORGENS VORHEIZEN BEI KALTER WETTERVORHERSAGE ----------
+- id: heizung_vorheizen_kalt
+  alias: "Energie – Morgens vorheizen bei kaltem Tag"
+  description: "Heizt morgens stärker vor wenn kalter Tag vorhergesagt"
+  mode: single
+  trigger:
+    - platform: time
+      at: "05:00:00"
+
+  condition:
+    # Nur an Werktagen
+    - condition: time
+      weekday: [mon, tue, wed, thu, fri]
+
+    # Nur wenn aktuell kalt draußen
+    - condition: numeric_state
+      entity_id: sensor.openweathermap_temperature
+      below: 12
+
+  variables:
+    # Forecast für heute (Tageshöchsttemperatur)
+    forecast_temp: >
+      {{ state_attr('weather.openweathermap', 'forecast')[0].temperature|float(15) }}
+
+  action:
+    - choose:
+        # FALL 1: Kalter Tag vorhergesagt (<10°C) → Stark vorheizen
+        - conditions:
+            - condition: template
+              value_template: "{{ forecast_temp < 10 }}"
+
+          sequence:
+            - service: climate.set_temperature
+              target:
+                entity_id:
+                  - climate.thermostat_bad
+                  - climate.thermostat_computer
+              data:
+                temperature: 22  # +1°C über Komfort
+
+            - service: persistent_notification.create
+              data:
+                notification_id: heizung_vorheizen
+                title: "🥶 Vorheizen aktiv"
+                message: >
+                  Kalter Tag vorhergesagt (max {{ forecast_temp }}°C)
+                  Heizung läuft stärker zum Vorheizen
+
+        # FALL 2: Mäßig kalt (10-15°C) → Normal heizen
+        default:
+          - service: climate.set_temperature
+            target:
+              entity_id:
+                - climate.thermostat_bad
+                - climate.thermostat_computer
+            data:
+              temperature: "{{ states('input_number.heizung_solltemperatur_komfort')|float(21) }}"
+
+# ---------- 4. ECO-MODUS BEI ABWESENHEIT ----------
+- id: heizung_eco_abwesenheit
+  alias: "Energie – Eco-Modus bei Abwesenheit"
+  description: "Senkt Heizung bei Abwesenheit, erhöht bei Heimkehr"
+  mode: restart
+  trigger:
+    # Abwesenheit erkannt
+    - platform: state
+      entity_id: binary_sensor.clt_l09_anwesenheit
+      to: 'off'
+      for:
+        minutes: 30
+      id: away
+
+    # Heimkehr erkannt
+    - platform: state
+      entity_id: binary_sensor.clt_l09_anwesenheit
+      to: 'on'
+      id: home
+
+  condition:
+    # Nur wenn draußen kalt genug zum Heizen
+    - condition: numeric_state
+      entity_id: sensor.openweathermap_temperature
+      below: 17
+
+  action:
+    - choose:
+        # FALL 1: Weg → Eco-Modus
+        - conditions:
+            - condition: trigger
+              id: away
+
+          sequence:
+            - service: input_boolean.turn_on
+              target:
+                entity_id: input_boolean.heizung_eco_mode
+
+            - service: climate.set_temperature
+              target:
+                entity_id:
+                  - climate.thermostat_bad
+                  - climate.thermostat_computer
+              data:
+                temperature: "{{ states('input_number.heizung_solltemperatur_eco')|float(18) }}"
+
+            - service: persistent_notification.create
+              data:
+                notification_id: heizung_eco
+                title: "🍃 Eco-Modus aktiv"
+                message: >
+                  Abwesenheit erkannt (>30 Min)
+                  Heizung auf {{ states('input_number.heizung_solltemperatur_eco') }}°C gesenkt
+
+        # FALL 2: Zuhause → Komfort-Modus
+        - conditions:
+            - condition: trigger
+              id: home
+
+          sequence:
+            - service: input_boolean.turn_off
+              target:
+                entity_id: input_boolean.heizung_eco_mode
+
+            - service: climate.set_temperature
+              target:
+                entity_id:
+                  - climate.thermostat_bad
+                  - climate.thermostat_computer
+              data:
+                temperature: "{{ states('input_number.heizung_solltemperatur_komfort')|float(21) }}"
+
+            - service: persistent_notification.create
+              data:
+                notification_id: heizung_komfort
+                title: "🏠 Willkommen!"
+                message: >
+                  Heizung auf Komfort-Modus
+                  Zieltemperatur: {{ states('input_number.heizung_solltemperatur_komfort') }}°C
+
+# ---------- 5. NACHTABSENKUNG ----------
+- id: heizung_nachtabsenkung_smart
+  alias: "Energie – Nachtabsenkung (22:00-06:00)"
+  description: "Senkt Heizung nachts automatisch"
+  mode: single
+  trigger:
+    # Abends runter
+    - platform: time
+      at: "22:00:00"
+      id: night
+
+    # Morgens hoch
+    - platform: time
+      at: "06:00:00"
+      id: morning
+
+  condition:
+    # Nur wenn draußen kalt
+    - condition: numeric_state
+      entity_id: sensor.openweathermap_temperature
+      below: 17
+
+  action:
+    - choose:
+        # Abends → Nacht-Temperatur
+        - conditions:
+            - condition: trigger
+              id: night
+
+          sequence:
+            - service: climate.set_temperature
+              target:
+                entity_id:
+                  - climate.thermostat_bad
+                  - climate.thermostat_computer
+              data:
+                temperature: "{{ states('input_number.heizung_solltemperatur_nacht')|float(17) }}"
+
+        # Morgens → Komfort (nur wenn zuhause)
+        - conditions:
+            - condition: trigger
+              id: morning
+
+            - condition: state
+              entity_id: binary_sensor.clt_l09_anwesenheit
+              state: 'on'
+
+          sequence:
+            - service: climate.set_temperature
+              target:
+                entity_id:
+                  - climate.thermostat_bad
+                  - climate.thermostat_computer
+              data:
+                temperature: "{{ states('input_number.heizung_solltemperatur_komfort')|float(21) }}"
+
+# ---------- 6. FENSTER-OFFEN INTELLIGENTE VERSION (ERSETZT ALTE) ----------
+- id: heizung_fenster_intelligent
+  alias: "Energie – Heizung aus bei Fenster/Tür offen"
+  description: "Heizung aus bei offenen Fenstern, AN wenn geschlossen (nur bei kaltem Wetter)"
+  mode: restart
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.aqara_door_and_window_sensor_tur
+        - binary_sensor.aqara_door_and_window_sensor_tur_2
+
+  action:
+    - choose:
+        # FALL 1: Mindestens EIN Fenster offen → Heizung AUS
+        - conditions:
+            - condition: or
+              conditions:
+                - condition: state
+                  entity_id: binary_sensor.aqara_door_and_window_sensor_tur
+                  state: 'on'
+                - condition: state
+                  entity_id: binary_sensor.aqara_door_and_window_sensor_tur_2
+                  state: 'on'
+
+          sequence:
+            - service: climate.set_hvac_mode
+              target:
+                entity_id:
+                  - climate.thermostat_bad
+                  - climate.thermostat_computer
+              data:
+                hvac_mode: 'off'
+
+            - service: persistent_notification.create
+              data:
+                notification_id: heizung_fenster
+                title: "🪟 Fenster offen"
+                message: "Heizung ausgeschaltet (Fenster/Tür offen)"
+
+        # FALL 2: ALLE Fenster zu → Heizung wieder AN (nur wenn draußen kalt)
+        - conditions:
+            - condition: state
+              entity_id: binary_sensor.aqara_door_and_window_sensor_tur
+              state: 'off'
+
+            - condition: state
+              entity_id: binary_sensor.aqara_door_and_window_sensor_tur_2
+              state: 'off'
+
+            # Nur wenn draußen kalt genug
+            - condition: numeric_state
+              entity_id: sensor.openweathermap_temperature
+              below: 17
+
+          sequence:
+            # Kurz warten (nicht sofort wieder an)
+            - delay:
+                minutes: 2
+
+            - service: climate.set_hvac_mode
+              target:
+                entity_id:
+                  - climate.thermostat_bad
+                  - climate.thermostat_computer
+              data:
+                hvac_mode: 'heat'
+
+            # Setze richtige Temperatur je nach Modus
+            - service: climate.set_temperature
+              target:
+                entity_id:
+                  - climate.thermostat_bad
+                  - climate.thermostat_computer
+              data:
+                temperature: >
+                  {% if is_state('input_boolean.heizung_eco_mode', 'on') %}
+                    {{ states('input_number.heizung_solltemperatur_eco')|float(18) }}
+                  {% elif now().hour >= 22 or now().hour < 6 %}
+                    {{ states('input_number.heizung_solltemperatur_nacht')|float(17) }}
+                  {% else %}
+                    {{ states('input_number.heizung_solltemperatur_komfort')|float(21) }}
+                  {% endif %}
+
+            - service: persistent_notification.create
+              data:
+                notification_id: heizung_fenster
+                title: "✅ Fenster geschlossen"
+                message: "Heizung wieder eingeschaltet"
+
+# ---------- 7. WINTER-MODUS: ROLLLÄDEN FÜR PASSIVE HEIZUNG ----------
+- id: heizung_winter_rollladen
+  alias: "Energie – Winter-Rollläden (Dämmung + passive Heizung)"
+  description: "Nutzt Rollläden im Winter: Nachts zu (Dämmung), tags bei Sonne auf (passive Wärme)"
+  mode: restart
+  trigger:
+    # Sonnenaufgang
+    - platform: sun
+      event: sunrise
+      offset: "00:30:00"
+      id: morning
+
+    # Sonnenuntergang
+    - platform: sun
+      event: sunset
+      offset: "-00:30:00"
+      id: evening
+
+  condition:
+    # Nur wenn Winter-Modus aktiv
+    - condition: state
+      entity_id: input_boolean.heizung_winter_mode
+      state: 'on'
+
+    # Nur wenn draußen kalt (Heizperiode)
+    - condition: numeric_state
+      entity_id: sensor.openweathermap_temperature
+      below: 15
+
+  action:
+    - choose:
+        # Morgens → Rollläden AUF (passive Solarheizung)
+        - conditions:
+            - condition: trigger
+              id: morning
+
+          sequence:
+            - service: script.cover_fahre_zeitbasiert
+              data:
+                cover_entity: cover.rollladen_computer_vorhang
+                pos_helper: input_number.pos_computer
+                travel_time: 21
+                position: 100
+
+            - service: script.cover_fahre_zeitbasiert
+              data:
+                cover_entity: cover.kuche_blind_vorhang
+                pos_helper: input_number.pos_kuche
+                travel_time: 21
+                position: 100
+
+            - service: script.cover_fahre_zeitbasiert
+              data:
+                cover_entity: cover.yoga_blind_vorhang
+                pos_helper: input_number.pos_yoga
+                travel_time: 21
+                position: 100
+
+        # Abends → Rollläden ZU (Wärmedämmung)
+        - conditions:
+            - condition: trigger
+              id: evening
+
+          sequence:
+            - service: cover.close_cover
+              target:
+                entity_id:
+                  - cover.rollladen_computer_vorhang
+                  - cover.kuche_blind_vorhang
+                  - cover.yoga_blind_vorhang
+                  - cover.schlafen_blind_vorhang
+
+            # Setze Position-Tracker
+            - delay:
+                seconds: 25
+
+            - service: input_number.set_value
+              target:
+                entity_id:
+                  - input_number.pos_computer
+                  - input_number.pos_kuche
+                  - input_number.pos_yoga
+                  - input_number.pos_schlafen
+              data:
+                value: 0
