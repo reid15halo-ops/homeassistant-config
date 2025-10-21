@@ -51,6 +51,11 @@ energy:
 default_config:
 bluetooth:
 
+# DuckDNS SSL Configuration
+http:
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
+
 # Weitere Integrationen können unterhalb ergänzt werden:
 # logger:
 #   default: info
