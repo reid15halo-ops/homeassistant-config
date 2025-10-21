@@ -14,10 +14,20 @@ CONF_LOCAL_URL = "local_url"
 CONF_LOCAL_MODEL = "local_model"
 
 # Available AI providers
-AI_PROVIDERS = ["llama", "openai", "gemini", "openrouter", "anthropic", "local"]
+AI_PROVIDERS = ["anthropic", "openai", "gemini", "openrouter", "llama", "local"]
 
 # AI Provider constants
 CONF_MODELS = "models"
 
-# Supported AI providers
-DEFAULT_AI_PROVIDER = "openai"
+# Supported AI providers - Changed default to anthropic (Claude Sonnet 3.7)
+DEFAULT_AI_PROVIDER = "anthropic"
+
+# Default models optimized for Claude Sonnet 3.7, GPT-5/o3-mini, and Gemini 2.5
+DEFAULT_MODELS = {
+    "anthropic": "claude-3-7-sonnet-latest",  # Primary recommendation
+    "openai": "gpt-4o-mini",  # Compatible with gpt-5, o3-mini
+    "gemini": "gemini-2.0-flash-exp",  # Experimental Gemini 2.0
+    "openrouter": "anthropic/claude-3.7-sonnet",  # Claude via OpenRouter
+    "llama": "Llama-4-Maverick-17B-128E-Instruct-FP8",
+    "local": "llama3.2",
+}

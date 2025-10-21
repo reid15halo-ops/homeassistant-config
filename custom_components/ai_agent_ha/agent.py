@@ -1,22 +1,27 @@
 """The AI Agent implementation with multiple provider support.
 
+Optimized for:
+- Claude Sonnet 3.7 (claude-3-7-sonnet-latest) - Primary recommendation
+- GPT-5 / o3-mini (with special parameter handling)
+- Gemini 2.5 Pro / 2.0 Flash (experimental)
+
 Example config:
 ai_agent_ha:
-  ai_provider: openai  # or 'llama', 'gemini', 'openrouter', 'anthropic', 'local'
-  llama_token: "..."
+  ai_provider: anthropic  # Recommended: anthropic (Claude Sonnet 3.7)
+  anthropic_token: "..."
   openai_token: "..."
   gemini_token: "..."
   openrouter_token: "..."
-  anthropic_token: "..."
+  llama_token: "..."
   local_url: "http://localhost:11434/api/generate"  # Required for local models
-  # Model configuration (optional, defaults will be used if not specified)
+  # Model configuration (optional, defaults optimized for latest models)
   models:
-    openai: "gpt-3.5-turbo"  # or "gpt-4", "gpt-4-turbo", etc.
+    anthropic: "claude-3-7-sonnet-latest"  # or "claude-3-5-sonnet-20241022"
+    openai: "gpt-4o-mini"  # or "gpt-5", "o3-mini", "gpt-4-turbo"
+    gemini: "gemini-2.0-flash-exp"  # or "gemini-2.5-pro-exp", "gemini-1.5-pro"
+    openrouter: "anthropic/claude-3.7-sonnet"  # or any model on OpenRouter
     llama: "Llama-4-Maverick-17B-128E-Instruct-FP8"
-    gemini: "gemini-1.5-flash"  # or "gemini-1.5-pro", "gemini-1.0-pro", etc.
-    openrouter: "openai/gpt-4o"  # or any model available on OpenRouter
-    anthropic: "claude-3-5-sonnet-20241022"  # or "claude-3-opus-20240229", etc.
-    local: "llama3.2"  # model name for local API (optional if your API doesn't require it)
+    local: "llama3.2"  # model name for local API
 """
 
 import asyncio
@@ -410,7 +415,7 @@ class LlamaClient(BaseAIClient):
 
 
 class OpenAIClient(BaseAIClient):
-    def __init__(self, token, model="gpt-3.5-turbo"):
+    def __init__(self, token, model="gpt-4o-mini"):
         self.token = token
         self.model = model
         self.api_url = "https://api.openai.com/v1/chat/completions"
@@ -514,7 +519,7 @@ class OpenAIClient(BaseAIClient):
 
 
 class GeminiClient(BaseAIClient):
-    def __init__(self, token, model="gemini-1.5-flash"):
+    def __init__(self, token, model="gemini-2.0-flash-exp"):
         self.token = token
         self.model = model
         self.api_url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
@@ -613,7 +618,7 @@ class GeminiClient(BaseAIClient):
 
 
 class AnthropicClient(BaseAIClient):
-    def __init__(self, token, model="claude-3-5-sonnet-20241022"):
+    def __init__(self, token, model="claude-3-7-sonnet-latest"):
         self.token = token
         self.model = model
         self.api_url = "https://api.anthropic.com/v1/messages"
@@ -644,7 +649,7 @@ class AnthropicClient(BaseAIClient):
 
         payload = {
             "model": self.model,
-            "max_tokens": 2048,
+            "max_tokens": 4096,  # Increased for complex automation generation
             "temperature": 0.7,
             "messages": anthropic_messages,
         }
@@ -660,7 +665,7 @@ class AnthropicClient(BaseAIClient):
                 self.api_url,
                 headers=headers,
                 json=payload,
-                timeout=aiohttp.ClientTimeout(total=30),
+                timeout=aiohttp.ClientTimeout(total=120),  # Increased timeout for complex tasks
             ) as resp:
                 if resp.status != 200:
                     error_text = await resp.text()
@@ -678,7 +683,7 @@ class AnthropicClient(BaseAIClient):
 
 
 class OpenRouterClient(BaseAIClient):
-    def __init__(self, token, model="openai/gpt-4o"):
+    def __init__(self, token, model="anthropic/claude-3.7-sonnet"):
         self.token = token
         self.model = model
         self.api_url = "https://openrouter.ai/api/v1/chat/completions"
@@ -957,7 +962,7 @@ class AiAgentHaAgent:
         self._request_count = 0
         self._request_window_start = time.time()
 
-        provider = config.get("ai_provider", "openai")
+        provider = config.get("ai_provider", "anthropic")  # Changed default to anthropic
         models_config = config.get("models", {})
 
         _LOGGER.debug("Initializing AiAgentHaAgent with provider: %s", provider)
@@ -971,18 +976,18 @@ class AiAgentHaAgent:
             self.system_prompt = self.SYSTEM_PROMPT
             _LOGGER.debug("Using standard system prompt")
 
-        # Initialize the appropriate AI client with model selection
+        # Initialize the appropriate AI client with model selection (updated defaults)
         if provider == "openai":
-            model = models_config.get("openai", "gpt-3.5-turbo")
+            model = models_config.get("openai", "gpt-4o-mini")
             self.ai_client = OpenAIClient(config.get("openai_token"), model)
         elif provider == "gemini":
-            model = models_config.get("gemini", "gemini-1.5-flash")
+            model = models_config.get("gemini", "gemini-2.0-flash-exp")
             self.ai_client = GeminiClient(config.get("gemini_token"), model)
         elif provider == "openrouter":
-            model = models_config.get("openrouter", "openai/gpt-4o")
+            model = models_config.get("openrouter", "anthropic/claude-3.7-sonnet")
             self.ai_client = OpenRouterClient(config.get("openrouter_token"), model)
         elif provider == "anthropic":
-            model = models_config.get("anthropic", "claude-3-5-sonnet-20241022")
+            model = models_config.get("anthropic", "claude-3-7-sonnet-latest")
             self.ai_client = AnthropicClient(config.get("anthropic_token"), model)
         elif provider == "local":
             model = models_config.get("local", "")
@@ -1003,7 +1008,7 @@ class AiAgentHaAgent:
 
     def _validate_api_key(self) -> bool:
         """Validate the API key format."""
-        provider = self.config.get("ai_provider", "openai")
+        provider = self.config.get("ai_provider", "anthropic")
 
         if provider == "openai":
             token = self.config.get("openai_token")
@@ -1901,15 +1906,8 @@ lovelace:
                                         dashboard_added = True
                                         break
 
-                            if dashboard_added:
-                                with open(config_file, "w") as f:
-                                    f.write("\n".join(new_lines))
-                                return True
-                            else:
-                                # Last resort: append to end of file
-                                with open(config_file, "a") as f:
-                                    f.write(f"\n  dashboards:\n{dashboard_yaml}\n")
-                                return True
+                            with open(config_file, "w") as f:
+                                f.write("\n".join(new_lines))
 
                         except Exception as e:
                             _LOGGER.error(
@@ -1978,7 +1976,7 @@ lovelace:
 
                                 return True
                             except Exception as fallback_error:
-                                _LOGGER.error(
+                                _LOGGER.debug(
                                     "Fallback config update also failed: %s",
                                     str(fallback_error),
                                 )
@@ -2166,17 +2164,17 @@ Then restart Home Assistant to see your new dashboard in the sidebar."""
             provider_config = {
                 "openai": {
                     "token_key": "openai_token",
-                    "model": models_config.get("openai", "gpt-3.5-turbo"),
+                    "model": models_config.get("openai", "gpt-4o-mini"),
                     "client_class": OpenAIClient,
                 },
                 "gemini": {
                     "token_key": "gemini_token",
-                    "model": models_config.get("gemini", "gemini-1.5-flash"),
+                    "model": models_config.get("gemini", "gemini-2.0-flash-exp"),
                     "client_class": GeminiClient,
                 },
                 "openrouter": {
                     "token_key": "openrouter_token",
-                    "model": models_config.get("openrouter", "openai/gpt-4o"),
+                    "model": models_config.get("openrouter", "anthropic/claude-3.7-sonnet"),
                     "client_class": OpenRouterClient,
                 },
                 "llama": {
@@ -2188,9 +2186,7 @@ Then restart Home Assistant to see your new dashboard in the sidebar."""
                 },
                 "anthropic": {
                     "token_key": "anthropic_token",
-                    "model": models_config.get(
-                        "anthropic", "claude-3-5-sonnet-20241022"
-                    ),
+                    "model": models_config.get("anthropic", "claude-3-7-sonnet-latest"),
                     "client_class": AnthropicClient,
                 },
                 "local": {
@@ -2278,368 +2274,399 @@ Then restart Home Assistant to see your new dashboard in the sidebar."""
                     # Get AI response
                     _LOGGER.debug("Requesting response from AI provider")
                     response = await self._get_ai_response()
-                    _LOGGER.debug("Received response from AI provider: %s", response)
+                    _LOGGER.debug(
+                        "Received response from AI provider: %s", response[:200]
+                    )
 
-                    try:
-                        # Try to parse the response as JSON with simplified approach
-                        response_clean = response.strip()
-
-                        # Remove potential BOM and other invisible characters
-                        import codecs
-
-                        if response_clean.startswith(codecs.BOM_UTF8.decode("utf-8")):
-                            response_clean = response_clean[1:]
-
-                        # Remove other common invisible characters
-                        invisible_chars = [
-                            "\ufeff",
-                            "\u200b",
-                            "\u200c",
-                            "\u200d",
-                            "\u2060",
-                        ]
-                        for char in invisible_chars:
-                            response_clean = response_clean.replace(char, "")
-
-                        _LOGGER.debug(
-                            "Cleaned response length: %d", len(response_clean)
+                    # Check for extremely long responses that might indicate model issues
+                    if response and len(response) > 50000:
+                        _LOGGER.warning(
+                            "AI returned extremely long response (%d characters), this may indicate a model issue",
+                            len(response),
                         )
-                        _LOGGER.debug(
-                            "Cleaned response first 100 chars: %s", response_clean[:100]
+                        # Check for repetitive patterns that indicate a corrupted response
+                        if response.count("for its use in various fields") > 50:
+                            _LOGGER.error(
+                                "Detected corrupted repetitive response, aborting this iteration"
+                            )
+                            raise Exception(
+                                "AI generated corrupted response with repetitive text. Please try again with a clearer request."
+                            )
+
+                    # Check if response is empty
+                    if not response or response.strip() == "":
+                        _LOGGER.warning(
+                            "AI client returned empty response on attempt %d",
+                            retry_count + 1,
                         )
-                        _LOGGER.debug(
-                            "Cleaned response last 100 chars: %s", response_clean[-100:]
-                        )
-
-                        # Simple strategy: try to parse the cleaned response directly
-                        response_data = None
-                        try:
-                            _LOGGER.debug("Attempting basic JSON parse...")
-                            response_data = json.loads(response_clean)
-                            _LOGGER.debug("Basic JSON parse succeeded!")
-                        except json.JSONDecodeError as e:
-                            _LOGGER.warning("Basic JSON parse failed: %s", str(e))
-                            _LOGGER.debug("JSON error position: %d", e.pos)
-                            if e.pos < len(response_clean):
-                                _LOGGER.debug(
-                                    "Character at error position: %s (ord: %d)",
-                                    repr(response_clean[e.pos]),
-                                    ord(response_clean[e.pos]),
-                                )
-                                _LOGGER.debug(
-                                    "Context around error: %s",
-                                    repr(
-                                        response_clean[max(0, e.pos - 10) : e.pos + 10]
-                                    ),
-                                )
-
-                            # Fallback: try to extract JSON by finding the first { and last }
-                            json_start = response_clean.find("{")
-                            json_end = response_clean.rfind("}")
-
-                            if (
-                                json_start != -1
-                                and json_end != -1
-                                and json_end > json_start
-                            ):
-                                json_part = response_clean[json_start : json_end + 1]
-                                _LOGGER.debug(
-                                    "Trying fallback extraction from pos %d to %d",
-                                    json_start,
-                                    json_end,
-                                )
-                                _LOGGER.debug("Extracted JSON: %s", json_part[:200])
-
-                                try:
-                                    response_data = json.loads(json_part)
-                                    _LOGGER.debug("Fallback JSON extraction succeeded!")
-                                except json.JSONDecodeError as e2:
-                                    _LOGGER.warning(
-                                        "Fallback JSON extraction also failed: %s",
-                                        str(e2),
-                                    )
-                                    raise e  # Re-raise the original error
-                            else:
-                                _LOGGER.warning(
-                                    "Could not find JSON boundaries in response"
-                                )
-                                raise e  # Re-raise the original error
-
-                        if response_data is None:
-                            raise json.JSONDecodeError(
-                                "All parsing strategies failed", response_clean, 0
+                        if retry_count + 1 >= self._max_retries:
+                            raise Exception(
+                                "AI provider returned empty response after all retries"
                             )
-
-                        _LOGGER.debug("Successfully parsed JSON response")
-                        _LOGGER.debug(
-                            "Parsed response type: %s",
-                            response_data.get("request_type", "unknown"),
-                        )
-
-                        # Check if this is a data request (either format)
-                        data_request_types = [
-                            "get_entity_state",
-                            "get_entities_by_domain",
-                            "get_entities_by_area",
-                            "get_entities",
-                            "get_calendar_events",
-                            "get_automations",
-                            "get_entity_registry",
-                            "get_device_registry",
-                            "get_weather_data",
-                            "get_area_registry",
-                            "get_history",
-                            "get_logbook_entries",
-                            "get_person_data",
-                            "get_statistics",
-                            "get_scenes",
-                            "get_dashboards",
-                            "get_dashboard_config",
-                            "set_entity_state",
-                            "create_automation",
-                            "create_dashboard",
-                            "update_dashboard",
-                        ]
-
-                        if (
-                            response_data.get("request_type") == "data_request"
-                            or response_data.get("request_type") in data_request_types
-                        ):
-                            # Handle data request (both standard format and direct request type)
-                            if response_data.get("request_type") == "data_request":
-                                request_type = response_data.get("request")
-                            else:
-                                request_type = response_data.get("request_type")
-                            parameters = response_data.get("parameters", {})
-                            _LOGGER.debug(
-                                "Processing data request: %s with parameters: %s",
-                                request_type,
-                                json.dumps(parameters),
-                            )
-
-                            # Add AI's response to conversation history
-                            self.conversation_history.append(
-                                {
-                                    "role": "assistant",
-                                    "content": json.dumps(
-                                        response_data
-                                    ),  # Store clean JSON
-                                }
-                            )
-
-                            # Get requested data
-                            data: Union[Dict[str, Any], List[Dict[str, Any]]]
-                            if request_type == "get_entity_state":
-                                data = await self.get_entity_state(
-                                    parameters.get("entity_id")
-                                )
-                            elif request_type == "get_entities_by_domain":
-                                data = await self.get_entities_by_domain(
-                                    parameters.get("domain")
-                                )
-                            elif request_type == "get_entities_by_area":
-                                data = await self.get_entities_by_area(
-                                    parameters.get("area_id")
-                                )
-                            elif request_type == "get_entities":
-                                data = await self.get_entities(
-                                    area_id=parameters.get("area_id"),
-                                    area_ids=parameters.get("area_ids"),
-                                )
-                            elif request_type == "get_calendar_events":
-                                data = await self.get_calendar_events(
-                                    parameters.get("entity_id")
-                                )
-                            elif request_type == "get_automations":
-                                data = await self.get_automations()
-                            elif request_type == "get_entity_registry":
-                                data = await self.get_entity_registry()
-                            elif request_type == "get_device_registry":
-                                data = await self.get_device_registry()
-                            elif request_type == "get_weather_data":
-                                data = await self.get_weather_data()
-                            elif request_type == "get_area_registry":
-                                data = await self.get_area_registry()
-                            elif request_type == "get_history":
-                                data = await self.get_history(
-                                    parameters.get("entity_id"),
-                                    parameters.get("hours", 24),
-                                )
-                            elif request_type == "get_logbook_entries":
-                                data = await self.get_logbook_entries(
-                                    parameters.get("hours", 24)
-                                )
-                            elif request_type == "get_person_data":
-                                data = await self.get_person_data()
-                            elif request_type == "get_statistics":
-                                data = await self.get_statistics(
-                                    parameters.get("entity_id")
-                                )
-                            elif request_type == "get_scenes":
-                                data = await self.get_scenes()
-                            elif request_type == "get_dashboards":
-                                data = await self.get_dashboards()
-                            elif request_type == "get_dashboard_config":
-                                data = await self.get_dashboard_config(
-                                    parameters.get("dashboard_url")
-                                )
-                            elif request_type == "set_entity_state":
-                                data = await self.set_entity_state(
-                                    parameters.get("entity_id"),
-                                    parameters.get("state"),
-                                    parameters.get("attributes"),
-                                )
-                            elif request_type == "create_automation":
-                                data = await self.create_automation(
-                                    parameters.get("automation")
-                                )
-                            elif request_type == "create_dashboard":
-                                data = await self.create_dashboard(
-                                    parameters.get("dashboard_config")
-                                )
-                            elif request_type == "update_dashboard":
-                                data = await self.update_dashboard(
-                                    parameters.get("dashboard_url"),
-                                    parameters.get("dashboard_config"),
-                                )
-                            else:
-                                data = {
-                                    "error": f"Unknown request type: {request_type}"
-                                }
-                                _LOGGER.warning(
-                                    "Unknown request type: %s", request_type
-                                )
-
-                            # Check if any data request resulted in an error
-                            if isinstance(data, dict) and "error" in data:
-                                return {"success": False, "error": data["error"]}
-                            elif isinstance(data, list) and any(
-                                "error" in item
-                                for item in data
-                                if isinstance(item, dict)
-                            ):
-                                errors = [
-                                    item["error"]
-                                    for item in data
-                                    if isinstance(item, dict) and "error" in item
-                                ]
-                                return {"success": False, "error": "; ".join(errors)}
-
-                            _LOGGER.debug(
-                                "Retrieved data for request: %s",
-                                json.dumps(data, default=str),
-                            )
-
-                            # Add data to conversation as a system message
-                            self.conversation_history.append(
-                                {
-                                    "role": "system",
-                                    "content": json.dumps({"data": data}, default=str),
-                                }
-                            )
+                        else:
+                            retry_count += 1
+                            await asyncio.sleep(self._retry_delay * retry_count)
                             continue
 
-                        elif response_data.get("request_type") == "final_response":
-                            # Add final response to conversation history
-                            self.conversation_history.append(
-                                {
-                                    "role": "assistant",
-                                    "content": json.dumps(
-                                        response_data
-                                    ),  # Store clean JSON
-                                }
+                    # Try to parse the response as JSON with simplified approach
+                    response_clean = response.strip()
+
+                    # Remove potential BOM and other invisible characters
+                    import codecs
+
+                    if response_clean.startswith(codecs.BOM_UTF8.decode("utf-8")):
+                        response_clean = response_clean[1:]
+
+                    # Remove other common invisible characters
+                    invisible_chars = [
+                        "\ufeff",
+                        "\u200b",
+                        "\u200c",
+                        "\u200d",
+                        "\u2060",
+                    ]
+                    for char in invisible_chars:
+                        response_clean = response_clean.replace(char, "")
+
+                    _LOGGER.debug(
+                        "Cleaned response length: %d", len(response_clean)
+                    )
+                    _LOGGER.debug(
+                        "Cleaned response first 100 chars: %s", response_clean[:100]
+                    )
+                    _LOGGER.debug(
+                        "Cleaned response last 100 chars: %s", response_clean[-100:]
+                    )
+
+                    # Simple strategy: try to parse the cleaned response directly
+                    response_data = None
+                    try:
+                        _LOGGER.debug("Attempting basic JSON parse...")
+                        response_data = json.loads(response_clean)
+                        _LOGGER.debug("Basic JSON parse succeeded!")
+                    except json.JSONDecodeError as e:
+                        _LOGGER.warning("Basic JSON parse failed: %s", str(e))
+                        _LOGGER.debug("JSON error position: %d", e.pos)
+                        if e.pos < len(response_clean):
+                            _LOGGER.debug(
+                                "Character at error position: %s (ord: %d)",
+                                repr(response_clean[e.pos]),
+                                ord(response_clean[e.pos]),
+                            )
+                            _LOGGER.debug(
+                                "Context around error: %s",
+                                repr(
+                                    response_clean[max(0, e.pos - 10) : e.pos + 10]
+                                ),
                             )
 
-                            # Return final response
-                            _LOGGER.debug(
-                                "Received final response: %s",
-                                response_data.get("response"),
-                            )
-                            result = {
-                                "success": True,
-                                "answer": response_data.get("response", ""),
-                            }
-                            self._set_cached_data(cache_key, result)
-                            return result
-                        elif (
-                            response_data.get("request_type") == "automation_suggestion"
+                        # Fallback: try to extract JSON by finding the first { and last }
+                        json_start = response_clean.find("{")
+                        json_end = response_clean.rfind("}")
+
+                        if (
+                            json_start != -1
+                            and json_end != -1
+                            and json_end > json_start
                         ):
-                            # Add automation suggestion to conversation history
-                            self.conversation_history.append(
-                                {
-                                    "role": "assistant",
-                                    "content": json.dumps(
-                                        response_data
-                                    ),  # Store clean JSON
-                                }
+                            json_part = response_clean[json_start : json_end + 1]
+                            _LOGGER.debug(
+                                "Trying fallback extraction from pos %d to %d",
+                                json_start,
+                                json_end,
+                            )
+                            _LOGGER.debug("Extracted JSON: %s", json_part[:200])
+
+                            try:
+                                response_data = json.loads(json_part)
+                                _LOGGER.debug("Fallback JSON extraction succeeded!")
+                            except json.JSONDecodeError as e2:
+                                _LOGGER.warning(
+                                    "Fallback JSON extraction also failed: %s",
+                                    str(e2),
+                                )
+                                raise e  # Re-raise the original error
+                        else:
+                            _LOGGER.warning(
+                                "Could not find JSON boundaries in response"
+                            )
+                            raise e  # Re-raise the original error
+
+                    if response_data is None:
+                        raise json.JSONDecodeError(
+                            "All parsing strategies failed", response_clean, 0
+                        )
+
+                    _LOGGER.debug("Successfully parsed JSON response")
+                    _LOGGER.debug(
+                        "Parsed response type: %s",
+                        response_data.get("request_type", "unknown"),
+                    )
+
+                    # Check if this is a data request (either format)
+                    data_request_types = [
+                        "get_entity_state",
+                        "get_entities_by_domain",
+                        "get_entities_by_area",
+                        "get_entities",
+                        "get_calendar_events",
+                        "get_automations",
+                        "get_entity_registry",
+                        "get_device_registry",
+                        "get_weather_data",
+                        "get_area_registry",
+                        "get_history",
+                        "get_logbook_entries",
+                        "get_person_data",
+                        "get_statistics",
+                        "get_scenes",
+                        "get_dashboards",
+                        "get_dashboard_config",
+                        "set_entity_state",
+                        "create_automation",
+                        "create_dashboard",
+                        "update_dashboard",
+                    ]
+
+                    if (
+                        response_data.get("request_type") == "data_request"
+                        or response_data.get("request_type") in data_request_types
+                    ):
+                        # Handle data request (both standard format and direct request type)
+                        if response_data.get("request_type") == "data_request":
+                            request_type = response_data.get("request")
+                        else:
+                            request_type = response_data.get("request_type")
+                        parameters = response_data.get("parameters", {})
+                        _LOGGER.debug(
+                            "Processing data request: %s with parameters: %s",
+                            request_type,
+                            json.dumps(parameters),
+                        )
+
+                        # Add AI's response to conversation history
+                        self.conversation_history.append(
+                            {
+                                "role": "assistant",
+                                "content": json.dumps(
+                                    response_data
+                                ),  # Store clean JSON
+                            }
+                        )
+
+                        # Get requested data
+                        data: Union[Dict[str, Any], List[Dict[str, Any]]]
+                        if request_type == "get_entity_state":
+                            data = await self.get_entity_state(
+                                parameters.get("entity_id")
+                            )
+                        elif request_type == "get_entities_by_domain":
+                            data = await self.get_entities_by_domain(
+                                parameters.get("domain")
+                            )
+                        elif request_type == "get_entities_by_area":
+                            data = await self.get_entities_by_area(
+                                parameters.get("area_id")
+                            )
+                        elif request_type == "get_entities":
+                            data = await self.get_entities(
+                                area_id=parameters.get("area_id"),
+                                area_ids=parameters.get("area_ids"),
+                            )
+                        elif request_type == "get_calendar_events":
+                            data = await self.get_calendar_events(
+                                parameters.get("entity_id")
+                            )
+                        elif request_type == "get_automations":
+                            data = await self.get_automations()
+                        elif request_type == "get_entity_registry":
+                            data = await self.get_entity_registry()
+                        elif request_type == "get_device_registry":
+                            data = await self.get_device_registry()
+                        elif request_type == "get_weather_data":
+                            data = await self.get_weather_data()
+                        elif request_type == "get_area_registry":
+                            data = await self.get_area_registry()
+                        elif request_type == "get_history":
+                            data = await self.get_history(
+                                parameters.get("entity_id"),
+                                parameters.get("hours", 24),
+                            )
+                        elif request_type == "get_logbook_entries":
+                            data = await self.get_logbook_entries(
+                                parameters.get("hours", 24)
+                            )
+                        elif request_type == "get_person_data":
+                            data = await self.get_person_data()
+                        elif request_type == "get_statistics":
+                            data = await self.get_statistics(
+                                parameters.get("entity_id")
+                            )
+                        elif request_type == "get_scenes":
+                            data = await self.get_scenes()
+                        elif request_type == "get_dashboards":
+                            data = await self.get_dashboards()
+                        elif request_type == "get_dashboard_config":
+                            data = await self.get_dashboard_config(
+                                parameters.get("dashboard_url")
+                            )
+                        elif request_type == "set_entity_state":
+                            data = await self.set_entity_state(
+                                parameters.get("entity_id"),
+                                parameters.get("state"),
+                                parameters.get("attributes"),
+                            )
+                        elif request_type == "create_automation":
+                            data = await self.create_automation(
+                                parameters.get("automation")
+                            )
+                        elif request_type == "create_dashboard":
+                            data = await self.create_dashboard(
+                                parameters.get("dashboard_config")
+                            )
+                        elif request_type == "update_dashboard":
+                            data = await self.update_dashboard(
+                                parameters.get("dashboard_url"),
+                                parameters.get("dashboard_config"),
+                            )
+                        else:
+                            data = {
+                                "error": f"Unknown request type: {request_type}"
+                            }
+                            _LOGGER.warning(
+                                "Unknown request type: %s", request_type
                             )
 
-                            # Return automation suggestion
-                            _LOGGER.debug(
-                                "Received automation suggestion: %s",
-                                json.dumps(response_data.get("automation")),
-                            )
-                            result = {
-                                "success": True,
-                                "answer": json.dumps(response_data),
-                            }
-                            self._set_cached_data(cache_key, result)
-                            return result
-                        elif (
-                            response_data.get("request_type") == "dashboard_suggestion"
+                        # Check if any data request resulted in an error
+                        if isinstance(data, dict) and "error" in data:
+                            return {"success": False, "error": data["error"]}
+                        elif isinstance(data, list) and any(
+                            "error" in item
+                            for item in data
+                            if isinstance(item, dict)
                         ):
-                            # Add dashboard suggestion to conversation history
-                            self.conversation_history.append(
-                                {
-                                    "role": "assistant",
-                                    "content": json.dumps(
-                                        response_data
-                                    ),  # Store clean JSON
-                                }
-                            )
+                            errors = [
+                                item["error"]
+                                for item in data
+                                if isinstance(item, dict) and "error" in item
+                            ]
+                            return {"success": False, "error": "; ".join(errors)}
 
-                            # Return dashboard suggestion
-                            _LOGGER.debug(
-                                "Received dashboard suggestion: %s",
-                                json.dumps(response_data.get("dashboard")),
-                            )
-                            result = {
-                                "success": True,
-                                "answer": json.dumps(response_data),
+                        _LOGGER.debug(
+                            "Retrieved data for request: %s",
+                            json.dumps(data, default=str),
+                        )
+
+                        # Add data to conversation as a system message
+                        self.conversation_history.append(
+                            {
+                                "role": "system",
+                                "content": json.dumps({"data": data}, default=str),
                             }
-                            self._set_cached_data(cache_key, result)
-                            return result
-                        elif response_data.get("request_type") in [
-                            "get_entities",
-                            "get_entities_by_area",
-                        ]:
-                            # Handle direct get_entities request (for backward compatibility)
-                            parameters = response_data.get("parameters", {})
-                            _LOGGER.debug(
-                                "Processing direct get_entities request with parameters: %s",
-                                json.dumps(parameters),
-                            )
+                        )
+                        continue
 
-                            # Add AI's response to conversation history
-                            self.conversation_history.append(
-                                {
-                                    "role": "assistant",
-                                    "content": json.dumps(
-                                        response_data
-                                    ),  # Store clean JSON
-                                }
-                            )
+                    elif response_data.get("request_type") == "final_response":
+                        # Add final response to conversation history
+                        self.conversation_history.append(
+                            {
+                                "role": "assistant",
+                                "content": json.dumps(
+                                    response_data
+                                ),  # Store clean JSON
+                            }
+                        )
 
-                            # Get entities data
-                            if response_data.get("request_type") == "get_entities":
-                                data = await self.get_entities(
-                                    area_id=parameters.get("area_id"),
-                                    area_ids=parameters.get("area_ids"),
-                                )
-                            else:  # get_entities_by_area
-                                data = await self.get_entities_by_area(
-                                    parameters.get("area_id")
-                                )
+                        # Return final response
+                        _LOGGER.debug(
+                            "Received final response: %s",
+                            response_data.get("response"),
+                        )
+                        result = {
+                            "success": True,
+                            "answer": response_data.get("response", ""),
+                        }
+                        self._set_cached_data(cache_key, result)
+                        return result
+                    elif (
+                        response_data.get("request_type") == "automation_suggestion"
+                    ):
+                        # Add automation suggestion to conversation history
+                        self.conversation_history.append(
+                            {
+                                "role": "assistant",
+                                "content": json.dumps(
+                                    response_data
+                                ),  # Store clean JSON
+                            }
+                        )
+
+                        # Return automation suggestion
+                        _LOGGER.debug(
+                            "Received automation suggestion: %s",
+                            json.dumps(response_data.get("automation")),
+                        )
+                        result = {
+                            "success": True,
+                            "answer": json.dumps(response_data),
+                        }
+                        self._set_cached_data(cache_key, result)
+                        return result
+                    elif (
+                        response_data.get("request_type") == "dashboard_suggestion"
+                    ):
+                        # Add dashboard suggestion to conversation history
+                        self.conversation_history.append(
+                            {
+                                "role": "assistant",
+                                "content": json.dumps(
+                                    response_data
+                                ),  # Store clean JSON
+                            }
+                        )
+
+                        # Return dashboard suggestion
+                        _LOGGER.debug(
+                            "Received dashboard suggestion: %s",
+                            json.dumps(response_data.get("dashboard")),
+                        )
+                        result = {
+                            "success": True,
+                            "answer": json.dumps(response_data),
+                        }
+                        self._set_cached_data(cache_key, result)
+                        return result
+                    elif response_data.get("request_type") in [
+                        "get_entities",
+                        "get_entities_by_area",
+                    ]:
+                        # Handle direct get_entities request (for backward compatibility)
+                        parameters = response_data.get("parameters", {})
+                        _LOGGER.debug(
+                            "Processing direct get_entities request with parameters: %s",
+                            json.dumps(parameters),
+                        )
+
+                        # Add AI's response to conversation history
+                        self.conversation_history.append(
+                            {
+                                "role": "assistant",
+                                "content": json.dumps(
+                                    response_data
+                                ),  # Store clean JSON
+                            }
+                        )
+
+                        # Get entities data
+                        if response_data.get("request_type") == "get_entities":
+                            data = await self.get_entities(
+                                area_id=parameters.get("area_id"),
+                                area_ids=parameters.get("area_ids"),
+                            )
+                        else:  # get_entities_by_area
+                            data = await self.get_entities_by_area(
+                                parameters.get("area_id")
+                            )
 
                             _LOGGER.debug(
                                 "Retrieved %d entities",
@@ -2654,285 +2681,285 @@ Then restart Home Assistant to see your new dashboard in the sidebar."""
                                 }
                             )
                             continue
-                        elif response_data.get("request_type") == "call_service":
-                            # Handle service call request
-                            domain = response_data.get("domain")
-                            service = response_data.get("service")
-                            target = response_data.get("target", {})
-                            service_data = response_data.get("service_data", {})
+                    elif response_data.get("request_type") == "call_service":
+                        # Handle service call request
+                        domain = response_data.get("domain")
+                        service = response_data.get("service")
+                        target = response_data.get("target", {})
+                        service_data = response_data.get("service_data", {})
 
-                            # Resolve nested requests in target
-                            if target and "entity_id" in target:
-                                entity_id_value = target["entity_id"]
-                                if (
-                                    isinstance(entity_id_value, dict)
-                                    and "request_type" in entity_id_value
-                                ):
-                                    # This is a nested request, resolve it
-                                    nested_request_type = entity_id_value.get(
-                                        "request_type"
-                                    )
-                                    nested_parameters = entity_id_value.get(
-                                        "parameters", {}
-                                    )
-
-                                    _LOGGER.debug(
-                                        "Resolving nested request: %s with parameters: %s",
-                                        nested_request_type,
-                                        json.dumps(nested_parameters),
-                                    )
-
-                                    # Resolve the nested request
-                                    if nested_request_type == "get_entities":
-                                        entities_data = await self.get_entities(
-                                            area_id=nested_parameters.get("area_id"),
-                                            area_ids=nested_parameters.get("area_ids"),
-                                        )
-                                    elif nested_request_type == "get_entities_by_area":
-                                        entities_data = await self.get_entities_by_area(
-                                            nested_parameters.get("area_id")
-                                        )
-                                    elif (
-                                        nested_request_type == "get_entities_by_domain"
-                                    ):
-                                        entities_data = (
-                                            await self.get_entities_by_domain(
-                                                nested_parameters.get("domain")
-                                            )
-                                        )
-                                    else:
-                                        _LOGGER.error(
-                                            "Unsupported nested request type: %s",
-                                            nested_request_type,
-                                        )
-                                        return {
-                                            "success": False,
-                                            "error": f"Unsupported nested request type: {nested_request_type}",
-                                        }
-
-                                    # Extract entity IDs from the resolved data
-                                    if isinstance(entities_data, list):
-                                        entity_ids = [
-                                            entity.get("entity_id")
-                                            for entity in entities_data
-                                            if entity.get("entity_id")
-                                        ]
-                                        target["entity_id"] = entity_ids
-                                        _LOGGER.debug(
-                                            "Resolved nested request to entity IDs: %s",
-                                            entity_ids,
-                                        )
-                                    else:
-                                        _LOGGER.error(
-                                            "Nested request returned unexpected data format"
-                                        )
-                                        return {
-                                            "success": False,
-                                            "error": "Nested request returned unexpected data format",
-                                        }
-
-                            # Handle backward compatibility with old format
-                            if not domain or not service:
-                                request = response_data.get("request")
-                                parameters = response_data.get("parameters", {})
-
-                                if request and "entity_id" in parameters:
-                                    entity_id = parameters["entity_id"]
-                                    # Infer domain from entity_id
-                                    if "." in entity_id:
-                                        domain = entity_id.split(".")[0]
-                                        service = request
-                                        target = {"entity_id": entity_id}
-                                        # Remove entity_id from parameters to avoid duplication
-                                        service_data = {
-                                            k: v
-                                            for k, v in parameters.items()
-                                            if k != "entity_id"
-                                        }
-                                        _LOGGER.debug(
-                                            "Converted old format: domain=%s, service=%s",
-                                            domain,
-                                            service,
-                                        )
-
-                            _LOGGER.debug(
-                                "Processing service call: %s.%s with target: %s and data: %s",
-                                domain,
-                                service,
-                                json.dumps(target),
-                                json.dumps(service_data),
-                            )
-
-                            # Add AI's response to conversation history
-                            self.conversation_history.append(
-                                {
-                                    "role": "assistant",
-                                    "content": json.dumps(
-                                        response_data
-                                    ),  # Store clean JSON
-                                }
-                            )
-
-                            # Call the service
-                            data = await self.call_service(
-                                domain, service, target, service_data
-                            )
-
-                            # Check if service call resulted in an error
-                            if isinstance(data, dict) and "error" in data:
-                                return {"success": False, "error": data["error"]}
-
-                            _LOGGER.debug(
-                                "Service call completed: %s",
-                                json.dumps(data, default=str),
-                            )
-
-                            # Add data to conversation as a system message
-                            self.conversation_history.append(
-                                {
-                                    "role": "system",
-                                    "content": json.dumps({"data": data}, default=str),
-                                }
-                            )
-                            continue
-                        else:
-                            _LOGGER.warning(
-                                "Unknown response type: %s",
-                                response_data.get("request_type"),
-                            )
-                            return {
-                                "success": False,
-                                "error": f"Unknown response type: {response_data.get('request_type')}",
-                            }
-
-                    except json.JSONDecodeError as e:
-                        # Check if this is a local provider that might have already wrapped the response
-                        provider = self.config.get("ai_provider", "unknown")
-                        if provider == "local":
-                            _LOGGER.debug(
-                                "Local provider returned non-JSON response (this is normal and handled): %s",
-                                response[:200],
-                            )
-                        else:
-                            # Log more of the response to help with debugging for non-local providers
-                            response_preview = (
-                                response[:1000] if len(response) > 1000 else response
-                            )
-                            _LOGGER.warning(
-                                "Failed to parse response as JSON: %s. Response length: %d. Response preview: %s",
-                                str(e),
-                                len(response),
-                                response_preview,
-                            )
-
-                            # Log additional debugging information
-                            _LOGGER.debug(
-                                "First 50 characters as bytes: %s",
-                                response[:50].encode("utf-8") if response else b"",
-                            )
-                            _LOGGER.debug(
-                                "Response starts with: %s",
-                                repr(response[:10]) if response else "None",
-                            )
-
-                        # Also log the response to a separate debug file for detailed analysis (non-local providers only)
-                        if provider != "local":
-                            try:
-                                import os
-
-                                debug_dir = "/config/ai_agent_ha_debug"
-
-                                def write_debug_file():
-                                    if not os.path.exists(debug_dir):
-                                        os.makedirs(debug_dir)
-
-                                    import datetime
-
-                                    timestamp = datetime.datetime.now().strftime(
-                                        "%Y%m%d_%H%M%S"
-                                    )
-                                    debug_file = os.path.join(
-                                        debug_dir, f"failed_response_{timestamp}.txt"
-                                    )
-
-                                    with open(debug_file, "w", encoding="utf-8") as f:
-                                        f.write(f"Timestamp: {timestamp}\n")
-                                        f.write(f"Provider: {provider}\n")
-                                        f.write(f"Error: {str(e)}\n")
-                                        f.write(f"Response length: {len(response)}\n")
-                                        f.write(
-                                            f"Response bytes: {response.encode('utf-8') if response else b''}\n"
-                                        )
-                                        f.write(f"Response repr: {repr(response)}\n")
-                                        f.write(f"Full response:\n{response}\n")
-
-                                    return debug_file
-
-                                # Run file operations in executor to avoid blocking
-                                debug_file = await self.hass.async_add_executor_job(
-                                    write_debug_file
+                        # Resolve nested requests in target
+                        if target and "entity_id" in target:
+                            entity_id_value = target["entity_id"]
+                            if (
+                                isinstance(entity_id_value, dict)
+                                and "request_type" in entity_id_value
+                            ):
+                                # This is a nested request, resolve it
+                                nested_request_type = entity_id_value.get(
+                                    "request_type"
                                 )
-                                _LOGGER.info(
-                                    "Failed response saved to debug file: %s",
-                                    debug_file,
+                                nested_parameters = entity_id_value.get(
+                                    "parameters", {}
                                 )
-                            except Exception as debug_error:
+
                                 _LOGGER.debug(
-                                    "Could not save debug file: %s", str(debug_error)
+                                    "Resolving nested request: %s with parameters: %s",
+                                    nested_request_type,
+                                    json.dumps(nested_parameters),
                                 )
 
-                        # Check if this looks like a corrupted automation suggestion
-                        if (
-                            response.strip().startswith(
-                                '{"request_type": "automation_suggestion'
-                            )
-                            and len(response) > 10000
-                            and response.count("for its use in various fields") > 50
-                        ):
-                            _LOGGER.warning(
-                                "Detected corrupted automation suggestion response with repetitive text"
-                            )
-                            result = {
-                                "success": False,
-                                "error": "AI generated corrupted automation response. Please try again with a more specific automation request.",
-                            }
-                            self._set_cached_data(cache_key, result)
-                            return result
+                                # Resolve the nested request
+                                if nested_request_type == "get_entities":
+                                    entities_data = await self.get_entities(
+                                        area_id=nested_parameters.get("area_id"),
+                                        area_ids=nested_parameters.get("area_ids"),
+                                    )
+                                elif nested_request_type == "get_entities_by_area":
+                                    entities_data = await self.get_entities_by_area(
+                                        nested_parameters.get("area_id")
+                                    )
+                                elif (
+                                    nested_request_type == "get_entities_by_domain"
+                                ):
+                                    entities_data = (
+                                        await self.get_entities_by_domain(
+                                            nested_parameters.get("domain")
+                                        )
+                                    )
+                                else:
+                                    _LOGGER.error(
+                                        "Unsupported nested request type: %s",
+                                        nested_request_type,
+                                    )
+                                    return {
+                                        "success": False,
+                                        "error": f"Unsupported nested request type: {nested_request_type}",
+                                    }
 
-                        # If response is not valid JSON, try to wrap it as a final response
+                                # Extract entity IDs from the resolved data
+                                if isinstance(entities_data, list):
+                                    entity_ids = [
+                                        entity.get("entity_id")
+                                        for entity in entities_data
+                                        if entity.get("entity_id")
+                                    ]
+                                    target["entity_id"] = entity_ids
+                                    _LOGGER.debug(
+                                        "Resolved nested request to entity IDs: %s",
+                                        entity_ids,
+                                    )
+                                else:
+                                    _LOGGER.error(
+                                        "Nested request returned unexpected data format"
+                                    )
+                                    return {
+                                        "success": False,
+                                        "error": "Nested request returned unexpected data format",
+                                    }
+
+                        # Handle backward compatibility with old format
+                        if not domain or not service:
+                            request = response_data.get("request")
+                            parameters = response_data.get("parameters", {})
+
+                            if request and "entity_id" in parameters:
+                                entity_id = parameters["entity_id"]
+                                # Infer domain from entity_id
+                                if "." in entity_id:
+                                    domain = entity_id.split(".")[0]
+                                    service = request
+                                    target = {"entity_id": entity_id}
+                                    # Remove entity_id from parameters to avoid duplication
+                                    service_data = {
+                                        k: v
+                                        for k, v in parameters.items()
+                                        if k != "entity_id"
+                                    }
+                                    _LOGGER.debug(
+                                        "Converted old format: domain=%s, service=%s",
+                                        domain,
+                                        service,
+                                    )
+
+                        _LOGGER.debug(
+                            "Processing service call: %s.%s with target: %s and data: %s",
+                            domain,
+                            service,
+                            json.dumps(target),
+                            json.dumps(service_data),
+                        )
+
+                        # Add AI's response to conversation history
+                        self.conversation_history.append(
+                            {
+                                "role": "assistant",
+                                "content": json.dumps(
+                                    response_data
+                                ),  # Store clean JSON
+                            }
+                        )
+
+                        # Call the service
+                        data = await self.call_service(
+                            domain, service, target, service_data
+                        )
+
+                        # Check if service call resulted in an error
+                        if isinstance(data, dict) and "error" in data:
+                            return {"success": False, "error": data["error"]}
+
+                        _LOGGER.debug(
+                            "Service call completed: %s",
+                            json.dumps(data, default=str),
+                        )
+
+                        # Add data to conversation as a system message
+                        self.conversation_history.append(
+                            {
+                                "role": "system",
+                                "content": json.dumps({"data": data}, default=str),
+                            }
+                        )
+                        continue
+                    else:
+                        _LOGGER.warning(
+                            "Unknown response type: %s",
+                            response_data.get("request_type"),
+                        )
+                        return {
+                            "success": False,
+                            "error": f"Unknown response type: {response_data.get('request_type')}",
+                        }
+
+                except json.JSONDecodeError as e:
+                    # Check if this is a local provider that might have already wrapped the response
+                    provider = self.config.get("ai_provider", "unknown")
+                    if provider == "local":
+                        _LOGGER.debug(
+                            "Local provider returned non-JSON response (this is normal and handled): %s",
+                            response[:200],
+                        )
+                    else:
+                        # Log more of the response to help with debugging for non-local providers
+                        response_preview = (
+                            response[:1000] if len(response) > 1000 else response
+                        )
+                        _LOGGER.warning(
+                            "Failed to parse response as JSON: %s. Response length: %d. Response preview: %s",
+                            str(e),
+                            len(response),
+                            response_preview,
+                        )
+
+                        # Log additional debugging information
+                        _LOGGER.debug(
+                            "First 50 characters as bytes: %s",
+                            response[:50].encode("utf-8") if response else b"",
+                        )
+                        _LOGGER.debug(
+                            "Response starts with: %s",
+                            repr(response[:10]) if response else "None",
+                        )
+
+                    # Also log the response to a separate debug file for detailed analysis (non-local providers only)
+                    if provider != "local":
                         try:
-                            # Truncate extremely long responses to prevent memory issues
-                            response_to_wrap = response
-                            if len(response) > 50000:
-                                response_to_wrap = (
-                                    response[:5000]
-                                    + "... [Response truncated due to excessive length]"
+                            import os
+
+                            debug_dir = "/config/ai_agent_ha_debug"
+
+                            def write_debug_file():
+                                if not os.path.exists(debug_dir):
+                                    os.makedirs(debug_dir)
+
+                                import datetime
+
+                                timestamp = datetime.datetime.now().strftime(
+                                    "%Y%m%d_%H%M%S"
                                 )
-                                _LOGGER.warning(
-                                    "Truncated extremely long response from %d to 5000 characters",
-                                    len(response),
+                                debug_file = os.path.join(
+                                    debug_dir, f"failed_response_{timestamp}.txt"
                                 )
 
-                            wrapped_response = {
-                                "request_type": "final_response",
-                                "response": response_to_wrap,
-                            }
-                            result = {
-                                "success": True,
-                                "answer": json.dumps(wrapped_response),
-                            }
-                            _LOGGER.debug("Wrapped non-JSON response as final_response")
-                        except Exception as wrap_error:
-                            _LOGGER.error(
-                                "Failed to wrap response: %s", str(wrap_error)
+                                with open(debug_file, "w", encoding="utf-8") as f:
+                                    f.write(f"Timestamp: {timestamp}\n")
+                                    f.write(f"Provider: {provider}\n")
+                                    f.write(f"Error: {str(e)}\n")
+                                    f.write(f"Response length: {len(response)}\n")
+                                    f.write(
+                                        f"Response bytes: {response.encode('utf-8') if response else b''}\n"
+                                    )
+                                    f.write(f"Response repr: {repr(response)}\n")
+                                    f.write(f"Full response:\n{response}\n")
+
+                                return debug_file
+
+                            # Run file operations in executor to avoid blocking
+                            debug_file = await self.hass.async_add_executor_job(
+                                write_debug_file
                             )
-                            result = {
-                                "success": False,
-                                "error": f"Invalid response format: {str(e)}",
-                            }
+                            _LOGGER.info(
+                                "Failed response saved to debug file: %s",
+                                debug_file,
+                            )
+                        except Exception as debug_error:
+                            _LOGGER.debug(
+                                "Could not save debug file: %s", str(debug_error)
+                            )
 
+                    # Check if this looks like a corrupted automation suggestion
+                    if (
+                        response.strip().startswith(
+                            '{"request_type": "automation_suggestion'
+                        )
+                        and len(response) > 10000
+                        and response.count("for its use in various fields") > 50
+                    ):
+                        _LOGGER.warning(
+                            "Detected corrupted automation suggestion response with repetitive text"
+                        )
+                        result = {
+                            "success": False,
+                            "error": "AI generated corrupted automation response. Please try again with a more specific automation request.",
+                        }
                         self._set_cached_data(cache_key, result)
                         return result
+
+                    # If response is not valid JSON, try to wrap it as a final response
+                    try:
+                        # Truncate extremely long responses to prevent memory issues
+                        response_to_wrap = response
+                        if len(response) > 50000:
+                            response_to_wrap = (
+                                response[:5000]
+                                + "... [Response truncated due to excessive length]"
+                            )
+                            _LOGGER.warning(
+                                "Truncated extremely long response from %d to 5000 characters",
+                                len(response),
+                            )
+
+                        wrapped_response = {
+                            "request_type": "final_response",
+                            "response": response_to_wrap,
+                        }
+                        result = {
+                            "success": True,
+                            "answer": json.dumps(wrapped_response),
+                        }
+                        _LOGGER.debug("Wrapped non-JSON response as final_response")
+                    except Exception as wrap_error:
+                        _LOGGER.error(
+                            "Failed to wrap response: %s", str(wrap_error)
+                        )
+                        result = {
+                            "success": False,
+                            "error": f"Invalid response format: {str(e)}",
+                        }
+
+                    self._set_cached_data(cache_key, result)
+                    return result
 
                 except Exception as e:
                     _LOGGER.exception("Error processing AI response: %s", str(e))
