@@ -100,8 +100,8 @@ openai_antwort_2:
 # VERBESSERTES COVER SCRIPT - Mit Fehlerbehandlung & korrekter Latenz
 # ============================================================================
 cover_fahre_zeitbasiert:
-  alias: "Cover – fahre zeitbasiert (IMPROVED)"
-  description: "Zeitbasierte Positionssteuerung mit Fehlerbehandlung und konstanter Latenz"
+  alias: "Cover – fahre zeitbasiert (Tuya/SmartLife-kompatibel)"
+  description: "Zeitbasierte Positionssteuerung mit Switch-Toggle-Stop für Tuya-Covers (SmartLife Travel Time)"
   mode: restart
   fields:
     cover_entity:
@@ -148,6 +148,10 @@ cover_fahre_zeitbasiert:
           max: 2000
           step: 50
           unit_of_measurement: "ms"
+    stop_switch:
+      description: "Switch-Entity zum Stoppen via Toggle (optional, auto-detect aus cover_entity)"
+      required: false
+      example: "switch.kuche_blind_vorhang"
 
   sequence:
     # ===== VALIDIERUNG DER ENTITIES =====
@@ -192,6 +196,11 @@ cover_fahre_zeitbasiert:
         is_opening: "{{ to > from_pos }}"
         is_closing: "{{ to < from_pos }}"
         is_same: "{{ to == from_pos }}"
+
+        # Stop-Switch auto-detection
+        auto_switch: "{{ cover_entity | replace('cover.', 'switch.') }}"
+        final_stop_switch: "{{ stop_switch if stop_switch is defined else auto_switch }}"
+        switch_exists: "{{ states(final_stop_switch) not in ['unknown', 'unavailable'] }}"
 
     # ===== LOGGING FÜR DEBUGGING =====
     - service: system_log.write
@@ -251,11 +260,27 @@ cover_fahre_zeitbasiert:
             - delay:
                 seconds: "{{ dur_s }}"
 
-            # STOP senden (nur einmal, reicht!)
-            - service: cover.stop_cover
-              target:
-                entity_id: "{{ cover_entity }}"
-              continue_on_error: true
+            # STOP senden via Switch Toggle (Tuya/SmartLife-kompatibel)
+            - choose:
+                - conditions:
+                    - condition: template
+                      value_template: "{{ switch_exists }}"
+                  sequence:
+                    - service: switch.toggle
+                      target:
+                        entity_id: "{{ final_stop_switch }}"
+                      continue_on_error: true
+                    - service: system_log.write
+                      data:
+                        message: "Cover {{ cover_entity }} gestoppt via {{ final_stop_switch }}"
+                        level: info
+                      continue_on_error: true
+              default:
+                - service: system_log.write
+                  data:
+                    message: "WARNUNG: Stop-Switch {{ final_stop_switch }} nicht gefunden für {{ cover_entity }}!"
+                    level: warning
+                  continue_on_error: true
 
             # Kurz warten bis Cover wirklich steht
             - delay:
@@ -311,11 +336,27 @@ cover_fahre_zeitbasiert:
             - delay:
                 seconds: "{{ dur_s }}"
 
-            # STOP
-            - service: cover.stop_cover
-              target:
-                entity_id: "{{ cover_entity }}"
-              continue_on_error: true
+            # STOP senden via Switch Toggle (Tuya/SmartLife-kompatibel)
+            - choose:
+                - conditions:
+                    - condition: template
+                      value_template: "{{ switch_exists }}"
+                  sequence:
+                    - service: switch.toggle
+                      target:
+                        entity_id: "{{ final_stop_switch }}"
+                      continue_on_error: true
+                    - service: system_log.write
+                      data:
+                        message: "Cover {{ cover_entity }} gestoppt via {{ final_stop_switch }}"
+                        level: info
+                      continue_on_error: true
+              default:
+                - service: system_log.write
+                  data:
+                    message: "WARNUNG: Stop-Switch {{ final_stop_switch }} nicht gefunden für {{ cover_entity }}!"
+                    level: warning
+                  continue_on_error: true
 
             # Warten
             - delay:
@@ -352,3 +393,68 @@ ventilator_wintermodus_low:
       data:
         percentage: 33  # Low speed
       continue_on_error: true
+
+# ============================================================================
+# TEST SCRIPT: Cover Stop Switch Verification
+# ============================================================================
+test_cover_stop_switch:
+  alias: "Test: Cover Stop via Switch Toggle"
+  description: "Testet Auto-Erkennung des Stop-Switches für Tuya-Covers"
+  mode: single
+  fields:
+    cover_entity:
+      description: "Cover Entity zum Testen"
+      required: true
+      example: "cover.kuche_blind_vorhang"
+    stop_switch:
+      description: "Optional: Spezifischer Stop-Switch (sonst auto-detect)"
+      required: false
+      example: "switch.kuche_blind_vorhang"
+  sequence:
+    # Variables: Auto-detect switch
+    - variables:
+        auto_switch: "{{ cover_entity | replace('cover.', 'switch.') }}"
+        test_switch: "{{ stop_switch if stop_switch is defined else auto_switch }}"
+        switch_exists: "{{ states(test_switch) not in ['unknown', 'unavailable'] }}"
+
+    # Log test start
+    - service: system_log.write
+      data:
+        message: >
+          TEST START: {{ cover_entity }} mit Stop-Switch {{ test_switch }}
+          (Auto-detect: {{ auto_switch }}, Exists: {{ switch_exists }})
+        level: info
+
+    # Check if switch exists
+    - condition: template
+      value_template: "{{ switch_exists }}"
+      alias: "Stop-Switch muss existieren"
+
+    # Open cover for 3 seconds
+    - service: cover.open_cover
+      target:
+        entity_id: "{{ cover_entity }}"
+      continue_on_error: true
+
+    - service: system_log.write
+      data:
+        message: "Cover {{ cover_entity }} geöffnet, warte 3 Sekunden..."
+        level: info
+
+    # Wait 3 seconds
+    - delay:
+        seconds: 3
+
+    # Stop via switch toggle
+    - service: switch.toggle
+      target:
+        entity_id: "{{ test_switch }}"
+      continue_on_error: true
+
+    # Final log
+    - service: system_log.write
+      data:
+        message: >
+          TEST COMPLETE: Stop-Befehl an {{ test_switch }} gesendet.
+          Prüfe manuell, ob Cover {{ cover_entity }} gestoppt hat.
+        level: info
