@@ -2489,14 +2489,14 @@
                   Sonneneinstrahlung: {{ lux }} lux
                   Heizung reduziert (nutzt kostenlose Sonnenwärme)
 
-        # FALL 2: Keine/wenig Sonne → Normale Temperatur
-        default:
-          - service: climate.set_temperature
-            target:
-              entity_id:
-                - climate.thermostat_computer
-            data:
-              temperature: "{{ states('input_number.heizung_solltemperatur_komfort')|float(21) }}"
+      # FALL 2: Keine/wenig Sonne → Normale Temperatur
+      default:
+        - service: climate.set_temperature
+          target:
+            entity_id:
+              - climate.thermostat_computer
+          data:
+            temperature: "{{ states('input_number.heizung_solltemperatur_komfort')|float(21) }}"
 
 # ---------- 3. MORGENS VORHEIZEN BEI KALTER WETTERVORHERSAGE ----------
 - id: heizung_vorheizen_kalt
@@ -2546,15 +2546,15 @@
                   Kalter Tag vorhergesagt (max {{ forecast_temp }}°C)
                   Heizung läuft stärker zum Vorheizen
 
-        # FALL 2: Mäßig kalt (10-15°C) → Normal heizen
-        default:
-          - service: climate.set_temperature
-            target:
-              entity_id:
-                - climate.thermostat_bad
-                - climate.thermostat_computer
-            data:
-              temperature: "{{ states('input_number.heizung_solltemperatur_komfort')|float(21) }}"
+      # FALL 2: Mäßig kalt (10-15°C) → Normal heizen
+      default:
+        - service: climate.set_temperature
+          target:
+            entity_id:
+              - climate.thermostat_bad
+              - climate.thermostat_computer
+          data:
+            temperature: "{{ states('input_number.heizung_solltemperatur_komfort')|float(21) }}"
 
 # ---------- 4. ECO-MODUS BEI ABWESENHEIT ----------
 - id: heizung_eco_abwesenheit
