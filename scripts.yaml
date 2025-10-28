@@ -458,3 +458,161 @@ test_cover_stop_switch:
           TEST COMPLETE: Stop-Befehl an {{ test_switch }} gesendet.
           Prüfe manuell, ob Cover {{ cover_entity }} gestoppt hat.
         level: info
+
+# ============================================================================
+# REUSABLE UTILITY SCRIPTS - Added by Code Review
+# ============================================================================
+
+# Notify All Devices - Centralized notification system
+notify_all:
+  alias: "Notify All Devices"
+  mode: parallel
+  max: 10
+  fields:
+    message:
+      description: "Message to send"
+      example: "Hello!"
+      required: true
+    title:
+      description: "Notification title"
+      example: "Alert"
+      required: false
+  sequence:
+    - service: notify.alexa_media_wohnzimmer
+      data:
+        title: "{{ title | default('Home Assistant') }}"
+        message: "{{ message }}"
+      continue_on_error: true
+    # Add more notification services here as needed
+
+# Bedtime Light Scene - Reusable sleep routine
+lights_bedtime:
+  alias: "Bedtime Light Scene"
+  mode: single
+  sequence:
+    # Turn off all main lights
+    - service: light.turn_off
+      target:
+        area_id: all
+      continue_on_error: true
+    
+    # Turn on bedroom light at low setting
+    - service: light.turn_on
+      target:
+        entity_id: light.schlafzimmer_licht
+      data:
+        brightness_pct: "{{ states('input_number.night_mode_brightness')|int(15) }}"
+        color_temp_kelvin: 2700
+      continue_on_error: true
+
+# All Lights Off - Emergency off switch
+all_lights_off:
+  alias: "Turn Off All Lights"
+  mode: single
+  sequence:
+    - service: light.turn_off
+      target:
+        entity_id: all
+      continue_on_error: true
+    - service: system_log.write
+      data:
+        message: "All lights turned off via script"
+        level: info
+
+# All Covers Open - Morning routine
+all_covers_open:
+  alias: "Open All Covers"
+  mode: single
+  fields:
+    position:
+      description: "Target position (0-100)"
+      example: 100
+      default: 100
+  sequence:
+    - service: cover.set_cover_position
+      target:
+        entity_id:
+          - cover.rollladen_computer_vorhang
+          - cover.kuche_blind_vorhang
+          - cover.yoga_blind_vorhang
+          - cover.schlafen_blind_vorhang
+      data:
+        position: "{{ position }}"
+      continue_on_error: true
+    - service: system_log.write
+      data:
+        message: "All covers set to {{ position }}%"
+        level: info
+
+# All Covers Close - Security/Night routine
+all_covers_close:
+  alias: "Close All Covers"
+  mode: single
+  sequence:
+    - service: cover.close_cover
+      target:
+        entity_id:
+          - cover.rollladen_computer_vorhang
+          - cover.kuche_blind_vorhang
+          - cover.yoga_blind_vorhang
+          - cover.schlafen_blind_vorhang
+      continue_on_error: true
+    - service: system_log.write
+      data:
+        message: "All covers closed"
+        level: info
+
+# Ventilation Check - Reusable outdoor condition checker
+check_ventilation_conditions:
+  alias: "Check Ventilation Conditions"
+  mode: single
+  sequence:
+    - variables:
+        wind_ok: "{{ states('sensor.openweathermap_wind_speed')|float(99) < states('input_number.ventilation_wind_max')|float(8) }}"
+        temp_ok: "{{ states('sensor.openweathermap_temperature')|float(99) <= states('input_number.ventilation_temp_max')|float(23) }}"
+        rh_ok: "{{ states('sensor.openweathermap_humidity')|float(0) <= states('input_number.ventilation_humidity_max')|float(85) }}"
+        dp_ok: "{{ states('sensor.outdoor_dewpoint')|float(99) <= states('input_number.ventilation_dewpoint_max')|float(16) }}"
+    - condition: template
+      value_template: "{{ wind_ok and temp_ok and rh_ok and dp_ok }}"
+
+# Generic Light Toggle with Brightness
+light_toggle_with_brightness:
+  alias: "Toggle Light with Smart Brightness"
+  mode: single
+  fields:
+    target_light:
+      description: "Light entity to toggle"
+      example: "light.wohnzimmer"
+      required: true
+    brightness_day:
+      description: "Brightness during day (%)"
+      example: 100
+      default: 100
+    brightness_night:
+      description: "Brightness during night (%)"
+      example: 15
+      default: 15
+  sequence:
+    - choose:
+        # If light is on, turn off
+        - conditions:
+            - condition: template
+              value_template: "{{ is_state(target_light, 'on') }}"
+          sequence:
+            - service: light.turn_off
+              target:
+                entity_id: "{{ target_light }}"
+      default:
+        # Turn on with appropriate brightness
+        - service: light.turn_on
+          target:
+            entity_id: "{{ target_light }}"
+          data:
+            brightness_pct: >
+              {% set hour = now().hour %}
+              {% if hour >= 22 or hour < 6 %}
+                {{ brightness_night }}
+              {% else %}
+                {{ brightness_day }}
+              {% endif %}
+

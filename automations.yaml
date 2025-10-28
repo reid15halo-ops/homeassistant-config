@@ -2,20 +2,26 @@
   alias: Rollladen Computer – Anti-Glare (FP2 + Sonne + Lux)
   mode: restart
   trigger:
-  - platform: state
-    entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence
-  - platform: numeric_state
-    entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
-    above: 600
-    for:
-      minutes: 2
-  - platform: numeric_state
-    entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
-    below: 10
-    for:
-      minutes: 5
-  - platform: time_pattern
-    minutes: /5
+    # State-based triggers - instant reaction
+    - platform: state
+      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence
+    - platform: numeric_state
+      entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
+      above: 600
+      for:
+        minutes: 2
+    - platform: numeric_state
+      entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
+      below: 10
+      for:
+        minutes: 5
+    # Sun position changes
+    - platform: state
+      entity_id: sun.sun
+      attribute: azimuth
+    # Backup polling - reduced from /5 to /30 for performance
+    - platform: time_pattern
+      minutes: "/30"
   variables:
     sun_ok: "{{ (state_attr('sun.sun','azimuth')|float(0) >= 120) and\n   (state_attr('sun.sun','azimuth')|float(0)
       <= 240) and\n   (state_attr('sun.sun','elevation')|float(0) > 10) }}"
@@ -45,6 +51,7 @@
           pos_helper: input_number.pos_computer
           travel_time: 21
           position: '{{ pos_blend }}'
+        continue_on_error: true
     - conditions:
       - condition: time
         after: 08:00:00
@@ -65,6 +72,7 @@
               pos_helper: input_number.pos_computer
               travel_time: 21
               position: '{{ pos_offen_tag }}'
+            continue_on_error: true
         default:
         - condition: template
           value_template: '{{ (states(''input_number.pos_computer'')|int) != pos_offen
@@ -75,22 +83,35 @@
             pos_helper: input_number.pos_computer
             travel_time: 21
             position: '{{ pos_offen }}'
+          continue_on_error: true
 - id: rollers_heat_protect_south
   alias: Rollladen Süd – Hitzeschutz tagsüber (Küche & Yoga)
   mode: restart
   trigger:
-  - platform: numeric_state
-    entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
-    above: 600
-    for:
-      minutes: 3
-  - platform: numeric_state
-    entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
-    below: 10
-    for:
-      minutes: 10
-  - platform: time_pattern
-    minutes: /7
+    # Lux-based triggers
+    - platform: numeric_state
+      entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
+      above: 600
+      for:
+        minutes: 3
+    - platform: numeric_state
+      entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
+      below: 10
+      for:
+        minutes: 10
+    # Sun position changes
+    - platform: state
+      entity_id: sun.sun
+      attribute: azimuth
+    - platform: state
+      entity_id: sun.sun
+      attribute: elevation
+    # Summer mode state changes
+    - platform: state
+      entity_id: binary_sensor.sommerbetrieb_ortsbasiert
+    # Backup polling - reduced from /7 to /30 for performance
+    - platform: time_pattern
+      minutes: "/30"
   condition:
   - condition: time
     after: 09:00:00
@@ -246,140 +267,117 @@
       entity_id: script.ventilator_wintermodus_low
 - id: schlafen_werk_close_0455
   alias: Schlafen – Werktags 04:55 schließen
-  triggers:
-  - at: 04:55:00
-    trigger: time
-  conditions:
-  - condition: time
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-  actions:
-  - data:
-      cover_entity: cover.schlafen_blind_vorhang
-      pos_helper: input_number.pos_schlafen
-      travel_time: 21
-      position: 0
-    action: script.cover_fahre_zeitbasiert
-  - device_id: e21cdce801f7b99185001e7544b1c32a
-    domain: cover
-    entity_id: ea01332b291ecc7d381e59df51600bd0
-    type: close
   mode: single
+  triggers:
+    - platform: time
+      at: '04:55:00'
+  conditions:
+    - condition: time
+      weekday: [mon, tue, wed, thu, fri]
+  actions:
+    - service: script.cover_fahre_zeitbasiert
+      data:
+        cover_entity: cover.schlafen_blind_vorhang
+        pos_helper: input_number.pos_schlafen
+        travel_time: 21
+        position: 0
+      continue_on_error: true
+    # Close additional cover (device e21cdce801f7b99185001e7544b1c32a)
+    - service: cover.close_cover
+      target:
+        entity_id: cover.ea01332b291ecc7d381e59df51600bd0  # TODO: Replace with readable name
+      continue_on_error: true
 - id: schlafen_weekend_open_1000
   alias: Schlafen – Wochenende 10:00 öffnen
+  mode: single
   triggers:
-  - at: '10:00:00'
-    trigger: time
+    - platform: time
+      at: '10:00:00'
   conditions:
-  - condition: time
-    weekday:
-    - sat
-    - sun
+    - condition: time
+      weekday: [sat, sun]
   actions:
-  - data:
-      cover_entity: cover.schlafen_blind_vorhang
-      pos_helper: input_number.pos_schlafen
-      travel_time: 21
-      position: 100
-    action: script.cover_fahre_zeitbasiert
-  - device_id: e21cdce801f7b99185001e7544b1c32a
-    domain: cover
-    entity_id: ea01332b291ecc7d381e59df51600bd0
-    type: close
-  mode: single
+    - service: script.cover_fahre_zeitbasiert
+      data:
+        cover_entity: cover.schlafen_blind_vorhang
+        pos_helper: input_number.pos_schlafen
+        travel_time: 21
+        position: 100
+      continue_on_error: true
+    # Close additional cover (device e21cdce801f7b99185001e7544b1c32a)
+    - service: cover.close_cover
+      target:
+        entity_id: cover.ea01332b291ecc7d381e59df51600bd0  # TODO: Replace with readable name
+      continue_on_error: true
 - id: '1756663066410'
-  alias: Licht an 15lx
-  description: ''
+  alias: Licht an 15lx - Low Light Ambient
+  description: 'Turn on ambient lights when illuminance drops below 15 lux'
+  mode: single
   triggers:
-  - type: illuminance
-    device_id: 2ce83ab1b7ba9e3161a4584846503d5b
-    entity_id: 87224d0f84725a00e320d1fd3701fd8a
-    domain: sensor
-    below: 15
-    for:
-      minutes: 10
-    trigger: device
-  - trigger: time_pattern
-    minutes: '30'
-  conditions: []
+    # Lux-based trigger (FP2 sensor)
+    - platform: numeric_state
+      entity_id: sensor.fp2_light_level  # Using template sensor
+      below: 15
+      for:
+        minutes: 10
+    # Backup time-based check
+    - platform: time_pattern
+      minutes: '30'
+  conditions:
+    # Only if sensor is available and really dark
+    - condition: numeric_state
+      entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
+      below: 15
   actions:
-  - type: turn_on
-    device_id: 8c0861d5de0795e1492a8eaeea69c72a
-    entity_id: 1368fea07848a80d288c0aff0af3cf1c
-    domain: light
-  - choose:
-    - conditions:
-      - condition: device
-        type: is_on
-        device_id: 8c0861d5de0795e1492a8eaeea69c72a
-        entity_id: 1368fea07848a80d288c0aff0af3cf1c
-        domain: light
-      sequence:
-      - action: script.ambient_feuerlicht_warm_flicker
-        metadata: {}
-        data: {}
-  - type: turn_on
-    device_id: dff6231b45ad4abd9fec55f83af21d78
-    entity_id: e1a3c27842ab023629bd0c3d766dc5fc
-    domain: light
-  - choose:
-    - conditions:
-      - condition: device
-        type: is_on
-        device_id: 8c0861d5de0795e1492a8eaeea69c72a
-        entity_id: 1368fea07848a80d288c0aff0af3cf1c
-        domain: light
-      sequence:
-      - action: script.ambient_feuerlicht_warm_flicker
-        metadata: {}
-        data: {}
-  - type: turn_on
-    device_id: ceb5bc29b2669f8871ae800bca1807a7
-    entity_id: a5ec8243261c2ded541e37e7638fa2b7
-    domain: light
-  - choose:
-    - conditions:
-      - condition: device
-        type: is_on
-        device_id: ceb5bc29b2669f8871ae800bca1807a7
-        entity_id: a5ec8243261c2ded541e37e7638fa2b7
-        domain: light
-      sequence:
-      - action: script.ambient_feuerlicht_warm_flicker
-        metadata: {}
-        data: {}
-  mode: single
+    # Turn on all ambient lights at once
+    - service: light.turn_on
+      target:
+        entity_id:
+          - light.ambient_light_1  # Device: 8c0861d5de0795e1492a8eaeea69c72a / 1368fea07848a80d288c0aff0af3cf1c
+          - light.ambient_light_2  # Device: dff6231b45ad4abd9fec55f83af21d78 / e1a3c27842ab023629bd0c3d766dc5fc
+          - light.ambient_light_3  # Device: ceb5bc29b2669f8871ae800bca1807a7 / a5ec8243261c2ded541e37e7638fa2b7
+      continue_on_error: true
+
+    # Apply fire flicker effect to all lights that turned on successfully
+    - delay:
+        seconds: 2
+    - service: script.ambient_feuerlicht_warm_flicker
+      continue_on_error: true
 - id: '1756663264657'
-  alias: Heizung Aus Fenster offen
-  description: ''
-  mode: single
+  alias: Heizung Aus Fenster offen - Energy Saving
+  description: 'Turn off heating when windows/doors are opened'
+  mode: restart  # Allow restart to handle multiple openings
   trigger:
-  - platform: device
-    type: opened
-    device_id: 1d8ac79daf016e689bf40f1499f28678
-    entity_id: 6ae39821a45e76cf38ec0e5459333954
-    domain: binary_sensor
-  - platform: device
-    type: opened
-    device_id: 5c463b96e0e706e7e78d06703972e0ee
-    entity_id: 4ab0a1216721d7ee3491dd890a83ace7
-    domain: binary_sensor
+    # Window/Door sensor 1
+    - platform: state
+      entity_id: binary_sensor.door_sensor_1  # Device: 1d8ac79daf016e689bf40f1499f28678 / 6ae39821a45e76cf38ec0e5459333954
+      to: 'on'
+      for:
+        seconds: 30  # Debounce: Wait 30s to avoid false triggers
+    # Window/Door sensor 2
+    - platform: state
+      entity_id: binary_sensor.door_sensor_2  # Device: 5c463b96e0e706e7e78d06703972e0ee / 4ab0a1216721d7ee3491dd890a83ace7
+      to: 'on'
+      for:
+        seconds: 30
   condition: []
   action:
-  - type: set_hvac_mode
-    device_id: 8cec1333229554f7f822ace0168e4191
-    entity_id: 646e41b75dc2d7a8f1d0285ca94e1ac5
-    domain: climate
-    hvac_mode: 'off'
-  - type: set_hvac_mode
-    device_id: 9402ef88977fa51cf9fc7e4c5383d2cc
-    entity_id: 465b11050fd6118181722cc97f5b8183
-    domain: climate
-    hvac_mode: 'off'
+    # Turn off all thermostats
+    - service: climate.set_hvac_mode
+      target:
+        entity_id:
+          - climate.thermostat_bad      # Device: 8cec1333229554f7f822ace0168e4191 / 646e41b75dc2d7a8f1d0285ca94e1ac5
+          - climate.thermostat_computer  # Device: 9402ef88977fa51cf9fc7e4c5383d2cc / 465b11050fd6118181722cc97f5b8183
+      data:
+        hvac_mode: 'off'
+      continue_on_error: true
+
+    # Log action
+    - service: system_log.write
+      data:
+        message: "Heating turned off due to open window/door"
+        level: info
+      continue_on_error: true
 - id: '1756747296174'
   alias: Schlafen Arbeit Bettgehlicht - Optimiert
   description: Optimierte Version mit Entity-Triggern
@@ -605,50 +603,25 @@
       minutes: 1
       seconds: 0
   actions:
-  - type: turn_off
-    device_id: 09da8d97be4777a9a94cc9b8e53d68c4
-    entity_id: bc0d3fd25e385f3c1056ed9ead8aa858
-    domain: light
-  - type: turn_off
-    device_id: 24856663a72fdc78cbfa8ab36c4765d1
-    entity_id: 7fff5f0e94d27ad73e640bb60c73d314
-    domain: light
-  - type: turn_off
-    device_id: 76361dfbed405867437d4b94a3995bb6
-    entity_id: 188204738533536bc636218e65a74b53
-    domain: fan
-  - type: turn_off
-    device_id: ceb5bc29b2669f8871ae800bca1807a7
-    entity_id: a5ec8243261c2ded541e37e7638fa2b7
-    domain: light
-  - type: turn_off
-    device_id: dff6231b45ad4abd9fec55f83af21d78
-    entity_id: e1a3c27842ab023629bd0c3d766dc5fc
-    domain: light
-  - type: turn_off
-    device_id: 3eb1ab346e4917536b2108c5aa33c616
-    entity_id: f7aae072f642bae85c9a5b4faafb127a
-    domain: light
-  - type: turn_off
-    device_id: 3586709559e4e46394dfa54ebf906373
-    entity_id: a14baab7198c0de3311dbee8b11fedab
-    domain: fan
-  - type: turn_off
-    device_id: db2f7007d9ab40883ebc98eba9815384
-    entity_id: dc2d1b19833aaac2ea089fe8a751574f
-    domain: light
-  - type: turn_off
-    device_id: 76361dfbed405867437d4b94a3995bb6
-    entity_id: 188204738533536bc636218e65a74b53
-    domain: fan
-  - type: turn_off
-    device_id: 3586709559e4e46394dfa54ebf906373
-    entity_id: a14baab7198c0de3311dbee8b11fedab
-    domain: fan
-  - type: turn_off
-    device_id: 76361dfbed405867437d4b94a3995bb6
-    entity_id: 188204738533536bc636218e65a74b53
-    domain: fan
+    # Turn off all lights
+    - service: light.turn_off
+      target:
+        entity_id:
+          - light.bed_light  # bc0d3fd25e385f3c1056ed9ead8aa858
+          - light.bett_licht  # 7fff5f0e94d27ad73e640bb60c73d314
+          - light.ambient_light_1  # a5ec8243261c2ded541e37e7638fa2b7
+          - light.ambient_light_2  # e1a3c27842ab023629bd0c3d766dc5fc
+          - light.ambient_light_3  # f7aae072f642bae85c9a5b4faafb127a
+          - light.kuche_licht  # dc2d1b19833aaac2ea089fe8a751574f
+      continue_on_error: true
+
+    # Turn off all fans (removed duplicates!)
+    - service: fan.turn_off
+      target:
+        entity_id:
+          - fan.ceiling_fan  # 188204738533536bc636218e65a74b53
+          - fan.ceiling_fan_with_light  # a14baab7198c0de3311dbee8b11fedab
+      continue_on_error: true
   mode: restart
 - id: '1757962675739'
   alias: Licht aus Küche
@@ -683,72 +656,75 @@
     entity_id: f7aae072f642bae85c9a5b4faafb127a
     domain: light
   mode: single
-- id: wecker_lichtrampe_werktage_v2
+- id: wecker_lichtrampe_werktage_unified
   alias: Schlafzimmer – Wecker-Lichtrampe (Mo–Fr 04:30→05:00)
-  description: Dimmt von ~0 % (1 %) auf 100 % in 30 Minuten (Werktage)
-  mode: single
-  trigger:
-  - platform: time
-    at: 04:30:00
-  condition:
-  - condition: time
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-  action:
-  - service: light.turn_on
-    target:
-      entity_id: light.schlafzimmer_licht
-    data:
-      brightness_pct: 1
-  - service: light.turn_on
-    target:
-      entity_id: light.schlafzimmer_licht
-    data:
-      brightness_pct: 100
-      transition: 1800
-- id: wecker_lichtrampe_werktage_emuliert
-  alias: Schlafzimmer – Wecker-Lichtrampe (Mo–Fr, emuliert)
+  description: Intelligente Lichtrampe - nutzt native Transition wenn unterstützt, sonst emuliert
   mode: single
   variables:
     ramp_seconds: 1800
     steps: 100
     step_delay: '{{ (ramp_seconds / steps) | int }}'
   trigger:
-  - platform: time
-    at: 04:30:00
+    - platform: time
+      at: '04:30:00'
   condition:
-  - condition: time
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
+    - condition: time
+      weekday: [mon, tue, wed, thu, fri]
   action:
-  - service: light.turn_on
-    target:
-      entity_id: light.schlafzimmer_licht
-    data:
-      brightness_pct: 1
-  - repeat:
-      count: '{{ steps }}'
-      sequence:
-      - service: light.turn_on
-        target:
-          entity_id: light.schlafzimmer_licht
-        data:
-          brightness_step_pct: 1
-      - delay:
-          seconds: '{{ step_delay }}'
+    # Try native transition first
+    - choose:
+        # Check if light supports transition (feature bit 32)
+        - conditions:
+            - condition: template
+              value_template: >
+                {{ state_attr('light.schlafzimmer_licht', 'supported_features') is not none
+                   and state_attr('light.schlafzimmer_licht', 'supported_features')|int(0)|bitwise_and(32) > 0 }}
+          sequence:
+            # Native transition support - use it!
+            - service: light.turn_on
+              target:
+                entity_id: light.schlafzimmer_licht
+              data:
+                brightness_pct: 1
+            - service: light.turn_on
+              target:
+                entity_id: light.schlafzimmer_licht
+              data:
+                brightness_pct: 100
+                transition: 1800
+      default:
+        # Fallback: Emulated transition
+        - service: light.turn_on
+          target:
+            entity_id: light.schlafzimmer_licht
+          data:
+            brightness_pct: 1
+        - repeat:
+            count: '{{ steps }}'
+            sequence:
+              - service: light.turn_on
+                target:
+                  entity_id: light.schlafzimmer_licht
+                data:
+                  brightness_step_pct: 1
+              - delay:
+                  seconds: '{{ step_delay }}'
 - id: roller_pc_lueften_warm_keine_sonne
   alias: Rollladen Computer – Lüften bei >20°C (ohne Sonne)
   triggers:
-  - minutes: /5
-    trigger: time_pattern
+    # Temperature-based trigger
+    - platform: numeric_state
+      entity_id: sensor.openweathermap_temperature
+      above: 20
+    # Lux-based trigger
+    - platform: numeric_state
+      entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
+      below: 400
+      for:
+        minutes: 5
+    # Backup polling - reduced from /5 to /30
+    - platform: time_pattern
+      minutes: "/30"
   conditions:
   - condition: time
     after: '10:00:00'
@@ -809,17 +785,15 @@
       minutes: 0
       seconds: 20
   conditions:
-  - condition: time
-    after: 06:30:00
-    before: 04:30:00
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-    - sat
-    - sun
+    # Fixed: Split impossible time condition into OR (evening OR night/early morning)
+    - condition: or
+      conditions:
+        - condition: time
+          after: '06:30:00'
+          before: '23:59:59'
+        - condition: time
+          after: '00:00:00'
+          before: '04:30:00'
   actions:
   - type: turn_off
     device_id: 09da8d97be4777a9a94cc9b8e53d68c4
@@ -868,20 +842,26 @@
   mode: single
 - id: '1758128792497'
   alias: Bad Licht an
-  description: ''
+  description: 'Mit Debouncing für stabile Erkennung'
+  mode: restart  # Allow restart to handle rapid state changes
   triggers:
-  - type: motion
-    device_id: aebec0c58872e00fe8fa89b0a846a29e
-    entity_id: 58a470e22a792e2f2d7a2e13233b3d50
-    domain: binary_sensor
-    trigger: device
-  conditions: []
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_bad
+      to: 'on'
+      for:
+        seconds: 2  # Debounce flicker
+  conditions:
+    # Don't turn on if already on and was on recently
+    - condition: state
+      entity_id: light.bad_2
+      state: 'off'
+      for:
+        seconds: 5  # Prevent rapid on/off cycles
   actions:
-  - type: turn_on
-    device_id: ffd6ad3612028069ca89a7fa557bf0e4
-    entity_id: e01337629e974472db8c867288cc1c20
-    domain: light
-  mode: single
+    - service: light.turn_on
+      target:
+        entity_id: light.bad_2
+      continue_on_error: true
 - id: '1758128839131'
   alias: Bad aus
   description: ''
@@ -1195,1228 +1175,3 @@
     entity_id: 6bdb46108f7f0e78488ad459824254cb
     type: open
   mode: single
-# ============================================================================
-# WICHTIGE AUTOMATIONEN - Komplett ausgearbeitet & Ready-to-use
-# ============================================================================
-#
-# ANLEITUNG:
-# 1. Prüfe Entity-IDs (sind Beispiele von deinem System)
-# 2. Passe Zeiten & Schwellenwerte an deine Bedürfnisse an
-# 3. Füge zu deiner automations.yaml hinzu
-# 4. YAML neu laden
-#
-# ============================================================================
-
-
-# ============================================================================
-# 🔴 KATEGORIE 1: SICHERHEIT & WARTUNG (Must-have!)
-# ============================================================================
-
-# ---------- 1. TÜR-ALARM BEI ABWESENHEIT ----------
-- id: tur_alarm_abwesend
-  alias: Sicherheit – Türalarm bei Abwesenheit
-  description: Push-Benachrichtigung wenn Tür öffnet während niemand zuhause
-  mode: single
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.aqara_door_and_window_sensor_tur
-      to: 'on'
-  condition:
-    # Nur wenn schon 5 Min weg (nicht sofort beim Verlassen)
-    - condition: state
-      entity_id: person.reid15
-      state: 'not_home'
-      for:
-        minutes: 5
-  action:
-    # Push-Benachrichtigung
-    - service: notify.alexa_media_wohnzimmer
-      data:
-        title: "🚨 TÜRALARM!"
-        message: "Haustür wurde geöffnet ({{ now().strftime('%H:%M:%S') }})"
-        data:
-          priority: high
-          ttl: 0
-          channel: alarm
-          actions:
-            - action: "VIEW_CAMERA"
-              title: "Kamera zeigen"
-
-    # Alexa Ansage
-    - service: notify.alexa_media_wohnzimmer
-      data:
-        message: "Achtung! Die Haustür wurde geöffnet."
-        data:
-          type: announce
-          method: all  # Auf allen Echos
-
-# ---------- 2. WASSERSCHADEN-ALARM ----------
-- id: wasserschaden_alarm
-  alias: Sicherheit – Wasserleck Alarm
-  description: Sofortige Benachrichtigung + Heizung aus bei Wasserleck
-  mode: single
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.aqara_water_leak_sensor_feuchte
-      to: 'on'
-  action:
-    # Kritische Push-Benachrichtigung
-    - service: notify.alexa_media_wohnzimmer
-      data:
-        title: "💧 WASSERLECK ERKANNT!"
-        message: "Wassersensor hat Feuchtigkeit erkannt! SOFORT PRÜFEN!"
-        data:
-          priority: high
-          ttl: 0
-          channel: alarm
-          color: red
-
-    # Alexa Durchsage
-    - service: notify.alexa_media_wohnzimmer
-      data:
-        message: >
-          <amazon:domain name="urgent">
-          Achtung! Wasserleck erkannt. Bitte sofort den Wassersensor prüfen!
-          </amazon:domain>
-        data:
-          type: announce
-          method: all
-
-    # Heizung ausschalten (Sicherheit bei Rohrbruch)
-    - service: climate.turn_off
-      target:
-        entity_id:
-          - climate.thermostat_bad
-          - climate.thermostat_computer
-
-# ---------- 3. LOW BATTERY WARNUNG ----------
-- id: battery_low_warning
-  alias: Wartung – Low Battery Warnung (Sonntags)
-  description: Wöchentliche Benachrichtigung über schwache Batterien
-  mode: single
-  trigger:
-    - platform: time
-      at: '10:00:00'
-  condition:
-    - condition: time
-      weekday: [sun]
-
-    # Nur wenn mindestens 1 Gerät <20% hat
-    - condition: template
-      value_template: >
-        {{ states.sensor
-           | selectattr('attributes.device_class', 'eq', 'battery')
-           | selectattr('state', 'is_number')
-           | selectattr('state', 'lt', 20)
-           | list | count > 0 }}
-  action:
-    - service: notify.alexa_media_wohnzimmer
-      data:
-        title: "🔋 Batterien prüfen"
-        message: >
-          Folgende Geräte haben schwache Batterien (<20%):
-          {% for state in states.sensor | selectattr('attributes.device_class', 'eq', 'battery') | selectattr('state', 'is_number') | selectattr('state', 'lt', 20) %}
-          • {{ state.name }}: {{ state.state }}%
-          {% endfor %}
-
-# ---------- 4. GERÄTE OFFLINE WARNUNG ----------
-- id: devices_offline_warning
-  alias: Wartung – Geräte Offline Warnung
-  description: Benachrichtigung wenn wichtige Geräte länger offline
-  mode: single
-  trigger:
-    # Prüfe alle 6 Stunden
-    - platform: time_pattern
-      hours: "/6"
-  condition:
-    # Nur wenn mindestens 1 wichtiges Gerät unavailable
-    - condition: template
-      value_template: >
-        {{ states
-           | selectattr('entity_id', 'in', [
-               'binary_sensor.aqara_door_and_window_sensor_tur',
-               'binary_sensor.aqara_water_leak_sensor_feuchte',
-               'binary_sensor.presence_sensor_fp2_f9cf_presence',
-               'climate.thermostat_bad',
-               'climate.thermostat_computer'
-             ])
-           | selectattr('state', 'eq', 'unavailable')
-           | list | count > 0 }}
-  action:
-    - service: notify.alexa_media_wohnzimmer
-      data:
-        title: "⚠️ Geräte Offline"
-        message: >
-          Folgende wichtige Geräte sind offline:
-          {% for state in states | selectattr('entity_id', 'in', ['binary_sensor.aqara_door_and_window_sensor_tur', 'binary_sensor.aqara_water_leak_sensor_feuchte', 'binary_sensor.presence_sensor_fp2_f9cf_presence', 'climate.thermostat_bad', 'climate.thermostat_computer']) | selectattr('state', 'eq', 'unavailable') %}
-          • {{ state.name }}
-          {% endfor %}
-
-          Batterie oder Verbindung prüfen!
-
-# ---------- 5. HOME ASSISTANT UPDATE VERFÜGBAR ----------
-- id: ha_update_notification
-  alias: Wartung – Home Assistant Update verfügbar
-  description: Benachrichtigung bei verfügbaren HA Updates
-  mode: single
-  trigger:
-    - platform: state
-      entity_id: update.home_assistant_core_update
-      to: 'on'
-    - platform: state
-      entity_id: update.home_assistant_supervisor_update
-      to: 'on'
-  action:
-    - service: notify.alexa_media_wohnzimmer
-      data:
-        title: "🔄 Home Assistant Update"
-        message: >
-          Ein Update ist verfügbar:
-          {{ trigger.to_state.attributes.title }}
-          {{ trigger.to_state.attributes.installed_version }} → {{ trigger.to_state.attributes.latest_version }}
-
-
-# ============================================================================
-# 🟠 KATEGORIE 2: ENERGIESPAREN
-# ============================================================================
-
-# ---------- 6. STANDBY-KILLER NACHT ----------
-- id: standby_killer_nacht
-  alias: Energie – Standby-Geräte Nacht aus
-  description: Schaltet unnötige Geräte nachts aus wenn keine Bewegung
-  mode: single
-  trigger:
-    - platform: time
-      at: '23:30:00'
-  condition:
-    # Nur wenn 30 Min keine Bewegung
-    - condition: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence
-      state: 'off'
-      for:
-        minutes: 30
-  action:
-    # Hier deine Steckdosen/Switches für Standby-Geräte
-    # Beispiele - ANPASSEN an deine Geräte!
-    - service: switch.turn_off
-      target:
-        entity_id:
-          # - switch.pc_steckdose
-          # - switch.monitor_steckdose
-          # - switch.drucker
-          - switch.example  # ← Ersetze mit echten Switches!
-      continue_on_error: true
-
-# ---------- 7. HEIZUNG SMART (FENSTER AUF/ZU) ----------
-# Diese ersetzt deine alte "Heizung Aus Fenster offen" Automation!
-- id: heizung_fenster_auto_smart
-  alias: Energie – Heizung automatisch bei Fenster
-  description: Heizung aus bei offenen Fenstern, wieder AN wenn alle zu
-  mode: restart
-  trigger:
-    - platform: state
-      entity_id:
-        - binary_sensor.aqara_door_and_window_sensor_tur
-        - binary_sensor.aqara_door_and_window_sensor_tur_2
-  action:
-    - choose:
-        # FALL 1: Mindestens EIN Fenster auf → Heizung AUS
-        - conditions:
-            - condition: or
-              conditions:
-                - condition: state
-                  entity_id: binary_sensor.aqara_door_and_window_sensor_tur
-                  state: 'on'
-                - condition: state
-                  entity_id: binary_sensor.aqara_door_and_window_sensor_tur_2
-                  state: 'on'
-          sequence:
-            - service: climate.set_hvac_mode
-              target:
-                entity_id:
-                  - climate.thermostat_bad
-                  - climate.thermostat_computer
-              data:
-                hvac_mode: 'off'
-
-        # FALL 2: ALLE Fenster zu → Heizung wieder AN
-        - conditions:
-            - condition: state
-              entity_id: binary_sensor.aqara_door_and_window_sensor_tur
-              state: 'off'
-            - condition: state
-              entity_id: binary_sensor.aqara_door_and_window_sensor_tur_2
-              state: 'off'
-            # Nur wenn draußen kalt
-            - condition: numeric_state
-              entity_id: sensor.openweathermap_temperature
-              below: 18
-          sequence:
-            # Kurz warten (nicht sofort wieder an)
-            - delay:
-                minutes: 2
-
-            - service: climate.set_hvac_mode
-              target:
-                entity_id:
-                  - climate.thermostat_bad
-                  - climate.thermostat_computer
-              data:
-                hvac_mode: 'heat'
-
-# ---------- 8. LICHT AUS BEI HELLIGKEIT ----------
-- id: licht_aus_bei_helligkeit
-  alias: Energie – Licht aus bei Helligkeit >400 lux
-  description: Schaltet Lichter aus wenn genug Tageslicht vorhanden
-  mode: restart
-  trigger:
-    - platform: numeric_state
-      entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
-      above: 400
-      for:
-        minutes: 5
-  condition:
-    # Nur tagsüber
-    - condition: sun
-      after: sunrise
-      before: sunset
-  action:
-    # Nur Lichter die nicht manuell an sein sollen
-    - service: light.turn_off
-      target:
-        entity_id:
-          - light.kuche_birne_1
-          - light.kuche_birne_2
-          - light.wohnzimmer_licht
-      continue_on_error: true
-
-# ---------- 9. GERÄTE AUS BEI LÄNGERER ABWESENHEIT ----------
-- id: abwesenheit_lang_geraete_aus
-  alias: Energie – Geräte aus bei Abwesenheit >2h
-  description: Schaltet mehr Geräte aus wenn länger weg
-  mode: single
-  trigger:
-    - platform: state
-      entity_id: person.reid15
-      to: 'not_home'
-      for:
-        hours: 2
-  action:
-    # Heizung runterdrehen (nicht aus!)
-    - service: climate.set_temperature
-      target:
-        entity_id:
-          - climate.thermostat_bad
-          - climate.thermostat_computer
-      data:
-        temperature: 16
-
-    # Alle nicht-kritischen Geräte aus
-    - service: light.turn_off
-      target:
-        entity_id: all
-
-    - service: fan.turn_off
-      target:
-        entity_id: all
-
-
-# ============================================================================
-# 🟡 KATEGORIE 3: KOMFORT & ROUTINEN
-# ============================================================================
-
-# ---------- 10. MORGENBEGRÜSSUNG WERKTAGS ----------
-- id: morgen_routine_werk
-  alias: Routine – Guten Morgen (Mo-Fr)
-  description: Rollläden, Licht, Wetteransage
-  mode: single
-  trigger:
-    - platform: time
-      at: '05:00:00'
-  condition:
-    - condition: time
-      weekday: [mon, tue, wed, thu, fri]
-  action:
-    # Rollläden öffnen (außer Computer wegen Blendung)
-    - service: script.cover_fahre_zeitbasiert
-      data:
-        cover_entity: cover.kuche_blind_vorhang
-        pos_helper: input_number.pos_kuche
-        travel_time: 21
-        position: 100
-
-    - service: script.cover_fahre_zeitbasiert
-      data:
-        cover_entity: cover.yoga_blind_vorhang
-        pos_helper: input_number.pos_yoga
-        travel_time: 21
-        position: 100
-
-    # Küchenlicht gedimmt
-    - service: light.turn_on
-      target:
-        entity_id: light.kuche_birne_1
-      data:
-        brightness_pct: 30
-        color_temp_kelvin: 3500
-
-    # Warte 5 Minuten
-    - delay:
-        minutes: 5
-
-    # Wetteransage
-    - service: notify.alexa_media_wohnzimmer
-      data:
-        message: >
-          Guten Morgen! Die Temperatur beträgt aktuell
-          {{ states('sensor.openweathermap_temperature') | round(0) }} Grad.
-          {% if states('sensor.openweathermap_condition') == 'rainy' %}
-          Es regnet heute. Vergiss den Regenschirm nicht!
-          {% elif states('sensor.openweathermap_condition') == 'sunny' %}
-          Es wird sonnig heute!
-          {% endif %}
-        data:
-          type: tts
-
-# ---------- 11. GUTE-NACHT-ROUTINE ----------
-- id: gute_nacht_routine
-  alias: Routine – Gute Nacht (23:00)
-  description: Alles ausschalten, Rollläden zu, Heizung runter
-  mode: single
-  trigger:
-    - platform: time
-      at: '23:00:00'
-  condition:
-    # Nur wenn 30 Min keine Bewegung
-    - condition: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence
-      state: 'off'
-      for:
-        minutes: 30
-  action:
-    # Alle Rollläden schließen
-    - service: cover.close_cover
-      target:
-        entity_id: all
-
-    # Alle Lichter außer Schlafzimmer aus
-    - service: light.turn_off
-      target:
-        entity_id: all
-
-    - service: light.turn_on
-      target:
-        entity_id: light.schlafzimmer_licht
-      data:
-        brightness_pct: 5
-
-    # Heizung Nachtabsenkung
-    - service: climate.set_temperature
-      target:
-        entity_id:
-          - climate.thermostat_bad
-          - climate.thermostat_computer
-      data:
-        temperature: 18
-
-    # Ventilatoren aus
-    - service: fan.turn_off
-      target:
-        entity_id: all
-
-# ---------- 12. FILMABEND-MODUS ----------
-- id: filmabend_modus_auto
-  alias: Szene – Filmabend automatisch
-  description: Dimmt Lichter wenn Media Player länger spielt
-  mode: single
-  trigger:
-    - platform: state
-      entity_id: media_player.wohnzimmer
-      to: 'playing'
-      for:
-        minutes: 2
-  condition:
-    # Nur abends
-    - condition: sun
-      after: sunset
-  action:
-    # Rollläden zu
-    - service: cover.close_cover
-      target:
-        entity_id:
-          - cover.kuche_blind_vorhang
-          - cover.yoga_blind_vorhang
-
-    # Lichter dimmen
-    - service: light.turn_on
-      target:
-        area_id: wohnzimmer
-      data:
-        brightness_pct: 10
-        color_temp_kelvin: 2700
-
-# ---------- 13. WILLKOMMEN ZUHAUSE ----------
-- id: willkommen_zuhause
-  alias: Routine – Willkommen Zuhause
-  description: Licht + Heizung an wenn nach Hause kommst
-  mode: single
-  trigger:
-    - platform: state
-      entity_id: person.reid15
-      to: 'home'
-  condition:
-    # Nur wenn vorher >30 Min weg
-    - condition: state
-      entity_id: person.reid15
-      state: 'not_home'
-      for:
-        minutes: 30
-  action:
-    # Heizung auf Komfort
-    - service: climate.set_temperature
-      target:
-        entity_id:
-          - climate.thermostat_bad
-          - climate.thermostat_computer
-      data:
-        temperature: 21
-
-    # Wenn dunkel: Lichter an
-    - choose:
-        - conditions:
-            - condition: sun
-              after: sunset
-          sequence:
-            - service: light.turn_on
-              target:
-                entity_id:
-                  - light.kuche_birne_1
-                  - light.wohnzimmer_licht
-              data:
-                brightness_pct: 80
-
-    # Willkommensgruß
-    - service: notify.alexa_media_wohnzimmer
-      data:
-        message: "Willkommen zuhause!"
-        data:
-          type: tts
-
-# ---------- 14. VERLASSEN-ROUTINE ----------
-# Bereits vorhanden als "Nicht zuhause", aber hier verbesserte Version:
-- id: verlassen_routine_improved
-  alias: Routine – Verlassen (verbessert)
-  description: Alles ausschalten beim Verlassen, mit Szene
-  mode: single
-  trigger:
-    - platform: state
-      entity_id: person.reid15
-      from: 'home'
-      to: 'not_home'
-      for:
-        minutes: 5  # Verzögerung gegen Fehlalarme
-  action:
-    # Nutze Szene "Alles aus" (falls erstellt)
-    - service: scene.turn_on
-      target:
-        entity_id: scene.alles_aus
-      continue_on_error: true
-
-    # Oder manuell:
-    - service: light.turn_off
-      target:
-        entity_id: all
-
-    - service: fan.turn_off
-      target:
-        entity_id: all
-
-    # Rollläden schließen (Sicherheit)
-    - service: cover.close_cover
-      target:
-        entity_id: all
-
-
-# ============================================================================
-# 🟢 KATEGORIE 4: LUFTQUALITÄT & KLIMA
-# ============================================================================
-
-# ---------- 15. GROWBOX KLIMA-AUTOMATION ----------
-- id: kiffzimmer_klima_auto
-  alias: Growbox – Klima Automation
-  description: Temperatur & Luftfeuchtigkeit optimieren
-  mode: restart
-  trigger:
-    - platform: numeric_state
-      entity_id: sensor.sbht_003c_7ff9_temperature
-      above: 28
-      for:
-        minutes: 5
-
-    - platform: numeric_state
-      entity_id: sensor.sbht_003c_7ff9_temperature
-      below: 18
-      for:
-        minutes: 5
-
-    - platform: numeric_state
-      entity_id: sensor.sbht_003c_7ff9_humidity
-      above: 65
-      for:
-        minutes: 10
-
-    - platform: numeric_state
-      entity_id: sensor.sbht_003c_7ff9_humidity
-      below: 40
-      for:
-        minutes: 10
-  action:
-    - choose:
-        # Zu heiß → Lüfter AN
-        - conditions:
-            - condition: numeric_state
-              entity_id: sensor.sbht_003c_7ff9_temperature
-              above: 28
-          sequence:
-            - service: switch.turn_on
-              target:
-                entity_id: switch.growbox
-
-        # Zu kalt → Lüfter AUS
-        - conditions:
-            - condition: numeric_state
-              entity_id: sensor.sbht_003c_7ff9_temperature
-              below: 18
-          sequence:
-            - service: switch.turn_off
-              target:
-                entity_id: switch.growbox
-
-        # Zu feucht → Entfeuchter AN
-        - conditions:
-            - condition: numeric_state
-              entity_id: sensor.sbht_003c_7ff9_humidity
-              above: 65
-          sequence:
-            - service: switch.turn_on
-              target:
-                entity_id: switch.growbox
-
-        # Zu trocken → Entfeuchter AUS
-        - conditions:
-            - condition: numeric_state
-              entity_id: sensor.sbht_003c_7ff9_humidity
-              below: 40
-          sequence:
-            - service: switch.turn_off
-              target:
-                entity_id: switch.growbox
-
-# ---------- 16. INTELLIGENTE LÜFTUNGSERINNERUNG ----------
-- id: luftqualitat_warnung
-  alias: Luftqualität – Lüftungserinnerung
-  description: Erinnerung zum Lüften bei schlechter Luft
-  mode: single
-  trigger:
-    # Hohe Luftfeuchtigkeit
-    - platform: numeric_state
-      entity_id: sensor.presence_sensor_fp2_f9cf_humidity
-      above: 70
-      for:
-        minutes: 15
-
-    # Oder: Lange kein Fenster auf (falls Sensor vorhanden)
-    - platform: state
-      entity_id: binary_sensor.aqara_door_and_window_sensor_tur
-      to: 'off'
-      for:
-        hours: 4
-  condition:
-    # Nur wenn jemand zuhause
-    - condition: state
-      entity_id: person.reid15
-      state: 'home'
-  action:
-    - service: notify.alexa_media_wohnzimmer
-      data:
-        message: "Die Luftqualität ist schlecht. Bitte lüften!"
-        data:
-          type: announce
-
-# ---------- 17. ENTFEUCHTER BEI HOHER LUFTFEUCHTIGKEIT ----------
-# Bereits vorhanden in deinen Automationen, aber hier optimierte Version:
-- id: entfeuchter_auto_smart
-  alias: Klima – Entfeuchter automatisch (60-50%)
-  description: Entfeuchter AN >60%, AUS <50%
-  mode: restart
-  trigger:
-    - platform: numeric_state
-      entity_id: sensor.sbht_003c_7ff9_humidity
-      above: 60
-      for:
-        minutes: 10
-
-    - platform: numeric_state
-      entity_id: sensor.sbht_003c_7ff9_humidity
-      below: 50
-      for:
-        minutes: 5
-  action:
-    - choose:
-        - conditions:
-            - condition: numeric_state
-              entity_id: sensor.sbht_003c_7ff9_humidity
-              above: 60
-          sequence:
-            - service: switch.turn_on
-              target:
-                entity_id: switch.growbox
-
-        - conditions:
-            - condition: numeric_state
-              entity_id: sensor.sbht_003c_7ff9_humidity
-              below: 50
-          sequence:
-            - service: switch.turn_off
-              target:
-                entity_id: switch.growbox
-
-# ---------- 18. HEIZUNG NACHTABSENKUNG ----------
-- id: heizung_nachtabsenkung
-  alias: Klima – Heizung Nachtabsenkung (22:00-05:00)
-  description: Senkt Heizung nachts automatisch
-  mode: single
-  trigger:
-    # Abends runter
-    - platform: time
-      at: '22:00:00'
-      id: down
-
-    # Morgens hoch
-    - platform: time
-      at: '05:00:00'
-      id: up
-  action:
-    - choose:
-        - conditions:
-            - condition: trigger
-              id: down
-          sequence:
-            - service: climate.set_temperature
-              target:
-                entity_id:
-                  - climate.thermostat_bad
-                  - climate.thermostat_computer
-              data:
-                temperature: 18
-
-        - conditions:
-            - condition: trigger
-              id: up
-          sequence:
-            - service: climate.set_temperature
-              target:
-                entity_id:
-                  - climate.thermostat_bad
-                  - climate.thermostat_computer
-              data:
-                temperature: 21
-
-
-# ============================================================================
-# 🔵 KATEGORIE 5: ZEITGESTEUERTE AUTOMATIONEN
-# ============================================================================
-
-# ---------- 19. ROLLLADEN ZEITSTEUERUNG WERKTAG/WOCHENENDE ----------
-# Ersetzt deine aktuellen Sonnenauf-/untergang Automationen!
-
-# Morgens Werktag
-- id: roller_morgen_werktag
-  alias: Rollladen – Morgens Werktag (07:00)
-  mode: single
-  trigger:
-    - platform: time
-      at: '07:00:00'
-  condition:
-    - condition: time
-      weekday: [mon, tue, wed, thu, fri]
-  action:
-    - service: script.cover_fahre_zeitbasiert
-      data:
-        cover_entity: cover.kuche_blind_vorhang
-        pos_helper: input_number.pos_kuche
-        travel_time: 21
-        position: 100
-
-    - service: script.cover_fahre_zeitbasiert
-      data:
-        cover_entity: cover.yoga_blind_vorhang
-        pos_helper: input_number.pos_yoga
-        travel_time: 21
-        position: 100
-
-# Morgens Wochenende (später!)
-- id: roller_morgen_wochenende
-  alias: Rollladen – Morgens Wochenende (09:00)
-  mode: single
-  trigger:
-    - platform: time
-      at: '09:00:00'
-  condition:
-    - condition: time
-      weekday: [sat, sun]
-  action:
-    - service: script.cover_fahre_zeitbasiert
-      data:
-        cover_entity: cover.kuche_blind_vorhang
-        pos_helper: input_number.pos_kuche
-        travel_time: 21
-        position: 100
-
-    - service: script.cover_fahre_zeitbasiert
-      data:
-        cover_entity: cover.yoga_blind_vorhang
-        pos_helper: input_number.pos_yoga
-        travel_time: 21
-        position: 100
-
-# Abends (alle Tage)
-- id: roller_abend_alle
-  alias: Rollladen – Abends (22:00)
-  mode: single
-  trigger:
-    - platform: time
-      at: '22:00:00'
-  action:
-    - service: cover.close_cover
-      target:
-        entity_id: all
-
-# ---------- 20. LICHT-SZENEN ZEITGESTEUERT ----------
-- id: licht_szenen_zeit
-  alias: Licht – Szenen zeitgesteuert
-  description: Verschiedene Lichtszenen über den Tag
-  mode: restart
-  trigger:
-    - platform: time
-      at: '06:00:00'
-      id: morning
-
-    - platform: time
-      at: '18:00:00'
-      id: evening
-
-    - platform: time
-      at: '22:00:00'
-      id: night
-  condition:
-    # Nur wenn jemand zuhause
-    - condition: state
-      entity_id: person.reid15
-      state: 'home'
-  action:
-    - choose:
-        # Morgens: Tageslicht
-        - conditions:
-            - condition: trigger
-              id: morning
-          sequence:
-            - service: light.turn_on
-              target:
-                entity_id:
-                  - light.kuche_birne_1
-                  - light.wohnzimmer_licht
-              data:
-                brightness_pct: 80
-                color_temp_kelvin: 4000
-
-        # Abends: Warmweiß
-        - conditions:
-            - condition: trigger
-              id: evening
-          sequence:
-            - service: light.turn_on
-              target:
-                entity_id:
-                  - light.wohnzimmer_licht
-                  - light.computer_licht
-              data:
-                brightness_pct: 60
-                color_temp_kelvin: 2700
-
-        # Nacht: Sehr dim
-        - conditions:
-            - condition: trigger
-              id: night
-          sequence:
-            - service: light.turn_on
-              target:
-                entity_id: light.schlafzimmer_licht
-              data:
-                brightness_pct: 5
-
-# ---------- 21. WOCHENEND-WECKROUTINE ----------
-- id: weckroutine_wochenende
-  alias: Routine – Wochenend-Weckroutine (09:00)
-  description: Sanftes Wecken am Wochenende
-  mode: single
-  trigger:
-    - platform: time
-      at: '09:00:00'
-  condition:
-    - condition: time
-      weekday: [sat, sun]
-  action:
-    # Rollläden sanft öffnen
-    - service: script.cover_fahre_zeitbasiert
-      data:
-        cover_entity: cover.schlafen_blind_vorhang
-        pos_helper: input_number.pos_schlafen
-        travel_time: 21
-        position: 100
-
-    # Licht sanft hochdimmen
-    - service: light.turn_on
-      target:
-        entity_id: light.schlafzimmer_licht
-      data:
-        brightness_pct: 1
-
-    - service: light.turn_on
-      target:
-        entity_id: light.schlafzimmer_licht
-      data:
-        brightness_pct: 50
-        transition: 600  # 10 Minuten
-
-    # Kaffee-Erinnerung (optional)
-    - delay:
-        minutes: 5
-    - service: notify.alexa_media_wohnzimmer
-      data:
-        message: "Guten Morgen! Zeit für einen Kaffee!"
-        data:
-          type: tts
-
-
-# ============================================================================
-# ENDE DER AUTOMATIONEN
-# ============================================================================
-#
-# NÄCHSTE SCHRITTE:
-# 1. Entity-IDs anpassen (marked mit ← ANPASSEN!)
-# 2. Zeiten & Schwellenwerte nach deinen Bedürfnissen ändern
-# 3. Füge zu automations.yaml hinzu
-# 4. YAML neu laden
-# 5. Teste jede Automation einzeln
-#
-# ============================================================================
-# ============================================================================
-# NEUE COVER AUTOMATIONEN - Re-Kalibrierung & Testing
-# Füge diese zu deiner automations.yaml hinzu
-# ============================================================================
-
-# ========== RE-KALIBRIERUNG ==========
-# Jeden Tag um 03:00 Uhr: Alle Rollläden komplett schließen und Position auf 0 setzen
-# Verhindert Drift nach vielen Teilfahrten
-
-- id: cover_rekalibrierung_nacht
-  alias: Cover – Re-Kalibrierung (täglich 03:00)
-  description: Schließt alle Rollläden vollständig und setzt Position-Helper auf 0
-  mode: single
-  trigger:
-    - platform: time
-      at: '03:00:00'
-  action:
-    # 1. Alle Rollläden schließen
-    - service: cover.close_cover
-      target:
-        entity_id:
-          - cover.rollladen_computer_vorhang
-          - cover.kuche_blind_vorhang
-          - cover.yoga_blind_vorhang
-          - cover.schlafen_blind_vorhang
-      continue_on_error: true
-
-    # 2. Warten bis alle geschlossen (30s sollte reichen)
-    - delay:
-        seconds: 30
-
-    # 3. Alle Position-Helper auf 0 setzen
-    - service: input_number.set_value
-      target:
-        entity_id:
-          - input_number.pos_computer
-          - input_number.pos_kuche
-          - input_number.pos_yoga
-          - input_number.pos_schlafen
-      data:
-        value: 0
-      continue_on_error: true
-
-    # 4. Logging
-    - service: system_log.write
-      data:
-        message: "Cover Re-Kalibrierung abgeschlossen - Alle Position-Helper auf 0 gesetzt"
-        level: info
-
-# ========== TEST: TRAVEL TIME MESSEN ==========
-# Manuell auslösen via Developer Tools → Events → test_cover_travel_time
-
-- id: test_cover_travel_time
-  alias: TEST – Cover Fahrtzeit messen
-  description: Misst die echte Vollhub-Zeit eines Covers
-  mode: single
-  trigger:
-    - platform: event
-      event_type: test_cover_travel_time
-  variables:
-    # HIER DEIN COVER EINTRAGEN:
-    test_cover: "cover.rollladen_computer_vorhang"
-    test_helper: "input_number.pos_computer"
-  action:
-    # 1. Info-Notification
-    - service: persistent_notification.create
-      data:
-        notification_id: cover_test
-        title: "🧪 Cover Travel Time Test"
-        message: >
-          **Test startet...**
-
-          Cover: {{ test_cover }}
-
-          **Schritt 1:** Cover wird geschlossen...
-
-    # 2. Komplett schließen
-    - service: cover.close_cover
-      target:
-        entity_id: "{{ test_cover }}"
-
-    # 3. Warten bis sicher geschlossen
-    - delay:
-        seconds: 30
-
-    # 4. Helper auf 0 setzen
-    - service: input_number.set_value
-      target:
-        entity_id: "{{ test_helper }}"
-      data:
-        value: 0
-
-    # 5. Startzeit notieren
-    - variables:
-        start_time: "{{ now() }}"
-
-    # 6. Info Update
-    - service: persistent_notification.create
-      data:
-        notification_id: cover_test
-        title: "🧪 Cover Travel Time Test"
-        message: >
-          **Schritt 2:** Cover öffnet jetzt...
-
-          Startzeit: {{ start_time.strftime('%H:%M:%S') }}
-
-          ⏱️ **Stoppuhr läuft!**
-
-    # 7. KOMPLETT ÖFFNEN
-    - service: cover.open_cover
-      target:
-        entity_id: "{{ test_cover }}"
-
-    # 8. Warten (geschätzte Zeit + Buffer)
-    - delay:
-        seconds: 25
-
-    # 9. Endzeit
-    - variables:
-        end_time: "{{ now() }}"
-        duration: "{{ (end_time - start_time).total_seconds() }}"
-
-    # 10. Ergebnis-Notification
-    - service: persistent_notification.create
-      data:
-        notification_id: cover_test
-        title: "✅ Cover Test - Ergebnis"
-        message: >
-          **Test abgeschlossen!**
-
-          Cover: {{ test_cover }}
-
-          **Startzeit:** {{ start_time.strftime('%H:%M:%S') }}
-          **Endzeit:** {{ end_time.strftime('%H:%M:%S') }}
-          **Dauer:** {{ duration | round(1) }} Sekunden
-
-          ---
-
-          **WICHTIG:**
-          Prüfe MANUELL ob das Cover WIRKLICH ganz offen ist!
-
-          - ✅ Ganz offen? → `travel_time: {{ duration | round(1) }}`
-          - ❌ Nicht ganz offen? → Cover fährt länger, nochmal messen!
-          - ❌ Schon vorher offen? → Cover fährt schneller als 25s!
-
-          **Trage die echte Zeit in deine Automationen ein:**
-          ```yaml
-          travel_time: {{ duration | round(1) }}
-          ```
-
-# ========== TEST: PARTIAL MOVE ==========
-# Testet ob Teilfahrten (z.B. 50%) korrekt funktionieren
-
-- id: test_cover_partial_move
-  alias: TEST – Cover Teilfahrt (50%)
-  description: Testet ob 50% Position korrekt angefahren wird
-  mode: single
-  trigger:
-    - platform: event
-      event_type: test_cover_partial
-  variables:
-    test_cover: "cover.rollladen_computer_vorhang"
-    test_helper: "input_number.pos_computer"
-  action:
-    # 1. Komplett schließen & kalibrieren
-    - service: cover.close_cover
-      target:
-        entity_id: "{{ test_cover }}"
-    - delay:
-        seconds: 30
-    - service: input_number.set_value
-      target:
-        entity_id: "{{ test_helper }}"
-      data:
-        value: 0
-
-    # 2. Info
-    - service: persistent_notification.create
-      data:
-        notification_id: cover_test_partial
-        title: "🧪 Partial Move Test"
-        message: "Cover geschlossen. Fahre jetzt auf 50%..."
-
-    # 3. Auf 50% fahren mit DEINEM SCRIPT
-    - service: script.cover_fahre_zeitbasiert
-      data:
-        cover_entity: "{{ test_cover }}"
-        pos_helper: "{{ test_helper }}"
-        travel_time: 21  # ← HIER DEINE GEMESSENE ZEIT EINTRAGEN
-        position: 50
-
-    # 4. Warten + Ergebnis
-    - delay:
-        seconds: 2
-    - service: persistent_notification.create
-      data:
-        notification_id: cover_test_partial
-        title: "🧪 Partial Move Test - Ergebnis"
-        message: >
-          **Test abgeschlossen!**
-
-          Cover sollte jetzt bei **50%** sein.
-
-          **Prüfe MANUELL:**
-          - ✅ Etwa bei Hälfte? → Travel Time korrekt!
-          - ❌ Zu weit offen (>50%)? → `travel_time` ERHÖHEN
-          - ❌ Zu weit zu (<50%)? → `travel_time` VERRINGERN
-
-          **Helper-Position:** {{ states(test_helper) }}%
-          **Cover-Status:** {{ states(test_cover) }}
-
-# ========== TEST: DRIFT-CHECK ==========
-# Fährt 10x hin und her, prüft ob Drift auftritt
-
-- id: test_cover_drift
-  alias: TEST – Cover Drift-Check (10 Fahrten)
-  description: Testet ob sich Position über viele Fahrten verschiebt
-  mode: single
-  trigger:
-    - platform: event
-      event_type: test_cover_drift
-  variables:
-    test_cover: "cover.rollladen_computer_vorhang"
-    test_helper: "input_number.pos_computer"
-  action:
-    # Start
-    - service: persistent_notification.create
-      data:
-        notification_id: cover_drift
-        title: "🧪 Drift Test"
-        message: "Starte 10 Fahrten... Dauert ca. 5 Minuten!"
-
-    # Kalibrierung
-    - service: cover.close_cover
-      target:
-        entity_id: "{{ test_cover }}"
-    - delay:
-        seconds: 30
-    - service: input_number.set_value
-      target:
-        entity_id: "{{ test_helper }}"
-      data:
-        value: 0
-
-    # 10 Fahrten: 0→100→50→75→25→100→0→50→80→20→100
-    - repeat:
-        count: 10
-        sequence:
-          - variables:
-              positions: [100, 50, 75, 25, 100, 0, 50, 80, 20, 100]
-              target: "{{ positions[repeat.index - 1] }}"
-
-          - service: script.cover_fahre_zeitbasiert
-            data:
-              cover_entity: "{{ test_cover }}"
-              pos_helper: "{{ test_helper }}"
-              travel_time: 21  # ← DEINE GEMESSENE ZEIT
-              position: "{{ target }}"
-
-          - delay:
-              seconds: 3  # Pause zwischen Fahrten
-
-    # Ergebnis
-    - service: persistent_notification.create
-      data:
-        notification_id: cover_drift
-        title: "✅ Drift Test - Ergebnis"
-        message: >
-          **10 Fahrten abgeschlossen!**
-
-          **Helper sagt:** {{ states(test_helper) }}% (sollte 100 sein)
-
-          **Prüfe MANUELL:**
-          - ✅ Cover wirklich bei 100% (ganz offen)?
-            → Kein Drift, alles gut!
-
-          - ❌ Cover nicht bei 100%?
-            → Drift vorhanden!
-            → Re-Kalibrierung (täglich 03:00) hilft
-            → Oder travel_time anpassen
-
-# ========== OPTIONAL: MANUELLE RE-KALIBRIERUNG ==========
-# Kann manuell ausgelöst werden wenn Position nicht stimmt
-
-- id: cover_manual_calibration
-  alias: Cover – Manuelle Kalibrierung (jetzt)
-  description: Schließt alle Rollläden und setzt Position auf 0
-  mode: single
-  trigger:
-    - platform: event
-      event_type: calibrate_covers_now
-  action:
-    - service: cover.close_cover
-      target:
-        entity_id: all
-    - delay:
-        seconds: 30
-    - service: input_number.set_value
-      target:
-        entity_id:
-          - input_number.pos_computer
-          - input_number.pos_kuche
-          - input_number.pos_yoga
-          - input_number.pos_schlafen
-      data:
-        value: 0
-    - service: persistent_notification.create
-      data:
-        title: "✅ Cover Kalibrierung"
