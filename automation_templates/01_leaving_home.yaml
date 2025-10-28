@@ -1,0 +1,306 @@
+# ============================================================================
+# AUTOMATION: "Haus verlassen" - One-Button-Solution
+# ============================================================================
+#
+# ZWECK: Alle vergessenen Aktionen beim Verlassen des Hauses automatisieren
+#
+# WAS PASSIERT:
+# - Alle Lichter ausschalten
+# - Heizung auf Eco-Modus (16°C)
+# - Rollläden optimal positionieren
+# - Fenster-Check mit Benachrichtigung
+# - FP2 Presence pausieren (optional)
+#
+# ANPASSUNGEN ERFORDERLICH:
+# 1. Ersetze alle Entity-IDs mit deinen tatsächlichen IDs
+# 2. Passe Temperaturen an deine Präferenzen an
+# 3. Wähle Trigger-Methode (Button, Device Tracker, etc.)
+#
+# SCHWIERIGKEIT: Einfach
+# ZEIT: 10 Minuten
+#
+# ============================================================================
+
+- id: leaving_home_automation
+  alias: "Haus verlassen"
+  description: "Schaltet alles aus und optimiert Einstellungen beim Verlassen des Hauses"
+
+  # ==========================================================================
+  # TRIGGER: Wähle EINE der folgenden Optionen (entferne # bei gewählter)
+  # ==========================================================================
+
+  trigger:
+    # OPTION A: Manueller Button (empfohlen für Start)
+    - platform: state
+      entity_id: input_boolean.leaving_home_trigger
+      to: "on"
+
+    # OPTION B: Device Tracker (Handy verlässt Heimnetzwerk)
+    # - platform: state
+    #   entity_id: device_tracker.dein_handy
+    #   from: "home"
+    #   to: "not_home"
+    #   for: "00:02:00"  # 2 Min Verzögerung (verhindert False-Trigger)
+
+    # OPTION C: Intelligente Detection (Tür + keine Bewegung)
+    # - platform: state
+    #   entity_id: binary_sensor.aqara_door_and_window_sensor_tur
+    #   to: "off"  # Tür geschlossen
+    # - platform: state
+    #   entity_id: binary_sensor.presence_sensor_fp2_combined
+    #   to: "off"  # Keine Bewegung
+    #   for: "00:30:00"  # 30 Min keine Bewegung
+
+  # ==========================================================================
+  # BEDINGUNGEN: Optional - verhindert Trigger zu falschen Zeiten
+  # ==========================================================================
+
+  condition: []
+    # Beispiel: Nur wenn jemand wirklich weg ist
+    # - condition: state
+    #   entity_id: binary_sensor.presence_sensor_fp2_combined
+    #   state: "off"
+    #   for: "00:05:00"
+
+  # ==========================================================================
+  # AKTIONEN: Haupt-Logik
+  # ==========================================================================
+
+  action:
+    # ------------------------------------------------------------------------
+    # 1. ALLE LICHTER AUSSCHALTEN
+    # ------------------------------------------------------------------------
+    - service: light.turn_off
+      target:
+        entity_id:
+          # ⚠️ ERSETZE MIT DEINEN LICHT-ENTITY-IDs
+          - light.bad
+          - light.bett_licht
+          - light.buffet_lichtstreifen
+          - light.computer_licht
+          - light.kiffzimmer_lichtstreifen
+          - light.kuche_birne_1
+          - light.kuche_birne_2
+          - light.kuche_streifen
+          - light.schlafzimmer_licht
+          - light.kleiderschrank
+          # Füge ALLE deine 28 Lichter hinzu!
+      data:
+        transition: 2  # Sanftes Ausblenden über 2 Sekunden
+      continue_on_error: true  # Weiter auch wenn ein Licht offline ist
+
+    # ------------------------------------------------------------------------
+    # 2. HEIZUNG AUF ECO-MODUS
+    # ------------------------------------------------------------------------
+    - service: climate.set_temperature
+      target:
+        entity_id:
+          # ⚠️ ERSETZE MIT DEINEN THERMOSTAT-ENTITY-IDs
+          - climate.thermostat_bad
+          - climate.thermostat_computer
+      data:
+        temperature: 16  # ⚠️ ANPASSEN: Eco-Temperatur
+      continue_on_error: true
+
+    # Optional: Heizung komplett aus (statt Eco)
+    # - service: climate.set_hvac_mode
+    #   target:
+    #     entity_id:
+    #       - climate.thermostat_bad
+    #       - climate.thermostat_computer
+    #   data:
+    #     hvac_mode: "off"
+
+    # ------------------------------------------------------------------------
+    # 3. ROLLLÄDEN OPTIMIEREN (Sommer vs. Winter)
+    # ------------------------------------------------------------------------
+
+    # Variante A: Sommer (Hitze-Schutz - Rollläden ZU)
+    - choose:
+        - conditions:
+            - condition: numeric_state
+              entity_id: sensor.openweathermap_temperature
+              above: 25  # ⚠️ ANPASSEN: Ab welcher Temperatur "Sommer"
+          sequence:
+            - service: cover.close_cover
+              target:
+                entity_id:
+                  # ⚠️ ERSETZE MIT DEINEN ROLLLADEN-ENTITY-IDs
+                  - cover.rollladen_computer_vorhang
+                  - cover.kuche_blind_vorhang
+                  - cover.schlafen_blind_vorhang
+                  - cover.yoga_blind_vorhang
+              continue_on_error: true
+
+      # Variante B: Winter oder Übergangszeit (Rollläden HALB)
+      default:
+        - service: cover.set_cover_position
+          target:
+            entity_id:
+              # ⚠️ ERSETZE MIT DEINEN ROLLLADEN-ENTITY-IDs
+              - cover.rollladen_computer_vorhang
+              - cover.kuche_blind_vorhang
+              - cover.schlafen_blind_vorhang
+              - cover.yoga_blind_vorhang
+          data:
+            position: 50  # ⚠️ ANPASSEN: 0=zu, 100=auf, 50=halb
+          continue_on_error: true
+
+    # ------------------------------------------------------------------------
+    # 4. FENSTER/TÜR-CHECK → BENACHRICHTIGUNG FALLS OFFEN
+    # ------------------------------------------------------------------------
+    - choose:
+        - conditions:
+            - condition: or
+              conditions:
+                # ⚠️ ERSETZE MIT DEINEN FENSTER/TÜR-SENSOR-ENTITY-IDs
+                - condition: state
+                  entity_id: binary_sensor.aqara_door_and_window_sensor_tur
+                  state: "on"  # on = offen
+                - condition: state
+                  entity_id: binary_sensor.aqara_door_and_window_sensor_tur_2
+                  state: "on"
+          sequence:
+            # Benachrichtigung via Alexa
+            - service: notify.alexa_media_wohnzimmer
+              data:
+                title: "⚠️ Fenster/Tür offen!"
+                message: "Du verlässt das Haus, aber ein Fenster oder eine Tür ist noch offen."
+
+            # Optional: Benachrichtigung aufs Handy
+            # - service: notify.mobile_app_dein_handy
+            #   data:
+            #     title: "⚠️ Fenster/Tür offen!"
+            #     message: "Ein Fenster oder Tür ist noch offen beim Verlassen."
+            #     data:
+            #       actions:
+            #         - action: "CLOSE_WINDOWS"
+            #           title: "Alle schließen"
+            #         - action: "IGNORE"
+            #           title: "Ignorieren"
+
+    # ------------------------------------------------------------------------
+    # 5. FP2 PRESENCE PAUSIEREN (optional)
+    # ------------------------------------------------------------------------
+    # Verhindert False-Trigger während Abwesenheit
+
+    # - service: switch.turn_off
+    #   target:
+    #     entity_id: switch.presence_sensor_fp2_approach_distance  # Beispiel
+    #   continue_on_error: true
+
+    # ------------------------------------------------------------------------
+    # 6. STATUS SETZEN (Helper für andere Automationen)
+    # ------------------------------------------------------------------------
+
+    # Optional: Input Boolean "away_mode" setzen
+    # (Muss erst erstellt werden: Configuration → Helpers → Boolean)
+
+    # - service: input_boolean.turn_on
+    #   target:
+    #     entity_id: input_boolean.away_mode
+
+    # ------------------------------------------------------------------------
+    # 7. LOG-EINTRAG
+    # ------------------------------------------------------------------------
+    - service: logbook.log
+      data:
+        name: "Haus verlassen"
+        message: "Alle Systeme auf Abwesenheits-Modus gesetzt"
+
+  # ==========================================================================
+  # TRIGGER-RESET (nur bei manuellem Button)
+  # ==========================================================================
+
+  # Falls input_boolean als Trigger: Nach Automation wieder ausschalten
+  mode: single  # Nur eine Instanz gleichzeitig
+
+# ============================================================================
+# ZUSATZ-AUTOMATION: "Nach Hause gekommen"
+# ============================================================================
+# Macht "Haus verlassen" teilweise rückgängig
+
+- id: arriving_home_automation
+  alias: "Nach Hause gekommen"
+  description: "Aktiviert Willkommens-Einstellungen beim Heimkommen"
+
+  trigger:
+    # OPTION A: Manueller Button
+    - platform: state
+      entity_id: input_boolean.arriving_home_trigger
+      to: "on"
+
+    # OPTION B: Device Tracker
+    # - platform: state
+    #   entity_id: device_tracker.dein_handy
+    #   from: "not_home"
+    #   to: "home"
+
+  action:
+    # Heizung auf Komfort-Temperatur
+    - service: climate.set_temperature
+      target:
+        entity_id:
+          - climate.thermostat_bad
+          - climate.thermostat_computer
+      data:
+        temperature: 20  # ⚠️ ANPASSEN
+      continue_on_error: true
+
+    # Willkommens-Licht im Flur
+    # - service: light.turn_on
+    #   target:
+    #     entity_id: light.flur
+    #   data:
+    #     brightness_pct: 80
+    #   continue_on_error: true
+
+    # FP2 Presence wieder aktivieren
+    # - service: switch.turn_on
+    #   target:
+    #     entity_id: switch.presence_sensor_fp2_approach_distance
+    #   continue_on_error: true
+
+    # Away-Mode deaktivieren
+    # - service: input_boolean.turn_off
+    #   target:
+    #     entity_id: input_boolean.away_mode
+
+  mode: single
+
+# ============================================================================
+# BENÖTIGTE HELPERS (OPTIONAL)
+# ============================================================================
+#
+# Gehe zu: Configuration → Helpers → Create Helper
+#
+# 1. INPUT BOOLEAN: leaving_home_trigger
+#    - Name: "Haus verlassen Trigger"
+#    - Icon: mdi:exit-run
+#
+# 2. INPUT BOOLEAN: arriving_home_trigger
+#    - Name: "Nach Hause gekommen Trigger"
+#    - Icon: mdi:home-import-outline
+#
+# 3. INPUT BOOLEAN: away_mode (optional)
+#    - Name: "Abwesenheits-Modus"
+#    - Icon: mdi:home-off
+#
+# ============================================================================
+# DASHBOARD-KONFIGURATION
+# ============================================================================
+#
+# Füge zum Dashboard hinzu (UI oder YAML):
+#
+# type: entities
+# entities:
+#   - entity: input_boolean.leaving_home_trigger
+#     name: "🚪 Haus verlassen"
+#     tap_action:
+#       action: toggle
+#   - entity: input_boolean.arriving_home_trigger
+#     name: "🏠 Ich bin zurück"
+#     tap_action:
+#       action: toggle
+#
+# ============================================================================

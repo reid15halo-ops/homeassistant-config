@@ -1,0 +1,328 @@
+# ============================================================================
+# AUTOMATION: "Gute Nacht" - Bettgeh-Routine
+# ============================================================================
+#
+# ZWECK: Alle Aktionen beim Schlafengehen mit einem Knopf
+#
+# WAS PASSIERT:
+# - Alle Lichter ausschalten (mit kurzer Nachtlicht-Phase)
+# - Alle Rollläden runterfahren
+# - Heizung auf Schlaf-Temperatur
+# - Fenster/Tür-Check mit Warnung
+# - Optional: Smart Plugs ausschalten (PC, etc.)
+#
+# ANPASSUNGEN ERFORDERLICH:
+# 1. Entity-IDs ersetzen
+# 2. Temperaturen anpassen
+# 3. Trigger-Methode wählen
+#
+# SCHWIERIGKEIT: Einfach
+# ZEIT: 10 Minuten
+#
+# ============================================================================
+
+- id: good_night_routine
+  alias: "Gute Nacht"
+  description: "Schaltet alle Systeme für die Nacht um"
+
+  # ==========================================================================
+  # TRIGGER
+  # ==========================================================================
+
+  trigger:
+    # OPTION A: Manueller Button (empfohlen)
+    - platform: state
+      entity_id: input_boolean.good_night_trigger
+      to: "on"
+
+    # OPTION B: Zeitbasiert + keine Bewegung
+    # - platform: time
+    #   at: "23:00:00"
+    # - platform: state
+    #   entity_id: binary_sensor.presence_sensor_fp2_combined
+    #   to: "off"
+    #   for: "00:20:00"  # 20 Min keine Bewegung nach 23 Uhr
+
+    # OPTION C: Sprachbefehl (via Alexa Routine)
+    # Erstelle Alexa-Routine die input_boolean.good_night_trigger aktiviert
+
+  condition: []
+
+  # ==========================================================================
+  # AKTIONEN
+  # ==========================================================================
+
+  action:
+    # ------------------------------------------------------------------------
+    # 1. ALLE ROLLLÄDEN RUNTERFAHREN (zuerst, dauert am längsten)
+    # ------------------------------------------------------------------------
+    - service: cover.close_cover
+      target:
+        entity_id:
+          # ⚠️ ERSETZE MIT DEINEN ROLLLADEN-ENTITY-IDs
+          - cover.rollladen_computer_vorhang
+          - cover.kuche_blind_vorhang
+          - cover.schlafen_blind_vorhang
+          - cover.yoga_blind_vorhang
+      continue_on_error: true
+
+    # ------------------------------------------------------------------------
+    # 2. HEIZUNG AUF SCHLAF-TEMPERATUR
+    # ------------------------------------------------------------------------
+
+    # Schlafzimmer: Kühl für guten Schlaf
+    - service: climate.set_temperature
+      target:
+        entity_id: climate.thermostat_schlafzimmer  # ⚠️ ANPASSEN falls vorhanden
+      data:
+        temperature: 18  # ⚠️ ANPASSEN: Optimal 16-19°C für Schlaf
+      continue_on_error: true
+
+    # Andere Räume: Eco-Modus
+    - service: climate.set_temperature
+      target:
+        entity_id:
+          - climate.thermostat_bad
+          - climate.thermostat_computer
+      data:
+        temperature: 16  # ⚠️ ANPASSEN: Eco während Nacht
+      continue_on_error: true
+
+    # ------------------------------------------------------------------------
+    # 3. NACHTLICHT-PHASE (30 Sekunden Orientierung)
+    # ------------------------------------------------------------------------
+
+    # Schlafzimmer-Licht auf 5% für 30 Sekunden
+    - service: light.turn_on
+      target:
+        entity_id: light.schlafzimmer_licht  # ⚠️ ANPASSEN
+      data:
+        brightness_pct: 5
+        color_temp: 500  # Warm-weiß (niedrige Kelvin)
+      continue_on_error: true
+
+    # Warte 30 Sekunden
+    - delay: "00:00:30"
+
+    # ------------------------------------------------------------------------
+    # 4. ALLE LICHTER AUSSCHALTEN
+    # ------------------------------------------------------------------------
+    - service: light.turn_off
+      target:
+        entity_id:
+          # ⚠️ ERSETZE MIT ALLEN DEINEN LICHT-ENTITY-IDs
+          - light.bad
+          - light.bett_licht
+          - light.buffet_lichtstreifen
+          - light.computer_licht
+          - light.kiffzimmer_lichtstreifen
+          - light.kuche_birne_1
+          - light.kuche_birne_2
+          - light.kuche_streifen
+          - light.schlafzimmer_licht
+          - light.kleiderschrank
+          # Füge ALLE deine 28 Lichter hinzu!
+      data:
+        transition: 3  # Sanftes Ausblenden über 3 Sekunden
+      continue_on_error: true
+
+    # ------------------------------------------------------------------------
+    # 5. SMART PLUGS AUSSCHALTEN (Optional)
+    # ------------------------------------------------------------------------
+
+    # PC ausschalten (falls Smart Plug vorhanden)
+    # - service: switch.turn_off
+    #   target:
+    #     entity_id: switch.pc_plug
+    #   continue_on_error: true
+
+    # Gaming-Geräte ausschalten
+    # - service: switch.turn_off
+    #   target:
+    #     entity_id:
+    #       - switch.monitor_plug
+    #       - switch.ps5_plug
+    #   continue_on_error: true
+
+    # ------------------------------------------------------------------------
+    # 6. FENSTER/TÜR-CHECK → WARNUNG
+    # ------------------------------------------------------------------------
+    - choose:
+        - conditions:
+            - condition: or
+              conditions:
+                # ⚠️ ERSETZE MIT DEINEN FENSTER/TÜR-SENSOREN
+                - condition: state
+                  entity_id: binary_sensor.aqara_door_and_window_sensor_tur
+                  state: "on"  # on = offen
+                - condition: state
+                  entity_id: binary_sensor.aqara_door_and_window_sensor_tur_2
+                  state: "on"
+          sequence:
+            # Alexa-Ansage
+            - service: notify.alexa_media_wohnzimmer
+              data:
+                message: "Achtung: Ein Fenster oder eine Tür ist noch offen. Möchtest du schlafen gehen?"
+                data:
+                  type: announce
+
+            # Optional: Handy-Benachrichtigung
+            # - service: notify.mobile_app_dein_handy
+            #   data:
+            #     title: "⚠️ Fenster/Tür offen!"
+            #     message: "Ein Fenster oder Tür ist noch offen vor dem Schlafengehen."
+            #     data:
+            #       tag: "window_open_night"
+            #       actions:
+            #         - action: "CLOSE_ALL"
+            #           title: "Alle schließen"
+            #         - action: "IGNORE"
+            #           title: "Ignorieren"
+
+    # ------------------------------------------------------------------------
+    # 7. STATUS SETZEN
+    # ------------------------------------------------------------------------
+
+    # Night-Mode aktivieren (Helper)
+    # - service: input_boolean.turn_on
+    #   target:
+    #     entity_id: input_boolean.night_mode
+
+    # ------------------------------------------------------------------------
+    # 8. LOG-EINTRAG
+    # ------------------------------------------------------------------------
+    - service: logbook.log
+      data:
+        name: "Gute Nacht"
+        message: "Alle Systeme auf Nacht-Modus gesetzt"
+
+  mode: single
+
+# ============================================================================
+# ZUSATZ-AUTOMATION: "Guten Morgen" (Umkehrung)
+# ============================================================================
+
+- id: good_morning_routine
+  alias: "Guten Morgen"
+  description: "Aktiviert Morgen-Einstellungen beim Aufwachen"
+
+  trigger:
+    # OPTION A: Wecker klingelt (falls Smart-Home-Integration)
+    # - platform: state
+    #   entity_id: sensor.next_alarm
+    #   # Trigger wenn Wecker klingelt
+
+    # OPTION B: Feste Zeit (Wochentags)
+    - platform: time
+      at: "06:30:00"
+
+    # OPTION C: Manueller Button
+    - platform: state
+      entity_id: input_boolean.good_morning_trigger
+      to: "on"
+
+  condition:
+    # Nur an Werktagen (optional)
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+
+  action:
+    # Heizung Bad vorheizen (fürs Duschen)
+    - service: climate.set_temperature
+      target:
+        entity_id: climate.thermostat_bad
+      data:
+        temperature: 22  # ⚠️ ANPASSEN: Warm fürs Duschen
+      continue_on_error: true
+
+    # Andere Räume: Komfort-Temperatur
+    - service: climate.set_temperature
+      target:
+        entity_id: climate.thermostat_computer
+      data:
+        temperature: 20
+      continue_on_error: true
+
+    # Schlafzimmer-Licht sanft hochdimmen (Lichtwecker-Effekt)
+    - service: light.turn_on
+      target:
+        entity_id: light.schlafzimmer_licht
+      data:
+        brightness_pct: 1
+        color_temp: 400  # Warm
+        transition: 0
+      continue_on_error: true
+
+    # Über 15 Minuten langsam auf 50% dimmen
+    - repeat:
+        count: 15
+        sequence:
+          - delay: "00:01:00"  # 1 Minute
+          - service: light.turn_on
+            target:
+              entity_id: light.schlafzimmer_licht
+            data:
+              brightness_pct: "{{ 1 + (repeat.index * 3) }}"  # +3% pro Minute
+              transition: 60
+            continue_on_error: true
+
+    # Rollläden langsam hochfahren (nach Lichtwecker)
+    - delay: "00:05:00"  # 5 Min warten
+    - service: cover.open_cover
+      target:
+        entity_id:
+          - cover.schlafen_blind_vorhang
+          - cover.kuche_blind_vorhang
+      continue_on_error: true
+
+    # Night-Mode deaktivieren
+    # - service: input_boolean.turn_off
+    #   target:
+    #     entity_id: input_boolean.night_mode
+
+  mode: single
+
+# ============================================================================
+# BENÖTIGTE HELPERS
+# ============================================================================
+#
+# Configuration → Helpers → Create Helper
+#
+# 1. INPUT BOOLEAN: good_night_trigger
+#    - Name: "Gute Nacht Trigger"
+#    - Icon: mdi:sleep
+#
+# 2. INPUT BOOLEAN: good_morning_trigger
+#    - Name: "Guten Morgen Trigger"
+#    - Icon: mdi:weather-sunny
+#
+# 3. INPUT BOOLEAN: night_mode (optional)
+#    - Name: "Nacht-Modus"
+#    - Icon: mdi:moon-waning-crescent
+#
+# ============================================================================
+# DASHBOARD-BUTTON
+# ============================================================================
+#
+# type: button
+# entity: input_boolean.good_night_trigger
+# name: "🌙 Gute Nacht"
+# icon: mdi:sleep
+# tap_action:
+#   action: toggle
+# show_state: false
+#
+# ============================================================================
+# ALEXA-INTEGRATION
+# ============================================================================
+#
+# Erstelle Alexa-Routine:
+# "Alexa, Gute Nacht"
+# → Aktiviere input_boolean.good_night_trigger
+#
+# ============================================================================

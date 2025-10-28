@@ -1,0 +1,205 @@
+# ============================================================================
+# Input Numbers - Configurable Thresholds and Parameters
+# ============================================================================
+# These replace hardcoded "magic numbers" throughout automations,
+# making them configurable via the UI.
+#
+# To use: Add to configuration.yaml:
+#   input_number: !include input_numbers.yaml
+# ============================================================================
+
+# Brightness Thresholds
+lux_threshold_bright:
+  name: "Brightness Threshold (Bright)"
+  min: 100
+  max: 1000
+  initial: 600
+  step: 50
+  unit_of_measurement: "lx"
+  icon: mdi:brightness-7
+  mode: slider
+
+lux_threshold_dark:
+  name: "Brightness Threshold (Dark)"
+  min: 0
+  max: 100
+  initial: 15
+  step: 5
+  unit_of_measurement: "lx"
+  icon: mdi:brightness-4
+  mode: slider
+
+lux_threshold_medium:
+  name: "Brightness Threshold (Medium)"
+  min: 50
+  max: 500
+  initial: 400
+  step: 25
+  unit_of_measurement: "lx"
+  icon: mdi:brightness-5
+  mode: slider
+
+# Cover Travel Times (seconds)
+cover_travel_time_computer:
+  name: "Computer Cover Travel Time"
+  min: 15
+  max: 30
+  initial: 21
+  step: 1
+  unit_of_measurement: "s"
+  icon: mdi:timer
+  mode: box
+
+cover_travel_time_kuche:
+  name: "Küche Cover Travel Time"
+  min: 15
+  max: 30
+  initial: 21
+  step: 1
+  unit_of_measurement: "s"
+  icon: mdi:timer
+  mode: box
+
+cover_travel_time_yoga:
+  name: "Yoga Cover Travel Time"
+  min: 15
+  max: 30
+  initial: 21
+  step: 1
+  unit_of_measurement: "s"
+  icon: mdi:timer
+  mode: box
+
+cover_travel_time_schlafen:
+  name: "Schlafen Cover Travel Time"
+  min: 15
+  max: 30
+  initial: 21
+  step: 1
+  unit_of_measurement: "s"
+  icon: mdi:timer
+  mode: box
+
+# Cover Positions
+# Note: These already exist in your system (pos_computer, pos_kuche, etc.)
+# Listed here for reference only - DO NOT duplicate!
+#
+# pos_computer:  # Already exists
+# pos_kuche:     # Already exists
+# pos_yoga:      # Already exists
+# pos_schlafen:  # Already exists
+
+# Ventilation Parameters
+ventilation_wind_max:
+  name: "Max Wind Speed for Ventilation"
+  min: 5
+  max: 15
+  initial: 8
+  step: 0.5
+  unit_of_measurement: "m/s"
+  icon: mdi:weather-windy
+  mode: slider
+
+ventilation_temp_max:
+  name: "Max Temperature for Night Ventilation"
+  min: 18
+  max: 28
+  initial: 23
+  step: 0.5
+  unit_of_measurement: "°C"
+  icon: mdi:thermometer
+  mode: slider
+
+ventilation_humidity_max:
+  name: "Max Humidity for Ventilation"
+  min: 50
+  max: 95
+  initial: 85
+  step: 5
+  unit_of_measurement: "%"
+  icon: mdi:water-percent
+  mode: slider
+
+ventilation_dewpoint_max:
+  name: "Max Dewpoint for Ventilation"
+  min: 10
+  max: 20
+  initial: 16
+  step: 1
+  unit_of_measurement: "°C"
+  icon: mdi:water-thermometer
+  mode: slider
+
+# Motion Sensor Timeouts
+motion_timeout_bad:
+  name: "Bad Motion Timeout"
+  min: 30
+  max: 600
+  initial: 120
+  step: 30
+  unit_of_measurement: "s"
+  icon: mdi:timer-off
+  mode: slider
+
+motion_timeout_bett:
+  name: "Bett Motion Timeout"
+  min: 10
+  max: 120
+  initial: 20
+  step: 10
+  unit_of_measurement: "s"
+  icon: mdi:timer-off
+  mode: slider
+
+# Sun Position Thresholds
+sun_azimuth_min:
+  name: "Sun Azimuth Minimum (South Start)"
+  min: 90
+  max: 180
+  initial: 120
+  step: 5
+  unit_of_measurement: "°"
+  icon: mdi:sun-angle
+  mode: slider
+
+sun_azimuth_max:
+  name: "Sun Azimuth Maximum (South End)"
+  min: 180
+  max: 270
+  initial: 240
+  step: 5
+  unit_of_measurement: "°"
+  icon: mdi:sun-angle-outline
+  mode: slider
+
+sun_elevation_min:
+  name: "Sun Elevation Minimum"
+  min: 0
+  max: 30
+  initial: 10
+  step: 5
+  unit_of_measurement: "°"
+  icon: mdi:weather-sunny
+  mode: slider
+
+# Wecker Light Ramp
+wecker_ramp_duration:
+  name: "Wecker Light Ramp Duration"
+  min: 300
+  max: 3600
+  initial: 1800
+  step: 300
+  unit_of_measurement: "s"
+  icon: mdi:clock-time-four
+  mode: slider
+
+# Night Mode Brightness
+night_mode_brightness:
+  name: "Night Mode Light Brightness"
+  min: 5
+  max: 30
+  initial: 15
+  step: 5
+  unit_of_measurement: "%"
+  icon: mdi:brightness-3
+  mode: slider

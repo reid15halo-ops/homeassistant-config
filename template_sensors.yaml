@@ -1,0 +1,80 @@
+# ============================================================================
+# Template Sensors - Reusable Calculated Values
+# ============================================================================
+# These sensors eliminate duplicate calculations across automations
+# and provide centralized values that can be referenced system-wide.
+#
+# To use: Add to configuration.yaml:
+#   template: !include template_sensors.yaml
+# ============================================================================
+
+# Sun Position Suitability Check
+- binary_sensor:
+    - name: "Sun Position Suitable"
+      unique_id: sun_position_suitable
+      device_class: light
+      state: >
+        {% set azimuth = state_attr('sun.sun','azimuth')|float(0) %}
+        {% set elevation = state_attr('sun.sun','elevation')|float(0) %}
+        {{ azimuth >= 120 and azimuth <= 240 and elevation > 10 }}
+      attributes:
+        azimuth: "{{ state_attr('sun.sun','azimuth')|float(0) }}"
+        elevation: "{{ state_attr('sun.sun','elevation')|float(0) }}"
+        friendly_name: "Sun in Suitable Position (120-240° azimuth, >10° elevation)"
+
+# FP2 Sensor Shortcuts
+- sensor:
+    - name: "FP2 Light Level"
+      unique_id: fp2_light_level
+      device_class: illuminance
+      unit_of_measurement: "lx"
+      state_class: measurement
+      state: >
+        {{ states('sensor.presence_sensor_fp2_f9cf_light_sensor_light_level')|int(0) }}
+
+- binary_sensor:
+    - name: "FP2 Presence Combined"
+      unique_id: fp2_presence_combined
+      device_class: occupancy
+      state: >
+        {{ is_state('binary_sensor.presence_sensor_fp2_f9cf_presence', 'on') }}
+
+# Outdoor Comfort Conditions (for ventilation automations)
+- binary_sensor:
+    - name: "Outdoor Ventilation Suitable"
+      unique_id: outdoor_ventilation_suitable
+      device_class: power
+      state: >
+        {% set wind = states('sensor.openweathermap_wind_speed')|float(99) %}
+        {% set temp = states('sensor.openweathermap_temperature')|float(99) %}
+        {% set humidity = states('sensor.openweathermap_humidity')|float(0) %}
+        {% set dewpoint = states('sensor.outdoor_dewpoint')|float(99) %}
+        {{ wind < 8 and temp <= 23 and humidity <= 85 and dewpoint <= 16 }}
+      attributes:
+        wind_speed: "{{ states('sensor.openweathermap_wind_speed')|float(99) }}"
+        temperature: "{{ states('sensor.openweathermap_temperature')|float(99) }}"
+        humidity: "{{ states('sensor.openweathermap_humidity')|float(0) }}"
+        dewpoint: "{{ states('sensor.outdoor_dewpoint')|float(99) }}"
+        friendly_name: "Conditions Suitable for Natural Ventilation"
+
+# Summer Operation Mode (location-based)
+- binary_sensor:
+    - name: "Summer Mode Active"
+      unique_id: summer_mode_active
+      device_class: heat
+      state: >
+        {{ is_state('binary_sensor.sommerbetrieb_ortsbasiert', 'on') }}
+
+# Brightness Thresholds (can be replaced with input_number helpers)
+- binary_sensor:
+    - name: "Brightness Bright"
+      unique_id: brightness_bright
+      device_class: light
+      state: >
+        {{ states('sensor.presence_sensor_fp2_f9cf_light_sensor_light_level')|int(0) >= 600 }}
+
+    - name: "Brightness Dark"
+      unique_id: brightness_dark
+      device_class: light
+      state: >
+        {{ states('sensor.presence_sensor_fp2_f9cf_light_sensor_light_level')|int(0) <= 15 }}
