@@ -22,7 +22,7 @@ lux_threshold_bright:
 lux_threshold_dark:
   name: "Brightness Threshold (Dark)"
   min: 0
-  max: 100
+  max: 400
   initial: 15
   step: 5
   unit_of_measurement: "lx"
@@ -42,8 +42,8 @@ lux_threshold_medium:
 # Cover Travel Times (seconds)
 cover_travel_time_computer:
   name: "Computer Cover Travel Time"
-  min: 15
-  max: 30
+  min: 1
+  max: 21
   initial: 21
   step: 1
   unit_of_measurement: "s"
@@ -52,8 +52,8 @@ cover_travel_time_computer:
 
 cover_travel_time_kuche:
   name: "Küche Cover Travel Time"
-  min: 15
-  max: 30
+  min: 1
+  max: 21
   initial: 21
   step: 1
   unit_of_measurement: "s"
@@ -62,8 +62,8 @@ cover_travel_time_kuche:
 
 cover_travel_time_yoga:
   name: "Yoga Cover Travel Time"
-  min: 15
-  max: 30
+  min: 1
+  max: 21
   initial: 21
   step: 1
   unit_of_measurement: "s"
@@ -72,8 +72,8 @@ cover_travel_time_yoga:
 
 cover_travel_time_schlafen:
   name: "Schlafen Cover Travel Time"
-  min: 15
-  max: 30
+  min: 1
+  max: 21
   initial: 21
   step: 1
   unit_of_measurement: "s"
@@ -134,7 +134,7 @@ ventilation_dewpoint_max:
 motion_timeout_bad:
   name: "Bad Motion Timeout"
   min: 30
-  max: 600
+  max: 150
   initial: 120
   step: 30
   unit_of_measurement: "s"
