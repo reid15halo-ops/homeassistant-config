@@ -30,11 +30,9 @@
     present: '{{ is_state(''binary_sensor.presence_sensor_fp2_f9cf_presence'',''on'')
       }}'
     t_out: '{{ states(''sensor.openweathermap_temperature'')|float(0) }}'
-    pos_blend: 10
-    pos_offen: 100
-    pos_offen_tag: 85
   action:
   - choose:
+    # Blendschutz: 10% Position = 2 Sekunden
     - conditions:
       - condition: template
         value_template: '{{ present and sun_ok and lux >= 600 }}'
@@ -42,48 +40,40 @@
         after: 08:00:00
         before: '19:30:00'
       sequence:
-      - condition: template
-        value_template: '{{ (states(''input_number.pos_computer'')|int) != pos_blend
-          }}'
-      - service: script.cover_fahre_zeitbasiert
-        data:
-          cover_entity: cover.rollladen_computer_vorhang
-          pos_helper: input_number.pos_computer
-          travel_time: 21
-          position: '{{ pos_blend }}'
-        continue_on_error: true
+      - service: cover.open_cover
+        target:
+          entity_id: cover.rollladen_computer_vorhang
+      - delay:
+          seconds: 2
+      - service: cover.stop_cover
+        target:
+          entity_id: cover.rollladen_computer_vorhang
+    # Teilweise offen bei warmem Wetter: 85% = 18 Sekunden
+    - conditions:
+      - condition: time
+        after: 08:00:00
+        before: '19:30:00'
+      - condition: numeric_state
+        entity_id: sensor.openweathermap_temperature
+        above: 20
+      sequence:
+      - service: cover.open_cover
+        target:
+          entity_id: cover.rollladen_computer_vorhang
+      - delay:
+          seconds: 18
+      - service: cover.stop_cover
+        target:
+          entity_id: cover.rollladen_computer_vorhang
+    # Komplett öffnen (Standard)
     - conditions:
       - condition: time
         after: 08:00:00
         before: '19:30:00'
       sequence:
-      - choose:
-        - conditions:
-          - condition: numeric_state
-            entity_id: sensor.openweathermap_temperature
-            above: 20
-          sequence:
-          - condition: template
-            value_template: '{{ (states(''input_number.pos_computer'')|int) != pos_offen_tag
-              }}'
-          - service: script.cover_fahre_zeitbasiert
-            data:
-              cover_entity: cover.rollladen_computer_vorhang
-              pos_helper: input_number.pos_computer
-              travel_time: 21
-              position: '{{ pos_offen_tag }}'
-            continue_on_error: true
-        default:
-        - condition: template
-          value_template: '{{ (states(''input_number.pos_computer'')|int) != pos_offen
-            }}'
-        - service: script.cover_fahre_zeitbasiert
-          data:
-            cover_entity: cover.rollladen_computer_vorhang
-            pos_helper: input_number.pos_computer
-            travel_time: 21
-            position: '{{ pos_offen }}'
-          continue_on_error: true
+      - service: cover.open_cover
+        target:
+          entity_id: cover.rollladen_computer_vorhang
 - id: rollers_heat_protect_south
   alias: Rollladen Süd – Hitzeschutz tagsüber (Küche & Yoga)
   mode: restart
@@ -122,10 +112,9 @@
   variables:
     sun_ok: "{{ (state_attr('sun.sun','azimuth')|float(0) >= 120) and\n   (state_attr('sun.sun','azimuth')|float(0)
       <= 240) and\n   (state_attr('sun.sun','elevation')|float(0) > 10) }}"
-    pos_schutz: 15
-    pos_offen: 100
   action:
   - choose:
+    # Hitzeschutz: 15% Position = 3 Sekunden
     - conditions:
       - condition: template
         value_template: '{{ sun_ok }}'
@@ -133,60 +122,35 @@
         entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
         above: 600
       sequence:
-      - choose:
-        - conditions:
-          - condition: template
-            value_template: '{{ (states(''input_number.pos_kuche'')|int) != pos_schutz
-              }}'
-          sequence:
-          - service: script.cover_fahre_zeitbasiert
-            data:
-              cover_entity: cover.kuche_blind_vorhang
-              pos_helper: input_number.pos_kuche
-              travel_time: 21
-              position: '{{ pos_schutz }}'
-      - choose:
-        - conditions:
-          - condition: template
-            value_template: '{{ (states(''input_number.pos_yoga'')|int) != pos_schutz
-              }}'
-          sequence:
-          - service: script.cover_fahre_zeitbasiert
-            data:
-              cover_entity: cover.yoga_blind_vorhang
-              pos_helper: input_number.pos_yoga
-              travel_time: 21
-              position: '{{ pos_schutz }}'
+      # Küche Hitzeschutz
+      - service: cover.open_cover
+        target:
+          entity_id: cover.kuche_blind_vorhang
+      - delay:
+          seconds: 3
+      - service: cover.stop_cover
+        target:
+          entity_id: cover.kuche_blind_vorhang
+      # Yoga Hitzeschutz
+      - service: cover.open_cover
+        target:
+          entity_id: cover.yoga_blind_vorhang
+      - delay:
+          seconds: 3
+      - service: cover.stop_cover
+        target:
+          entity_id: cover.yoga_blind_vorhang
+    # Komplett öffnen (Standard)
     default:
-    - choose:
-      - conditions:
-        - condition: template
-          value_template: '{{ (states(''input_number.pos_kuche'')|int) != pos_offen
-            }}'
-        sequence:
-        - service: script.cover_fahre_zeitbasiert
-          data:
-            cover_entity: cover.kuche_blind_vorhang
-            pos_helper: input_number.pos_kuche
-            travel_time: 21
-            position: '{{ pos_offen }}'
-    - choose:
-      - conditions:
-        - condition: template
-          value_template: '{{ (states(''input_number.pos_yoga'')|int) != pos_offen
-            }}'
-        sequence:
-        - service: script.cover_fahre_zeitbasiert
-          data:
-            cover_entity: cover.yoga_blind_vorhang
-            pos_helper: input_number.pos_yoga
-            travel_time: 21
-            position: '{{ pos_offen }}'
+    - service: cover.open_cover
+      target:
+        entity_id:
+          - cover.kuche_blind_vorhang
+          - cover.yoga_blind_vorhang
 - id: rollers_evening_flush_south
   alias: Rollladen Süd – Abendliche Frischluft (Küche, Yoga, Computer)
   mode: single
   variables:
-    pos_luft: 85
     wind_ok: '{{ states(''sensor.openweathermap_wind_speed'')|float(99) < 8 }}'
     temp_ok: '{{ states(''sensor.openweathermap_temperature'')|float(99) <= 23 }}'
     rh_ok: '{{ states(''sensor.openweathermap_humidity'')|float(0) <= 85 }}'
@@ -204,64 +168,64 @@
     state: 'on'
   action:
   - choose:
+    # Lüften: 85% Position = 18 Sekunden
     - conditions:
       - condition: trigger
         id: start
       sequence:
       - condition: template
         value_template: '{{ wind_ok and temp_ok and rh_ok and dp_ok }}'
-      - service: script.cover_fahre_zeitbasiert
-        data:
-          cover_entity: cover.kuche_blind_vorhang
-          pos_helper: input_number.pos_kuche
-          travel_time: 21
-          position: '{{ pos_luft }}'
-      - service: script.cover_fahre_zeitbasiert
-        data:
-          cover_entity: cover.yoga_blind_vorhang
-          pos_helper: input_number.pos_yoga
-          travel_time: 21
-          position: '{{ pos_luft }}'
-      - service: script.cover_fahre_zeitbasiert
-        data:
-          cover_entity: cover.rollladen_computer_vorhang
-          pos_helper: input_number.pos_computer
-          travel_time: 21
-          position: '{{ pos_luft }}'
+      # Küche Lüften
+      - service: cover.open_cover
+        target:
+          entity_id: cover.kuche_blind_vorhang
+      - delay:
+          seconds: 18
+      - service: cover.stop_cover
+        target:
+          entity_id: cover.kuche_blind_vorhang
+      # Yoga Lüften
+      - service: cover.open_cover
+        target:
+          entity_id: cover.yoga_blind_vorhang
+      - delay:
+          seconds: 18
+      - service: cover.stop_cover
+        target:
+          entity_id: cover.yoga_blind_vorhang
+      # Computer Lüften
+      - service: cover.open_cover
+        target:
+          entity_id: cover.rollladen_computer_vorhang
+      - delay:
+          seconds: 18
+      - service: cover.stop_cover
+        target:
+          entity_id: cover.rollladen_computer_vorhang
+    # Komplett öffnen (Standard bei 23:30)
     default:
-    - service: script.cover_fahre_zeitbasiert
-      data:
-        cover_entity: cover.kuche_blind_vorhang
-        pos_helper: input_number.pos_kuche
-        travel_time: 21
-        position: 100
-    - service: script.cover_fahre_zeitbasiert
-      data:
-        cover_entity: cover.yoga_blind_vorhang
-        pos_helper: input_number.pos_yoga
-        travel_time: 21
-        position: 100
-    - service: script.cover_fahre_zeitbasiert
-      data:
-        cover_entity: cover.rollladen_computer_vorhang
-        pos_helper: input_number.pos_computer
-        travel_time: 21
-        position: 100
+    - service: cover.open_cover
+      target:
+        entity_id:
+          - cover.kuche_blind_vorhang
+          - cover.yoga_blind_vorhang
+          - cover.rollladen_computer_vorhang
 - id: schlafen_vorlueften_2100
   alias: Schlafen – Vor-Lüften 21:00 (inkl. Ventilator Winter/Low)
   mode: single
   trigger:
   - platform: time
     at: '21:00:00'
-  variables:
-    pos_luft: 85
   action:
-  - service: script.cover_fahre_zeitbasiert
-    data:
-      cover_entity: cover.schlafen_blind_vorhang
-      pos_helper: input_number.pos_schlafen
-      travel_time: 21
-      position: '{{ pos_luft }}'
+  # Lüften: 85% Position = 18 Sekunden
+  - service: cover.open_cover
+    target:
+      entity_id: cover.schlafen_blind_vorhang
+  - delay:
+      seconds: 18
+  - service: cover.stop_cover
+    target:
+      entity_id: cover.schlafen_blind_vorhang
   - service: script.turn_on
     target:
       entity_id: script.ventilator_wintermodus_low
@@ -275,12 +239,9 @@
     - condition: time
       weekday: [mon, tue, wed, thu, fri]
   actions:
-    - service: script.cover_fahre_zeitbasiert
-      data:
-        cover_entity: cover.schlafen_blind_vorhang
-        pos_helper: input_number.pos_schlafen
-        travel_time: 21
-        position: 0
+    - service: cover.close_cover
+      target:
+        entity_id: cover.schlafen_blind_vorhang
       continue_on_error: true
     # Close additional cover (device e21cdce801f7b99185001e7544b1c32a)
     - service: cover.close_cover
@@ -297,11 +258,9 @@
     - condition: time
       weekday: [sat, sun]
   actions:
-    - service: script.cover_fahre_zeitbasiert
-      data:
-        cover_entity: cover.schlafen_blind_vorhang
-        pos_helper: input_number.pos_schlafen
-        travel_time: 21
+    - service: cover.open_cover
+      target:
+        entity_id: cover.schlafen_blind_vorhang
       continue_on_error: true
     # Close additional cover (device e21cdce801f7b99185001e7544b1c32a)
     - service: cover.close_cover
@@ -722,14 +681,9 @@
     entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
     below: 400
   actions:
-  - condition: template
-    value_template: '{{ (states(''input_number.pos_computer'')|int) != 100 }}'
-  - data:
-      cover_entity: cover.rollladen_computer_vorhang
-      pos_helper: input_number.pos_computer
-      travel_time: 21
-      position: 100
-    action: script.cover_fahre_zeitbasiert
+  - service: cover.open_cover
+    target:
+      entity_id: cover.rollladen_computer_vorhang
   mode: restart
 - id: nachtmodus_dimme_lichter
   alias: Nachtmodus – Neue Lichter auf 15 % dimmen (23:30–05:00)
@@ -1447,20 +1401,12 @@
       weekday: [mon, tue, wed, thu, fri]
   action:
     # Rollläden öffnen (außer Computer wegen Blendung)
-    - action: script.cover_fahre_zeitbasiert
-      data:
-        cover_entity: kuche_blind_vorhang
-        cover_entity: rollladen_computer_vorhang
-        cover_entity: yoga_blind_vorhang
-        cover_entity: schlafen_blind_vorhang
-        pos_helper: input_number.pos_kuche
-        travel_time: 21
-
-    - action: script.cover_fahre_zeitbasiert
-      data:
-        cover_entity: yoga_blind_vorhang
-        pos_helper: input_number.pos_yoga
-        travel_time: 21
+    - service: cover.open_cover
+      target:
+        entity_id:
+          - cover.kuche_blind_vorhang
+          - cover.yoga_blind_vorhang
+          - cover.schlafen_blind_vorhang
 
     # Küchenlicht gedimmt
     - action: light.turn_on
@@ -1818,19 +1764,11 @@
     - condition: time
       weekday: [mon, tue, wed, thu, fri]
   action:
-    - service: script.cover_fahre_zeitbasiert
-      data:
-        cover_entity: cover.kuche_blind_vorhang
-        pos_helper: input_number.pos_kuche
-        travel_time: 21
-        position: 100
-
-    - service: script.cover_fahre_zeitbasiert
-      data:
-        cover_entity: cover.yoga_blind_vorhang
-        pos_helper: input_number.pos_yoga
-        travel_time: 21
-        position: 100
+    - service: cover.open_cover
+      target:
+        entity_id:
+          - cover.kuche_blind_vorhang
+          - cover.yoga_blind_vorhang
 
 # Morgens Wochenende (später!)
 - id: roller_morgen_wochenende
@@ -1843,19 +1781,11 @@
     - condition: time
       weekday: [sat, sun]
   action:
-    - service: script.cover_fahre_zeitbasiert
-      data:
-        cover_entity: cover.kuche_blind_vorhang
-        pos_helper: input_number.pos_kuche
-        travel_time: 21
-        position: 100
-
-    - service: script.cover_fahre_zeitbasiert
-      data:
-        cover_entity: cover.yoga_blind_vorhang
-        pos_helper: input_number.pos_yoga
-        travel_time: 21
-        position: 100
+    - service: cover.open_cover
+      target:
+        entity_id:
+          - cover.kuche_blind_vorhang
+          - cover.yoga_blind_vorhang
 
 # Abends (alle Tage)
 - id: roller_abend_alle
@@ -1942,11 +1872,9 @@
       weekday: [sat, sun]
   action:
     # Rollläden sanft öffnen
-    - service: script.cover_fahre_zeitbasiert
-      data:
-        cover_entity: cover.schlafen_blind_vorhang
-        pos_helper: input_number.pos_schlafen
-        travel_time: 21
+    - service: cover.open_cover
+      target:
+        entity_id: cover.schlafen_blind_vorhang
 
     # Licht sanft hochdimmen
     - service: light.turn_on
@@ -2015,17 +1943,7 @@
     - delay:
         seconds: 30
 
-    # 3. Alle Position-Helper auf 0 setzen
-    - service: input_number.set_value
-      target:
-        entity_id:
-          - input_number.pos_computer
-          - input_number.pos_kuche
-          - input_number.pos_yoga
-          - input_number.pos_schlafen
-      data:
-        value: 0
-      continue_on_error: true
+    # 3. Position-Helper nicht mehr benötigt (entfernt - verwenden jetzt Timing-basierte Steuerung)
 
     # 4. Logging
     - service: system_log.write
@@ -2046,7 +1964,6 @@
       event_type: test_cover_partial
   variables:
     test_cover: "cover.rollladen_computer_vorhang"
-    test_helper: "input_number.pos_computer"
   action:
     # 1. Komplett schließen & kalibrieren
     - service: cover.close_cover
@@ -2054,11 +1971,6 @@
         entity_id: "{{ test_cover }}"
     - delay:
         seconds: 30
-    - service: input_number.set_value
-      target:
-        entity_id: "{{ test_helper }}"
-      data:
-        value: 0
 
     # 2. Info
     - service: persistent_notification.create
@@ -2067,13 +1979,15 @@
         title: "🧪 Partial Move Test"
         message: "Cover geschlossen. Fahre jetzt auf 50%..."
 
-    # 3. Auf 50% fahren mit DEINEM SCRIPT
-    - service: script.cover_fahre_zeitbasiert
-      data:
-        cover_entity: "{{ test_cover }}"
-        pos_helper: "{{ test_helper }}"
-        travel_time: 11  # ← HIER DEINE GEMESSENE ZEIT EINTRAGEN
-        position: 50
+    # 3. Auf 50% fahren (10.5 Sekunden = 50% von 21 Sekunden)
+    - service: cover.open_cover
+      target:
+        entity_id: "{{ test_cover }}"
+    - delay:
+        seconds: 10.5
+    - service: cover.stop_cover
+      target:
+        entity_id: "{{ test_cover }}"
 
     # 4. Warten + Ergebnis
     - delay:
@@ -2478,23 +2392,12 @@
               id: morning
 
           sequence:
-            - service: script.cover_fahre_zeitbasiert
-              data:
-                cover_entity: cover.rollladen_computer_vorhang
-                pos_helper: input_number.pos_computer
-                travel_time: 21
-
-            - service: script.cover_fahre_zeitbasiert
-              data:
-                cover_entity: cover.kuche_blind_vorhang
-                pos_helper: input_number.pos_kuche
-                travel_time: 21
-
-            - service: script.cover_fahre_zeitbasiert
-              data:
-                cover_entity: cover.yoga_blind_vorhang
-                pos_helper: input_number.pos_yoga
-                travel_time: 21
+            - service: cover.open_cover
+              target:
+                entity_id:
+                  - cover.rollladen_computer_vorhang
+                  - cover.kuche_blind_vorhang
+                  - cover.yoga_blind_vorhang
 
         # Abends → Rollläden ZU (Wärmedämmung)
         - conditions:
