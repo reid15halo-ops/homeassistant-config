@@ -324,12 +324,18 @@
   description: "Turns on kitchen lights. Respects Gaming Mode (snack break)."
   trigger:
     - platform: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_3
+      entity_id: binary_sensor.motion_sensor_kuche_bewegung
       to: "on"
   condition:
-    - condition: numeric_state
-      entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
-      below: 50
+    # Check light level if available, otherwise just time based or always on
+    - condition: or
+      conditions:
+        - condition: sun
+          after: sunset
+          before: sunrise
+        - condition: numeric_state
+          entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level # Use Living Room light sensor as proxy if needed, or remove
+          below: 50
   action:
     - choose:
         # If Gaming Mode is ON -> Snack Break (Dim light only)
@@ -363,7 +369,7 @@
   description: "Turns off kitchen lights after 120s."
   trigger:
     - platform: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_3
+      entity_id: binary_sensor.motion_sensor_kuche_bewegung
       to: "off"
       for:
         seconds: 120
@@ -414,21 +420,17 @@
 
 - id: "bedroom_sleep_mode"
   alias: "Schlafzimmer - Schlafmodus Aktivieren"
-  description: "Activates Sleep Mode if in bed for 15 mins after 10 PM."
+  description: "Activates Sleep Mode if motion detected after 10 PM."
   trigger:
     - platform: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_5 # Bed Zone
+      entity_id: binary_sensor.motion_sensor_schlafen_bewegung
       to: "on"
       for:
-        minutes: 15
+        minutes: 15 # Assuming continuous motion/presence
   condition:
     - condition: time
       after: "22:00"
       before: "08:00"
-    # Ensure no one else is in the house
-    - condition: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
-      state: "off"
   action:
     - service: light.turn_off
       target:
@@ -643,7 +645,7 @@
   description: "Distributes heat in bedroom during winter (reverse, low speed)."
   trigger:
     - platform: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_5 # Bed Zone
+      entity_id: binary_sensor.motion_sensor_schlafen_bewegung
       to: "on"
   condition:
     - condition: template
@@ -664,7 +666,7 @@
       entity_id: sensor.motion_sensor_schlafen_temperatur
       above: 23
     - platform: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_5
+      entity_id: binary_sensor.motion_sensor_schlafen_bewegung
       to: "on"
   condition:
     - condition: template
@@ -673,7 +675,7 @@
       entity_id: sensor.motion_sensor_schlafen_temperatur
       above: 23
     - condition: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_5
+      entity_id: binary_sensor.motion_sensor_schlafen_bewegung
       state: "on"
   action:
     - service: fan.turn_on
@@ -685,10 +687,10 @@
 
 - id: "fan_bedroom_auto_off"
   alias: "Schlafzimmer Ventilator - Auto Aus"
-  description: "Turns off bedroom fan when bed is empty."
+  description: "Turns off bedroom fan when room is empty."
   trigger:
     - platform: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_5
+      entity_id: binary_sensor.motion_sensor_schlafen_bewegung
       to: "off"
       for:
         minutes: 5
