@@ -32,6 +32,7 @@
         entity_id:
           - light.computer_licht
           - light.buffet_lichtstreifen
+          - light.buffet_licht
       data:
         brightness_pct: 80
         color_temp_kelvin: 2700
@@ -89,7 +90,7 @@
           # Randomly turn on a light
           - service: light.turn_on
             target:
-              entity_id: "{{ ['light.computer_licht', 'light.buffet_lichtstreifen', 'light.kuche_birne_1'] | random }}"
+              entity_id: "{{ ['light.computer_licht', 'light.buffet_lichtstreifen', 'light.buffet_licht', 'light.kuche_birne_1'] | random }}"
             data:
               brightness_pct: "{{ range(50, 100) | random }}"
           # Wait random time (30-120 mins)
@@ -98,7 +99,7 @@
           # Randomly turn off a light
           - service: light.turn_off
             target:
-              entity_id: "{{ ['light.computer_licht', 'light.buffet_lichtstreifen', 'light.kuche_birne_1'] | random }}"
+              entity_id: "{{ ['light.computer_licht', 'light.buffet_lichtstreifen', 'light.buffet_licht', 'light.kuche_birne_1'] | random }}"
           - delay:
               minutes: "{{ range(15, 60) | random }}"
   mode: single
@@ -168,6 +169,7 @@
         entity_id:
           - light.computer_licht
           - light.buffet_lichtstreifen
+          - light.buffet_licht
       data:
         brightness_pct: "{{ 60 if now().hour >= 22 or now().hour < 6 else 80 }}"
         color_temp_kelvin: 2700
@@ -201,6 +203,7 @@
         entity_id:
           - light.computer_licht
           - light.buffet_lichtstreifen
+          - light.buffet_licht
   mode: single
 
 - id: "gaming_mode_activate"
@@ -254,6 +257,7 @@
         entity_id:
           - light.computer_licht
           - light.buffet_lichtstreifen
+          - light.buffet_licht
       data:
         brightness_pct: 60
         color_temp_kelvin: 2700
@@ -294,7 +298,9 @@
           - light.kuche_birne_2
     - service: light.turn_on
       target:
-        entity_id: light.buffet_lichtstreifen
+        entity_id:
+          - light.buffet_lichtstreifen
+          - light.buffet_licht
       data:
         brightness_pct: 20
         color_temp_kelvin: 2200
