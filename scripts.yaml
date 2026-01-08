@@ -12,7 +12,7 @@ fire_flicker_effect:
             entity_id: script.fire_flicker_effect
             state: "on"
         sequence:
-          # Micro-Step 1
+          # Segment 1: Starker Aufloderer
           - service: light.turn_on
             target:
               entity_id:
@@ -22,13 +22,45 @@ fire_flicker_effect:
               hs_color: [35, 100]
               brightness_pct: >
                 {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
-                {% set change = range(-8, 9) | random %}
+                {% set change = range(10, 20) | random %}
+                {{ max(10, min(100, current + change)) }}
+              transition: 0
+          - delay:
+              milliseconds: "{{ range(5, 15) | random }}"
+
+          # Segment 2: Schnelles Flackern
+          - service: light.turn_on
+            target:
+              entity_id:
+                - light.buffet_licht
+                - light.computer_licht_2
+            data:
+              hs_color: [35, 100]
+              brightness_pct: >
+                {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
+                {% set change = range(-15, 15) | random %}
+                {{ max(10, min(100, current + change)) }}
+              transition: 0
+          - delay:
+              milliseconds: "{{ range(8, 12) | random }}"
+
+          # Segment 3: Abschwächung
+          - service: light.turn_on
+            target:
+              entity_id:
+                - light.buffet_licht
+                - light.computer_licht_2
+            data:
+              hs_color: [35, 100]
+              brightness_pct: >
+                {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
+                {% set change = range(-12, -5) | random %}
                 {{ max(10, min(100, current + change)) }}
               transition: 0
           - delay:
               milliseconds: "{{ range(10, 20) | random }}"
 
-          # Micro-Step 2
+          # Segment 4: Glut-Phase
           - service: light.turn_on
             target:
               entity_id:
@@ -38,13 +70,93 @@ fire_flicker_effect:
               hs_color: [35, 100]
               brightness_pct: >
                 {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
-                {% set change = range(-8, 9) | random %}
+                {% set change = range(-5, 5) | random %}
+                {{ max(10, min(40, current + change)) }}
+              transition: 0
+          - delay:
+              milliseconds: "{{ range(15, 25) | random }}"
+
+          # Segment 5: Explosive Spitze
+          - service: light.turn_on
+            target:
+              entity_id:
+                - light.buffet_licht
+                - light.computer_licht_2
+            data:
+              hs_color: [35, 100]
+              brightness_pct: >
+                {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
+                {% set change = range(15, 30) | random %}
                 {{ max(10, min(100, current + change)) }}
+              transition: 0
+          - delay:
+              milliseconds: "{{ range(5, 10) | random }}"
+
+          # Segment 6: Wilde Oszillation
+          - service: light.turn_on
+            target:
+              entity_id:
+                - light.buffet_licht
+                - light.computer_licht_2
+            data:
+              hs_color: [35, 100]
+              brightness_pct: >
+                {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
+                {% set change = range(-20, 20) | random %}
+                {{ max(10, min(100, current + change)) }}
+              transition: 0
+          - delay:
+              milliseconds: "{{ range(8, 15) | random }}"
+
+          # Segment 7: Sanftes Pulsieren
+          - service: light.turn_on
+            target:
+              entity_id:
+                - light.buffet_licht
+                - light.computer_licht_2
+            data:
+              hs_color: [35, 100]
+              brightness_pct: >
+                {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
+                {% set change = range(-8, 8) | random %}
+                {{ max(10, min(100, current + change)) }}
+              transition: 0
+          - delay:
+              milliseconds: "{{ range(12, 18) | random }}"
+
+          # Segment 8: Rapides Absinken
+          - service: light.turn_on
+            target:
+              entity_id:
+                - light.buffet_licht
+                - light.computer_licht_2
+            data:
+              hs_color: [35, 100]
+              brightness_pct: >
+                {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
+                {% set change = range(-18, -8) | random %}
+                {{ max(10, min(100, current + change)) }}
+              transition: 0
+          - delay:
+              milliseconds: "{{ range(10, 15) | random }}"
+
+          # Segment 9: Mittelstarkes Flackern
+          - service: light.turn_on
+            target:
+              entity_id:
+                - light.buffet_licht
+                - light.computer_licht_2
+            data:
+              hs_color: [35, 100]
+              brightness_pct: >
+                {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
+                {% set change = range(-10, 10) | random %}
+                {{ max(30, min(80, current + change)) }}
               transition: 0
           - delay:
               milliseconds: "{{ range(10, 20) | random }}"
 
-          # Micro-Step 3
+          # Segment 10: Überraschungs-Burst
           - service: light.turn_on
             target:
               entity_id:
@@ -54,43 +166,11 @@ fire_flicker_effect:
               hs_color: [35, 100]
               brightness_pct: >
                 {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
-                {% set change = range(-8, 9) | random %}
+                {% set change = range(20, 40) | random %}
                 {{ max(10, min(100, current + change)) }}
               transition: 0
           - delay:
-              milliseconds: "{{ range(10, 20) | random }}"
-
-          # Micro-Step 4
-          - service: light.turn_on
-            target:
-              entity_id:
-                - light.buffet_licht
-                - light.computer_licht_2
-            data:
-              hs_color: [35, 100]
-              brightness_pct: >
-                {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
-                {% set change = range(-8, 9) | random %}
-                {{ max(10, min(100, current + change)) }}
-              transition: 0
-          - delay:
-              milliseconds: "{{ range(10, 20) | random }}"
-
-          # Micro-Step 5
-          - service: light.turn_on
-            target:
-              entity_id:
-                - light.buffet_licht
-                - light.computer_licht_2
-            data:
-              hs_color: [35, 100]
-              brightness_pct: >
-                {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
-                {% set change = range(-8, 9) | random %}
-                {{ max(10, min(100, current + change)) }}
-              transition: 0
-          - delay:
-              milliseconds: "{{ range(10, 20) | random }}"
+              milliseconds: "{{ range(5, 10) | random }}"
   mode: restart
 
 ambient_velvet_rainbow:
