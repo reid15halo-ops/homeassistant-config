@@ -3,24 +3,30 @@
 # ============================================================================
 
 fire_flicker_effect:
-  alias: Ambient Fire Flicker
-  description: Realistic fire flicker effect for Computer and Buffet lights
+  alias: Fireplace Flicker Effect
+  description: Fast realistic fire effect for Computer and Buffet lights
   sequence:
     - repeat:
-        count: 40
+        while:
+          - condition: state
+            entity_id: script.fire_flicker_effect
+            state: "on"
         sequence:
+          # Main flicker for both lights
           - service: light.turn_on
             target:
               entity_id:
                 - light.buffet_licht
                 - light.computer_licht
             data:
-              brightness_pct: "{{ range(30, 85) | random }}"
-              color_temp_kelvin: "{{ range(2000, 2700) | random }}"
-              transition: "{{ (range(5, 15) | random) / 10 }}"
+              hs_color:
+                - "{{ range(15, 35) | random }}"
+                - "{{ range(85, 100) | random }}"
+              brightness_pct: "{{ range(40, 85) | random }}"
+              transition: "{{ (range(2, 8) | random) / 10 }}"
           - delay:
-              milliseconds: "{{ range(500, 1200) | random }}"
-  mode: single
+              milliseconds: "{{ range(300, 800) | random }}"
+  mode: restart
 
 ambient_velvet_rainbow:
   alias: "Ambient - Velvet Rainbow"
