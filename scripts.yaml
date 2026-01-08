@@ -1,0 +1,175 @@
+# ============================================================================
+# REID'S HOME ASSISTANT SCRIPTS
+# ============================================================================
+
+ambient_feuerlicht_warm_flicker:
+  alias: "Ambient - Feuerlicht Warm Flicker"
+  description: "Fire flicker effect for ambient lighting"
+  sequence:
+    - repeat:
+        count: 10
+        sequence:
+          - service: light.turn_on
+            target:
+              entity_id: light.buffet_lichtstreifen
+            data:
+              brightness_pct: "{{ range(40, 80) | random }}"
+              color_temp_kelvin: "{{ range(2000, 2700) | random }}"
+              transition: 0.3
+          - delay:
+              milliseconds: "{{ range(200, 800) | random }}"
+  mode: single
+
+ambient_velvet_rainbow:
+  alias: "Ambient - Velvet Rainbow"
+  description: "Smooth rainbow color cycling"
+  sequence:
+    - repeat:
+        count: 7
+        sequence:
+          - service: light.turn_on
+            target:
+              entity_id: light.buffet_lichtstreifen
+            data:
+              hs_color:
+                - "{{ range(0, 360) | random }}"
+                - 100
+              brightness_pct: 60
+              transition: 2
+          - delay:
+              seconds: 3
+  mode: single
+
+cover_fahre_zeitbasiert:
+  alias: "Cover - Fahre Zeitbasiert"
+  description: "Time-based cover control"
+  fields:
+    cover_entity:
+      description: "Cover entity to control"
+      example: "cover.rollladen_computer_vorhang"
+    position:
+      description: "Target position (0-100)"
+      example: "50"
+  sequence:
+    - service: cover.set_cover_position
+      target:
+        entity_id: "{{ cover_entity }}"
+      data:
+        position: "{{ position }}"
+  mode: single
+
+ventilator_wintermodus_low:
+  alias: "Ventilator - Wintermodus Low"
+  description: "Set ceiling fan to low speed for winter mode"
+  sequence:
+    - service: fan.set_percentage
+      target:
+        entity_id: fan.schlafzimmer_ventilator
+      data:
+        percentage: 25
+  mode: single
+
+# ============================================================================
+# ALEXA VOICE COMMAND SCRIPTS
+# ============================================================================
+
+guten_morgen:
+  alias: "Guten Morgen"
+  description: "Morning routine triggered by voice"
+  sequence:
+    - service: light.turn_on
+      target:
+        entity_id:
+          - light.kuche_birne_1
+          - light.kuche_birne_2
+      data:
+        brightness_pct: 80
+        color_temp_kelvin: 3000
+    - service: cover.open_cover
+      target:
+        entity_id: all
+  mode: single
+
+gute_nacht:
+  alias: "Gute Nacht"
+  description: "Night routine triggered by voice"
+  sequence:
+    - service: light.turn_off
+      target:
+        entity_id: all
+    - service: cover.close_cover
+      target:
+        entity_id: all
+    - service: climate.set_temperature
+      target:
+        entity_id:
+          - climate.thermostat_bad
+          - climate.thermostat_computer
+      data:
+        temperature: 17
+  mode: single
+
+ich_gehe:
+  alias: "Ich gehe"
+  description: "Leaving home routine"
+  sequence:
+    - service: light.turn_off
+      target:
+        entity_id: all
+    - service: climate.set_temperature
+      target:
+        entity_id:
+          - climate.thermostat_bad
+          - climate.thermostat_computer
+      data:
+        temperature: 18
+  mode: single
+
+ich_bin_zuruck:
+  alias: "Ich bin zurück"
+  description: "Arriving home routine"
+  sequence:
+    - service: light.turn_on
+      target:
+        entity_id:
+          - light.computer_licht
+          - light.buffet_lichtstreifen
+      data:
+        brightness_pct: 80
+        color_temp_kelvin: 2700
+    - service: climate.set_temperature
+      target:
+        entity_id:
+          - climate.thermostat_bad
+          - climate.thermostat_computer
+      data:
+        temperature: 23
+  mode: single
+
+filmzeit:
+  alias: "Filmzeit"
+  description: "Movie mode script"
+  sequence:
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.movie_mode
+  mode: single
+
+party:
+  alias: "Party"
+  description: "Party mode script"
+  sequence:
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.party_mode
+    - service: light.turn_on
+      target:
+        entity_id:
+          - light.buffet_lichtstreifen
+          - light.computer_licht
+      data:
+        brightness_pct: 100
+        hs_color:
+          - "{{ range(0, 360) | random }}"
+          - 100
+  mode: single
