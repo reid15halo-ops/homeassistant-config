@@ -233,10 +233,19 @@
       to: "on"
       for:
         minutes: 5
+    # Trigger on startup/reload if already sitting there
+    - platform: homeassistant
+      event: start
   condition:
     - condition: time
       after: "08:00"
       before: "03:00"
+    # Ensure user is actually there (for both triggers)
+    - condition: state
+      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
+      state: "on"
+      for:
+        minutes: 5
   action:
     - service: input_boolean.turn_on
       target:
