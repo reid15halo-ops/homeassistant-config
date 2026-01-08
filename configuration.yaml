@@ -193,6 +193,12 @@ input_boolean:
     icon: mdi:thermostat-auto
     initial: true
 
+  # Fire Effect (AppDaemon)
+  fire_effect:
+    name: "Fire Effect"
+    icon: mdi:fire
+    initial: off
+
 # ============================================================================
 # INPUT SELECT - Szenen & Modi
 # ============================================================================
