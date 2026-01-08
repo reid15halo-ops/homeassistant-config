@@ -71,7 +71,7 @@
           - light.yoga_blind_hintergrundbeleuchtung
           - light.kuche_brine_1
           - light.kuche_birne_2_2
-          - light.kuche_streifen
+          - light.kitchen_furniture
           - light.kuche_blind_hintergrundbeleuchtung
           - light.bad_2
           - light.bett_licht_2
@@ -383,7 +383,7 @@
         entity_id:
           - light.kuche_brine_1
           - light.kuche_birne_2_2
-          - light.kuche_streifen
+          - light.kitchen_furniture
           - light.kuche_blind_hintergrundbeleuchtung
       data:
         brightness_pct: "{{ 50 if now().hour >= 22 else 100 }}"
@@ -405,7 +405,7 @@
         entity_id:
           - light.kuche_brine_1
           - light.kuche_birne_2_2
-          - light.kuche_streifen
+          - light.kitchen_furniture
           - light.kuche_blind_hintergrundbeleuchtung
   mode: single
 
@@ -470,7 +470,7 @@
           - light.yoga_blind_hintergrundbeleuchtung
           - light.kuche_birne_1
           - light.kuche_birne_2
-          - light.kuche_streifen
+          - light.kitchen_furniture
           - light.kuche_blind_hintergrundbeleuchtung
           - light.bad_2
           - light.bett_licht_2
