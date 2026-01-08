@@ -4,7 +4,7 @@
 
 fire_flicker_effect:
   alias: Fireplace Flicker Effect
-  description: Fast realistic fire effect for Computer and Buffet lights
+  description: Smooth realistic fire effect with imperceptible transitions
   sequence:
     - repeat:
         while:
@@ -12,7 +12,6 @@ fire_flicker_effect:
             entity_id: script.fire_flicker_effect
             state: "on"
         sequence:
-          # Main flicker for both lights
           - service: light.turn_on
             target:
               entity_id:
@@ -20,12 +19,12 @@ fire_flicker_effect:
                 - light.computer_licht_2
             data:
               hs_color:
-                - "{{ range(15, 35) | random }}"
-                - "{{ range(85, 100) | random }}"
-              brightness_pct: "{{ range(40, 85) | random }}"
-              transition: "{{ (range(2, 8) | random) / 10 }}"
+                - "{{ range(22, 28) | random }}"
+                - "{{ range(95, 100) | random }}"
+              brightness_pct: "{{ range(55, 75) | random }}"
+              transition: "{{ (range(20, 35) | random) / 10 }}"
           - delay:
-              milliseconds: "{{ range(300, 800) | random }}"
+              milliseconds: "{{ range(800, 1500) | random }}"
   mode: restart
 
 ambient_velvet_rainbow:
