@@ -9,60 +9,57 @@ ambient_feuerlicht_warm_flicker:
     - repeat:
         count: 30
         sequence:
-          # Random fire phase selection (ember, normal, flare-up)
           - variables:
               fire_phase: "{{ range(1, 11) | random }}"
-
-          # Ember phase (40% chance) - low, slow flicker
-          - if:
-              - condition: template
-                value_template: "{{ fire_phase <= 4 }}"
-            then:
-              - service: light.turn_on
-                target:
-                  entity_id:
-                    - light.buffet_licht
-                    - light.computer_licht
-                data:
-                  brightness_pct: "{{ range(25, 45) | random }}"
-                  color_temp_kelvin: "{{ range(2000, 2200) | random }}"
-                  transition: "{{ range(8, 15) | random / 10 }}"
-              - delay:
-                  milliseconds: "{{ range(800, 1500) | random }}"
-
-          # Normal burn (50% chance) - medium flicker
-          - if:
-              - condition: template
-                value_template: "{{ fire_phase > 4 and fire_phase <= 9 }}"
-            then:
-              - service: light.turn_on
-                target:
-                  entity_id:
-                    - light.buffet_licht
-                    - light.computer_licht
-                data:
-                  brightness_pct: "{{ range(45, 70) | random }}"
-                  color_temp_kelvin: "{{ range(2100, 2500) | random }}"
-                  transition: "{{ range(4, 8) | random / 10 }}"
-              - delay:
-                  milliseconds: "{{ range(500, 1000) | random }}"
-
-          # Flare-up (10% chance) - bright, quick flicker
-          - if:
-              - condition: template
-                value_template: "{{ fire_phase == 10 }}"
-            then:
-              - service: light.turn_on
-                target:
-                  entity_id:
-                    - light.buffet_licht
-                    - light.computer_licht
-                data:
-                  brightness_pct: "{{ range(70, 95) | random }}"
-                  color_temp_kelvin: "{{ range(2300, 2700) | random }}"
-                  transition: "{{ range(1, 3) | random / 10 }}"
-              - delay:
-                  milliseconds: "{{ range(200, 500) | random }}"
+          - choose:
+              # Ember phase (40% chance) - low, slow flicker
+              - conditions:
+                  - condition: template
+                    value_template: "{{ fire_phase <= 4 }}"
+                sequence:
+                  - service: light.turn_on
+                    target:
+                      entity_id:
+                        - light.buffet_licht
+                        - light.computer_licht
+                    data:
+                      brightness_pct: "{{ range(25, 45) | random }}"
+                      color_temp_kelvin: "{{ range(2000, 2200) | random }}"
+                      transition: "{{ range(8, 15) | random / 10 }}"
+                  - delay:
+                      milliseconds: "{{ range(800, 1500) | random }}"
+              # Normal burn (50% chance) - medium flicker
+              - conditions:
+                  - condition: template
+                    value_template: "{{ fire_phase > 4 and fire_phase <= 9 }}"
+                sequence:
+                  - service: light.turn_on
+                    target:
+                      entity_id:
+                        - light.buffet_licht
+                        - light.computer_licht
+                    data:
+                      brightness_pct: "{{ range(45, 70) | random }}"
+                      color_temp_kelvin: "{{ range(2100, 2500) | random }}"
+                      transition: "{{ range(4, 8) | random / 10 }}"
+                  - delay:
+                      milliseconds: "{{ range(500, 1000) | random }}"
+              # Flare-up (10% chance) - bright, quick flicker
+              - conditions:
+                  - condition: template
+                    value_template: "{{ fire_phase == 10 }}"
+                sequence:
+                  - service: light.turn_on
+                    target:
+                      entity_id:
+                        - light.buffet_licht
+                        - light.computer_licht
+                    data:
+                      brightness_pct: "{{ range(70, 95) | random }}"
+                      color_temp_kelvin: "{{ range(2300, 2700) | random }}"
+                      transition: "{{ range(1, 3) | random / 10 }}"
+                  - delay:
+                      milliseconds: "{{ range(200, 500) | random }}"
   mode: single
 
 ambient_velvet_rainbow:
