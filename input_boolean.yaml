@@ -1,0 +1,5 @@
+input_boolean:
+  fire_effect:
+    name: Fire Effect
+    icon: mdi:fire
+    initial: off

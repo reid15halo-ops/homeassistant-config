@@ -1,0 +1,10 @@
+---
+# AppDaemon Apps Configuration
+# Fire Effect App
+
+fire_effect:
+  module: fire_effect
+  class: FireEffect
+  lights:
+    - light.buffet_licht
+    - light.computer_licht_2
