@@ -4,7 +4,7 @@
 
 fire_flicker_effect:
   alias: Fireplace Flicker Effect
-  description: Smooth realistic fire effect with imperceptible transitions
+  description: Realistic fire effect optimized for TP-Link WiFi strips (KL430 Kasa & Tapo L900)
   sequence:
     - repeat:
         while:
