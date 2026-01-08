@@ -1,6 +1,6 @@
 # ============================================================================
 # REID'S GAMING AUTOMATIONS
-# For optimal gaming experience
+# For optimal gaming experience - COZY CHIMNEY EDITION
 # ============================================================================
 
 # ============================================================================
@@ -25,20 +25,10 @@
     - service: input_boolean.turn_on
       target:
         entity_id: input_boolean.gaming_mode
-    # Set computer light to gaming red
-    - service: light.turn_on
+    # Chimney Fire Effect (Cozy)
+    - service: script.turn_on
       target:
-        entity_id: light.computer_licht
-      data:
-        brightness_pct: 30
-        rgb_color: [255, 0, 0] # Red for gaming
-    # Dim buffet light for ambient
-    - service: light.turn_on
-      target:
-        entity_id: light.buffet_lichtstreifen
-      data:
-        brightness_pct: 15
-        rgb_color: [255, 50, 0] # Orange-red ambient
+        entity_id: script.ambient_feuerlicht_warm_flicker
     # Turn off kitchen lights (no glare)
     - service: light.turn_off
       target:
@@ -147,58 +137,15 @@
         rgb_color: [0, 255, 0] # Green flash
     - delay:
         seconds: 2
-    - service: light.turn_on
+    # Restore Fire Effect
+    - service: script.turn_on
       target:
-        entity_id: light.buffet_lichtstreifen
-      data:
-        brightness_pct: 15
-        rgb_color: [255, 50, 0] # Back to gaming ambient
+        entity_id: script.ambient_feuerlicht_warm_flicker
     # Send notification
     - service: notify.mobile_app_redmi_note_12_pro_5g
       data:
         title: "🎮 Gaming Pause!"
         message: "Du zockst seit 2 Stunden. Zeit für eine kurze Pause!"
-  mode: single
-
-- id: "gaming_break_reminder_4h"
-  alias: "Gaming - Pause Erinnerung (4 Stunden)"
-  description: "Stronger reminder after 4 hours"
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
-      to: "on"
-      for:
-        hours: 4
-  condition:
-    - condition: state
-      entity_id: input_boolean.gaming_mode
-      state: "on"
-  action:
-    # More noticeable flash
-    - repeat:
-        count: 3
-        sequence:
-          - service: light.turn_on
-            target:
-              entity_id: light.buffet_lichtstreifen
-            data:
-              brightness_pct: 100
-              rgb_color: [255, 165, 0] # Orange
-          - delay:
-              seconds: 1
-          - service: light.turn_on
-            target:
-              entity_id: light.buffet_lichtstreifen
-            data:
-              brightness_pct: 20
-              rgb_color: [255, 0, 0]
-          - delay:
-              seconds: 1
-    # Send notification
-    - service: notify.mobile_app_redmi_note_12_pro_5g
-      data:
-        title: "⚠️ 4 Stunden Gaming!"
-        message: "Steh auf, streck dich, trink Wasser! Dein Rücken wird es dir danken."
   mode: single
 
 # ============================================================================
@@ -266,79 +213,15 @@
       entity_id: input_boolean.gaming_mode
       state: "on"
   action:
-    # Warmer, dimmer gaming lights
-    - service: light.turn_on
+    # Ensure fire effect is active (it's already warm)
+    - service: script.turn_on
       target:
-        entity_id: light.computer_licht
-      data:
-        brightness_pct: 20
-        rgb_color: [255, 100, 50] # Warmer red-orange
-    - service: light.turn_on
-      target:
-        entity_id: light.buffet_lichtstreifen
-      data:
-        brightness_pct: 10
-        color_temp_kelvin: 2200
+        entity_id: script.ambient_feuerlicht_warm_flicker
     # Notification
     - service: notify.mobile_app_redmi_note_12_pro_5g
       data:
         title: "🌙 Nacht-Gaming-Modus"
-        message: "Lichter wurden wärmer & dunkler für deine Augen."
-  mode: single
-
-# ============================================================================
-# STREAM MODE - Perfect lighting for streaming
-# ============================================================================
-
-- id: "stream_mode_activate"
-  alias: "Streaming - Modus aktivieren"
-  description: "Optimal lighting for streaming/video calls"
-  trigger:
-    - platform: state
-      entity_id: input_boolean.stream_mode
-      to: "on"
-  action:
-    # Bright, neutral lighting for camera
-    - service: light.turn_on
-      target:
-        entity_id: light.computer_licht
-      data:
-        brightness_pct: 80
-        color_temp_kelvin: 4000 # Neutral white
-    # Ambient background
-    - service: light.turn_on
-      target:
-        entity_id: light.buffet_lichtstreifen
-      data:
-        brightness_pct: 40
-        rgb_color: [100, 50, 200] # Purple accent background
-    # Close shutter to prevent backlight
-    - service: cover.close_cover
-      target:
-        entity_id: cover.rollladen_computer_vorhang
-  mode: single
-
-- id: "stream_mode_deactivate"
-  alias: "Streaming - Modus deaktivieren"
-  description: "Return to gaming mode after stream"
-  trigger:
-    - platform: state
-      entity_id: input_boolean.stream_mode
-      to: "off"
-  action:
-    # Back to gaming lights
-    - service: light.turn_on
-      target:
-        entity_id: light.computer_licht
-      data:
-        brightness_pct: 30
-        rgb_color: [255, 0, 0]
-    - service: light.turn_on
-      target:
-        entity_id: light.buffet_lichtstreifen
-      data:
-        brightness_pct: 15
-        rgb_color: [255, 50, 0]
+        message: "Lichter bleiben gemütlich warm."
   mode: single
 
 # ============================================================================
@@ -386,55 +269,8 @@
       attribute: brightness
       below: 30
   action:
-    # Restore gaming lights
-    - service: light.turn_on
+    # Restore Fire Effect
+    - service: script.turn_on
       target:
-        entity_id: light.computer_licht
-      data:
-        brightness_pct: 30
-        rgb_color: [255, 0, 0]
-    - service: light.turn_on
-      target:
-        entity_id: light.buffet_lichtstreifen
-      data:
-        brightness_pct: 15
-        rgb_color: [255, 50, 0]
-  mode: single
-
-# ============================================================================
-# RAGE QUIT DETECTION (just for fun!)
-# ============================================================================
-
-- id: "gaming_rage_quit"
-  alias: "Gaming - Rage Quit erkannt 😤"
-  description: "Detect sudden exit from gaming (rage quit)"
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
-      to: "off"
-  condition:
-    - condition: state
-      entity_id: input_boolean.gaming_mode
-      state: "on"
-    # Check if nearby presence (couch) within 10 seconds
-    - condition: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
-      state: "on"
-  action:
-    - delay:
-        seconds: 5
-    # Check if went to couch (rage quit to decompress)
-    - condition: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
-      state: "on"
-    # Calming lights
-    - service: light.turn_on
-      target:
-        entity_id:
-          - light.computer_licht
-          - light.buffet_lichtstreifen
-      data:
-        brightness_pct: 40
-        rgb_color: [50, 100, 255] # Calming blue
-        transition: 5
+        entity_id: script.ambient_feuerlicht_warm_flicker
   mode: single
