@@ -535,7 +535,107 @@
   mode: single
 
 # ============================================================================
-#  7. SYSTEM & MAINTENANCE
+#  7. CEILING FAN (LIVING ROOM)
+# ============================================================================
+
+- id: "fan_winter_heat_distribution"
+  alias: "Ventilator - Winter Wärmeverteilung (Saugmodus)"
+  description: "Distributes heat evenly in winter using reverse direction (updraft) at low speed."
+  trigger:
+    - platform: state
+      entity_id: climate.thermostat_computer
+      attribute: hvac_action
+      to: "heating"
+    - platform: state
+      entity_id:
+        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1 # Computer
+        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2 # Couch
+      to: "on"
+  condition:
+    # Winter/Autumn Months (Oct-Mar)
+    - condition: template
+      value_template: "{{ now().month in [10, 11, 12, 1, 2, 3] }}"
+    # Someone must be in the room
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
+          state: "on"
+        - condition: state
+          entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
+          state: "on"
+  action:
+    - service: fan.turn_on
+      target:
+        entity_id: fan.ceiling_fan_with_light
+      data:
+        percentage: 33 # Low speed to avoid draft
+        direction: "reverse" # Sucking direction (updraft) to mix warm air
+
+- id: "fan_summer_cooling"
+  alias: "Ventilator - Sommer Kühlung (Blasmodus)"
+  description: "Provides cooling breeze in summer using forward direction (downdraft)."
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.temperature_and_humidity_sensor_temperatur # Living Room Temp
+      above: 24
+    - platform: state
+      entity_id:
+        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
+        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
+      to: "on"
+  condition:
+    # Summer/Spring Months (Apr-Sep)
+    - condition: template
+      value_template: "{{ now().month in [4, 5, 6, 7, 8, 9] }}"
+    # Room must be warm (>24°C)
+    - condition: numeric_state
+      entity_id: sensor.temperature_and_humidity_sensor_temperatur
+      above: 24
+    # Someone must be in the room
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
+          state: "on"
+        - condition: state
+          entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
+          state: "on"
+  action:
+    - service: fan.turn_on
+      target:
+        entity_id: fan.ceiling_fan_with_light
+      data:
+        # Higher speed for cooling effect
+        percentage: "{{ 66 if states('sensor.temperature_and_humidity_sensor_temperatur')|float < 26 else 100 }}"
+        direction: "forward" # Blowing direction (downdraft)
+
+- id: "fan_auto_off"
+  alias: "Ventilator - Auto Aus bei Abwesenheit"
+  description: "Turns off fan when nobody is in the living room."
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
+        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
+      to: "off"
+      for:
+        minutes: 5
+  condition:
+    # Ensure both zones are empty
+    - condition: state
+      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
+      state: "off"
+    - condition: state
+      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
+      state: "off"
+  action:
+    - service: fan.turn_off
+      target:
+        entity_id: fan.ceiling_fan_with_light
+
+# ============================================================================
+#  8. SYSTEM & MAINTENANCE
 # ============================================================================
 
 - id: "system_roborock_clean"
