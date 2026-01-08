@@ -23,7 +23,7 @@ fire_flicker_effect:
               brightness_pct: >
                 {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
                 {% set change = range(-8, 9) | random %}
-                {{ [[current + change, 10] | max, 100] | min }}
+                {{ max(10, min(100, current + change)) }}
               transition: "{{ (range(1, 3) | random) / 10 }}"
           - delay:
               milliseconds: "{{ range(50, 150) | random }}"
@@ -39,7 +39,7 @@ fire_flicker_effect:
               brightness_pct: >
                 {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
                 {% set change = range(-8, 9) | random %}
-                {{ [[current + change, 10] | max, 100] | min }}
+                {{ max(10, min(100, current + change)) }}
               transition: "{{ (range(1, 3) | random) / 10 }}"
           - delay:
               milliseconds: "{{ range(50, 150) | random }}"
@@ -55,7 +55,7 @@ fire_flicker_effect:
               brightness_pct: >
                 {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
                 {% set change = range(-8, 9) | random %}
-                {{ [[current + change, 10] | max, 100] | min }}
+                {{ max(10, min(100, current + change)) }}
               transition: "{{ (range(1, 3) | random) / 10 }}"
           - delay:
               milliseconds: "{{ range(50, 150) | random }}"
@@ -71,7 +71,7 @@ fire_flicker_effect:
               brightness_pct: >
                 {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
                 {% set change = range(-8, 9) | random %}
-                {{ [[current + change, 10] | max, 100] | min }}
+                {{ max(10, min(100, current + change)) }}
               transition: "{{ (range(1, 3) | random) / 10 }}"
           - delay:
               milliseconds: "{{ range(50, 150) | random }}"
@@ -87,7 +87,7 @@ fire_flicker_effect:
               brightness_pct: >
                 {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
                 {% set change = range(-8, 9) | random %}
-                {{ [[current + change, 10] | max, 100] | min }}
+                {{ max(10, min(100, current + change)) }}
               transition: "{{ (range(1, 3) | random) / 10 }}"
           - delay:
               milliseconds: "{{ range(50, 150) | random }}"
