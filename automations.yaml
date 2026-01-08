@@ -71,8 +71,8 @@
           - light.buffet_licht
           - light.rollladen_computer_hintergrundbeleuchtung
           - light.yoga_blind_hintergrundbeleuchtung
-          - light.kuche_birne_1
-          - light.kuche_birne_2
+          - light.kuche_brine_1
+          - light.kuche_birne_2_2
           - light.kuche_streifen
           - light.kuche_blind_hintergrundbeleuchtung
           - light.bad
@@ -104,7 +104,7 @@
           # Randomly turn on a light
           - service: light.turn_on
             target:
-              entity_id: "{{ ['light.computer_licht', 'light.buffet_lichtstreifen', 'light.buffet_licht', 'light.kuche_birne_1', 'light.rollladen_computer_hintergrundbeleuchtung'] | random }}"
+              entity_id: "{{ ['light.computer_licht', 'light.buffet_lichtstreifen', 'light.buffet_licht', 'light.kuche_brine_1', 'light.rollladen_computer_hintergrundbeleuchtung'] | random }}"
             data:
               brightness_pct: "{{ range(50, 100) | random }}"
           # Wait random time (30-120 mins)
@@ -113,7 +113,7 @@
           # Randomly turn off a light
           - service: light.turn_off
             target:
-              entity_id: "{{ ['light.computer_licht', 'light.buffet_lichtstreifen', 'light.buffet_licht', 'light.kuche_birne_1', 'light.rollladen_computer_hintergrundbeleuchtung'] | random }}"
+              entity_id: "{{ ['light.computer_licht', 'light.buffet_lichtstreifen', 'light.buffet_licht', 'light.kuche_brine_1', 'light.rollladen_computer_hintergrundbeleuchtung'] | random }}"
           - delay:
               minutes: "{{ range(15, 60) | random }}"
   mode: single
@@ -258,8 +258,8 @@
     - service: light.turn_off
       target:
         entity_id:
-          - light.kuche_birne_1
-          - light.kuche_birne_2
+          - light.kuche_brine_1
+          - light.kuche_birne_2_2
           - light.kuche_blind_hintergrundbeleuchtung
   mode: single
 
@@ -324,8 +324,8 @@
     - service: light.turn_off
       target:
         entity_id:
-          - light.kuche_birne_1
-          - light.kuche_birne_2
+          - light.kuche_brine_1
+          - light.kuche_birne_2_2
           - light.kuche_blind_hintergrundbeleuchtung
     - service: light.turn_on
       target:
@@ -411,8 +411,8 @@
     - service: light.turn_off
       target:
         entity_id:
-          - light.kuche_birne_1
-          - light.kuche_birne_2
+          - light.kuche_brine_1
+          - light.kuche_birne_2_2
           - light.kuche_streifen
           - light.kuche_blind_hintergrundbeleuchtung
   mode: single
