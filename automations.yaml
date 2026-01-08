@@ -172,11 +172,23 @@
         - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1 # Computer
         - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2 # Couch
       to: "on"
+    # Trigger on startup if already present
+    - platform: homeassistant
+      event: start
   condition:
     # Only when dark enough
     - condition: numeric_state
       entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
       below: 50
+    # Ensure presence is actually active (for startup trigger)
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
+          state: "on"
+        - condition: state
+          entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
+          state: "on"
   action:
     - service: light.turn_on
       target:
@@ -516,6 +528,19 @@
         - binary_sensor.human_presence_detector_bewegung
         - binary_sensor.motion_sensor_bad_bewegung
       to: "on"
+    # Trigger on startup if presence is detected
+    - platform: homeassistant
+      event: start
+  condition:
+    # Check if presence is active (ignore motion for startup check as it's transient)
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: binary_sensor.human_presence_detector_bewegung
+          state: "on"
+        - condition: state
+          entity_id: binary_sensor.motion_sensor_bad_bewegung
+          state: "on"
   action:
     - service: light.turn_on
       target:
