@@ -133,8 +133,8 @@ ich_bin_zuruck:
     - service: light.turn_on
       target:
         entity_id:
-          - light.computer_licht
-          - light.buffet_lichtstreifen
+          - light.computer_licht_2
+          - light.buffet_licht
       data:
         brightness_pct: 80
         color_temp_kelvin: 2700
@@ -166,8 +166,8 @@ party:
     - service: light.turn_on
       target:
         entity_id:
-          - light.buffet_lichtstreifen
-          - light.computer_licht
+          - light.buffet_licht
+          - light.computer_licht_2
       data:
         brightness_pct: 100
         hs_color:
