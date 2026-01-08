@@ -2,9 +2,10 @@
 # REID'S HOME ASSISTANT SCRIPTS
 # ============================================================================
 
-ambient_feuerlicht_warm_flicker:
-  alias: "Ambient - Feuerlicht Warm Flicker"
-  description: "Realistic fire flicker effect for Computer & Buffet lights"
+fire_flicker_effect:
+  alias: Ambient Fire Flicker
+  description: Realistic fire flicker effect for Computer and Buffet lights
+  mode: single
   sequence:
     - repeat:
         count: 40
@@ -20,7 +21,6 @@ ambient_feuerlicht_warm_flicker:
               transition: "{{ (range(5, 15) | random) / 10 }}"
           - delay:
               milliseconds: "{{ range(500, 1200) | random }}"
-  mode: single
 
 ambient_velvet_rainbow:
   alias: "Ambient - Velvet Rainbow"
