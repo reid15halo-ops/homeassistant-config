@@ -2,9 +2,9 @@
 # REID'S HOME ASSISTANT SCRIPTS
 # ============================================================================
 
-fire_flicker_effect:
-  alias: Fireplace Flicker Effect
-  description: Realistic fire effect optimized for TP-Link WiFi strips (KL430 Kasa & Tapo L900)
+fire_flicker_effect_DISABLED:
+  alias: "[DISABLED] Fireplace Flicker Effect"
+  description: DISABLED - Fire effect not working as desired. See .agent/fire_effect_master_plan.md for alternatives
   sequence:
     - repeat:
         while:
