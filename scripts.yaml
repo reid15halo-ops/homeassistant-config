@@ -17,7 +17,7 @@ fire_flicker_effect:
             target:
               entity_id:
                 - light.buffet_licht
-                - light.computer_licht
+                - light.computer_licht_2
             data:
               hs_color:
                 - "{{ range(15, 35) | random }}"
