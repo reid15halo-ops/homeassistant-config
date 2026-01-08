@@ -178,7 +178,7 @@
   action:
     - service: cover.close_cover
       target:
-        entity_id: cover.rollladen_schlafen_vorhang
+        entity_id: cover.schlafen_blind_vorhang
   mode: single
 
 # ============================================================================
@@ -287,8 +287,8 @@
   trigger:
     - platform: state
       entity_id:
-        - binary_sensor.bad_prasenz_bewegung
-        - binary_sensor.motion_sensor_bad_motion
+        - binary_sensor.human_presence_detector_bewegung
+        - binary_sensor.motion_sensor_bad_bewegung
       to: "on"
   action:
     - service: light.turn_on
@@ -305,17 +305,17 @@
   trigger:
     - platform: state
       entity_id:
-        - binary_sensor.bad_prasenz_bewegung
-        - binary_sensor.motion_sensor_bad_motion
+        - binary_sensor.human_presence_detector_bewegung
+        - binary_sensor.motion_sensor_bad_bewegung
       to: "off"
       for:
         seconds: 120
   condition:
     - condition: state
-      entity_id: binary_sensor.bad_prasenz_bewegung
+      entity_id: binary_sensor.human_presence_detector_bewegung
       state: "off"
     - condition: state
-      entity_id: binary_sensor.motion_sensor_bad_motion
+      entity_id: binary_sensor.motion_sensor_bad_bewegung
       state: "off"
   action:
     - service: light.turn_off
