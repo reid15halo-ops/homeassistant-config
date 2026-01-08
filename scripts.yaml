@@ -12,7 +12,6 @@ fire_flicker_effect:
             entity_id: script.fire_flicker_effect
             state: "on"
         sequence:
-          # Phase 1: Helle Flamme (Flare-up)
           - service: light.turn_on
             target:
               entity_id:
@@ -20,49 +19,10 @@ fire_flicker_effect:
                 - light.computer_licht_2
             data:
               hs_color: [35, 100]
-              brightness_pct: "{{ range(90, 100) | random }}"
-              transition: "{{ (range(10, 18) | random) / 10 }}"
+              brightness_pct: "{{ range(10, 100) | random }}"
+              transition: "{{ (range(8, 15) | random) / 10 }}"
           - delay:
-              milliseconds: "{{ range(400, 800) | random }}"
-
-          # Phase 2: Normale Flamme
-          - service: light.turn_on
-            target:
-              entity_id:
-                - light.buffet_licht
-                - light.computer_licht_2
-            data:
-              hs_color: [35, 100]
-              brightness_pct: "{{ range(60, 80) | random }}"
-              transition: "{{ (range(12, 20) | random) / 10 }}"
-          - delay:
-              milliseconds: "{{ range(500, 900) | random }}"
-
-          # Phase 3: Medium Burn
-          - service: light.turn_on
-            target:
-              entity_id:
-                - light.buffet_licht
-                - light.computer_licht_2
-            data:
-              hs_color: [35, 100]
-              brightness_pct: "{{ range(40, 60) | random }}"
-              transition: "{{ (range(10, 18) | random) / 10 }}"
-          - delay:
-              milliseconds: "{{ range(400, 700) | random }}"
-
-          # Phase 4: Glut (Ember)
-          - service: light.turn_on
-            target:
-              entity_id:
-                - light.buffet_licht
-                - light.computer_licht_2
-            data:
-              hs_color: [35, 100]
-              brightness_pct: "{{ range(10, 30) | random }}"
-              transition: "{{ (range(15, 25) | random) / 10 }}"
-          - delay:
-              milliseconds: "{{ range(600, 1000) | random }}"
+              milliseconds: "{{ range(500, 1000) | random }}"
   mode: restart
 
 ambient_velvet_rainbow:
