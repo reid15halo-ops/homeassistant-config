@@ -12,7 +12,6 @@ ambient_feuerlicht_warm_flicker:
           - service: light.turn_on
             target:
               entity_id:
-                - light.buffet_lichtstreifen
                 - light.buffet_licht
             data:
               brightness_pct: "{{ range(40, 80) | random }}"
@@ -31,7 +30,7 @@ ambient_velvet_rainbow:
         sequence:
           - service: light.turn_on
             target:
-              entity_id: light.buffet_lichtstreifen
+              entity_id: light.buffet_licht
             data:
               hs_color:
                 - "{{ range(0, 360) | random }}"
@@ -82,8 +81,8 @@ guten_morgen:
     - service: light.turn_on
       target:
         entity_id:
-          - light.kuche_birne_1
-          - light.kuche_birne_2
+          - light.kuche_brine_1
+          - light.kuche_birne_2_2
       data:
         brightness_pct: 80
         color_temp_kelvin: 3000
