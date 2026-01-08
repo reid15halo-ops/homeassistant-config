@@ -26,7 +26,7 @@ fire_flicker_effect:
                 {{ max(10, min(100, current + change)) }}
               transition: 0
           - delay:
-              milliseconds: "{{ range(5, 15) | random }}"
+              milliseconds: "{{ range(20, 35) | random }}"
 
           # Segment 2: Schnelles Flackern
           - service: light.turn_on
@@ -42,7 +42,7 @@ fire_flicker_effect:
                 {{ max(10, min(100, current + change)) }}
               transition: 0
           - delay:
-              milliseconds: "{{ range(8, 12) | random }}"
+              milliseconds: "{{ range(25, 40) | random }}"
 
           # Segment 3: Abschwächung
           - service: light.turn_on
@@ -58,7 +58,7 @@ fire_flicker_effect:
                 {{ max(10, min(100, current + change)) }}
               transition: 0
           - delay:
-              milliseconds: "{{ range(10, 20) | random }}"
+              milliseconds: "{{ range(30, 45) | random }}"
 
           # Segment 4: Glut-Phase
           - service: light.turn_on
@@ -74,7 +74,7 @@ fire_flicker_effect:
                 {{ max(10, min(40, current + change)) }}
               transition: 0
           - delay:
-              milliseconds: "{{ range(15, 25) | random }}"
+              milliseconds: "{{ range(35, 50) | random }}"
 
           # Segment 5: Explosive Spitze
           - service: light.turn_on
@@ -90,7 +90,7 @@ fire_flicker_effect:
                 {{ max(10, min(100, current + change)) }}
               transition: 0
           - delay:
-              milliseconds: "{{ range(5, 10) | random }}"
+              milliseconds: "{{ range(20, 30) | random }}"
 
           # Segment 6: Wilde Oszillation
           - service: light.turn_on
@@ -106,7 +106,7 @@ fire_flicker_effect:
                 {{ max(10, min(100, current + change)) }}
               transition: 0
           - delay:
-              milliseconds: "{{ range(8, 15) | random }}"
+              milliseconds: "{{ range(25, 40) | random }}"
 
           # Segment 7: Sanftes Pulsieren
           - service: light.turn_on
@@ -122,7 +122,7 @@ fire_flicker_effect:
                 {{ max(10, min(100, current + change)) }}
               transition: 0
           - delay:
-              milliseconds: "{{ range(12, 18) | random }}"
+              milliseconds: "{{ range(30, 45) | random }}"
 
           # Segment 8: Rapides Absinken
           - service: light.turn_on
@@ -138,7 +138,7 @@ fire_flicker_effect:
                 {{ max(10, min(100, current + change)) }}
               transition: 0
           - delay:
-              milliseconds: "{{ range(10, 15) | random }}"
+              milliseconds: "{{ range(30, 40) | random }}"
 
           # Segment 9: Mittelstarkes Flackern
           - service: light.turn_on
@@ -154,7 +154,7 @@ fire_flicker_effect:
                 {{ max(30, min(80, current + change)) }}
               transition: 0
           - delay:
-              milliseconds: "{{ range(10, 20) | random }}"
+              milliseconds: "{{ range(30, 45) | random }}"
 
           # Segment 10: Überraschungs-Burst
           - service: light.turn_on
@@ -170,7 +170,7 @@ fire_flicker_effect:
                 {{ max(10, min(100, current + change)) }}
               transition: 0
           - delay:
-              milliseconds: "{{ range(5, 10) | random }}"
+              milliseconds: "{{ range(20, 35) | random }}"
   mode: restart
 
 ambient_velvet_rainbow:
