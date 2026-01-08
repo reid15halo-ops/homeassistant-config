@@ -30,8 +30,7 @@
     - service: light.turn_on
       target:
         entity_id:
-          - light.computer_licht
-          - light.buffet_lichtstreifen
+          - light.computer_licht_2
           - light.buffet_licht
           - light.rollladen_computer_hintergrundbeleuchtung
           - light.yoga_blind_hintergrundbeleuchtung
@@ -66,8 +65,7 @@
     - service: light.turn_off
       target:
         entity_id:
-          - light.computer_licht
-          - light.buffet_lichtstreifen
+          - light.computer_licht_2
           - light.buffet_licht
           - light.rollladen_computer_hintergrundbeleuchtung
           - light.yoga_blind_hintergrundbeleuchtung
@@ -75,8 +73,8 @@
           - light.kuche_birne_2_2
           - light.kuche_streifen
           - light.kuche_blind_hintergrundbeleuchtung
-          - light.bad
-          - light.bett_licht
+          - light.bad_2
+          - light.bett_licht_2
           - light.schlafen_blind_hintergrundbeleuchtung
     - service: climate.set_temperature
       target:
@@ -104,7 +102,7 @@
           # Randomly turn on a light
           - service: light.turn_on
             target:
-              entity_id: "{{ ['light.computer_licht', 'light.buffet_lichtstreifen', 'light.buffet_licht', 'light.kuche_brine_1', 'light.rollladen_computer_hintergrundbeleuchtung'] | random }}"
+              entity_id: "{{ ['light.computer_licht_2', 'light.buffet_licht', 'light.kuche_brine_1', 'light.rollladen_computer_hintergrundbeleuchtung'] | random }}"
             data:
               brightness_pct: "{{ range(50, 100) | random }}"
           # Wait random time (30-120 mins)
@@ -113,7 +111,7 @@
           # Randomly turn off a light
           - service: light.turn_off
             target:
-              entity_id: "{{ ['light.computer_licht', 'light.buffet_lichtstreifen', 'light.buffet_licht', 'light.kuche_brine_1', 'light.rollladen_computer_hintergrundbeleuchtung'] | random }}"
+              entity_id: "{{ ['light.computer_licht_2', 'light.buffet_licht', 'light.kuche_brine_1', 'light.rollladen_computer_hintergrundbeleuchtung'] | random }}"
           - delay:
               minutes: "{{ range(15, 60) | random }}"
   mode: single
@@ -193,8 +191,7 @@
     - service: light.turn_on
       target:
         entity_id:
-          - light.computer_licht
-          - light.buffet_lichtstreifen
+          - light.computer_licht_2
           - light.buffet_licht
           - light.rollladen_computer_hintergrundbeleuchtung
           - light.yoga_blind_hintergrundbeleuchtung
@@ -229,8 +226,7 @@
     - service: light.turn_off
       target:
         entity_id:
-          - light.computer_licht
-          - light.buffet_lichtstreifen
+          - light.computer_licht_2
           - light.buffet_licht
           - light.rollladen_computer_hintergrundbeleuchtung
           - light.yoga_blind_hintergrundbeleuchtung
@@ -297,8 +293,7 @@
     - service: light.turn_on
       target:
         entity_id:
-          - light.computer_licht
-          - light.buffet_lichtstreifen
+          - light.computer_licht_2
           - light.buffet_licht
           - light.rollladen_computer_hintergrundbeleuchtung
           - light.yoga_blind_hintergrundbeleuchtung
@@ -344,7 +339,6 @@
     - service: light.turn_on
       target:
         entity_id:
-          - light.buffet_lichtstreifen
           - light.buffet_licht
           - light.rollladen_computer_hintergrundbeleuchtung
           - light.yoga_blind_hintergrundbeleuchtung
@@ -353,7 +347,7 @@
         color_temp_kelvin: 2200
     - service: light.turn_on
       target:
-        entity_id: light.computer_licht
+        entity_id: light.computer_licht_2
       data:
         brightness_pct: 10
         color_temp_kelvin: 2200
@@ -439,7 +433,7 @@
     - service: light.turn_on
       target:
         entity_id:
-          - light.bett_licht
+          - light.bett_licht_2_2
           - light.schlafen_blind_hintergrundbeleuchtung
       data:
         brightness_pct: 5
@@ -470,8 +464,7 @@
     - service: light.turn_off
       target:
         entity_id:
-          - light.computer_licht
-          - light.buffet_lichtstreifen
+          - light.computer_licht_2
           - light.buffet_licht
           - light.rollladen_computer_hintergrundbeleuchtung
           - light.yoga_blind_hintergrundbeleuchtung
@@ -479,8 +472,8 @@
           - light.kuche_birne_2
           - light.kuche_streifen
           - light.kuche_blind_hintergrundbeleuchtung
-          - light.bad
-          - light.bett_licht
+          - light.bad_2
+          - light.bett_licht_2
           - light.schlafen_blind_hintergrundbeleuchtung
     - service: cover.close_cover
       target:
@@ -521,7 +514,7 @@
   action:
     - service: light.turn_on
       target:
-        entity_id: light.bad
+        entity_id: light.bad_2
       data:
         brightness_pct: "{{ 10 if now().hour >= 22 or now().hour < 6 else 100 }}"
         color_temp_kelvin: 2700
@@ -548,7 +541,7 @@
   action:
     - service: light.turn_off
       target:
-        entity_id: light.bad
+        entity_id: light.bad_2
   mode: single
 
 # ============================================================================
