@@ -172,6 +172,12 @@ input_boolean:
   away_mode:
     name: "Abwesenheit"
     icon: mdi:home-export-outline
+  gaming_mode:
+    name: "Gaming-Modus"
+    icon: mdi:controller
+  stream_mode:
+    name: "Streaming-Modus"
+    icon: mdi:video
 
   # Automation Toggles
   auto_lights_enabled:
