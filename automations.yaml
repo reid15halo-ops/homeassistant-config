@@ -635,7 +635,70 @@
         entity_id: fan.ceiling_fan_with_light
 
 # ============================================================================
-#  8. SYSTEM & MAINTENANCE
+#  8. CEILING FAN (BEDROOM)
+# ============================================================================
+
+- id: "fan_bedroom_winter_heat_distribution"
+  alias: "Schlafzimmer Ventilator - Winter Wärmeverteilung"
+  description: "Distributes heat in bedroom during winter (reverse, low speed)."
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_5 # Bed Zone
+      to: "on"
+  condition:
+    - condition: template
+      value_template: "{{ now().month in [10, 11, 12, 1, 2, 3] }}"
+  action:
+    - service: fan.turn_on
+      target:
+        entity_id: fan.dc_fan_lamp
+      data:
+        percentage: 33
+        direction: "reverse"
+
+- id: "fan_bedroom_summer_cooling"
+  alias: "Schlafzimmer Ventilator - Sommer Kühlung"
+  description: "Cooling breeze in bedroom during summer."
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.motion_sensor_schlafen_temperatur
+      above: 23
+    - platform: state
+      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_5
+      to: "on"
+  condition:
+    - condition: template
+      value_template: "{{ now().month in [4, 5, 6, 7, 8, 9] }}"
+    - condition: numeric_state
+      entity_id: sensor.motion_sensor_schlafen_temperatur
+      above: 23
+    - condition: state
+      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_5
+      state: "on"
+  action:
+    - service: fan.turn_on
+      target:
+        entity_id: fan.dc_fan_lamp
+      data:
+        percentage: "{{ 66 if states('sensor.motion_sensor_schlafen_temperatur')|float < 25 else 100 }}"
+        direction: "forward"
+
+- id: "fan_bedroom_auto_off"
+  alias: "Schlafzimmer Ventilator - Auto Aus"
+  description: "Turns off bedroom fan when bed is empty."
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_5
+      to: "off"
+      for:
+        minutes: 5
+  action:
+    - service: fan.turn_off
+      target:
+        entity_id: fan.dc_fan_lamp
+
+# ============================================================================
+#  9. SYSTEM & MAINTENANCE
 # ============================================================================
 
 - id: "system_roborock_clean"
