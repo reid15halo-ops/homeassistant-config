@@ -275,13 +275,6 @@
       data:
         brightness_pct: 20
         color_temp_kelvin: 2000
-    # Turn off kitchen to reduce glare
-    - service: light.turn_off
-      target:
-        entity_id:
-          - light.kuche_brine_1
-          - light.kuche_birne_2_2
-          - light.kuche_blind_hintergrundbeleuchtung
   mode: single
 
 - id: "gaming_mode_deactivate"
@@ -391,32 +384,16 @@
           entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level # Use Living Room light sensor as proxy if needed, or remove
           below: 50
   action:
-    - choose:
-        # If Gaming Mode is ON -> Snack Break (Dim light only)
-        - conditions:
-            - condition: state
-              entity_id: input_boolean.gaming_mode
-              state: "on"
-          sequence:
-            - service: light.turn_on
-              target:
-                entity_id: light.kuche_streifen
-              data:
-                brightness_pct: 50
-                color_temp_kelvin: 2700
-        # Normal Mode -> Full Brightness
-        - conditions: []
-          sequence:
-            - service: light.turn_on
-              target:
-                entity_id:
-                  - light.kuche_birne_1
-                  - light.kuche_birne_2
-                  - light.kuche_streifen
-                  - light.kuche_blind_hintergrundbeleuchtung
-              data:
-                brightness_pct: "{{ 50 if now().hour >= 22 else 100 }}"
-                color_temp_kelvin: 2700
+    - service: light.turn_on
+      target:
+        entity_id:
+          - light.kuche_brine_1
+          - light.kuche_birne_2_2
+          - light.kuche_streifen
+          - light.kuche_blind_hintergrundbeleuchtung
+      data:
+        brightness_pct: "{{ 50 if now().hour >= 22 else 100 }}"
+        color_temp_kelvin: 2700
   mode: single
 
 - id: "kitchen_light_off"
