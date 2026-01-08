@@ -1,0 +1,228 @@
+# Smart Home Automation Questionnaire
+# Fill in your answers below - delete the placeholder text and add your own
+
+## 1. Daily Routine
+
+wake_up_time: "05:00" # What time do you usually wake up?
+bedtime: "22:00" # What time do you usually go to bed?
+work_from_home: true # Do you work from home? (false)
+leave_home_time: "" # If you leave daily, what time?BETWEEN 6:30-7:30
+return_home_time: "" # If you leave daily, what time do you return?15:30-16:30
+weekend_wake_up: "10:00 # Weekend wake up time (if different)
+weekend_bedtime: "00:00" # Weekend bedtime (if different) 00:00-02:00
+I usuially try getting 7-8 h of sleep
+
+## 2. Lighting Preferences
+I do like warm light more
+### Morning
+morning_light_style: "gradual" # Options: gradual, bright, dim, none
+morning_light_brightness: 80 # Brightness percentage (0-100)
+morning_light_color_temp: "warm" # Options: warm, neutral, cool
+
+### Daytime
+daytime_auto_lights: true # Auto lights when dark during day? (true)
+daytime_brightness: 100 # Brightness percentage warm
+
+### Evening
+evening_start_time: "18:00" # When does "evening mode" start?
+evening_light_style: "cozy" # Options: cozy, 
+evening_brightness: 60 # Brightness percentage
+evening_color_temp: "warm" # Options: warm, 
+
+### Night
+night_mode_start: 22:00 during weekday 00:00 weekend  
+night_brightness: 20 # Brightness percentage for night mode
+night_color_temp: "very_warm" # Options: very_warm, warm
+
+### Motion-based Lighting
+motion_lights_enabled: true # Turn on lights with motion? (true)
+motion_timeout_seconds: 120 How long before lights turn off (no motion)?
+motion_lights_only_when_dark: true # Only trigger when it's dark? /false)
+
+## 3. Roller Shutter Preferences
+
+### Morning
+shutters_open_with_sunrise: true # Open with sunrise? (true/)
+shutters_open_fixed_time: "" # Or fixed time (e.g., "07:30")
+bedroom_shutters_wait_for_wakeup: true # Keep bedroom closed until alarm? 
+
+### Evening
+shutters_close_with_sunset: true # Close with sunset? (true) but delayed in summer +2h in winter 0h spring +1h october -1h
+
+
+### Sun Protection
+sun_protection_enabled: true # Close when too sunny/hot? (false)
+sun_protection_temperature: 25 # Close above this temperature (°C)
+sun_protection_lux: depending on log of aquara fp2 lux values
+
+### Sleep
+bedroom_shutters_close_at_bedtime: true # Close bedroom shutters at bedtime? when I go to bed (sensor presence)
+
+## 4. Heating Preferences
+
+comfort_temperature: winter 23°c spring 22 late spring and summer and early autumn no heating at all
+eco_temperature: 18 # Temperature when away or sleeping (°C)
+night_temperature: 17 # Temperature during sleep (°C)
+
+heating_schedule_type: "presence" # Options: presence, 
+
+
+preheat_before_wakeup: true # Start heating before wake up time?
+preheat_minutes: 30 # How many minutes before?
+
+## 5. Presence & Away Mode
+
+### Presence Detection
+presence_sensors_used:
+  - "aqara_fp2" # List your presence sensors
+  - "motion_sensors" kitchen, bedroom, bath
+  - "presence_sensors" kitchen, bedroom, bath, living room (fp2)
+  - "phone_tracking" yes
+
+### Away Mode (when nobody home)
+away_mode_actions:
+  - "lights_off" # Turn off all lights
+  - "heating_eco" # Reduce heating
+  - "vacuum_start" every wokrday when i am not at home at 12:00 pm
+
+away_mode_delay_minutes: 10# Wait X minutes before activating away mode
+
+### Welcome Home
+welcome_home_actions:
+  - "lights_on" # Turn on lights only living room
+  - "heating_comfort" # Boost heating
+
+
+welcome_lights_brightness: 80 # Brightness when arriving home
+welcome_lights_rooms:
+  - "flur" # Which rooms to light up on arrival?
+  - "wohnzimmer"
+
+## 6. Room-Specific Settings
+
+### Wohnzimmer (Living Room)
+wohnzimmer:
+  primary_use: "relaxing" # Options: relaxing, working, both
+  tv_watching: true # Do you watch TV here?
+  movie_mode_enabled: true # Create a movie mode? (dims lights, closes shutters)
+  ambient_lighting: true # Use light strips for ambient effects?
+  fire_flicker_effect: true # You have this - keep enabled?
+
+### Küche (Kitchen)
+kuche:
+  cooking_brightness: 100 # Brightness when cooking
+  motion_timeout: 120# Seconds before lights off or if computer presence (area 1) one person without another person detected in the entire flat
+  night_light_mode: true # Dim lights for late-night snacks?
+  night_light_brightness: 50% after 22:00
+
+### Schlafzimmer (Bedroom)
+schlafzimmer:
+  wake_up_light: true # Gradual wake-up light?
+  wake_up_duration_minutes: 30minw long for gradual brightening?
+  bedtime_routine: true # Auto dim lights before bed
+
+
+### Bad (Bathroom)
+bad:
+  motion_timeout: 120 # Seconds before lights off or if no more presence detected or if fp2 area 1 detected person without another person detected in the entire flat
+  night_light_mode: true # Dim lights at night
+  night_light_brightness: 10
+  night_light_after: "2:00" # Night mode starts
+
+### Kiffzimmer
+kiffzimmer:
+  door_controlled: true # Light on when door opens, off when closes
+  motion_fallback: false # Also use motion sensor?
+  timeout_minutes: 10 Turn off after X minutes even if door open?
+
+
+
+## 7. Special Modes & Scenes
+
+### Movie Mode
+movie_mode:
+  enabled: true
+  actions:
+    - "dim_wohnzimmer_lights"
+    - "close_wohnzimmer_shutters"
+    - "ambient_lights_on"
+
+### Guest Mode
+guest_mode:
+  enabled: true # Do you have guests often
+  actions:
+    - "disable_auto_shutters" # Don't auto-close shutters
+    - "keep_lights_longer" # Longer timeout
+
+### Party Mode
+party_mode:
+  enabled: true
+  actions:
+    - "color_lights"
+    - "music_sync" # If you have this capability
+
+### Sleep Mode
+sleep_mode:
+  enabled: true
+  trigger: "true if presence in bedroom is longer than 15 minutes from 22:00-08:00 and no other person is detected in the entire flat"
+  actions:
+    - "all_lights_off"
+    - "close_all_shutters"
+    - "heating_night"
+    - "lock_doors" # Remove if no smart locks
+
+### Vacation Mode
+vacation_mode:
+  enabled: true
+  actions:
+    - "simulate_presence" # Random lights on/off
+    - "close_shutters"
+    - "heating_off"
+
+## 8. Notifications & Alerts
+
+
+
+### Security
+motion_alerts_when_away: true # Alert on motion when nobody home
+door_alerts: true # Alert when doors open
+
+## 9. Voice Control (Alexa)
+
+alexa_enabled: true # Do you use Alexa
+alexa_rooms:
+  - "wohnzimmer" # Which rooms have Echo devices
+  - "badezimmer"
+
+voice_commands_wanted:
+  - "Guten Morgen" # Morning routine
+  - "Gute Nacht" # Night routine
+  - "Ich gehe" # Leaving home
+  - "Ich bin zurück" # Arriving home
+  - "Filmzeit" # Movie mode
+  - "Party" # Party mode
+  - "Alexa auto detects me coming home"
+
+
+
+## 11. Additional Notes
+
+# Add any other preferences, special requirements, or notes here:
+additional_notes: |
+  - 
+  - 
+  -
+
+# Devices I forgot to mention:
+additional_devices:
+  - ""
+  - ""
+
+# Automations I definitely want:
+must_have_automations:
+  - ""
+  - ""
+
+# Automations I definitely DON'T want:
+unwanted_automations:
+  - ""
