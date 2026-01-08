@@ -24,7 +24,7 @@ fire_flicker_effect:
                 {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
                 {% set change = range(-8, 9) | random %}
                 {{ max(10, min(100, current + change)) }}
-              transition: "{{ range(0, 2) / 10 }}"
+              transition: "{{ (range(0, 2) | random) / 10 }}"
           - delay:
               milliseconds: "{{ range(20, 50) | random }}"
 
@@ -40,7 +40,7 @@ fire_flicker_effect:
                 {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
                 {% set change = range(-8, 9) | random %}
                 {{ max(10, min(100, current + change)) }}
-              transition: "{{ range(0, 2) / 10 }}"
+              transition: "{{ (range(0, 2) | random) / 10 }}"
           - delay:
               milliseconds: "{{ range(20, 50) | random }}"
 
@@ -56,7 +56,7 @@ fire_flicker_effect:
                 {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
                 {% set change = range(-8, 9) | random %}
                 {{ max(10, min(100, current + change)) }}
-              transition: "{{ range(0, 2) / 10 }}"
+              transition: "{{ (range(0, 2) | random) / 10 }}"
           - delay:
               milliseconds: "{{ range(20, 50) | random }}"
 
@@ -72,7 +72,7 @@ fire_flicker_effect:
                 {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
                 {% set change = range(-8, 9) | random %}
                 {{ max(10, min(100, current + change)) }}
-              transition: "{{ range(0, 2) / 10 }}"
+              transition: "{{ (range(0, 2) | random) / 10 }}"
           - delay:
               milliseconds: "{{ range(20, 50) | random }}"
 
@@ -88,7 +88,7 @@ fire_flicker_effect:
                 {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
                 {% set change = range(-8, 9) | random %}
                 {{ max(10, min(100, current + change)) }}
-              transition: "{{ range(0, 2) / 10 }}"
+              transition: "{{ (range(0, 2) | random) / 10 }}"
           - delay:
               milliseconds: "{{ range(20, 50) | random }}"
   mode: restart
