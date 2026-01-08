@@ -19,9 +19,9 @@ fire_flicker_effect:
                 - light.computer_licht_2
             data:
               hs_color:
-                - "{{ range(22, 28) | random }}"
+                - "{{ range(30, 40) | random }}"
                 - "{{ range(95, 100) | random }}"
-              brightness_pct: "{{ range(55, 75) | random }}"
+              brightness_pct: "{{ range(35, 85) | random }}"
               transition: "{{ (range(20, 35) | random) / 10 }}"
           - delay:
               milliseconds: "{{ range(800, 1500) | random }}"
