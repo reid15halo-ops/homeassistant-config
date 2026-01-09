@@ -1,0 +1,43 @@
+title: Debug Entities
+views:
+  - title: Debug
+    cards:
+      - type: entities
+        title: Left Plant (Permanent Marker)
+        entities:
+          - entity: sensor.cannabis_feuchtigkeit_l
+          - entity: sensor.cannabis_temperatur_l
+          - entity: sensor.l_cannabis_erdfeuchte
+          - entity: sensor.l_cannabis_temperatur
+          - entity: sensor.permanent_marker_l_cannabis_soil_moisture
+          - entity: sensor.permanent_marker_l_cannabis_temperature
+
+      - type: entities
+        title: Middle Plant (Cap Junky)
+        entities:
+          - entity: sensor.cannabis_mitte_feuchtigkeit
+          - entity: sensor.cannabis_mitte_erdfeuchte
+          - entity: sensor.cannabis_mitte_temperatur
+          - entity: sensor.m_cannabis_erdfeuchte
+          - entity: sensor.m_cannabis_temperatur
+          - entity: sensor.cap_junky_m_cannabis_soil_moisture
+          - entity: sensor.cap_junky_m_cannabis_temperature
+
+      - type: entities
+        title: Right Plant (Candy Store)
+        entities:
+          - entity: sensor.cannabis_rechts_feuchtigkeit
+          - entity: sensor.cannabis_rechts_erdfeuchte
+          - entity: sensor.cannabis_rechts_temperatur
+          - entity: sensor.r_cannabis_erdfeuchte
+          - entity: sensor.r_cannabis_temperatur
+          - entity: sensor.candy_store_r_cannabis_soil_moisture
+          - entity: sensor.candy_store_r_cannabis_temperature
+
+      - type: entities
+        title: Environment
+        entities:
+          - entity: sensor.mutterpflanze_temperatur
+          - entity: sensor.mutterpflanze_luftfeuchtigkeit
+          - entity: sensor.zelt_temperature_humidity_temperatur
+          - entity: sensor.zelt_temperature_humidity_luftfeuchtigkeit
