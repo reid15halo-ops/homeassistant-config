@@ -20,27 +20,29 @@ scene: !include scenes.yaml
 
 # Lovelace Dashboards
 lovelace:
-  mode: storage
+  mode: yaml
+  resources: [] # Clear resources
   dashboards:
-    home-control:
+    lovelace-home:
       mode: yaml
       title: Home Control
       icon: mdi:home-automation
       show_in_sidebar: true
       filename: dashboards/home_control.yaml
-    climate-energy:
+      require_admin: false
+    lovelace-climate:
       mode: yaml
       title: Climate & Energy
       icon: mdi:leaf
       show_in_sidebar: true
       filename: dashboards/climate_energy.yaml
-    automation-status:
+    lovelace-status:
       mode: yaml
       title: Automation Status
       icon: mdi:robot
       show_in_sidebar: true
       filename: dashboards/automation_status.yaml
-    plant-growing:
+    lovelace-plants:
       mode: yaml
       title: Plant Growing
       icon: mdi:sprout

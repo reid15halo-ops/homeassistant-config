@@ -1,0 +1,42 @@
+title: Home Control
+views:
+  - path: default_view
+    title: Home
+    icon: mdi:home
+    cards:
+      - type: markdown
+        content: |
+          # 👋 Welcome Home
+          Select a dashboard from the sidebar or use the quick links below.
+
+      - type: horizontal-stack
+        cards:
+          - type: button
+            name: Home Control
+            icon: mdi:home-automation
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-home
+
+          - type: button
+            name: Climate
+            icon: mdi:leaf
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-climate
+
+      - type: horizontal-stack
+        cards:
+          - type: button
+            name: Plants
+            icon: mdi:sprout
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-plants
+
+          - type: button
+            name: Status
+            icon: mdi:robot
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-status
