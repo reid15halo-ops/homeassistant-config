@@ -1,0 +1,56 @@
+# Home Assistant - Standard .gitignore
+
+# Ignore secrets
+secrets.yaml
+*.db
+*.db-shm
+*.db-wal
+*.log
+*.sqlite
+
+# Ignore system files
+.DS_Store
+.uuid
+.HA_VERSION
+.storage/
+.cloud/
+.google.token
+
+# Ignore dependencies
+deps/
+tts/
+www/
+
+# Ignore temporary files
+*.pyc
+__pycache__/
+*.pid
+*.lock
+
+# Ignore home-assistant.log*
+home-assistant.log*
+home-assistant_v2.db*
+
+# Ignore internal cache
+.cache/
+
+# Ignore development files
+venv/
+*.swp
+*.swo
+*.orig
+
+# Ignore OZW (if using)
+ozw_log.txt
+
+# Keep important config files
+!*.yaml
+!.yaml
+!*.md
+!.agent/
+
+# But ignore these specific yaml files
+known_devices.yaml
+plex.conf
+phue.conf
+harmony_*.conf
