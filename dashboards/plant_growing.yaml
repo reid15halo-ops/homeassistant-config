@@ -14,7 +14,7 @@ views:
       - type: horizontal-stack
         cards:
           - type: gauge
-            entity: sensor.zelt_temperature_humidity_temperature
+            entity: sensor.zelt_temperature_humidity_temperatur
             name: Tent Temp
             unit: "°C"
             min: 15
@@ -26,7 +26,7 @@ views:
             needle: true
 
           - type: gauge
-            entity: sensor.zelt_temperature_humidity_humidity
+            entity: sensor.zelt_temperature_humidity_luftfeuchtigkeit
             name: Tent Humidity
             unit: "%"
             min: 30
@@ -65,10 +65,10 @@ views:
             title: (L) Permanent Marker
             show_header_toggle: false
             entities:
-              - entity: sensor.permanent_marker_l_cannabis_soil_moisture
+              - entity: sensor.l_cannabis_erdfeuchte
                 name: Soil Moisture
                 icon: mdi:water-percent
-              - entity: sensor.permanent_marker_l_cannabis_temperature
+              - entity: sensor.l_cannabis_temperatur
                 name: Soil Temp
                 icon: mdi:thermometer
 
@@ -77,10 +77,10 @@ views:
             title: (M) Cap Junky
             show_header_toggle: false
             entities:
-              - entity: sensor.cap_junky_m_cannabis_soil_moisture
+              - entity: sensor.m_cannabis_erdfeuchte
                 name: Soil Moisture
                 icon: mdi:water-percent
-              - entity: sensor.cap_junky_m_cannabis_temperature
+              - entity: sensor.m_cannabis_temperatur
                 name: Soil Temp
                 icon: mdi:thermometer
 
@@ -89,10 +89,10 @@ views:
             title: (R) Candy Store
             show_header_toggle: false
             entities:
-              - entity: sensor.candy_store_r_cannabis_soil_moisture
+              - entity: sensor.r_cannabis_erdfeuchte
                 name: Soil Moisture
                 icon: mdi:water-percent
-              - entity: sensor.candy_store_r_cannabis_temperature
+              - entity: sensor.r_cannabis_temperatur
                 name: Soil Temp
                 icon: mdi:thermometer
 
@@ -101,10 +101,10 @@ views:
             title: Mother Plant
             show_header_toggle: false
             entities:
-              - entity: sensor.mutterpflanze_temperature
+              - entity: sensor.mutterpflanze_temperatur
                 name: Air Temp
                 icon: mdi:thermometer
-              - entity: sensor.mutterpflanze_humidity
+              - entity: sensor.mutterpflanze_luftfeuchtigkeit
                 name: Humidity
                 icon: mdi:water-percent
 
