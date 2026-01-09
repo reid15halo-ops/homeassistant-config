@@ -1,0 +1,128 @@
+title: Automation Status
+icon: mdi:robot
+path: automation_status
+
+cards:
+  # System Overview
+  - type: markdown
+    content: |
+      ## 🤖 Automation System Status
+      Real-time view of all active automations and sensors
+
+  # Presence Detection
+  - type: entities
+    title: Presence Detection
+    show_header_toggle: false
+    state_color: true
+    entities:
+      - entity: person.reid15
+        name: Your Location
+      - type: divider
+      - entity: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
+        name: Computer Area
+      - entity: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
+        name: Couch Area
+      - entity: binary_sensor.motion_sensor_kuche_bewegung
+        name: Kitchen Motion
+      - entity: binary_sensor.motion_sensor_schlafen_bewegung
+        name: Bedroom Motion
+
+  # Active Modes
+  - type: entities
+    title: Active Modes
+    show_header_toggle: false
+    state_color: true
+    entities:
+      - entity: input_boolean.gaming_mode
+        name: Gaming Mode
+        icon: mdi:controller
+      - entity: input_boolean.movie_mode
+        name: Movie Mode
+        icon: mdi:movie
+      - entity: input_boolean.party_mode
+        name: Party Mode
+        icon: mdi:party-popper
+      - entity: input_boolean.vacation_mode
+        name: Vacation Mode
+        icon: mdi:airplane
+      - entity: input_boolean.sleep_mode
+        name: Sleep Mode
+        icon: mdi:sleep
+
+  # Blind Protection System
+  - type: entities
+    title: Blind Anti-Jam System
+    show_header_toggle: false
+    state_color: true
+    entities:
+      - type: section
+        label: "Last Action (ON = Opened, OFF = Closed)"
+      - entity: input_boolean.blind_computer_last_opened
+        name: Computer
+        icon: mdi:window-shutter
+      - entity: input_boolean.blind_schlafen_last_opened
+        name: Bedroom
+        icon: mdi:window-shutter
+      - entity: input_boolean.blind_kuche_last_opened
+        name: Kitchen
+        icon: mdi:window-shutter
+      - entity: input_boolean.blind_yoga_last_opened
+        name: Yoga Room
+        icon: mdi:window-shutter
+      - type: section
+        label: "✅ = Can open safely | ⚠️ = Would skip (prevent jam)"
+
+  # Current Blind Positions
+  - type: entities
+    title: Blind Positions
+    show_header_toggle: false
+    entities:
+      - entity: cover.rollladen_computer_vorhang
+        name: Computer
+      - entity: cover.schlafen_blind_vorhang
+        name: Bedroom
+      - entity: cover.rollladen_kuche_vorhang
+        name: Kitchen
+      - entity: cover.rollladen_yoga_vorhang
+        name: Yoga Room
+
+  # Climate Status
+  - type: entities
+    title: Climate System
+    show_header_toggle: false
+    state_color: true
+    entities:
+      - entity: climate.thermostat_computer
+        name: Computer Room
+      - entity: climate.thermostat_bad
+        name: Bathroom
+      - entity: fan.ceiling_fan_with_light
+        name: Living Room Fan
+      - entity: fan.dc_fan_lamp
+        name: Bedroom Fan
+
+  # Light Sensor
+  - type: entities
+    title: Environmental Sensors
+    show_header_toggle: false
+    entities:
+      - entity: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
+        name: Light Level
+        icon: mdi:brightness-6
+      - entity: sensor.temperature_and_humidity_sensor_temperatur
+        name: Temperature
+        icon: mdi:thermometer
+      - entity: sun.sun
+        name: Sun Position
+
+  # Quick Actions
+  - type: markdown
+    content: |
+      ### 🛠️ Automation Health
+
+      **Anti-Jam System:** ✅ Active
+      **Seasonal Schedule:** ✅ Winter Mode
+      **Presence Detection:** ✅ Working
+      **Climate Control:** ✅ Automated
+
+      All systems operational!

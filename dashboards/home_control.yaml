@@ -1,0 +1,137 @@
+title: Home Control
+icon: mdi:home-automation
+path: home_control
+
+cards:
+  # Quick Actions Row
+  - type: horizontal-stack
+    cards:
+      - type: button
+        entity: script.heating_comfort_now
+        name: Heating Comfort
+        icon: mdi:fire
+        tap_action:
+          action: call-service
+          service: script.heating_comfort_now
+        show_state: false
+
+      - type: button
+        entity: script.fan_winter_heat_now
+        name: Fan Heat Mode
+        icon: mdi:fan
+        tap_action:
+          action: call-service
+          service: script.fan_winter_heat_now
+        show_state: false
+
+  # Mode Toggles
+  - type: entities
+    title: Quick Modes
+    show_header_toggle: false
+    entities:
+      - entity: input_boolean.gaming_mode
+        name: Gaming Mode
+        icon: mdi:controller
+      - entity: input_boolean.movie_mode
+        name: Movie Mode
+        icon: mdi:movie-open
+      - entity: input_boolean.party_mode
+        name: Party Mode
+        icon: mdi:party-popper
+
+  # Blinds Control
+  - type: vertical-stack
+    cards:
+      - type: markdown
+        content: |
+          ## 🪟 Blind Controls
+          Safe operation - prevents jamming
+
+      - type: entities
+        title: Computer Room
+        entities:
+          - entity: cover.rollladen_computer_vorhang
+            name: Computer Blind
+          - type: custom:slider-entity-row
+            entity: cover.rollladen_computer_vorhang
+            name: Position
+          - entity: input_boolean.blind_computer_last_opened
+            name: Status
+            icon: mdi:information-outline
+
+      - type: horizontal-stack
+        cards:
+          - type: button
+            icon: mdi:arrow-up-bold
+            name: Safe Open
+            tap_action:
+              action: call-service
+              service: script.safe_open_blind
+              service_data:
+                cover_entity: cover.rollladen_computer_vorhang
+                tracker_entity: input_boolean.blind_computer_last_opened
+
+          - type: button
+            icon: mdi:arrow-down-bold
+            name: Safe Close
+            tap_action:
+              action: call-service
+              service: script.safe_close_blind
+              service_data:
+                cover_entity: cover.rollladen_computer_vorhang
+                tracker_entity: input_boolean.blind_computer_last_opened
+
+      - type: entities
+        title: Bedroom
+        entities:
+          - entity: cover.schlafen_blind_vorhang
+            name: Bedroom Blind
+          - entity: input_boolean.blind_schlafen_last_opened
+            name: Status
+
+      - type: horizontal-stack
+        cards:
+          - type: button
+            icon: mdi:arrow-up-bold
+            name: Safe Open
+            tap_action:
+              action: call-service
+              service: script.safe_open_blind
+              service_data:
+                cover_entity: cover.schlafen_blind_vorhang
+                tracker_entity: input_boolean.blind_schlafen_last_opened
+
+          - type: button
+            icon: mdi:arrow-down-bold
+            name: Safe Close
+            tap_action:
+              action: call-service
+              service: script.safe_close_blind
+              service_data:
+                cover_entity: cover.schlafen_blind_vorhang
+                tracker_entity: input_boolean.blind_schlafen_last_opened
+
+  # Lighting
+  - type: entities
+    title: Main Lights
+    show_header_toggle: false
+    entities:
+      - entity: light.computer_licht_2
+        name: Computer Light
+      - entity: light.buffet_licht
+        name: Buffet Light
+      - entity: light.rollladen_computer_hintergrundbeleuchtung
+        name: Computer Ambient
+      - entity: light.kuche_brine_1
+        name: Kitchen Light
+
+  # Climate Quick View
+  - type: horizontal-stack
+    cards:
+      - type: thermostat
+        entity: climate.thermostat_computer
+        name: Computer Room
+
+      - type: thermostat
+        entity: climate.thermostat_bad
+        name: Bathroom
