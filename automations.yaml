@@ -454,10 +454,10 @@
 
 - id: "light_bad_on"
   alias: "Bad - Licht an bei Anwesenheit"
-  description: "Turn on bathroom light when motion detected"
+  description: "Turn on bathroom light when presence detected"
   trigger:
     - platform: state
-      entity_id: binary_sensor.motion_sensor_bad_bewegung
+      entity_id: binary_sensor.human_presence_detector_bewegung
       to: "on"
   condition:
     - condition: state
@@ -474,13 +474,11 @@
 
 - id: "light_bad_off"
   alias: "Bad - Licht aus ohne Anwesenheit"
-  description: "Turn off bathroom light when no motion for 30 seconds"
+  description: "Turn off bathroom light when no presence"
   trigger:
     - platform: state
-      entity_id: binary_sensor.motion_sensor_bad_bewegung
+      entity_id: binary_sensor.human_presence_detector_bewegung
       to: "off"
-      for:
-        seconds: 30
   action:
     - service: light.turn_off
       target:
