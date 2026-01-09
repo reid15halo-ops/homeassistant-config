@@ -1,328 +1,264 @@
 # ============================================================================
-# REID'S HOME ASSISTANT SCRIPTS
+# BEREINIGTE SCRIPTS.YAML
+# Duplikate entfernt - nur die aktive Version behalten
 # ============================================================================
 
-fire_flicker_effect_DISABLED:
-  alias: "[DISABLED] Fireplace Flicker Effect"
-  description: DISABLED - Fire effect not working as desired. See .agent/fire_effect_master_plan.md for alternatives
-  sequence:
-    - repeat:
-        while:
-          - condition: state
-            entity_id: script.fire_flicker_effect
-            state: "on"
-        sequence:
-          # Segment 1: Starker Aufloderer
-          - service: light.turn_on
-            target:
-              entity_id:
-                - light.buffet_licht
-                - light.computer_licht_2
-            data:
-              hs_color: [35, 100]
-              brightness_pct: >
-                {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
-                {% set change = range(10, 20) | random %}
-                {{ max(10, min(100, current + change)) }}
-              transition: 0
-          - delay:
-              milliseconds: "{{ range(20, 35) | random }}"
-
-          # Segment 2: Schnelles Flackern
-          - service: light.turn_on
-            target:
-              entity_id:
-                - light.buffet_licht
-                - light.computer_licht_2
-            data:
-              hs_color: [35, 100]
-              brightness_pct: >
-                {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
-                {% set change = range(-15, 15) | random %}
-                {{ max(10, min(100, current + change)) }}
-              transition: 0
-          - delay:
-              milliseconds: "{{ range(25, 40) | random }}"
-
-          # Segment 3: Abschwächung
-          - service: light.turn_on
-            target:
-              entity_id:
-                - light.buffet_licht
-                - light.computer_licht_2
-            data:
-              hs_color: [35, 100]
-              brightness_pct: >
-                {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
-                {% set change = range(-12, -5) | random %}
-                {{ max(10, min(100, current + change)) }}
-              transition: 0
-          - delay:
-              milliseconds: "{{ range(30, 45) | random }}"
-
-          # Segment 4: Glut-Phase
-          - service: light.turn_on
-            target:
-              entity_id:
-                - light.buffet_licht
-                - light.computer_licht_2
-            data:
-              hs_color: [35, 100]
-              brightness_pct: >
-                {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
-                {% set change = range(-5, 5) | random %}
-                {{ max(10, min(40, current + change)) }}
-              transition: 0
-          - delay:
-              milliseconds: "{{ range(35, 50) | random }}"
-
-          # Segment 5: Explosive Spitze
-          - service: light.turn_on
-            target:
-              entity_id:
-                - light.buffet_licht
-                - light.computer_licht_2
-            data:
-              hs_color: [35, 100]
-              brightness_pct: >
-                {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
-                {% set change = range(15, 30) | random %}
-                {{ max(10, min(100, current + change)) }}
-              transition: 0
-          - delay:
-              milliseconds: "{{ range(20, 30) | random }}"
-
-          # Segment 6: Wilde Oszillation
-          - service: light.turn_on
-            target:
-              entity_id:
-                - light.buffet_licht
-                - light.computer_licht_2
-            data:
-              hs_color: [35, 100]
-              brightness_pct: >
-                {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
-                {% set change = range(-20, 20) | random %}
-                {{ max(10, min(100, current + change)) }}
-              transition: 0
-          - delay:
-              milliseconds: "{{ range(25, 40) | random }}"
-
-          # Segment 7: Sanftes Pulsieren
-          - service: light.turn_on
-            target:
-              entity_id:
-                - light.buffet_licht
-                - light.computer_licht_2
-            data:
-              hs_color: [35, 100]
-              brightness_pct: >
-                {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
-                {% set change = range(-8, 8) | random %}
-                {{ max(10, min(100, current + change)) }}
-              transition: 0
-          - delay:
-              milliseconds: "{{ range(30, 45) | random }}"
-
-          # Segment 8: Rapides Absinken
-          - service: light.turn_on
-            target:
-              entity_id:
-                - light.buffet_licht
-                - light.computer_licht_2
-            data:
-              hs_color: [35, 100]
-              brightness_pct: >
-                {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
-                {% set change = range(-18, -8) | random %}
-                {{ max(10, min(100, current + change)) }}
-              transition: 0
-          - delay:
-              milliseconds: "{{ range(30, 40) | random }}"
-
-          # Segment 9: Mittelstarkes Flackern
-          - service: light.turn_on
-            target:
-              entity_id:
-                - light.buffet_licht
-                - light.computer_licht_2
-            data:
-              hs_color: [35, 100]
-              brightness_pct: >
-                {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
-                {% set change = range(-10, 10) | random %}
-                {{ max(30, min(80, current + change)) }}
-              transition: 0
-          - delay:
-              milliseconds: "{{ range(30, 45) | random }}"
-
-          # Segment 10: Überraschungs-Burst
-          - service: light.turn_on
-            target:
-              entity_id:
-                - light.buffet_licht
-                - light.computer_licht_2
-            data:
-              hs_color: [35, 100]
-              brightness_pct: >
-                {% set current = state_attr('light.buffet_licht', 'brightness') | default(128) | int * 100 // 255 %}
-                {% set change = range(20, 40) | random %}
-                {{ max(10, min(100, current + change)) }}
-              transition: 0
-          - delay:
-              milliseconds: "{{ range(20, 35) | random }}"
+ambient_feuerlicht_warm_flicker:
+  alias: KL430 - Random Fire (Amber + Dynamic Dim)
   mode: restart
+  sequence:
+    - target:
+        entity_id:
+          - light.computer_licht
+          - light.buffet_lichtstreifen
+      data:
+        init_states: 30,55,62
+        backgrounds:
+          - [28, 50, 62]
+          - [31, 45, 74]
+          - [33, 35, 88]
+          - [26, 55, 66]
+        segments: 0
+        brightness: 70
+        transition: 900
+        transition_range: 500,1500
+        hue_range: 26,42
+        saturation_range: 35,70
+        brightness_range: 10,92
+        random_seed: 321
+      action: tplink.random_effect
 
 ambient_velvet_rainbow:
-  alias: "Ambient - Velvet Rainbow"
-  description: "Smooth rainbow color cycling"
+  alias: Ambient – Velvet Rainbow
+  mode: restart
   sequence:
+    - variables:
+        hue: 12
+        sat: 55
+        bri: 46
+        step_h: 2
+        t: 3
     - repeat:
-        count: 7
+        count: 100000
         sequence:
-          - service: light.turn_on
-            target:
-              entity_id: light.buffet_licht
+          - target:
+              entity_id: light.computer_licht
             data:
               hs_color:
-                - "{{ range(0, 360) | random }}"
-                - 100
-              brightness_pct: 60
-              transition: 2
-          - delay:
-              seconds: 3
-  mode: single
+                - "{{ hue }}"
+                - "{{ sat }}"
+              brightness_pct: "{{ bri }}"
+              transition: "{{ t }}"
+            action: light.turn_on
+          - delay: "{{ t }}"
+          - variables:
+              hue: "{{ (hue + step_h) % 360 }}"
 
-cover_fahre_zeitbasiert:
-  alias: "Cover - Fahre Zeitbasiert"
-  description: "Time-based cover control"
+ventilator_wintermodus_low:
+  alias: Ventilator – Wintermodus Low
+  mode: single
+  sequence:
+    - action: fan.decrease_speed
+      target:
+        entity_id:
+          - fan.ceiling_fan_with_light
+      data:
+        percentage_step: 9
+    - type: toggle
+      device_id: 3586709559e4e46394dfa54ebf906373
+      entity_id: a14baab7198c0de3311dbee8b11fedab
+      domain: fan
+
+notify_all:
+  alias: Notify All Devices
+  mode: parallel
+  max: 10
   fields:
-    cover_entity:
-      description: "Cover entity to control"
-      example: "cover.rollladen_computer_vorhang"
+    message:
+      description: Message to send
+      required: true
+    title:
+      description: Notification title
+      required: false
+  sequence:
+    - service: notify.alexa_media_wohnzimmer
+      data:
+        title: "{{ title | default('Home Assistant') }}"
+        message: "{{ message }}"
+      continue_on_error: true
+
+lights_bedtime:
+  alias: Bedtime Light Scene
+  mode: single
+  sequence:
+    - service: light.turn_off
+      target:
+        area_id: all
+      continue_on_error: true
+    - service: light.turn_on
+      target:
+        entity_id: light.schlafzimmer_licht
+      data:
+        brightness_pct: "{{ states('input_number.night_mode_brightness')|int(15) }}"
+        color_temp_kelvin: 2700
+      continue_on_error: true
+
+all_lights_off:
+  alias: Turn Off All Lights
+  mode: single
+  sequence:
+    - service: light.turn_off
+      target:
+        entity_id: all
+      continue_on_error: true
+
+all_covers_open:
+  alias: Open All Covers
+  mode: single
+  fields:
     position:
-      description: "Target position (0-100)"
-      example: "50"
+      description: Target position (0-100)
+      default: 100
   sequence:
     - service: cover.set_cover_position
       target:
-        entity_id: "{{ cover_entity }}"
+        entity_id:
+          - cover.rollladen_computer_vorhang
+          - cover.rollladen_kuche_vorhang
+          - cover.rollladen_yoga_vorhang
+          - cover.rollladen_schlafen_vorhang
       data:
         position: "{{ position }}"
+      continue_on_error: true
+
+all_covers_close:
+  alias: Close All Covers
   mode: single
-
-ventilator_wintermodus_low:
-  alias: "Ventilator - Wintermodus Low"
-  description: "Set ceiling fan to low speed for winter mode"
   sequence:
-    - service: fan.set_percentage
-      target:
-        entity_id: fan.dc_fan_lamp
-      data:
-        percentage: 25
-  mode: single
-
-# ============================================================================
-# ALEXA VOICE COMMAND SCRIPTS
-# ============================================================================
-
-guten_morgen:
-  alias: "Guten Morgen"
-  description: "Morning routine triggered by voice"
-  sequence:
-    - service: light.turn_on
-      target:
-        entity_id:
-          - light.kuche_brine_1
-          - light.kuche_birne_2_2
-      data:
-        brightness_pct: 80
-        color_temp_kelvin: 3000
-    - service: cover.open_cover
-      target:
-        entity_id: all
-  mode: single
-
-gute_nacht:
-  alias: "Gute Nacht"
-  description: "Night routine triggered by voice"
-  sequence:
-    - service: light.turn_off
-      target:
-        entity_id: all
     - service: cover.close_cover
       target:
-        entity_id: all
+        entity_id:
+          - cover.rollladen_computer_vorhang
+          - cover.rollladen_kuche_vorhang
+          - cover.rollladen_yoga_vorhang
+          - cover.rollladen_schlafen_vorhang
+      continue_on_error: true
+
+light_toggle_with_brightness:
+  alias: Toggle Light with Smart Brightness
+  mode: single
+  fields:
+    target_light:
+      description: Light entity to toggle
+      required: true
+    brightness_day:
+      default: 100
+    brightness_night:
+      default: 15
+  sequence:
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ is_state(target_light, 'on') }}"
+          sequence:
+            - service: light.turn_off
+              target:
+                entity_id: "{{ target_light }}"
+      default:
+        - service: light.turn_on
+          target:
+            entity_id: "{{ target_light }}"
+          data:
+            brightness_pct: >
+              {% set hour = now().hour %}
+              {% if hour >= 22 or hour < 6 %}
+                {{ brightness_night }}
+              {% else %}
+                {{ brightness_day }}
+              {% endif %}
+
+# ============================================================================
+# SAFE BLIND CONTROL - Prevents opening twice in a row
+# ============================================================================
+
+safe_open_blind:
+  alias: "Safe Open Blind"
+  description: "Opens a blind only if it wasn't already opened (prevents jamming)"
+  mode: single
+  fields:
+    cover_entity:
+      description: "Cover entity to open (e.g., cover.rollladen_computer_vorhang)"
+      example: "cover.rollladen_computer_vorhang"
+    tracker_entity:
+      description: "Tracker boolean (e.g., input_boolean.blind_computer_last_opened)"
+      example: "input_boolean.blind_computer_last_opened"
+  sequence:
+    # Only open if the last action was NOT an open (tracker = false)
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: "{{ tracker_entity }}"
+              state: "off" # false = last action was close, safe to open
+          sequence:
+            - service: cover.open_cover
+              target:
+                entity_id: "{{ cover_entity }}"
+            # Mark that we just opened it
+            - service: input_boolean.turn_on
+              target:
+                entity_id: "{{ tracker_entity }}"
+      default:
+        # Skip opening - it was already opened
+        - service: system_log.write
+          data:
+            message: "Skipped opening {{ cover_entity }} - already opened (prevents jamming)"
+            level: warning
+
+safe_close_blind:
+  alias: "Safe Close Blind"
+  description: "Closes a blind (always allowed, multiple closes OK)"
+  mode: single
+  fields:
+    cover_entity:
+      description: "Cover entity to close (e.g., cover.rollladen_computer_vorhang)"
+      example: "cover.rollladen_computer_vorhang"
+    tracker_entity:
+      description: "Tracker boolean (e.g., input_boolean.blind_computer_last_opened)"
+      example: "input_boolean.blind_computer_last_opened"
+  sequence:
+    - service: cover.close_cover
+      target:
+        entity_id: "{{ cover_entity }}"
+    # Mark that we just closed it (allows future opens)
+    - service: input_boolean.turn_off
+      target:
+        entity_id: "{{ tracker_entity }}"
+
+# ============================================================================
+# HEATING SCRIPTS
+# ============================================================================
+
+heating_comfort_now:
+  alias: "Heizung - Sofort Komfort"
+  description: "Manually set heating to comfort temperature"
+  mode: single
+  sequence:
     - service: climate.set_temperature
       target:
         entity_id:
           - climate.thermostat_bad
           - climate.thermostat_computer
       data:
-        temperature: 17
-  mode: single
+        temperature: "{{ 23 if now().month in [11, 12, 1, 2] else 22 }}"
 
-ich_gehe:
-  alias: "Ich gehe"
-  description: "Leaving home routine"
-  sequence:
-    - service: light.turn_off
-      target:
-        entity_id: all
-    - service: climate.set_temperature
-      target:
-        entity_id:
-          - climate.thermostat_bad
-          - climate.thermostat_computer
-      data:
-        temperature: 18
+fan_winter_heat_now:
+  alias: "Ventilator - Winter Wärmeverteilung starten"
+  description: "Manually start ceiling fan in winter heat distribution mode"
   mode: single
-
-ich_bin_zuruck:
-  alias: "Ich bin zurück"
-  description: "Arriving home routine"
   sequence:
-    - service: light.turn_on
+    - service: fan.turn_on
       target:
-        entity_id:
-          - light.computer_licht_2
-          - light.buffet_licht
+        entity_id: fan.ceiling_fan_with_light
       data:
-        brightness_pct: 80
-        color_temp_kelvin: 2700
-    - service: climate.set_temperature
-      target:
-        entity_id:
-          - climate.thermostat_bad
-          - climate.thermostat_computer
-      data:
-        temperature: 23
-  mode: single
-
-filmzeit:
-  alias: "Filmzeit"
-  description: "Movie mode script"
-  sequence:
-    - service: input_boolean.turn_on
-      target:
-        entity_id: input_boolean.movie_mode
-  mode: single
-
-party:
-  alias: "Party"
-  description: "Party mode script"
-  sequence:
-    - service: input_boolean.turn_on
-      target:
-        entity_id: input_boolean.party_mode
-    - service: light.turn_on
-      target:
-        entity_id:
-          - light.buffet_licht
-          - light.computer_licht_2
-      data:
-        brightness_pct: 100
-        hs_color:
-          - "{{ range(0, 360) | random }}"
-          - 100
-  mode: single
+        percentage: 33 # Low speed to avoid draft
+        direction: "reverse" # Updraft to mix warm air at ceiling

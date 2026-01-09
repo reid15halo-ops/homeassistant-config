@@ -77,34 +77,205 @@
 # ROLLER SHUTTER AUTOMATIONS
 # ============================================================================
 
-- id: "shutters_open_sunrise"
-  alias: "Rollläden - Öffnen bei Sonnenaufgang"
-  description: "Open shutters at sunrise"
+# ============================================================================
+# SEASONAL BLIND OPENING (Smart Energy Saving)
+# ============================================================================
+
+- id: "shutters_open_winter_weekend"
+  alias: "Rollläden - Öffnen Winter Wochenende"
+  description: "Open blinds on winter weekends for solar gain (free heating)"
+  trigger:
+    - platform: sun
+      event: sunrise
+      offset: "01:00:00" # Wait 1h after sunrise for sun to warm up
+  condition:
+    # Only in winter months (Nov-Feb)
+    - condition: template
+      value_template: "{{ now().month in [11, 12, 1, 2] }}"
+    # Only on weekends (you're home)
+    - condition: time
+      weekday:
+        - sat
+        - sun
+  action:
+    # Open all blinds to capture solar heat
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.rollladen_computer_vorhang
+        tracker_entity: input_boolean.blind_computer_last_opened
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.schlafen_blind_vorhang
+        tracker_entity: input_boolean.blind_schlafen_last_opened
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.rollladen_kuche_vorhang
+        tracker_entity: input_boolean.blind_kuche_last_opened
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.rollladen_yoga_vorhang
+        tracker_entity: input_boolean.blind_yoga_last_opened
+  mode: single
+
+- id: "shutters_open_winter_weekday_morning_home"
+  alias: "Rollläden - Öffnen Winter Werktag Morgen (Zuhause)"
+  description: "Open blinds in winter weekday morning if you're home (sick day, home office, etc.)"
+  trigger:
+    - platform: sun
+      event: sunrise
+      offset: "01:00:00" # 1h after sunrise
+  condition:
+    # Only in winter months
+    - condition: template
+      value_template: "{{ now().month in [11, 12, 1, 2] }}"
+    # Only on weekdays
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+    # Only if you're HOME (sick day, home office, vacation)
+    - condition: state
+      entity_id: person.reid15
+      state: "home"
+  action:
+    # Open blinds for comfort and solar heating
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.rollladen_computer_vorhang
+        tracker_entity: input_boolean.blind_computer_last_opened
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.schlafen_blind_vorhang
+        tracker_entity: input_boolean.blind_schlafen_last_opened
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.rollladen_kuche_vorhang
+        tracker_entity: input_boolean.blind_kuche_last_opened
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.rollladen_yoga_vorhang
+        tracker_entity: input_boolean.blind_yoga_last_opened
+  mode: single
+
+- id: "shutters_open_winter_weekday_afternoon"
+  alias: "Rollläden - Öffnen Winter Werktag Nachmittag (Unterwegs)"
+  description: "Open blinds on winter weekdays at noon if you're away at work (solar gain)"
+  trigger:
+    - platform: time
+      at: "12:00:00" # Noon - sun is strongest, helps heating
+  condition:
+    # Only in winter months
+    - condition: template
+      value_template: "{{ now().month in [11, 12, 1, 2] }}"
+    # Only on weekdays
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+    # Only if you're AWAY at work (not home)
+    - condition: state
+      entity_id: person.reid15
+      state: "not_home"
+    # Only if sun is shining (otherwise keep closed)
+    - condition: sun
+      after: sunrise
+      before: sunset
+  action:
+    # Open blinds for solar heat gain
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.rollladen_computer_vorhang
+        tracker_entity: input_boolean.blind_computer_last_opened
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.schlafen_blind_vorhang
+        tracker_entity: input_boolean.blind_schlafen_last_opened
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.rollladen_kuche_vorhang
+        tracker_entity: input_boolean.blind_kuche_last_opened
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.rollladen_yoga_vorhang
+        tracker_entity: input_boolean.blind_yoga_last_opened
+  mode: single
+
+- id: "shutters_open_spring_fall"
+  alias: "Rollläden - Öffnen Frühling/Herbst"
+  description: "Open blinds at sunrise in spring/fall"
+  trigger:
+    - platform: sun
+      event: sunrise
+      offset: "00:30:00" # 30 min after sunrise
+  condition:
+    # Spring and fall months
+    - condition: template
+      value_template: "{{ now().month in [3, 4, 5, 9, 10] }}"
+    # Only if awake (5am weekdays, 10am weekends)
+    - condition: or
+      conditions:
+        - condition: time
+          after: "05:00"
+          weekday: [mon, tue, wed, thu, fri]
+        - condition: time
+          after: "10:00"
+          weekday: [sat, sun]
+  action:
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.rollladen_computer_vorhang
+        tracker_entity: input_boolean.blind_computer_last_opened
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.schlafen_blind_vorhang
+        tracker_entity: input_boolean.blind_schlafen_last_opened
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.rollladen_kuche_vorhang
+        tracker_entity: input_boolean.blind_kuche_last_opened
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.rollladen_yoga_vorhang
+        tracker_entity: input_boolean.blind_yoga_last_opened
+  mode: single
+
+- id: "shutters_open_summer"
+  alias: "Rollläden - Öffnen Sommer"
+  description: "Open blinds early in summer (but not too early)"
   trigger:
     - platform: sun
       event: sunrise
       offset: "00:00:00"
   condition:
-    # Check if someone is likely awake or it's past earliest wake time
-    - condition: or
-      conditions:
-        - condition: time
-          after: "05:00"
-          weekday:
-            - mon
-            - tue
-            - wed
-            - thu
-            - fri
-        - condition: time
-          after: "10:00"
-          weekday:
-            - sat
-            - sun
+    # Summer months
+    - condition: template
+      value_template: "{{ now().month in [6, 7, 8] }}"
+    # Not before 6am even in summer
+    - condition: time
+      after: "06:00"
   action:
-    - service: scene.turn_on
-      target:
-        entity_id: scene.rollladen
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.rollladen_computer_vorhang
+        tracker_entity: input_boolean.blind_computer_last_opened
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.schlafen_blind_vorhang
+        tracker_entity: input_boolean.blind_schlafen_last_opened
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.rollladen_kuche_vorhang
+        tracker_entity: input_boolean.blind_kuche_last_opened
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.rollladen_yoga_vorhang
+        tracker_entity: input_boolean.blind_yoga_last_opened
   mode: single
 
 - id: "shutters_close_sunset_winter"
@@ -373,6 +544,53 @@
           - climate.thermostat_computer
       data:
         temperature: 17
+  mode: single
+
+- id: "heating_morning_restore"
+  alias: "Heizung - Morgen Komfort wiederherstellen"
+  description: "Restore comfort heating in the morning if you're home"
+  trigger:
+    # Weekday morning
+    - platform: time
+      at: "06:00"
+      id: weekday
+    # Weekend morning (sleep in)
+    - platform: time
+      at: "09:00"
+      id: weekend
+  condition:
+    # Only in heating season
+    - condition: template
+      value_template: "{{ now().month in [1, 2, 3, 4, 10, 11, 12] }}"
+    # Only if you're HOME
+    - condition: state
+      entity_id: person.reid15
+      state: "home"
+    # Check weekday/weekend match
+    - condition: or
+      conditions:
+        # Weekday trigger on weekday
+        - condition: and
+          conditions:
+            - condition: trigger
+              id: weekday
+            - condition: time
+              weekday: [mon, tue, wed, thu, fri]
+        # Weekend trigger on weekend
+        - condition: and
+          conditions:
+            - condition: trigger
+              id: weekend
+            - condition: time
+              weekday: [sat, sun]
+  action:
+    - service: climate.set_temperature
+      target:
+        entity_id:
+          - climate.thermostat_bad
+          - climate.thermostat_computer
+      data:
+        temperature: "{{ 23 if now().month in [11, 12, 1, 2] else 22 }}"
   mode: single
 
 # ============================================================================

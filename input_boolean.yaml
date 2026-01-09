@@ -3,3 +3,25 @@ input_boolean:
     name: Fire Effect
     icon: mdi:fire
     initial: off
+
+  # Blind State Tracking (prevents opening twice in a row)
+  # true = last action was OPEN, false = last action was CLOSE
+  blind_computer_last_opened:
+    name: "Blind Computer - Last Opened"
+    icon: mdi:window-shutter-open
+    initial: false
+
+  blind_schlafen_last_opened:
+    name: "Blind Schlafen - Last Opened"
+    icon: mdi:window-shutter-open
+    initial: false
+
+  blind_kuche_last_opened:
+    name: "Blind Küche - Last Opened"
+    icon: mdi:window-shutter-open
+    initial: false
+
+  blind_yoga_last_opened:
+    name: "Blind Yoga - Last Opened"
+    icon: mdi:window-shutter-open
+    initial: false

@@ -317,9 +317,10 @@
       entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
       above: 100
   action:
-    - service: cover.close_cover
-      target:
-        entity_id: cover.rollladen_computer_vorhang
+    - service: script.safe_close_blind
+      data:
+        cover_entity: cover.rollladen_computer_vorhang
+        tracker_entity: input_boolean.blind_computer_last_opened
   mode: single
 
 - id: "movie_mode_activate"
@@ -439,12 +440,13 @@
         brightness_pct: 5
         color_temp_kelvin: 2700
         transition: 1800
-    # Open Shutters
+    # Open Shutters SAFELY (prevents double-open jamming)
     - delay:
         minutes: 30
-    - service: cover.open_cover
-      target:
-        entity_id: cover.schlafen_blind_vorhang
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.schlafen_blind_vorhang
+        tracker_entity: input_boolean.blind_schlafen_last_opened
   mode: single
 
 - id: "bedroom_sleep_mode"
@@ -606,6 +608,11 @@
         - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1 # Computer
         - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2 # Couch
       to: "on"
+      for:
+        minutes: 2 # Wait 2 min to confirm presence
+    # Also trigger when heating mode is set (regardless of hvac_action)
+    - platform: homeassistant
+      event: start
   condition:
     # Winter/Autumn Months (Oct-Mar)
     - condition: template
@@ -619,6 +626,16 @@
         - condition: state
           entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
           state: "on"
+    # Thermostat must be in heating mode OR temperature set high enough
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: climate.thermostat_computer
+          state: "heat"
+        - condition: numeric_state
+          entity_id: climate.thermostat_computer
+          attribute: temperature
+          above: 20
   action:
     - service: fan.turn_on
       target:

@@ -86,9 +86,10 @@
       entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
       above: 100
   action:
-    - service: cover.close_cover
-      target:
-        entity_id: cover.rollladen_computer_vorhang
+    - service: script.safe_close_blind
+      data:
+        cover_entity: cover.rollladen_computer_vorhang
+        tracker_entity: input_boolean.blind_computer_last_opened
   mode: single
 
 - id: "gaming_restore_shutter"
@@ -105,9 +106,10 @@
   action:
     - delay:
         minutes: 2
-    - service: cover.open_cover
-      target:
-        entity_id: cover.rollladen_computer_vorhang
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.rollladen_computer_vorhang
+        tracker_entity: input_boolean.blind_computer_last_opened
   mode: single
 
 # ============================================================================
