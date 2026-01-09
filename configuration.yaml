@@ -14,7 +14,7 @@ homeassistant:
   internal_url: "https://192.168.178.70:8123"
 
 # Standard includes
-automation: !include automations_new.yaml # Using new seasonal blind automations
+automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
