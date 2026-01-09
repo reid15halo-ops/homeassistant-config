@@ -14,7 +14,7 @@ views:
       - type: horizontal-stack
         cards:
           - type: gauge
-            entity: sensor.zelt_temperature_humidity_temperatur
+            entity: sensor.temperature_humidity_sensor_2_temperatur
             name: Tent Temp
             unit: "°C"
             min: 15
@@ -26,7 +26,7 @@ views:
             needle: true
 
           - type: gauge
-            entity: sensor.zelt_temperature_humidity_luftfeuchtigkeit
+            entity: sensor.temperature_humidity_sensor_2_luftfeuchtigkeit
             name: Tent Humidity
             unit: "%"
             min: 30
@@ -42,34 +42,34 @@ views:
         title: Equipment Control
         show_header_toggle: false
         entities:
-          - entity: switch.aktivkohle
+          - entity: switch.kiffzimmer_aktivkohlefilter
             name: Carbon Filter (Ventilation)
             icon: mdi:fan
-          - entity: switch.heizlufter_steckdose
+          - entity: switch.t34_smart_plug_schalter_1
             name: Heater Plug
             icon: mdi:radiator
           - entity: light.kiffzimmer_lichtstreifen
             name: Light Strip
             icon: mdi:led-strip
-          - entity: cover.yoga_blind
+          - entity: cover.yoga_blind_vorhang
             name: Window Blind
             icon: mdi:blinds
 
       # Individual Plants Monitoring
       - type: grid
         title: Individual Plants
-        columns: 2
+        columns: 3
         cards:
           # Left Plant
           - type: entities
             title: (L) Permanent Marker
             show_header_toggle: false
             entities:
-              - entity: sensor.cannabis_feuchtigkeit_links_luftfeuchtigkeit
-                name: Soil Moisture
+              - entity: sensor.sbht_003c_7ff9_humidity
+                name: Moisture
                 icon: mdi:water-percent
-              - entity: sensor.cannabis_feuchtigkeit_links_temperatur
-                name: Soil Temp
+              - entity: sensor.sbht_003c_7ff9_temperature
+                name: Temp
                 icon: mdi:thermometer
 
           # Middle Plant
@@ -77,11 +77,11 @@ views:
             title: (M) Cap Junky
             show_header_toggle: false
             entities:
-              - entity: sensor.cannabis_mitte_luftfeuchtigkeit
-                name: Soil Moisture
+              - entity: sensor.sbht_003c_b922_humidity
+                name: Moisture
                 icon: mdi:water-percent
-              - entity: sensor.cannabis_mitte_temperatur
-                name: Soil Temp
+              - entity: sensor.sbht_003c_b922_temperature
+                name: Temp
                 icon: mdi:thermometer
 
           # Right Plant
@@ -90,23 +90,23 @@ views:
             show_header_toggle: false
             entities:
               - entity: sensor.hobeian_zg_303z_luftfeuchtigkeit
-                name: Soil Moisture
+                name: Moisture
                 icon: mdi:water-percent
               - entity: sensor.hobeian_zg_303z_temperatur
-                name: Soil Temp
+                name: Temp
                 icon: mdi:thermometer
 
-          # Mother Plant
-          - type: entities
-            title: Mother Plant
-            show_header_toggle: false
-            entities:
-              - entity: sensor.mutterpflanze_temperatur
-                name: Air Temp
-                icon: mdi:thermometer
-              - entity: sensor.mutterpflanze_luftfeuchtigkeit
-                name: Humidity
-                icon: mdi:water-percent
+      # Mother Plant
+      - type: entities
+        title: Mother Plant
+        show_header_toggle: false
+        entities:
+          - entity: sensor.temperature_and_humidity_sensor_temperatur
+            name: Air Temp
+            icon: mdi:thermometer
+          - entity: sensor.temperature_and_humidity_sensor_luftfeuchtigkeit
+            name: Humidity
+            icon: mdi:water-percent
 
       # Safety & Security
       - type: entities
@@ -114,15 +114,15 @@ views:
         show_header_toggle: false
         state_color: true
         entities:
-          - entity: binary_sensor.water_leak_sensor_water_leak
+          - entity: binary_sensor.aqara_water_leak_sensor_feuchte
             name: Water Leak Sensor
             icon: mdi:water-alert
-          - entity: binary_sensor.kiffzimmer_tursensor_contact
+          - entity: binary_sensor.aqara_door_and_window_sensor_tur
             name: Door Sensor (Light Leaks)
             icon: mdi:door
           - type: conditional
             conditions:
-              - entity: binary_sensor.kiffzimmer_tursensor_contact
+              - entity: binary_sensor.aqara_door_and_window_sensor_tur
                 state: "on"
             card:
               type: markdown
@@ -148,4 +148,4 @@ views:
               action: call-service
               service: cover.close_cover
               service_data:
-                entity_id: cover.yoga_blind
+                entity_id: cover.yoga_blind_vorhang
