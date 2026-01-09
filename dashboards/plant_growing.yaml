@@ -1,21 +1,21 @@
 title: Plant Growing
 views:
-  - title: Plant Growing
+  - title: Kiffzimmer Grow
     path: plant_growing
-    icon: mdi:sprout
+    icon: mdi:cannabis
     cards:
       # Header
       - type: markdown
         content: |
-          ## 🌱 Indoor Garden Control
-          Legal home cultivation monitoring (Germany)
+          ## 🌿 Kiffzimmer Grow Status
+          Monitoring Legal Home Cultivation
 
-      # Environmental Conditions
+      # Main Tent Environment (Zelt)
       - type: horizontal-stack
         cards:
           - type: gauge
-            entity: sensor.temperature_and_humidity_sensor_temperatur
-            name: Temperature
+            entity: sensor.zelt_temperature_humidity_temperature
+            name: Tent Temp
             unit: "°C"
             min: 15
             max: 35
@@ -26,164 +26,126 @@ views:
             needle: true
 
           - type: gauge
-            entity: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
-            name: Light Level
-            unit: "lux"
-            min: 0
-            max: 1000
+            entity: sensor.zelt_temperature_humidity_humidity
+            name: Tent Humidity
+            unit: "%"
+            min: 30
+            max: 80
             severity:
-              green: 400
-              yellow: 200
-              red: 100
+              green: 45
+              yellow: 60
+              red: 70
             needle: true
 
-      # Detailed Environment
+      # Equipment Control
       - type: entities
-        title: Growing Environment
+        title: Equipment Control
         show_header_toggle: false
         entities:
-          - entity: sensor.temperature_and_humidity_sensor_temperatur
-            name: Temperature
-            icon: mdi:thermometer
-          - entity: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
-            name: Light Level
-            icon: mdi:brightness-6
-          - entity: climate.thermostat_computer
-            name: Climate Control
-          - type: section
-            label: "Target: 20-26°C for optimal growth"
+          - entity: switch.aktivkohle
+            name: Carbon Filter (Ventilation)
+            icon: mdi:fan
+          - entity: switch.heizlufter_steckdose
+            name: Heater Plug
+            icon: mdi:radiator
+          - entity: light.kiffzimmer_lichtstreifen
+            name: Light Strip
+            icon: mdi:led-strip
+          - entity: cover.yoga_blind
+            name: Window Blind
+            icon: mdi:blinds
 
-      # Lighting Control (Critical for cannabis)
+      # Individual Plants Monitoring
+      - type: grid
+        title: Individual Plants
+        columns: 2
+        cards:
+          # Left Plant
+          - type: entities
+            title: (L) Permanent Marker
+            show_header_toggle: false
+            entities:
+              - entity: sensor.permanent_marker_l_cannabis_soil_moisture
+                name: Soil Moisture
+                icon: mdi:water-percent
+              - entity: sensor.permanent_marker_l_cannabis_temperature
+                name: Soil Temp
+                icon: mdi:thermometer
+
+          # Middle Plant
+          - type: entities
+            title: (M) Cap Junky
+            show_header_toggle: false
+            entities:
+              - entity: sensor.cap_junky_m_cannabis_soil_moisture
+                name: Soil Moisture
+                icon: mdi:water-percent
+              - entity: sensor.cap_junky_m_cannabis_temperature
+                name: Soil Temp
+                icon: mdi:thermometer
+
+          # Right Plant
+          - type: entities
+            title: (R) Candy Store
+            show_header_toggle: false
+            entities:
+              - entity: sensor.candy_store_r_cannabis_soil_moisture
+                name: Soil Moisture
+                icon: mdi:water-percent
+              - entity: sensor.candy_store_r_cannabis_temperature
+                name: Soil Temp
+                icon: mdi:thermometer
+
+          # Mother Plant
+          - type: entities
+            title: Mother Plant
+            show_header_toggle: false
+            entities:
+              - entity: sensor.mutterpflanze_temperature
+                name: Air Temp
+                icon: mdi:thermometer
+              - entity: sensor.mutterpflanze_humidity
+                name: Humidity
+                icon: mdi:water-percent
+
+      # Safety & Security
       - type: entities
-        title: Grow Lights
+        title: Safety & Security
         show_header_toggle: false
+        state_color: true
         entities:
-          - entity: light.computer_licht_2
-            name: Main Grow Light
-          - entity: light.rollladen_computer_hintergrundbeleuchtung
-            name: Ambient/Side Light
-          - entity: light.yoga_blind_hintergrundbeleuchtung
-            name: Secondary Light
-          - type: divider
-          - type: section
-            label: "Vegetative: 18h on / 6h off"
-          - type: section
-            label: "Flowering: 12h on / 12h off"
+          - entity: binary_sensor.water_leak_sensor_water_leak
+            name: Water Leak Sensor
+            icon: mdi:water-alert
+          - entity: binary_sensor.kiffzimmer_tursensor_contact
+            name: Door Sensor (Light Leaks)
+            icon: mdi:door
+          - type: conditional
+            conditions:
+              - entity: binary_sensor.kiffzimmer_tursensor_contact
+                state: "on"
+            card:
+              type: markdown
+              content: "⚠️ **DOOR OPEN!** Check for light leaks!"
 
-      # Light Cycle Control
+      # Quick Actions
       - type: horizontal-stack
         cards:
           - type: button
-            name: Veg Cycle (18/6)
-            icon: mdi:sprout-outline
+            name: Work Mode (Lights On)
+            icon: mdi:briefcase-eye
             tap_action:
               action: call-service
               service: light.turn_on
               service_data:
-                entity_id:
-                  - light.computer_licht_2
-                  - light.rollladen_computer_hintergrundbeleuchtung
+                entity_id: light.kiffzimmer_lichtstreifen
                 brightness_pct: 100
 
           - type: button
-            name: Flower Cycle (12/12)
-            icon: mdi:flower
+            name: Stealth Mode (Blind Closed)
+            icon: mdi:eye-off
             tap_action:
               action: call-service
-              service: light.turn_on
+              service: cover.close_cover
               service_data:
-                entity_id:
-                  - light.computer_licht_2
-                brightness_pct: 100
-
-          - type: button
-            name: Lights Off
-            icon: mdi:power
-            tap_action:
-              action: call-service
-              service: light.turn_off
-              service_data:
-                entity_id:
-                  - light.computer_licht_2
-                  - light.rollladen_computer_hintergrundbeleuchtung
-
-      # Ventilation (Critical for cannabis)
-      - type: entities
-        title: Ventilation & Air Flow
-        show_header_toggle: false
-        entities:
-          - entity: fan.ceiling_fan_with_light
-            name: Main Exhaust Fan
-          - entity: fan.dc_fan_lamp
-            name: Circulation Fan
-          - type: divider
-          - entity: script.fan_winter_heat_now
-            name: Start Air Circulation
-            icon: mdi:fan
-            tap_action:
-              action: call-service
-              service: script.fan_winter_heat_now
-          - type: section
-            label: "Keep air moving to prevent mold"
-
-      # Blind Control for Light Leaks
-      - type: entities
-        title: Light Leak Prevention
-        show_header_toggle: false
-        entities:
-          - type: section
-            label: "Blinds (Block External Light)"
-          - entity: cover.rollladen_computer_vorhang
-            name: Main Window
-          - entity: cover.rollladen_yoga_vorhang
-            name: Secondary Window
-          - type: section
-            label: "⚠️ Close during dark period!"
-
-      # Optimal Conditions Guide
-      - type: markdown
-        content: |
-          ### 🌿 Optimal Growing Parameters
-
-          **Vegetative Stage (3-8 weeks)**
-          - 🌡️ Temperature: 20-26°C (day) / 18-22°C (night)
-          - 💡 Light: 18h on / 6h off
-          - 💨 Humidity: 40-70%
-          - 🌀 Airflow: Medium-High (prevent mold)
-
-          **Flowering Stage (8-12 weeks)**
-          - 🌡️ Temperature: 20-26°C (day) / 18-24°C (night)
-          - 💡 Light: 12h on / 12h off (strict!)
-          - 💨 Humidity: 40-50% (lower to prevent bud rot)
-          - 🌀 Airflow: High (especially around buds)
-
-          **Critical Rules**
-          - 🚫 NO light during dark period (causes stress)
-          - ✅ Consistent temperature (±2°C)
-          - ✅ Fresh air exchange every 1-2 hours
-          - ✅ Gentle air movement on plants
-
-      # Growth Phase Tracking
-      - type: entities
-        title: Plant Status & Automation
-        show_header_toggle: false
-        entities:
-          - entity: input_boolean.auto_lights_enabled
-            name: Auto Light Schedule
-            icon: mdi:lightbulb-auto
-          - entity: sun.sun
-            name: Natural Light Cycle
-            icon: mdi:weather-sunny
-          - type: section
-            label: "Legal: Max 3 plants (Germany, 2024)"
-
-      # Quick Reference
-      - type: markdown
-        content: |
-          ### 📋 Daily Checklist
-
-          ✅ Check temperature (20-26°C)
-          ✅ Verify lights on schedule
-          ✅ Ensure fans running
-          ✅ Check for light leaks (dark period)
-          ✅ Monitor for any stress signs
+                entity_id: cover.yoga_blind
