@@ -486,6 +486,45 @@
   mode: single
 
 # ============================================================================
+# KITCHEN LIGHT AUTOMATIONS
+# ============================================================================
+
+- id: "light_kuche_on"
+  alias: "Küche - Licht an bei Bewegung"
+  description: "Turn on kitchen light when motion detected"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_kuche_bewegung
+      to: "on"
+  condition:
+    - condition: state
+      entity_id: light.kuche_streifen
+      state: "off"
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.kuche_streifen
+      data:
+        brightness_pct: "{{ 20 if now().hour >= 22 or now().hour < 6 else 100 }}"
+        color_temp_kelvin: 3000
+  mode: single
+
+- id: "light_kuche_off"
+  alias: "Küche - Licht aus ohne Bewegung"
+  description: "Turn off kitchen light when no motion for 2 minutes"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_kuche_bewegung
+      to: "off"
+      for:
+        minutes: 2
+  action:
+    - service: light.turn_off
+      target:
+        entity_id: light.kuche_streifen
+  mode: single
+
+# ============================================================================
 # HEATING AUTOMATIONS
 # ============================================================================
 
