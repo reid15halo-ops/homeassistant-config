@@ -37,6 +37,34 @@ views:
               red: 70
             needle: true
 
+      # Temperature History Graph
+      - type: history-graph
+        title: Temperature History (24h)
+        hours_to_show: 24
+        entities:
+          - entity: sensor.temperature_humidity_sensor_2_temperatur
+            name: Tent
+          - entity: sensor.sbht_003c_7ff9_temperature
+            name: L Plant
+          - entity: sensor.sbht_003c_b922_temperature
+            name: M Plant
+          - entity: sensor.temperature_and_humidity_sensor_temperatur
+            name: Mother
+
+      # Humidity History Graph
+      - type: history-graph
+        title: Humidity History (24h)
+        hours_to_show: 24
+        entities:
+          - entity: sensor.temperature_humidity_sensor_2_luftfeuchtigkeit
+            name: Tent
+          - entity: sensor.sbht_003c_7ff9_humidity
+            name: L Plant
+          - entity: sensor.sbht_003c_b922_humidity
+            name: M Plant
+          - entity: sensor.temperature_and_humidity_sensor_luftfeuchtigkeit
+            name: Mother
+
       # Equipment Control
       - type: entities
         title: Equipment Control
