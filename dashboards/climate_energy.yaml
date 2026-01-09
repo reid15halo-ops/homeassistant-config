@@ -1,118 +1,119 @@
 title: Climate & Energy
-icon: mdi:leaf
-path: climate_energy
-
-cards:
-  # Header Info
-  - type: markdown
-    content: |
-      ## 🌡️ Climate Control & Energy Optimization
-      Seasonal automation active - saving energy in winter!
-
-  # Temperature Overview
-  - type: horizontal-stack
+views:
+  - title: Climate & Energy
+    path: climate_energy
+    icon: mdi:leaf
     cards:
-      - type: gauge
-        entity: climate.thermostat_computer
-        name: Computer Room
-        needle: true
-        min: 15
-        max: 25
-        severity:
-          green: 21
-          yellow: 19
-          red: 17
+      # Header Info
+      - type: markdown
+        content: |
+          ## 🌡️ Climate Control & Energy Optimization
+          Seasonal automation active - saving energy in winter!
 
-      - type: gauge
-        entity: climate.thermostat_bad
-        name: Bathroom
-        needle: true
-        min: 15
-        max: 25
-        severity:
-          green: 21
-          yellow: 19
-          red: 17
+      # Temperature Overview
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            entity: climate.thermostat_computer
+            name: Computer Room
+            needle: true
+            min: 15
+            max: 25
+            severity:
+              green: 21
+              yellow: 19
+              red: 17
 
-  # Climate Controls
-  - type: entities
-    title: Heating Control
-    show_header_toggle: false
-    entities:
-      - entity: climate.thermostat_computer
-        name: Computer Room Thermostat
-      - entity: climate.thermostat_bad
-        name: Bathroom Thermostat
-      - type: divider
-      - entity: script.heating_comfort_now
-        name: Set Comfort Temperature (23°C)
-        icon: mdi:fire
-        tap_action:
-          action: call-service
-          service: script.heating_comfort_now
+          - type: gauge
+            entity: climate.thermostat_bad
+            name: Bathroom
+            needle: true
+            min: 15
+            max: 25
+            severity:
+              green: 21
+              yellow: 19
+              red: 17
 
-  # Fan Control for Heat Distribution
-  - type: entities
-    title: Heat Distribution
-    show_header_toggle: false
-    entities:
-      - entity: fan.ceiling_fan_with_light
-        name: Living Room Fan
-      - type: divider
-      - entity: script.fan_winter_heat_now
-        name: Start Winter Heat Mode
-        icon: mdi:fan-chevron-up
-        tap_action:
-          action: call-service
-          service: script.fan_winter_heat_now
-      - type: section
-        label: "Winter mode: Reverse (updraft) at 33% speed"
+      # Climate Controls
+      - type: entities
+        title: Heating Control
+        show_header_toggle: false
+        entities:
+          - entity: climate.thermostat_computer
+            name: Computer Room Thermostat
+          - entity: climate.thermostat_bad
+            name: Bathroom Thermostat
+          - type: divider
+          - entity: script.heating_comfort_now
+            name: Set Comfort Temperature (23°C)
+            icon: mdi:fire
+            tap_action:
+              action: call-service
+              service: script.heating_comfort_now
 
-  # Seasonal Blind Schedule
-  - type: markdown
-    content: |
-      ### 🪟 Seasonal Blind Strategy
+      # Fan Control for Heat Distribution
+      - type: entities
+        title: Heat Distribution
+        show_header_toggle: false
+        entities:
+          - entity: fan.ceiling_fan_with_light
+            name: Living Room Fan
+          - type: divider
+          - entity: script.fan_winter_heat_now
+            name: Start Winter Heat Mode
+            icon: mdi:fan-chevron-up
+            tap_action:
+              action: call-service
+              service: script.fan_winter_heat_now
+          - type: section
+            label: "Winter mode: Reverse (updraft) at 33% speed"
 
-      **Winter (Now Active)**
-      - 🏢 Weekdays: Closed mornings (energy saving)
-      - 🌞 Opens at noon for solar heat gain
-      - 🏠 Weekends: Opens 1h after sunrise
+      # Seasonal Blind Schedule
+      - type: markdown
+        content: |
+          ### 🪟 Seasonal Blind Strategy
 
-      **Goals**
-      - ❄️ Reduce heating costs
-      - ☀️ Capture free solar energy
-      - 🏠 Presence-aware automation
+          **Winter (Now Active)**
+          - 🏢 Weekdays: Closed mornings (energy saving)
+          - 🌞 Opens at noon for solar heat gain
+          - 🏠 Weekends: Opens 1h after sunrise
 
-  # Energy Saving Status
-  - type: entities
-    title: Energy Saving Features
-    show_header_toggle: false
-    entities:
-      - type: section
-        label: "Blind Tracking (Anti-Jam)"
-      - entity: input_boolean.blind_computer_last_opened
-        name: Computer Blind
-        icon: mdi:window-shutter
-      - entity: input_boolean.blind_schlafen_last_opened
-        name: Bedroom Blind
-        icon: mdi:window-shutter
-      - entity: input_boolean.blind_kuche_last_opened
-        name: Kitchen Blind
-        icon: mdi:window-shutter
-      - entity: input_boolean.blind_yoga_last_opened
-        name: Yoga Blind
-        icon: mdi:window-shutter
+          **Goals**
+          - ❄️ Reduce heating costs
+          - ☀️ Capture free solar energy
+          - 🏠 Presence-aware automation
 
-  # Current Season Info
-  - type: markdown
-    content: |
-      ### 📅 Current Schedule
+      # Energy Saving Status
+      - type: entities
+        title: Energy Saving Features
+        show_header_toggle: false
+        entities:
+          - type: section
+            label: "Blind Tracking (Anti-Jam)"
+          - entity: input_boolean.blind_computer_last_opened
+            name: Computer Blind
+            icon: mdi:window-shutter
+          - entity: input_boolean.blind_schlafen_last_opened
+            name: Bedroom Blind
+            icon: mdi:window-shutter
+          - entity: input_boolean.blind_kuche_last_opened
+            name: Kitchen Blind
+            icon: mdi:window-shutter
+          - entity: input_boolean.blind_yoga_last_opened
+            name: Yoga Blind
+            icon: mdi:window-shutter
 
-      **Month:** January (Winter Mode)
+      # Current Season Info
+      - type: markdown
+        content: |
+          ### 📅 Current Schedule
 
-      **Today's Automation:**
-      - ✅ Morning: Blinds stay closed (energy saving)
-      - ✅ Noon: Opens for solar heat (if away)
-      - ✅ Evening: Closes at sunset
-      - ✅ Night: Heating reduced to 17°C
-      - ✅ 6 AM: Heating restored to 23°C (if home)
+          **Month:** January (Winter Mode)
+
+          **Today's Automation:**
+          - ✅ Morning: Blinds stay closed (energy saving)
+          - ✅ Noon: Opens for solar heat (if away)
+          - ✅ Evening: Closes at sunset
+          - ✅ Night: Heating reduced to 17°C
+          - ✅ 6 AM: Heating restored to 23°C (if home)

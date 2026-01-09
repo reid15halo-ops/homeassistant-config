@@ -1,188 +1,189 @@
 title: Plant Growing
-icon: mdi:sprout
-path: plant_growing
-
-cards:
-  # Header
-  - type: markdown
-    content: |
-      ## 🌱 Indoor Garden Control
-      Legal home cultivation monitoring (Germany)
-
-  # Environmental Conditions
-  - type: horizontal-stack
+views:
+  - title: Plant Growing
+    path: plant_growing
+    icon: mdi:sprout
     cards:
-      - type: gauge
-        entity: sensor.temperature_and_humidity_sensor_temperatur
-        name: Temperature
-        unit: "°C"
-        min: 15
-        max: 35
-        severity:
-          green: 22
-          yellow: 20
-          red: 18
-        needle: true
+      # Header
+      - type: markdown
+        content: |
+          ## 🌱 Indoor Garden Control
+          Legal home cultivation monitoring (Germany)
 
-      - type: gauge
-        entity: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
-        name: Light Level
-        unit: "lux"
-        min: 0
-        max: 1000
-        severity:
-          green: 400
-          yellow: 200
-          red: 100
-        needle: true
+      # Environmental Conditions
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            entity: sensor.temperature_and_humidity_sensor_temperatur
+            name: Temperature
+            unit: "°C"
+            min: 15
+            max: 35
+            severity:
+              green: 22
+              yellow: 20
+              red: 18
+            needle: true
 
-  # Detailed Environment
-  - type: entities
-    title: Growing Environment
-    show_header_toggle: false
-    entities:
-      - entity: sensor.temperature_and_humidity_sensor_temperatur
-        name: Temperature
-        icon: mdi:thermometer
-      - entity: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
-        name: Light Level
-        icon: mdi:brightness-6
-      - entity: climate.thermostat_computer
-        name: Climate Control
-      - type: section
-        label: "Target: 20-26°C for optimal growth"
+          - type: gauge
+            entity: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
+            name: Light Level
+            unit: "lux"
+            min: 0
+            max: 1000
+            severity:
+              green: 400
+              yellow: 200
+              red: 100
+            needle: true
 
-  # Lighting Control (Critical for cannabis)
-  - type: entities
-    title: Grow Lights
-    show_header_toggle: false
-    entities:
-      - entity: light.computer_licht_2
-        name: Main Grow Light
-      - entity: light.rollladen_computer_hintergrundbeleuchtung
-        name: Ambient/Side Light
-      - entity: light.yoga_blind_hintergrundbeleuchtung
-        name: Secondary Light
-      - type: divider
-      - type: section
-        label: "Vegetative: 18h on / 6h off"
-      - type: section
-        label: "Flowering: 12h on / 12h off"
+      # Detailed Environment
+      - type: entities
+        title: Growing Environment
+        show_header_toggle: false
+        entities:
+          - entity: sensor.temperature_and_humidity_sensor_temperatur
+            name: Temperature
+            icon: mdi:thermometer
+          - entity: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
+            name: Light Level
+            icon: mdi:brightness-6
+          - entity: climate.thermostat_computer
+            name: Climate Control
+          - type: section
+            label: "Target: 20-26°C for optimal growth"
 
-  # Light Cycle Control
-  - type: horizontal-stack
-    cards:
-      - type: button
-        name: Veg Cycle (18/6)
-        icon: mdi:sprout-outline
-        tap_action:
-          action: call-service
-          service: light.turn_on
-          service_data:
-            entity_id:
-              - light.computer_licht_2
-              - light.rollladen_computer_hintergrundbeleuchtung
-            brightness_pct: 100
+      # Lighting Control (Critical for cannabis)
+      - type: entities
+        title: Grow Lights
+        show_header_toggle: false
+        entities:
+          - entity: light.computer_licht_2
+            name: Main Grow Light
+          - entity: light.rollladen_computer_hintergrundbeleuchtung
+            name: Ambient/Side Light
+          - entity: light.yoga_blind_hintergrundbeleuchtung
+            name: Secondary Light
+          - type: divider
+          - type: section
+            label: "Vegetative: 18h on / 6h off"
+          - type: section
+            label: "Flowering: 12h on / 12h off"
 
-      - type: button
-        name: Flower Cycle (12/12)
-        icon: mdi:flower
-        tap_action:
-          action: call-service
-          service: light.turn_on
-          service_data:
-            entity_id:
-              - light.computer_licht_2
-            brightness_pct: 100
+      # Light Cycle Control
+      - type: horizontal-stack
+        cards:
+          - type: button
+            name: Veg Cycle (18/6)
+            icon: mdi:sprout-outline
+            tap_action:
+              action: call-service
+              service: light.turn_on
+              service_data:
+                entity_id:
+                  - light.computer_licht_2
+                  - light.rollladen_computer_hintergrundbeleuchtung
+                brightness_pct: 100
 
-      - type: button
-        name: Lights Off
-        icon: mdi:power
-        tap_action:
-          action: call-service
-          service: light.turn_off
-          service_data:
-            entity_id:
-              - light.computer_licht_2
-              - light.rollladen_computer_hintergrundbeleuchtung
+          - type: button
+            name: Flower Cycle (12/12)
+            icon: mdi:flower
+            tap_action:
+              action: call-service
+              service: light.turn_on
+              service_data:
+                entity_id:
+                  - light.computer_licht_2
+                brightness_pct: 100
 
-  # Ventilation (Critical for cannabis)
-  - type: entities
-    title: Ventilation & Air Flow
-    show_header_toggle: false
-    entities:
-      - entity: fan.ceiling_fan_with_light
-        name: Main Exhaust Fan
-      - entity: fan.dc_fan_lamp
-        name: Circulation Fan
-      - type: divider
-      - entity: script.fan_winter_heat_now
-        name: Start Air Circulation
-        icon: mdi:fan
-        tap_action:
-          action: call-service
-          service: script.fan_winter_heat_now
-      - type: section
-        label: "Keep air moving to prevent mold"
+          - type: button
+            name: Lights Off
+            icon: mdi:power
+            tap_action:
+              action: call-service
+              service: light.turn_off
+              service_data:
+                entity_id:
+                  - light.computer_licht_2
+                  - light.rollladen_computer_hintergrundbeleuchtung
 
-  # Blind Control for Light Leaks
-  - type: entities
-    title: Light Leak Prevention
-    show_header_toggle: false
-    entities:
-      - type: section
-        label: "Blinds (Block External Light)"
-      - entity: cover.rollladen_computer_vorhang
-        name: Main Window
-      - entity: cover.rollladen_yoga_vorhang
-        name: Secondary Window
-      - type: section
-        label: "⚠️ Close during dark period!"
+      # Ventilation (Critical for cannabis)
+      - type: entities
+        title: Ventilation & Air Flow
+        show_header_toggle: false
+        entities:
+          - entity: fan.ceiling_fan_with_light
+            name: Main Exhaust Fan
+          - entity: fan.dc_fan_lamp
+            name: Circulation Fan
+          - type: divider
+          - entity: script.fan_winter_heat_now
+            name: Start Air Circulation
+            icon: mdi:fan
+            tap_action:
+              action: call-service
+              service: script.fan_winter_heat_now
+          - type: section
+            label: "Keep air moving to prevent mold"
 
-  # Optimal Conditions Guide
-  - type: markdown
-    content: |
-      ### 🌿 Optimal Growing Parameters
+      # Blind Control for Light Leaks
+      - type: entities
+        title: Light Leak Prevention
+        show_header_toggle: false
+        entities:
+          - type: section
+            label: "Blinds (Block External Light)"
+          - entity: cover.rollladen_computer_vorhang
+            name: Main Window
+          - entity: cover.rollladen_yoga_vorhang
+            name: Secondary Window
+          - type: section
+            label: "⚠️ Close during dark period!"
 
-      **Vegetative Stage (3-8 weeks)**
-      - 🌡️ Temperature: 20-26°C (day) / 18-22°C (night)
-      - 💡 Light: 18h on / 6h off
-      - 💨 Humidity: 40-70%
-      - 🌀 Airflow: Medium-High (prevent mold)
+      # Optimal Conditions Guide
+      - type: markdown
+        content: |
+          ### 🌿 Optimal Growing Parameters
 
-      **Flowering Stage (8-12 weeks)**
-      - 🌡️ Temperature: 20-26°C (day) / 18-24°C (night)
-      - 💡 Light: 12h on / 12h off (strict!)
-      - 💨 Humidity: 40-50% (lower to prevent bud rot)
-      - 🌀 Airflow: High (especially around buds)
+          **Vegetative Stage (3-8 weeks)**
+          - 🌡️ Temperature: 20-26°C (day) / 18-22°C (night)
+          - 💡 Light: 18h on / 6h off
+          - 💨 Humidity: 40-70%
+          - 🌀 Airflow: Medium-High (prevent mold)
 
-      **Critical Rules**
-      - 🚫 NO light during dark period (causes stress)
-      - ✅ Consistent temperature (±2°C)
-      - ✅ Fresh air exchange every 1-2 hours
-      - ✅ Gentle air movement on plants
+          **Flowering Stage (8-12 weeks)**
+          - 🌡️ Temperature: 20-26°C (day) / 18-24°C (night)
+          - 💡 Light: 12h on / 12h off (strict!)
+          - 💨 Humidity: 40-50% (lower to prevent bud rot)
+          - 🌀 Airflow: High (especially around buds)
 
-  # Growth Phase Tracking
-  - type: entities
-    title: Plant Status & Automation
-    show_header_toggle: false
-    entities:
-      - entity: input_boolean.auto_lights_enabled
-        name: Auto Light Schedule
-        icon: mdi:lightbulb-auto
-      - entity: sun.sun
-        name: Natural Light Cycle
-        icon: mdi:weather-sunny
-      - type: section
-        label: "Legal: Max 3 plants (Germany, 2024)"
+          **Critical Rules**
+          - 🚫 NO light during dark period (causes stress)
+          - ✅ Consistent temperature (±2°C)
+          - ✅ Fresh air exchange every 1-2 hours
+          - ✅ Gentle air movement on plants
 
-  # Quick Reference
-  - type: markdown
-    content: |
-      ### 📋 Daily Checklist
+      # Growth Phase Tracking
+      - type: entities
+        title: Plant Status & Automation
+        show_header_toggle: false
+        entities:
+          - entity: input_boolean.auto_lights_enabled
+            name: Auto Light Schedule
+            icon: mdi:lightbulb-auto
+          - entity: sun.sun
+            name: Natural Light Cycle
+            icon: mdi:weather-sunny
+          - type: section
+            label: "Legal: Max 3 plants (Germany, 2024)"
 
-      ✅ Check temperature (20-26°C)
-      ✅ Verify lights on schedule
-      ✅ Ensure fans running
-      ✅ Check for light leaks (dark period)
-      ✅ Monitor for any stress signs
+      # Quick Reference
+      - type: markdown
+        content: |
+          ### 📋 Daily Checklist
+
+          ✅ Check temperature (20-26°C)
+          ✅ Verify lights on schedule
+          ✅ Ensure fans running
+          ✅ Check for light leaks (dark period)
+          ✅ Monitor for any stress signs
