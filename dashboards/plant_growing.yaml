@@ -65,10 +65,10 @@ views:
             title: (L) Permanent Marker
             show_header_toggle: false
             entities:
-              - entity: sensor.l_cannabis_erdfeuchte
+              - entity: sensor.cannabis_feuchtigkeit_links_luftfeuchtigkeit
                 name: Soil Moisture
                 icon: mdi:water-percent
-              - entity: sensor.l_cannabis_temperatur
+              - entity: sensor.cannabis_feuchtigkeit_links_temperatur
                 name: Soil Temp
                 icon: mdi:thermometer
 
@@ -77,10 +77,10 @@ views:
             title: (M) Cap Junky
             show_header_toggle: false
             entities:
-              - entity: sensor.m_cannabis_erdfeuchte
+              - entity: sensor.cannabis_mitte_luftfeuchtigkeit
                 name: Soil Moisture
                 icon: mdi:water-percent
-              - entity: sensor.m_cannabis_temperatur
+              - entity: sensor.cannabis_mitte_temperatur
                 name: Soil Temp
                 icon: mdi:thermometer
 
@@ -89,10 +89,10 @@ views:
             title: (R) Candy Store
             show_header_toggle: false
             entities:
-              - entity: sensor.r_cannabis_erdfeuchte
+              - entity: sensor.hobeian_zg_303z_luftfeuchtigkeit
                 name: Soil Moisture
                 icon: mdi:water-percent
-              - entity: sensor.r_cannabis_temperatur
+              - entity: sensor.hobeian_zg_303z_temperatur
                 name: Soil Temp
                 icon: mdi:thermometer
 
