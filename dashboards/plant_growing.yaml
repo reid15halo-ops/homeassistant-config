@@ -1,0 +1,156 @@
+title: Plant Growing
+icon: mdi:sprout
+path: plant_growing
+
+cards:
+  # Header
+  - type: markdown
+    content: |
+      ## 🌱 Plant Growing Station
+      Monitor and control your indoor garden
+
+  # Environmental Conditions
+  - type: horizontal-stack
+    cards:
+      - type: gauge
+        entity: sensor.temperature_and_humidity_sensor_temperatur
+        name: Temperature
+        unit: "°C"
+        min: 15
+        max: 35
+        severity:
+          green: 20
+          yellow: 18
+          red: 16
+        needle: true
+
+      - type: gauge
+        entity: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
+        name: Light Level
+        unit: "lux"
+        min: 0
+        max: 1000
+        severity:
+          green: 300
+          yellow: 150
+          red: 50
+        needle: true
+
+  # Detailed Environment
+  - type: entities
+    title: Growing Environment
+    show_header_toggle: false
+    entities:
+      - entity: sensor.temperature_and_humidity_sensor_temperatur
+        name: Temperature
+        icon: mdi:thermometer
+      - entity: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
+        name: Light Level
+        icon: mdi:brightness-6
+      - entity: climate.thermostat_computer
+        name: Climate Control
+
+  # Lighting Control
+  - type: entities
+    title: Grow Lights
+    show_header_toggle: false
+    entities:
+      - entity: light.computer_licht_2
+        name: Main Grow Light
+      - entity: light.rollladen_computer_hintergrundbeleuchtung
+        name: Ambient Light
+      - entity: light.yoga_blind_hintergrundbeleuchtung
+        name: Secondary Light
+      - type: divider
+      - type: section
+        label: "Light Schedule"
+
+  # Ventilation
+  - type: entities
+    title: Ventilation & Air Flow
+    show_header_toggle: false
+    entities:
+      - entity: fan.ceiling_fan_with_light
+        name: Main Fan
+      - entity: fan.dc_fan_lamp
+        name: Secondary Fan
+      - type: divider
+      - entity: script.fan_winter_heat_now
+        name: Start Circulation
+        icon: mdi:fan
+        tap_action:
+          action: call-service
+          service: script.fan_winter_heat_now
+
+  # Blind Control for Natural Light
+  - type: entities
+    title: Natural Light Control
+    show_header_toggle: false
+    entities:
+      - type: section
+        label: "Blinds (Solar Control)"
+      - entity: cover.rollladen_computer_vorhang
+        name: Main Window
+      - entity: cover.rollladen_yoga_vorhang
+        name: Secondary Window
+
+  # Quick Actions
+  - type: horizontal-stack
+    cards:
+      - type: button
+        name: Day Mode
+        icon: mdi:white-balance-sunny
+        tap_action:
+          action: call-service
+          service: light.turn_on
+          service_data:
+            entity_id:
+              - light.computer_licht_2
+              - light.rollladen_computer_hintergrundbeleuchtung
+            brightness_pct: 80
+            color_temp_kelvin: 5500
+
+      - type: button
+        name: Night Mode
+        icon: mdi:weather-night
+        tap_action:
+          action: call-service
+          service: light.turn_off
+          service_data:
+            entity_id:
+              - light.computer_licht_2
+              - light.rollladen_computer_hintergrundbeleuchtung
+
+  # Optimal Conditions Guide
+  - type: markdown
+    content: |
+      ### 🌿 Optimal Growing Conditions
+
+      **Herbs (Basil, Mint, Parsley)**
+      - 🌡️ Temperature: 18-24°C
+      - 💡 Light: 300-500 lux (12-16h/day)
+      - 💨 Airflow: Low-Medium
+
+      **Vegetables (Tomatoes, Peppers)**
+      - 🌡️ Temperature: 20-27°C
+      - 💡 Light: 400-800 lux (14-18h/day)
+      - 💨 Airflow: Medium
+
+      **Houseplants (Succulents, Ferns)**
+      - 🌡️ Temperature: 18-25°C
+      - 💡 Light: 200-400 lux (8-12h/day)
+      - 💨 Airflow: Low
+
+  # Growth Tracking
+  - type: entities
+    title: Plant Care Schedule
+    show_header_toggle: false
+    entities:
+      - type: section
+        label: "Automation Status"
+      - entity: input_boolean.auto_lights_enabled
+        name: Auto Light Schedule
+        icon: mdi:lightbulb-auto
+      - entity: sun.sun
+        name: Sunrise/Sunset
+        icon: mdi:weather-sunny
