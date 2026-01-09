@@ -6,8 +6,8 @@ cards:
   # Header
   - type: markdown
     content: |
-      ## 🌱 Plant Growing Station
-      Monitor and control your indoor garden
+      ## 🌱 Indoor Garden Control
+      Legal home cultivation monitoring (Germany)
 
   # Environmental Conditions
   - type: horizontal-stack
@@ -19,9 +19,9 @@ cards:
         min: 15
         max: 35
         severity:
-          green: 20
-          yellow: 18
-          red: 16
+          green: 22
+          yellow: 20
+          red: 18
         needle: true
 
       - type: gauge
@@ -31,9 +31,9 @@ cards:
         min: 0
         max: 1000
         severity:
-          green: 300
-          yellow: 150
-          red: 50
+          green: 400
+          yellow: 200
+          red: 100
         needle: true
 
   # Detailed Environment
@@ -49,8 +49,10 @@ cards:
         icon: mdi:brightness-6
       - entity: climate.thermostat_computer
         name: Climate Control
+      - type: section
+        label: "Target: 20-26°C for optimal growth"
 
-  # Lighting Control
+  # Lighting Control (Critical for cannabis)
   - type: entities
     title: Grow Lights
     show_header_toggle: false
@@ -58,48 +60,21 @@ cards:
       - entity: light.computer_licht_2
         name: Main Grow Light
       - entity: light.rollladen_computer_hintergrundbeleuchtung
-        name: Ambient Light
+        name: Ambient/Side Light
       - entity: light.yoga_blind_hintergrundbeleuchtung
         name: Secondary Light
       - type: divider
       - type: section
-        label: "Light Schedule"
-
-  # Ventilation
-  - type: entities
-    title: Ventilation & Air Flow
-    show_header_toggle: false
-    entities:
-      - entity: fan.ceiling_fan_with_light
-        name: Main Fan
-      - entity: fan.dc_fan_lamp
-        name: Secondary Fan
-      - type: divider
-      - entity: script.fan_winter_heat_now
-        name: Start Circulation
-        icon: mdi:fan
-        tap_action:
-          action: call-service
-          service: script.fan_winter_heat_now
-
-  # Blind Control for Natural Light
-  - type: entities
-    title: Natural Light Control
-    show_header_toggle: false
-    entities:
+        label: "Vegetative: 18h on / 6h off"
       - type: section
-        label: "Blinds (Solar Control)"
-      - entity: cover.rollladen_computer_vorhang
-        name: Main Window
-      - entity: cover.rollladen_yoga_vorhang
-        name: Secondary Window
+        label: "Flowering: 12h on / 12h off"
 
-  # Quick Actions
+  # Light Cycle Control
   - type: horizontal-stack
     cards:
       - type: button
-        name: Day Mode
-        icon: mdi:white-balance-sunny
+        name: Veg Cycle (18/6)
+        icon: mdi:sprout-outline
         tap_action:
           action: call-service
           service: light.turn_on
@@ -107,12 +82,22 @@ cards:
             entity_id:
               - light.computer_licht_2
               - light.rollladen_computer_hintergrundbeleuchtung
-            brightness_pct: 80
-            color_temp_kelvin: 5500
+            brightness_pct: 100
 
       - type: button
-        name: Night Mode
-        icon: mdi:weather-night
+        name: Flower Cycle (12/12)
+        icon: mdi:flower
+        tap_action:
+          action: call-service
+          service: light.turn_on
+          service_data:
+            entity_id:
+              - light.computer_licht_2
+            brightness_pct: 100
+
+      - type: button
+        name: Lights Off
+        icon: mdi:power
         tap_action:
           action: call-service
           service: light.turn_off
@@ -121,36 +106,83 @@ cards:
               - light.computer_licht_2
               - light.rollladen_computer_hintergrundbeleuchtung
 
-  # Optimal Conditions Guide
-  - type: markdown
-    content: |
-      ### 🌿 Optimal Growing Conditions
-
-      **Herbs (Basil, Mint, Parsley)**
-      - 🌡️ Temperature: 18-24°C
-      - 💡 Light: 300-500 lux (12-16h/day)
-      - 💨 Airflow: Low-Medium
-
-      **Vegetables (Tomatoes, Peppers)**
-      - 🌡️ Temperature: 20-27°C
-      - 💡 Light: 400-800 lux (14-18h/day)
-      - 💨 Airflow: Medium
-
-      **Houseplants (Succulents, Ferns)**
-      - 🌡️ Temperature: 18-25°C
-      - 💡 Light: 200-400 lux (8-12h/day)
-      - 💨 Airflow: Low
-
-  # Growth Tracking
+  # Ventilation (Critical for cannabis)
   - type: entities
-    title: Plant Care Schedule
+    title: Ventilation & Air Flow
+    show_header_toggle: false
+    entities:
+      - entity: fan.ceiling_fan_with_light
+        name: Main Exhaust Fan
+      - entity: fan.dc_fan_lamp
+        name: Circulation Fan
+      - type: divider
+      - entity: script.fan_winter_heat_now
+        name: Start Air Circulation
+        icon: mdi:fan
+        tap_action:
+          action: call-service
+          service: script.fan_winter_heat_now
+      - type: section
+        label: "Keep air moving to prevent mold"
+
+  # Blind Control for Light Leaks
+  - type: entities
+    title: Light Leak Prevention
     show_header_toggle: false
     entities:
       - type: section
-        label: "Automation Status"
+        label: "Blinds (Block External Light)"
+      - entity: cover.rollladen_computer_vorhang
+        name: Main Window
+      - entity: cover.rollladen_yoga_vorhang
+        name: Secondary Window
+      - type: section
+        label: "⚠️ Close during dark period!"
+
+  # Optimal Conditions Guide
+  - type: markdown
+    content: |
+      ### 🌿 Optimal Growing Parameters
+
+      **Vegetative Stage (3-8 weeks)**
+      - 🌡️ Temperature: 20-26°C (day) / 18-22°C (night)
+      - 💡 Light: 18h on / 6h off
+      - 💨 Humidity: 40-70%
+      - 🌀 Airflow: Medium-High (prevent mold)
+
+      **Flowering Stage (8-12 weeks)**
+      - 🌡️ Temperature: 20-26°C (day) / 18-24°C (night)
+      - 💡 Light: 12h on / 12h off (strict!)
+      - 💨 Humidity: 40-50% (lower to prevent bud rot)
+      - 🌀 Airflow: High (especially around buds)
+
+      **Critical Rules**
+      - 🚫 NO light during dark period (causes stress)
+      - ✅ Consistent temperature (±2°C)
+      - ✅ Fresh air exchange every 1-2 hours
+      - ✅ Gentle air movement on plants
+
+  # Growth Phase Tracking
+  - type: entities
+    title: Plant Status & Automation
+    show_header_toggle: false
+    entities:
       - entity: input_boolean.auto_lights_enabled
         name: Auto Light Schedule
         icon: mdi:lightbulb-auto
       - entity: sun.sun
-        name: Sunrise/Sunset
+        name: Natural Light Cycle
         icon: mdi:weather-sunny
+      - type: section
+        label: "Legal: Max 3 plants (Germany, 2024)"
+
+  # Quick Reference
+  - type: markdown
+    content: |
+      ### 📋 Daily Checklist
+
+      ✅ Check temperature (20-26°C)
+      ✅ Verify lights on schedule
+      ✅ Ensure fans running
+      ✅ Check for light leaks (dark period)
+      ✅ Monitor for any stress signs
