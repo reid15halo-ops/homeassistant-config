@@ -18,6 +18,35 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
+# Lovelace Dashboards
+lovelace:
+  mode: storage
+  dashboards:
+    home-control:
+      mode: yaml
+      title: Home Control
+      icon: mdi:home-automation
+      show_in_sidebar: true
+      filename: dashboards/home_control.yaml
+    climate-energy:
+      mode: yaml
+      title: Climate & Energy
+      icon: mdi:leaf
+      show_in_sidebar: true
+      filename: dashboards/climate_energy.yaml
+    automation-status:
+      mode: yaml
+      title: Automation Status
+      icon: mdi:robot
+      show_in_sidebar: true
+      filename: dashboards/automation_status.yaml
+    plant-growing:
+      mode: yaml
+      title: Plant Growing
+      icon: mdi:sprout
+      show_in_sidebar: true
+      filename: dashboards/plant_growing.yaml
+
 # ZHA Configuration
 zha:
   enable_quirks: true
@@ -321,4 +350,3 @@ notify:
     name: alle_geraete
     services:
       - service: mobile_app_redmi_note_12_pro_5g
-
