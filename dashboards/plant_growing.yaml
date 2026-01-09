@@ -39,8 +39,8 @@ views:
 
       # Temperature History Graph
       - type: history-graph
-        title: Temperature History (24h)
-        hours_to_show: 24
+        title: Temperature (3 Days)
+        hours_to_show: 72
         entities:
           - entity: sensor.temperature_humidity_sensor_2_temperatur
             name: Tent
@@ -53,8 +53,8 @@ views:
 
       # Air Humidity History Graph
       - type: history-graph
-        title: Air Humidity (24h)
-        hours_to_show: 24
+        title: Air Humidity (3 Days)
+        hours_to_show: 72
         entities:
           - entity: sensor.temperature_humidity_sensor_2_luftfeuchtigkeit
             name: Tent
@@ -63,8 +63,8 @@ views:
 
       # Soil Moisture History Graph
       - type: history-graph
-        title: Soil Moisture (24h)
-        hours_to_show: 24
+        title: Soil Moisture (3 Days)
+        hours_to_show: 72
         entities:
           - entity: sensor.sbht_003c_7ff9_humidity
             name: L - Permanent Marker
@@ -92,45 +92,29 @@ views:
             icon: mdi:blinds
 
       # Individual Plants Monitoring
-      - type: grid
-        title: Individual Plants
-        columns: 3
+      - type: horizontal-stack
         cards:
-          # Left Plant
-          - type: entities
-            title: (L) Permanent Marker
-            show_header_toggle: false
+          - type: glance
+            title: L - Permanent Marker
             entities:
               - entity: sensor.sbht_003c_7ff9_humidity
-                name: Moisture
-                icon: mdi:water-percent
+                name: Soil %
               - entity: sensor.sbht_003c_7ff9_temperature
                 name: Temp
-                icon: mdi:thermometer
-
-          # Middle Plant
-          - type: entities
-            title: (M) Cap Junky
-            show_header_toggle: false
+          - type: glance
+            title: M - Cap Junky
             entities:
               - entity: sensor.sbht_003c_b922_humidity
-                name: Moisture
-                icon: mdi:water-percent
+                name: Soil %
               - entity: sensor.sbht_003c_b922_temperature
                 name: Temp
-                icon: mdi:thermometer
-
-          # Right Plant
-          - type: entities
-            title: (R) Candy Store
-            show_header_toggle: false
+          - type: glance
+            title: R - Candy Store
             entities:
               - entity: sensor.hobeian_zg_303z_luftfeuchtigkeit
-                name: Moisture
-                icon: mdi:water-percent
+                name: Soil %
               - entity: sensor.hobeian_zg_303z_temperatur
                 name: Temp
-                icon: mdi:thermometer
 
       # Mother Plant
       - type: entities
