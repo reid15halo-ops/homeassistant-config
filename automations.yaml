@@ -477,7 +477,7 @@
 
 - id: "light_bad_off"
   alias: "Bad - Licht aus ohne Anwesenheit"
-  description: "Turn off bathroom light immediately when no presence"
+  description: "Turn off bathroom light when no presence for 10 seconds"
   trigger:
     - platform: state
       entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_4
@@ -485,6 +485,8 @@
     - platform: state
       entity_id: binary_sensor.motion_sensor_bad_bewegung
       to: "off"
+      for:
+        seconds: 10
   condition:
     # Only turn off if BOTH sensors show no presence
     - condition: state
