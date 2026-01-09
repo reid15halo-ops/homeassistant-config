@@ -51,27 +51,11 @@ views:
             icon: mdi:sleep
 
       # Blind Protection System
-      - type: entities
-        title: Blind Anti-Jam System
-        show_header_toggle: false
-        state_color: true
-        entities:
-          - type: section
-            label: "Last Action (ON = Opened, OFF = Closed)"
-          - entity: input_boolean.blind_computer_last_opened
-            name: Computer
-            icon: mdi:window-shutter
-          - entity: input_boolean.blind_schlafen_last_opened
-            name: Bedroom
-            icon: mdi:window-shutter
-          - entity: input_boolean.blind_kuche_last_opened
-            name: Kitchen
-            icon: mdi:window-shutter
-          - entity: input_boolean.blind_yoga_last_opened
-            name: Yoga Room
-            icon: mdi:window-shutter
-          - type: section
-            label: "✅ = Can open safely | ⚠️ = Would skip (prevent jam)"
+      - type: markdown
+        content: |
+          ### Blind Anti-Jam System
+          ✅ Safe operation scripts available
+          Use `script.safe_open_blind` and `script.safe_close_blind`
 
       # Current Blind Positions
       - type: entities
@@ -82,9 +66,9 @@ views:
             name: Computer
           - entity: cover.schlafen_blind_vorhang
             name: Bedroom
-          - entity: cover.rollladen_kuche_vorhang
+          - entity: cover.kuche_blind_vorhang
             name: Kitchen
-          - entity: cover.rollladen_yoga_vorhang
+          - entity: cover.yoga_blind_vorhang
             name: Yoga Room
 
       # Climate Status
