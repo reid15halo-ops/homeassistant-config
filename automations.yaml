@@ -453,12 +453,19 @@
   mode: single
 
 - id: "light_bad_on"
-  alias: "Bad - Licht an bei Bewegung"
-  description: "Turn on bathroom light when presence detected"
+  alias: "Bad - Licht an bei Anwesenheit"
+  description: "Turn on bathroom light when any presence/motion detected"
   trigger:
     - platform: state
       entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_4
       to: "on"
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_bad_bewegung
+      to: "on"
+  condition:
+    - condition: state
+      entity_id: light.bad
+      state: "off"
   action:
     - service: light.turn_on
       target:
@@ -469,14 +476,27 @@
   mode: single
 
 - id: "light_bad_off"
-  alias: "Bad - Licht aus ohne Bewegung"
-  description: "Turn off bathroom light after 120s no presence"
+  alias: "Bad - Licht aus ohne Anwesenheit"
+  description: "Turn off bathroom light when no presence for 2 minutes"
   trigger:
     - platform: state
       entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_4
       to: "off"
       for:
-        seconds: 120
+        minutes: 2
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_bad_bewegung
+      to: "off"
+      for:
+        minutes: 2
+  condition:
+    # Only turn off if BOTH sensors show no presence
+    - condition: state
+      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_4
+      state: "off"
+    - condition: state
+      entity_id: binary_sensor.motion_sensor_bad_bewegung
+      state: "off"
   action:
     - service: light.turn_off
       target:
