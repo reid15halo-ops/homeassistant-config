@@ -1,0 +1,200 @@
+# ============================================================================
+# BEREINIGTE AUTOMATIONS.YAML - Teil 1: Licht-Automationen
+# Fixes: Duplikate entfernt, Kiffzimmer-Bug behoben, for-Delays hinzugefügt
+# ============================================================================
+
+# --- KÜCHE ---
+- id: '1758396085814'
+  alias: Küche Licht ein
+  triggers:
+    - type: motion
+      device_id: c29865854655cf19cc904091dfa49ab0
+      entity_id: 908b875fe48a1487586614292dd351de
+      domain: binary_sensor
+      trigger: device
+  conditions: []
+  actions:
+    - type: turn_on
+      device_id: 274a4e3fba305eef548db23296690d2d
+      entity_id: 708363eeb019712e16145550302148ef
+      domain: light
+      brightness_pct: 100
+    - type: turn_on
+      device_id: db2f7007d9ab40883ebc98eba9815384
+      entity_id: dc2d1b19833aaac2ea089fe8a751574f
+      domain: light
+      brightness_pct: 100
+  mode: single
+
+- id: '1757962675739'
+  alias: Licht aus Küche
+  triggers:
+    - type: no_motion
+      device_id: c29865854655cf19cc904091dfa49ab0
+      entity_id: 908b875fe48a1487586614292dd351de
+      domain: binary_sensor
+      trigger: device
+      for:
+        seconds: 30  # ERHÖHT von 10s
+  conditions: []
+  actions:
+    - type: turn_off
+      device_id: db2f7007d9ab40883ebc98eba9815384
+      entity_id: dc2d1b19833aaac2ea089fe8a751574f
+      domain: light
+    - type: turn_off
+      device_id: 274a4e3fba305eef548db23296690d2d
+      entity_id: 708363eeb019712e16145550302148ef
+      domain: light
+  mode: single
+
+# --- BAD (BEREINIGT: nur eine Version) ---
+- id: '1764275861282'
+  alias: Bad Licht an
+  triggers:
+    - type: motion
+      device_id: bffd646b3650b2e9db314f2e5d6c32ee
+      entity_id: 0aa3b6ec038b7442a5fdbb6a5bf505a1
+      domain: binary_sensor
+      trigger: device
+    - type: motion
+      device_id: aebec0c58872e00fe8fa89b0a846a29e
+      entity_id: 58a470e22a792e2f2d7a2e13233b3d50
+      domain: binary_sensor
+      trigger: device
+  conditions: []
+  actions:
+    - type: turn_on
+      device_id: ffd6ad3612028069ca89a7fa557bf0e4
+      entity_id: e01337629e974472db8c867288cc1c20
+      domain: light
+      brightness_pct: 100
+    - type: turn_on
+      device_id: 142b24bb9cc328b2a14f447d1a7ef05d
+      entity_id: 140240ddf6d71b980a00ef23a7b53f8f
+      domain: light
+      brightness_pct: 100
+  mode: restart
+
+- id: '1758128839131'
+  alias: Bad aus
+  triggers:
+    - type: no_motion
+      device_id: aebec0c58872e00fe8fa89b0a846a29e
+      entity_id: 58a470e22a792e2f2d7a2e13233b3d50
+      domain: binary_sensor
+      trigger: device
+      for:
+        minutes: 2
+  conditions: []
+  actions:
+    - type: turn_off
+      device_id: ffd6ad3612028069ca89a7fa557bf0e4
+      entity_id: e01337629e974472db8c867288cc1c20
+      domain: light
+  mode: single
+
+# --- SCHLAFZIMMER (BEREINIGT: Duplikate entfernt) ---
+- id: '1763583346951'
+  alias: Bett Licht an
+  triggers:
+    - type: motion
+      device_id: 57ce746c73087aa56f0e7144c3f6740c
+      entity_id: 4752ff3b23e3350bc11c3d981e34966e
+      domain: binary_sensor
+      trigger: device
+  conditions: []
+  actions:
+    - type: turn_on
+      device_id: 09da8d97be4777a9a94cc9b8e53d68c4
+      entity_id: bc0d3fd25e385f3c1056ed9ead8aa858
+      domain: light
+      brightness_pct: 100
+  mode: single
+
+- id: schlafen_licht_aus_unified
+  alias: Schlafen – Licht aus ohne Bewegung
+  triggers:
+    - type: no_motion
+      device_id: 57ce746c73087aa56f0e7144c3f6740c
+      entity_id: 4752ff3b23e3350bc11c3d981e34966e
+      domain: binary_sensor
+      trigger: device
+      for:
+        seconds: 30  # HINZUGEFÜGT
+  conditions: []
+  actions:
+    - type: turn_off
+      device_id: 76361dfbed405867437d4b94a3995bb6
+      entity_id: c89deabc4968aea0ddb6510f196c0c0b
+      domain: light
+    - type: turn_off
+      device_id: 09da8d97be4777a9a94cc9b8e53d68c4
+      entity_id: bc0d3fd25e385f3c1056ed9ead8aa858
+      domain: light
+  mode: single
+
+# --- KIFFZIMMER (FIX: Licht aus bei Tür SCHLIESSEN) ---
+- id: '1758396392046'
+  alias: Kiffzimmer Licht an
+  triggers:
+    - type: opened
+      device_id: f93ac770d48247a87eb45dca8a25b323
+      entity_id: 3d6d3623a068fc9a1a1a1cff07e62437
+      domain: binary_sensor
+      trigger: device
+  conditions:
+    - condition: device
+      type: is_off
+      device_id: 506014673a62ba6c5f6209669bd9108e
+      entity_id: dffd9b9d1f6f62069519afe1dc9dfb1e
+      domain: light
+  actions:
+    - type: turn_on
+      device_id: 506014673a62ba6c5f6209669bd9108e
+      entity_id: dffd9b9d1f6f62069519afe1dc9dfb1e
+      domain: light
+  mode: single
+
+- id: '1758396434802'
+  alias: Kiffzimmer Licht aus
+  triggers:
+    - type: closed  # ← FIX: War "opened"!
+      device_id: f93ac770d48247a87eb45dca8a25b323
+      entity_id: 3d6d3623a068fc9a1a1a1cff07e62437
+      domain: binary_sensor
+      trigger: device
+  conditions: []
+  actions:
+    - type: turn_off
+      device_id: 506014673a62ba6c5f6209669bd9108e
+      entity_id: dffd9b9d1f6f62069519afe1dc9dfb1e
+      domain: light
+  mode: single
+
+# --- WOHNZIMMER ---
+- id: '1758137148626'
+  alias: Wohnzimmer Licht an Nach Sonnenuntergang
+  triggers:
+    - type: occupied
+      device_id: 2ce83ab1b7ba9e3161a4584846503d5b
+      entity_id: 10610e701b173fd96fe8f66dcb695b1d
+      domain: binary_sensor
+      trigger: device
+  conditions:
+    - condition: sun
+      before: sunrise
+      after: sunset
+  actions:
+    - type: turn_on
+      device_id: dff6231b45ad4abd9fec55f83af21d78
+      entity_id: e1a3c27842ab023629bd0c3d766dc5fc
+      domain: light
+    - type: turn_on
+      device_id: ceb5bc29b2669f8871ae800bca1807a7
+      entity_id: a5ec8243261c2ded541e37e7638fa2b7
+      domain: light
+      brightness_pct: 100
+    - action: script.ambient_feuerlicht_warm_flicker
+      data: {}
+  mode: single
