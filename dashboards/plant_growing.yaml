@@ -3,157 +3,175 @@ views:
   - title: Kiffzimmer Grow
     path: plant_growing
     icon: mdi:cannabis
-    cards:
-      # Header
-      - type: markdown
-        content: |
-          ## 🌿 Kiffzimmer Grow Status
-          Monitoring Legal Home Cultivation
+    type: sections
+    sections:
+      # === HEADER SECTION ===
+      - type: grid
+        cards:
+          - type: markdown
+            content: |
+              # 🌿 Kiffzimmer Grow Station
+              ### Legal Home Cultivation Monitor
+              ---
 
-      # Main Tent Environment (Zelt)
-      - type: horizontal-stack
+      # === ENVIRONMENT GAUGES ===
+      - type: grid
+        title: 🌡️ Tent Environment
         cards:
           - type: gauge
             entity: sensor.temperature_humidity_sensor_2_temperatur
-            name: Tent Temp
+            name: Temperature
             unit: "°C"
             min: 15
             max: 35
-            severity:
-              green: 22
-              yellow: 20
-              red: 18
+            segments:
+              - from: 15
+                color: "#3498db"
+              - from: 20
+                color: "#2ecc71"
+              - from: 26
+                color: "#f39c12"
+              - from: 30
+                color: "#e74c3c"
             needle: true
 
           - type: gauge
             entity: sensor.temperature_humidity_sensor_2_luftfeuchtigkeit
-            name: Tent Humidity
+            name: Humidity
             unit: "%"
-            min: 30
-            max: 80
-            severity:
-              green: 45
-              yellow: 60
-              red: 70
+            min: 20
+            max: 90
+            segments:
+              - from: 20
+                color: "#e74c3c"
+              - from: 40
+                color: "#2ecc71"
+              - from: 65
+                color: "#f39c12"
+              - from: 80
+                color: "#3498db"
             needle: true
 
-      # Temperature History Graph
-      - type: history-graph
-        title: Temperature (3 Days)
-        hours_to_show: 72
-        entities:
-          - entity: sensor.temperature_humidity_sensor_2_temperatur
-            name: Tent
-          - entity: sensor.sbht_003c_7ff9_temperature
-            name: L Plant
-          - entity: sensor.sbht_003c_b922_temperature
-            name: M Plant
-          - entity: sensor.temperature_and_humidity_sensor_temperatur
-            name: Mother
-
-      # Air Humidity History Graph
-      - type: history-graph
-        title: Air Humidity (3 Days)
-        hours_to_show: 72
-        entities:
-          - entity: sensor.temperature_humidity_sensor_2_luftfeuchtigkeit
-            name: Tent
-          - entity: sensor.temperature_and_humidity_sensor_luftfeuchtigkeit
-            name: Mother
-
-      # Soil Moisture History Graph
-      - type: history-graph
-        title: Soil Moisture (3 Days)
-        hours_to_show: 72
-        entities:
-          - entity: sensor.sbht_003c_7ff9_humidity
-            name: L - Permanent Marker
-          - entity: sensor.sbht_003c_b922_humidity
-            name: M - Cap Junky
-          - entity: sensor.hobeian_zg_303z_luftfeuchtigkeit
-            name: R - Candy Store
-
-      # Equipment Control
-      - type: entities
-        title: Equipment Control
-        show_header_toggle: false
-        entities:
-          - entity: switch.kiffzimmer_aktivkohlefilter
-            name: Carbon Filter (Ventilation)
-            icon: mdi:fan
-          - entity: switch.t34_smart_plug_schalter_1
-            name: Heater Plug
-            icon: mdi:radiator
-          - entity: light.kiffzimmer_lichtstreifen
-            name: Light Strip
-            icon: mdi:led-strip
-          - entity: cover.yoga_blind_vorhang
-            name: Window Blind
-            icon: mdi:blinds
-
-      # Individual Plants Monitoring
-      - type: horizontal-stack
+      # === PLANT STATUS CARDS ===
+      - type: grid
+        title: 🌱 Plant Status
         cards:
-          - type: glance
-            title: L - Permanent Marker
+          - type: tile
+            entity: sensor.sbht_003c_7ff9_humidity
+            name: L - Permanent Marker
+            icon: mdi:cannabis
+            color: green
+            show_entity_picture: false
+            vertical: true
+
+          - type: tile
+            entity: sensor.sbht_003c_b922_humidity
+            name: M - Cap Junky
+            icon: mdi:cannabis
+            color: teal
+            show_entity_picture: false
+            vertical: true
+
+          - type: tile
+            entity: sensor.hobeian_zg_303z_luftfeuchtigkeit
+            name: R - Candy Store
+            icon: mdi:cannabis
+            color: cyan
+            show_entity_picture: false
+            vertical: true
+
+          - type: tile
+            entity: sensor.temperature_and_humidity_sensor_temperatur
+            name: Mother Plant
+            icon: mdi:flower
+            color: purple
+            show_entity_picture: false
+            vertical: true
+
+      # === EQUIPMENT CONTROLS ===
+      - type: grid
+        title: ⚙️ Equipment Control
+        cards:
+          - type: tile
+            entity: switch.kiffzimmer_aktivkohlefilter
+            name: Carbon Filter
+            icon: mdi:fan
+            color: blue
+
+          - type: tile
+            entity: switch.t34_smart_plug_schalter_1
+            name: Heater
+            icon: mdi:radiator
+            color: deep-orange
+
+          - type: tile
+            entity: light.kiffzimmer_lichtstreifen
+            name: Grow Light
+            icon: mdi:led-strip-variant
+            color: amber
+
+          - type: tile
+            entity: cover.yoga_blind_vorhang
+            name: Window Blind
+            icon: mdi:blinds-horizontal
+
+      # === HISTORY GRAPHS ===
+      - type: grid
+        title: 📊 3-Day History
+        cards:
+          - type: history-graph
+            title: Temperature
+            hours_to_show: 72
+            entities:
+              - entity: sensor.temperature_humidity_sensor_2_temperatur
+                name: Tent
+              - entity: sensor.sbht_003c_7ff9_temperature
+                name: L Plant
+              - entity: sensor.sbht_003c_b922_temperature
+                name: M Plant
+              - entity: sensor.temperature_and_humidity_sensor_temperatur
+                name: Mother
+
+          - type: history-graph
+            title: Air Humidity
+            hours_to_show: 72
+            entities:
+              - entity: sensor.temperature_humidity_sensor_2_luftfeuchtigkeit
+                name: Tent
+              - entity: sensor.temperature_and_humidity_sensor_luftfeuchtigkeit
+                name: Mother
+
+          - type: history-graph
+            title: Soil Moisture
+            hours_to_show: 72
             entities:
               - entity: sensor.sbht_003c_7ff9_humidity
-                name: Soil %
-              - entity: sensor.sbht_003c_7ff9_temperature
-                name: Temp
-          - type: glance
-            title: M - Cap Junky
-            entities:
+                name: L - Permanent
               - entity: sensor.sbht_003c_b922_humidity
-                name: Soil %
-              - entity: sensor.sbht_003c_b922_temperature
-                name: Temp
-          - type: glance
-            title: R - Candy Store
-            entities:
+                name: M - Cap Junky
               - entity: sensor.hobeian_zg_303z_luftfeuchtigkeit
-                name: Soil %
-              - entity: sensor.hobeian_zg_303z_temperatur
-                name: Temp
+                name: R - Candy
 
-      # Mother Plant
-      - type: entities
-        title: Mother Plant
-        show_header_toggle: false
-        entities:
-          - entity: sensor.temperature_and_humidity_sensor_temperatur
-            name: Air Temp
-            icon: mdi:thermometer
-          - entity: sensor.temperature_and_humidity_sensor_luftfeuchtigkeit
-            name: Humidity
-            icon: mdi:water-percent
-
-      # Safety & Security
-      - type: entities
-        title: Safety & Security
-        show_header_toggle: false
-        state_color: true
-        entities:
-          - entity: binary_sensor.aqara_water_leak_sensor_feuchte
-            name: Water Leak Sensor
-            icon: mdi:water-alert
-          - entity: binary_sensor.aqara_door_and_window_sensor_tur
-            name: Door Sensor (Light Leaks)
-            icon: mdi:door
-          - type: conditional
-            conditions:
-              - entity: binary_sensor.aqara_door_and_window_sensor_tur
-                state: "on"
-            card:
-              type: markdown
-              content: "⚠️ **DOOR OPEN!** Check for light leaks!"
-
-      # Quick Actions
-      - type: horizontal-stack
+      # === SAFETY & QUICK ACTIONS ===
+      - type: grid
+        title: 🛡️ Safety & Actions
         cards:
+          - type: tile
+            entity: binary_sensor.aqara_water_leak_sensor_feuchte
+            name: Water Leak
+            icon: mdi:water-alert
+            color: red
+
+          - type: tile
+            entity: binary_sensor.aqara_door_and_window_sensor_tur
+            name: Door Status
+            icon: mdi:door
+            color: amber
+
           - type: button
-            name: Work Mode (Lights On)
-            icon: mdi:briefcase-eye
+            name: Work Mode
+            icon: mdi:lightbulb-on
+            icon_height: 40px
             tap_action:
               action: call-service
               service: light.turn_on
@@ -162,10 +180,24 @@ views:
                 brightness_pct: 100
 
           - type: button
-            name: Stealth Mode (Blind Closed)
+            name: Stealth Mode
             icon: mdi:eye-off
+            icon_height: 40px
             tap_action:
               action: call-service
               service: cover.close_cover
               service_data:
                 entity_id: cover.yoga_blind_vorhang
+
+      # === OPTIMAL RANGES INFO ===
+      - type: grid
+        title: 📋 Optimal Ranges
+        cards:
+          - type: markdown
+            content: |
+              | **Stage** | **Temp** | **Humidity** | **Light** |
+              |:--|:--:|:--:|:--:|
+              | 🌱 Seedling | 20-25°C | 65-70% | 18h |
+              | 🌿 Vegetative | 22-28°C | 40-70% | 18h |
+              | 🌸 Flowering | 20-26°C | 40-50% | 12h |
+              | 🍂 Late Flower | 18-24°C | 30-40% | 12h |
