@@ -321,3 +321,4 @@ notify:
     name: alle_geraete
     services:
       - service: mobile_app_redmi_note_12_pro_5g
+
