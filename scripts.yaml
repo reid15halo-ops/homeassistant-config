@@ -199,16 +199,16 @@ safe_open_blind:
             - condition: template
               value_template: "{{ is_state(tracker_entity, 'off') }}"
           sequence:
-            - action: cover.open_cover
+            - service: cover.open_cover
               target:
                 entity_id: "{{ cover_entity }}"
             # Mark that we just opened it
-            - action: input_boolean.turn_on
+            - service: input_boolean.turn_on
               target:
                 entity_id: "{{ tracker_entity }}"
       default:
         # Skip opening - it was already opened
-        - action: system_log.write
+        - service: system_log.write
           data:
             message: "Skipped opening {{ cover_entity }} - already opened (prevents jamming)"
             level: warning
