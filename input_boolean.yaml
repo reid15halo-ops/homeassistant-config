@@ -25,3 +25,19 @@ input_boolean:
     name: "Blind Yoga - Last Opened"
     icon: mdi:window-shutter-open
     initial: false
+
+  # Control Modes
+  movie_mode:
+    name: "Filmzeit"
+    icon: mdi:movie-open
+    initial: false
+
+  guest_mode:
+    name: "Gästemodus"
+    icon: mdi:account-multiple
+    initial: false
+
+  vacation_mode:
+    name: "Urlaubsmodus"
+    icon: mdi:airplane
+    initial: false

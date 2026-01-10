@@ -124,9 +124,9 @@ all_covers_open:
       target:
         entity_id:
           - cover.rollladen_computer_vorhang
-          - cover.rollladen_kuche_vorhang
-          - cover.rollladen_yoga_vorhang
-          - cover.rollladen_schlafen_vorhang
+          - cover.kuche_blind_vorhang
+          - cover.yoga_blind_vorhang
+          - cover.schlafen_blind_vorhang
       data:
         position: "{{ position }}"
       continue_on_error: true
@@ -139,9 +139,9 @@ all_covers_close:
       target:
         entity_id:
           - cover.rollladen_computer_vorhang
-          - cover.rollladen_kuche_vorhang
-          - cover.rollladen_yoga_vorhang
-          - cover.rollladen_schlafen_vorhang
+          - cover.kuche_blind_vorhang
+          - cover.yoga_blind_vorhang
+          - cover.schlafen_blind_vorhang
       continue_on_error: true
 
 light_toggle_with_brightness:
@@ -196,20 +196,19 @@ safe_open_blind:
     # Only open if the last action was NOT an open (tracker = false)
     - choose:
         - conditions:
-            - condition: state
-              entity_id: "{{ tracker_entity }}"
-              state: "off" # false = last action was close, safe to open
+            - condition: template
+              value_template: "{{ is_state(tracker_entity, 'off') }}"
           sequence:
-            - service: cover.open_cover
+            - action: cover.open_cover
               target:
                 entity_id: "{{ cover_entity }}"
             # Mark that we just opened it
-            - service: input_boolean.turn_on
+            - action: input_boolean.turn_on
               target:
                 entity_id: "{{ tracker_entity }}"
       default:
         # Skip opening - it was already opened
-        - service: system_log.write
+        - action: system_log.write
           data:
             message: "Skipped opening {{ cover_entity }} - already opened (prevents jamming)"
             level: warning
