@@ -72,12 +72,47 @@ if (Test-Path $appDaemonSource) {
 Write-Host ""
 Write-Host "✅ Deployment complete!" -ForegroundColor Green
 Write-Host ""
-Write-Host "⚡ Next steps:" -ForegroundColor Yellow
-Write-Host "  1. Go to Home Assistant web UI (http://192.168.178.70:8123)" -ForegroundColor White
-Write-Host "  2. Developer Tools → YAML" -ForegroundColor White
-Write-Host "  3. Click 'Reload Automations'" -ForegroundColor White
-Write-Host "  4. Click 'Reload Scripts'" -ForegroundColor White
-Write-Host "  5. Click 'Reload Helpers'" -ForegroundColor White
-Write-Host ""
-Write-Host "Or restart Home Assistant completely:" -ForegroundColor Cyan
-Write-Host "  Settings → System → Restart" -ForegroundColor White
+
+# Auto-reload via API if token is available
+$HA_URL = "http://192.168.178.70:8123"
+$token = $env:HA_TOKEN
+
+if ($token) {
+    Write-Host "🔄 Reloading Home Assistant via API..." -ForegroundColor Cyan
+    
+    $headers = @{
+        "Authorization" = "Bearer $token"
+        "Content-Type"  = "application/json"
+    }
+    
+    try {
+        # Reload scripts
+        Invoke-RestMethod -Uri "$HA_URL/api/services/script/reload" -Method POST -Headers $headers | Out-Null
+        Write-Host "  ✓ Reloaded Scripts" -ForegroundColor Green
+        
+        # Reload automations
+        Invoke-RestMethod -Uri "$HA_URL/api/services/automation/reload" -Method POST -Headers $headers | Out-Null
+        Write-Host "  ✓ Reloaded Automations" -ForegroundColor Green
+        
+        # Reload input_boolean
+        Invoke-RestMethod -Uri "$HA_URL/api/services/input_boolean/reload" -Method POST -Headers $headers | Out-Null
+        Write-Host "  ✓ Reloaded Input Booleans" -ForegroundColor Green
+        
+        Write-Host ""
+        Write-Host "✅ All done! Configuration reloaded." -ForegroundColor Green
+    }
+    catch {
+        Write-Host "  ❌ API reload failed: $_" -ForegroundColor Red
+        Write-Host ""
+        Write-Host "⚡ Manual reload required:" -ForegroundColor Yellow
+        Write-Host "  Developer Tools → YAML → Reload" -ForegroundColor White
+    }
+}
+else {
+    Write-Host "⚡ Next steps (no HA_TOKEN set for auto-reload):" -ForegroundColor Yellow
+    Write-Host "  1. Go to Home Assistant web UI ($HA_URL)" -ForegroundColor White
+    Write-Host "  2. Developer Tools → YAML" -ForegroundColor White
+    Write-Host "  3. Click 'Reload Automations'" -ForegroundColor White
+    Write-Host "  4. Click 'Reload Scripts'" -ForegroundColor White
+    Write-Host "  5. Click 'Reload Helpers'" -ForegroundColor White
+}
