@@ -9,8 +9,8 @@ ambient_feuerlicht_warm_flicker:
   sequence:
     - target:
         entity_id:
-          - light.computer_licht
-          - light.buffet_lichtstreifen
+          - light.computer_licht_2
+          - light.buffet_licht
       data:
         init_states: 30,55,62
         backgrounds:
@@ -42,7 +42,7 @@ ambient_velvet_rainbow:
         count: 100000
         sequence:
           - target:
-              entity_id: light.computer_licht
+              entity_id: light.computer_licht_2
             data:
               hs_color:
                 - "{{ hue }}"

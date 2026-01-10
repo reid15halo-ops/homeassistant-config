@@ -374,8 +374,8 @@
     - service: light.turn_on
       target:
         entity_id:
-          - light.computer_licht
-          - light.buffet_lichtstreifen
+          - light.computer_licht_2
+          - light.buffet_licht
       data:
         brightness_pct: "{{ 60 if now().hour >= 22 or now().hour < 6 else 80 }}"
         color_temp_kelvin: 2700
@@ -407,8 +407,8 @@
     - service: light.turn_off
       target:
         entity_id:
-          - light.computer_licht
-          - light.buffet_lichtstreifen
+          - light.computer_licht_2
+          - light.buffet_licht
   mode: single
 
 - id: "light_kuche_on"
@@ -426,9 +426,9 @@
     - service: light.turn_on
       target:
         entity_id:
-          - light.kuche_birne_1
-          - light.kuche_birne_2
-          - light.kuche_streifen
+          - light.kuche_brine_1
+          - light.kuche_birne_2_2
+          - light.kitchen_furniture
       data:
         brightness_pct: "{{ 50 if now().hour >= 22 else 100 }}"
         color_temp_kelvin: 2700
@@ -447,9 +447,9 @@
     - service: light.turn_off
       target:
         entity_id:
-          - light.kuche_birne_1
-          - light.kuche_birne_2
-          - light.kuche_streifen
+          - light.kuche_brine_1
+          - light.kuche_birne_2_2
+          - light.kitchen_furniture
   mode: single
 
 - id: "light_bad_on"
@@ -498,12 +498,12 @@
       to: "on"
   condition:
     - condition: state
-      entity_id: light.kuche_streifen
+      entity_id: light.kitchen_furniture
       state: "off"
   action:
     - service: light.turn_on
       target:
-        entity_id: light.kuche_streifen
+        entity_id: light.kitchen_furniture
       data:
         brightness_pct: "{{ 20 if now().hour >= 22 or now().hour < 6 else 100 }}"
         color_temp_kelvin: 3000
@@ -521,7 +521,7 @@
   action:
     - service: light.turn_off
       target:
-        entity_id: light.kuche_streifen
+        entity_id: light.kitchen_furniture
   mode: single
 
 # ============================================================================
@@ -808,21 +808,21 @@
     # Dim main lights
     - service: light.turn_off
       target:
-        entity_id: light.kuche_birne_1
+        entity_id: light.kuche_brine_1
     - service: light.turn_off
       target:
-        entity_id: light.kuche_birne_2
+        entity_id: light.kuche_birne_2_2
     # Ambient lights on low
     - service: light.turn_on
       target:
-        entity_id: light.buffet_lichtstreifen
+        entity_id: light.buffet_licht
       data:
         brightness_pct: 20
         color_temp_kelvin: 2200
     # Dim computer light
     - service: light.turn_on
       target:
-        entity_id: light.computer_licht
+        entity_id: light.computer_licht_2
       data:
         brightness_pct: 10
         color_temp_kelvin: 2200
@@ -843,8 +843,8 @@
     - service: light.turn_on
       target:
         entity_id:
-          - light.computer_licht
-          - light.buffet_lichtstreifen
+          - light.computer_licht_2
+          - light.buffet_licht
       data:
         brightness_pct: 60
         color_temp_kelvin: 2700
@@ -910,7 +910,7 @@
           # Random light on
           - service: light.turn_on
             target:
-              entity_id: "{{ ['light.computer_licht', 'light.buffet_lichtstreifen', 'light.kuche_birne_1'] | random }}"
+              entity_id: "{{ ['light.computer_licht_2', 'light.buffet_licht', 'light.kuche_brine_1'] | random }}"
             data:
               brightness_pct: "{{ range(50, 100) | random }}"
           - delay:
@@ -918,7 +918,7 @@
           # Random light off
           - service: light.turn_off
             target:
-              entity_id: "{{ ['light.computer_licht', 'light.buffet_lichtstreifen', 'light.kuche_birne_1'] | random }}"
+              entity_id: "{{ ['light.computer_licht_2', 'light.buffet_licht', 'light.kuche_brine_1'] | random }}"
           - delay:
               minutes: "{{ range(15, 60) | random }}"
   mode: single
