@@ -289,9 +289,7 @@
     - condition: template
       value_template: "{{ now().month in [11, 12, 1, 2] }}"
   action:
-    - service: cover.close_cover
-      target:
-        entity_id: all
+    - service: script.all_covers_close
   mode: single
 
 - id: "shutters_close_sunset_spring"
@@ -305,9 +303,7 @@
     - condition: template
       value_template: "{{ now().month in [3, 4, 10] }}"
   action:
-    - service: cover.close_cover
-      target:
-        entity_id: all
+    - service: script.all_covers_close
   mode: single
 
 - id: "shutters_close_sunset_summer"
@@ -321,9 +317,7 @@
     - condition: template
       value_template: "{{ now().month in [5, 6, 7, 8, 9] }}"
   action:
-    - service: cover.close_cover
-      target:
-        entity_id: all
+    - service: script.all_covers_close
   mode: single
 
 - id: "bedroom_shutters_sleep"
@@ -347,9 +341,10 @@
       entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_3
       state: "off"
   action:
-    - service: cover.close_cover
-      target:
-        entity_id: cover.schlafen_blind_vorhang
+    - service: script.safe_close_blind
+      data:
+        cover_entity: cover.schlafen_blind_vorhang
+        tracker_entity: input_boolean.blind_schlafen_last_opened
   mode: single
 
 # ============================================================================
@@ -788,9 +783,7 @@
       data:
         temperature: 17
     # Close all shutters
-    - service: cover.close_cover
-      target:
-        entity_id: all
+    - service: script.all_covers_close
   mode: single
 
 # ============================================================================
@@ -827,9 +820,10 @@
         brightness_pct: 10
         color_temp_kelvin: 2200
     # Close shutters in living room
-    - service: cover.close_cover
-      target:
-        entity_id: cover.rollladen_computer_vorhang
+    - service: script.safe_close_blind
+      data:
+        cover_entity: cover.rollladen_computer_vorhang
+        tracker_entity: input_boolean.blind_computer_last_opened
   mode: single
 
 - id: "movie_mode_off"
@@ -884,9 +878,7 @@
       after: sunrise
       before: sunset
   action:
-    - service: cover.close_cover
-      target:
-        entity_id: all
+    - service: script.all_covers_close
   mode: single
 
 # ============================================================================

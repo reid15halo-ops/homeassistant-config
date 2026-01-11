@@ -120,29 +120,43 @@ all_covers_open:
       description: Target position (0-100)
       default: 100
   sequence:
-    - service: cover.set_cover_position
-      target:
-        entity_id:
-          - cover.rollladen_computer_vorhang
-          - cover.kuche_blind_vorhang
-          - cover.yoga_blind_vorhang
-          - cover.schlafen_blind_vorhang
+    - service: script.safe_open_blind
       data:
-        position: "{{ position }}"
-      continue_on_error: true
+        cover_entity: cover.rollladen_computer_vorhang
+        tracker_entity: input_boolean.blind_computer_last_opened
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.kuche_blind_vorhang
+        tracker_entity: input_boolean.blind_kuche_last_opened
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.yoga_blind_vorhang
+        tracker_entity: input_boolean.blind_yoga_last_opened
+    - service: script.safe_open_blind
+      data:
+        cover_entity: cover.schlafen_blind_vorhang
+        tracker_entity: input_boolean.blind_schlafen_last_opened
 
 all_covers_close:
   alias: Close All Covers
   mode: single
   sequence:
-    - service: cover.close_cover
-      target:
-        entity_id:
-          - cover.rollladen_computer_vorhang
-          - cover.kuche_blind_vorhang
-          - cover.yoga_blind_vorhang
-          - cover.schlafen_blind_vorhang
-      continue_on_error: true
+    - service: script.safe_close_blind
+      data:
+        cover_entity: cover.rollladen_computer_vorhang
+        tracker_entity: input_boolean.blind_computer_last_opened
+    - service: script.safe_close_blind
+      data:
+        cover_entity: cover.kuche_blind_vorhang
+        tracker_entity: input_boolean.blind_kuche_last_opened
+    - service: script.safe_close_blind
+      data:
+        cover_entity: cover.yoga_blind_vorhang
+        tracker_entity: input_boolean.blind_yoga_last_opened
+    - service: script.safe_close_blind
+      data:
+        cover_entity: cover.schlafen_blind_vorhang
+        tracker_entity: input_boolean.blind_schlafen_last_opened
 
 light_toggle_with_brightness:
   alias: Toggle Light with Smart Brightness

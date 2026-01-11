@@ -1,43 +1,79 @@
-input_boolean:
-  fire_effect:
-    name: Fire Effect
-    icon: mdi:fire
-    initial: off
+# ============================================================================
+# INPUT BOOLEAN - Modi & Schalter
+# ============================================================================
 
-  # Blind State Tracking (prevents opening twice in a row)
-  # true = last action was OPEN, false = last action was CLOSE
-  blind_computer_last_opened:
-    name: "Blind Computer - Last Opened"
-    icon: mdi:window-shutter-open
-    initial: false
+# Heizungsmodi
+heizung_eco_mode:
+  name: "Heizung Eco-Modus"
+  icon: mdi:leaf
+heizung_winter_mode:
+  name: "Heizung Winter-Modus"
+  icon: mdi:snowflake
 
-  blind_schlafen_last_opened:
-    name: "Blind Schlafen - Last Opened"
-    icon: mdi:window-shutter-open
-    initial: false
+# Special Modes
+movie_mode:
+  name: "Filmzeit"
+  icon: mdi:movie-open
+guest_mode:
+  name: "Gästemodus"
+  icon: mdi:account-group
+vacation_mode:
+  name: "Urlaubsmodus"
+  icon: mdi:airplane
+party_mode:
+  name: "Party-Modus"
+  icon: mdi:party-popper
+sleep_mode:
+  name: "Schlafmodus"
+  icon: mdi:sleep
+away_mode:
+  name: "Abwesenheit"
+  icon: mdi:home-export-outline
+gaming_mode:
+  name: "Gaming-Modus"
+  icon: mdi:controller
+stream_mode:
+  name: "Streaming-Modus"
+  icon: mdi:video
 
-  blind_kuche_last_opened:
-    name: "Blind Küche - Last Opened"
-    icon: mdi:window-shutter-open
-    initial: false
+# Automation Toggles
+auto_lights_enabled:
+  name: "Automatische Beleuchtung"
+  icon: mdi:lightbulb-auto
+  initial: true
+auto_shutters_enabled:
+  name: "Automatische Rollläden"
+  icon: mdi:window-shutter-auto
+  initial: true
+auto_heating_enabled:
+  name: "Automatische Heizung"
+  icon: mdi:thermostat-auto
+  initial: true
 
-  blind_yoga_last_opened:
-    name: "Blind Yoga - Last Opened"
-    icon: mdi:window-shutter-open
-    initial: false
+# Fire Effect (AppDaemon)
+fire_effect:
+  name: "Fire Effect"
+  icon: mdi:fire
+  initial: off
 
-  # Control Modes
-  movie_mode:
-    name: "Filmzeit"
-    icon: mdi:movie-open
-    initial: false
+# Blind State Tracking (prevents opening twice in a row)
+# true = last action was OPEN, false = last action was CLOSE
+blind_computer_last_opened:
+  name: "Blind Computer - Last Opened"
+  icon: mdi:window-shutter-open
+  initial: false
 
-  guest_mode:
-    name: "Gästemodus"
-    icon: mdi:account-multiple
-    initial: false
+blind_schlafen_last_opened:
+  name: "Blind Schlafen - Last Opened"
+  icon: mdi:window-shutter-open
+  initial: false
 
-  vacation_mode:
-    name: "Urlaubsmodus"
-    icon: mdi:airplane
-    initial: false
+blind_kuche_last_opened:
+  name: "Blind Küche - Last Opened"
+  icon: mdi:window-shutter-open
+  initial: false
+
+blind_yoga_last_opened:
+  name: "Blind Yoga - Last Opened"
+  icon: mdi:window-shutter-open
+  initial: false
