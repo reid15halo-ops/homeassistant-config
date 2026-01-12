@@ -959,3 +959,103 @@
         title: "🚪 Tür geöffnet!"
         message: "Die Tür wurde geöffnet während du nicht zuhause bist"
   mode: single
+
+# ============================================================================
+# CANNABIS TENT AUTOMATIONS
+# ============================================================================
+
+- id: "cannabis_tent_fan_on"
+  alias: "Cannabis Zelt - Lüfter AN (High Temp/Humidity)"
+  description: "Turn on exhaust fan when humidity > 55% or temp > 26°C (Strawberry Lemonade Flowering)"
+  trigger:
+    # Humidity Trigger (Flowering Target: 40-50%)
+    - platform: numeric_state
+      entity_id: sensor.temperature_humidity_sensor_luftfeuchtigkeit
+      above: 55
+    # Temperature Trigger (Target: 20-26°C)
+    - type: temperature
+      device_id: 489c7522969073f4aebaf5f0a180e34d
+      entity_id: 0d4d75c2b795e587c06af4daa687bace
+      domain: sensor
+      trigger: device
+      above: 26
+  action:
+    - type: turn_on
+      device_id: 59f76e362f5e4362255fbc7a3e14661f
+      entity_id: c0d7c1a96441be922517ad7e01a9034c
+      domain: switch
+  mode: single
+
+- id: "cannabis_tent_fan_off"
+  alias: "Cannabis Zelt - Lüfter AUS (Optimal)"
+  description: "Turn off exhaust fan when humidity < 45% AND temp < 24°C"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.temperature_humidity_sensor_luftfeuchtigkeit
+      below: 45
+  condition:
+    # Only turn off if temperature is also safe
+    - condition: device
+      type: is_temperature
+      device_id: 489c7522969073f4aebaf5f0a180e34d
+      entity_id: 0d4d75c2b795e587c06af4daa687bace
+      domain: sensor
+      below: 24
+  action:
+    - type: turn_off
+      device_id: 59f76e362f5e4362255fbc7a3e14661f
+      entity_id: c0d7c1a96441be922517ad7e01a9034c
+      domain: switch
+  mode: single
+
+- id: "cannabis_tent_heater_on"
+  alias: "Cannabis Zelt - Heizung AN (Zu kalt)"
+  description: "Turn on heater when temp < 19°C (Strawberry Lemonade)"
+  trigger:
+    - type: temperature
+      device_id: 489c7522969073f4aebaf5f0a180e34d
+      entity_id: 0d4d75c2b795e587c06af4daa687bace
+      domain: sensor
+      trigger: device
+      below: 19
+  action:
+    - type: turn_on
+      device_id: 89d49889a0136d06079eed05c4897a1b
+      entity_id: 1ece694928c3d8f3f6e38006f40c7a33
+      domain: switch
+  mode: single
+
+- id: "cannabis_tent_heater_off_target"
+  alias: "Cannabis Zelt - Heizung AUS (Ziel erreicht)"
+  description: "Turn off heater when temp > 24°C"
+  trigger:
+    - type: temperature
+      device_id: 489c7522969073f4aebaf5f0a180e34d
+      entity_id: 0d4d75c2b795e587c06af4daa687bace
+      domain: sensor
+      trigger: device
+      above: 24
+  action:
+    - type: turn_off
+      device_id: 89d49889a0136d06079eed05c4897a1b
+      entity_id: 1ece694928c3d8f3f6e38006f40c7a33
+      domain: switch
+  mode: single
+
+- id: "cannabis_tent_heater_safety"
+  alias: "Cannabis Zelt - Heizung NOT-AUS (5 min Limit)"
+  description: "Safety: Turn off heater after 5 minutes to prevent overheating"
+  trigger:
+    - platform: device
+      type: turned_on
+      device_id: 89d49889a0136d06079eed05c4897a1b
+      entity_id: 1ece694928c3d8f3f6e38006f40c7a33
+      domain: switch
+      for:
+        minutes: 5
+  action:
+    - type: turn_off
+      device_id: 89d49889a0136d06079eed05c4897a1b
+      entity_id: 1ece694928c3d8f3f6e38006f40c7a33
+      domain: switch
+  mode: single
