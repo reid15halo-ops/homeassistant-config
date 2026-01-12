@@ -653,7 +653,7 @@
   action:
     - service: vacuum.start
       target:
-        entity_id: vacuum.roborock_q7_max
+        entity_id: vacuum.roborock_vacuum_a38
   mode: single
 
 - id: "roborock_stop_on_arrival"
@@ -665,12 +665,12 @@
       to: "home"
   condition:
     - condition: state
-      entity_id: vacuum.roborock_q7_max
+      entity_id: vacuum.roborock_vacuum_a38
       state: "cleaning"
   action:
     - service: vacuum.return_to_base
       target:
-        entity_id: vacuum.roborock_q7_max
+        entity_id: vacuum.roborock_vacuum_a38
   mode: single
 
 # ============================================================================
