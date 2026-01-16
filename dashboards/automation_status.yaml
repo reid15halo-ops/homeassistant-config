@@ -16,7 +16,7 @@ views:
         show_header_toggle: false
         state_color: true
         entities:
-          - entity: person.reid15
+          - entity: person.jonas_glawion
             name: Your Location
           - type: divider
           - entity: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1

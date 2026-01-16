@@ -138,7 +138,7 @@
         - fri
     # Only if you're HOME (sick day, home office, vacation)
     - condition: state
-      entity_id: person.reid15
+      entity_id: person.jonas_glawion
       state: "home"
   action:
     # Open blinds for comfort and solar heating
@@ -180,7 +180,7 @@
         - fri
     # Only if you're AWAY at work (not home)
     - condition: state
-      entity_id: person.reid15
+      entity_id: person.jonas_glawion
       state: "not_home"
     # Only if sun is shining (otherwise keep closed)
     - condition: sun
@@ -325,7 +325,7 @@
   description: "Close bedroom shutters when going to bed (presence in bed zone)"
   trigger:
     - platform: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
+      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_5
       to: "on"
       for:
         minutes: 15
@@ -384,14 +384,11 @@
       entity_id:
         - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
         - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
-        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_3
-        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_4
-        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_5
       to: "off"
       for:
         seconds: 120
   condition:
-    # All presence zones must be off
+    # All living room zones must be off
     - condition: state
       entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
       state: "off"
@@ -406,53 +403,12 @@
           - light.buffet_licht
   mode: single
 
-- id: "light_kuche_on"
-  alias: "Küche - Licht an bei Bewegung"
-  description: "Turn on kitchen lights when presence detected"
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_3
-      to: "on"
-  condition:
-    - condition: numeric_state
-      entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
-      below: 50
-  action:
-    - service: light.turn_on
-      target:
-        entity_id:
-          - light.kuche_brine_1
-          - light.kuche_birne_2_2
-          - light.kitchen_furniture
-      data:
-        brightness_pct: "{{ 50 if now().hour >= 22 else 100 }}"
-        color_temp_kelvin: 2700
-  mode: single
-
-- id: "light_kuche_off"
-  alias: "Küche - Licht aus ohne Bewegung"
-  description: "Turn off kitchen lights after 120s no presence"
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_3
-      to: "off"
-      for:
-        seconds: 120
-  action:
-    - service: light.turn_off
-      target:
-        entity_id:
-          - light.kuche_brine_1
-          - light.kuche_birne_2_2
-          - light.kitchen_furniture
-  mode: single
-
 - id: "light_bad_on"
   alias: "Bad - Licht an bei Anwesenheit"
   description: "Turn on bathroom light when presence detected"
   trigger:
     - platform: state
-      entity_id: binary_sensor.human_presence_detector_bewegung
+      entity_id: binary_sensor.human_presence_detector_2_bewegung
       to: "on"
   condition:
     - condition: state
@@ -472,7 +428,7 @@
   description: "Turn off bathroom light when no presence"
   trigger:
     - platform: state
-      entity_id: binary_sensor.human_presence_detector_bewegung
+      entity_id: binary_sensor.human_presence_detector_2_bewegung
       to: "off"
   action:
     - service: light.turn_off
@@ -528,7 +484,7 @@
   description: "Set heating to comfort when home"
   trigger:
     - platform: state
-      entity_id: person.reid15
+      entity_id: person.jonas_glawion
       to: "home"
   condition:
     # Only in heating season (Oct-Apr)
@@ -549,7 +505,7 @@
   description: "Set heating to eco when away"
   trigger:
     - platform: state
-      entity_id: person.reid15
+      entity_id: person.jonas_glawion
       to: "not_home"
       for:
         minutes: 10
@@ -600,7 +556,7 @@
       value_template: "{{ now().month in [1, 2, 3, 4, 10, 11, 12] }}"
     # Only if you're HOME
     - condition: state
-      entity_id: person.reid15
+      entity_id: person.jonas_glawion
       state: "home"
     # Check weekday/weekend match
     - condition: or
@@ -648,12 +604,12 @@
         - thu
         - fri
     - condition: state
-      entity_id: person.reid15
+      entity_id: person.jonas_glawion
       state: "not_home"
   action:
     - service: vacuum.start
       target:
-        entity_id: vacuum.roborock_vacuum_a38
+        entity_id: vacuum.roborock_q7_max
   mode: single
 
 - id: "roborock_stop_on_arrival"
@@ -661,16 +617,16 @@
   description: "Stop vacuum and return to dock when arriving home"
   trigger:
     - platform: state
-      entity_id: person.reid15
+      entity_id: person.jonas_glawion
       to: "home"
   condition:
     - condition: state
-      entity_id: vacuum.roborock_vacuum_a38
-      state: "cleaning"
+      entity_id: binary_sensor.roborock_q7_max_reinigen
+      state: "on" # 'on' means cleaning for this binary sensor
   action:
     - service: vacuum.return_to_base
       target:
-        entity_id: vacuum.roborock_vacuum_a38
+        entity_id: vacuum.roborock_q7_max
   mode: single
 
 # ============================================================================
@@ -682,7 +638,7 @@
   description: "Turn on lights when arriving home"
   trigger:
     - platform: state
-      entity_id: person.reid15
+      entity_id: person.jonas_glawion
       to: "home"
   condition:
     # Only when dark
@@ -722,7 +678,7 @@
   description: "Turn off lights and reduce heating when leaving"
   trigger:
     - platform: state
-      entity_id: person.reid15
+      entity_id: person.jonas_glawion
       to: "not_home"
       for:
         minutes: 10
@@ -764,10 +720,10 @@
       entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
       state: "off"
     - condition: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_3
+      entity_id: binary_sensor.motion_sensor_kuche_bewegung
       state: "off"
     - condition: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_4
+      entity_id: binary_sensor.human_presence_detector_bewegung
       state: "off"
   action:
     # Turn off all lights
@@ -927,7 +883,8 @@
       entity_id:
         - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
         - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
-        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_3
+        - binary_sensor.motion_sensor_kuche_bewegung
+        - binary_sensor.human_presence_detector_bewegung
       to: "on"
   condition:
     - condition: state
@@ -968,14 +925,14 @@
   alias: "Cannabis Zelt - Lüfter AN (High Temp/Humidity)"
   description: "Turn on exhaust fan when humidity > 55% or temp > 26°C (Strawberry Lemonade Flowering)"
   trigger:
-    # Humidity Trigger (Flowering Target: 40-50%)
+    # Humidity Trigger (Early Bloom Target: 40-50%)
     - platform: numeric_state
       entity_id: sensor.temperature_humidity_sensor_luftfeuchtigkeit
-      above: 55
-    # Temperature Trigger (Target: 20-26°C)
+      above: 50
+    # Temperature Trigger (Target: 21-26°C)
     - type: temperature
       device_id: 489c7522969073f4aebaf5f0a180e34d
-      entity_id: 0d4d75c2b795e587c06af4daa687bace
+      entity_id: sensor.temperature_humidity_sensor_2_temperature
       domain: sensor
       trigger: device
       above: 26
@@ -998,7 +955,7 @@
     - condition: device
       type: is_temperature
       device_id: 489c7522969073f4aebaf5f0a180e34d
-      entity_id: 0d4d75c2b795e587c06af4daa687bace
+      entity_id: sensor.temperature_humidity_sensor_2_temperature
       domain: sensor
       below: 24
   action:
@@ -1014,10 +971,10 @@
   trigger:
     - type: temperature
       device_id: 489c7522969073f4aebaf5f0a180e34d
-      entity_id: 0d4d75c2b795e587c06af4daa687bace
+      entity_id: sensor.temperature_humidity_sensor_2_temperature
       domain: sensor
       trigger: device
-      below: 19
+      below: 20
   action:
     - type: turn_on
       device_id: 89d49889a0136d06079eed05c4897a1b
@@ -1031,10 +988,10 @@
   trigger:
     - type: temperature
       device_id: 489c7522969073f4aebaf5f0a180e34d
-      entity_id: 0d4d75c2b795e587c06af4daa687bace
+      entity_id: sensor.temperature_humidity_sensor_2_temperature
       domain: sensor
       trigger: device
-      above: 24
+      above: 25
   action:
     - type: turn_off
       device_id: 89d49889a0136d06079eed05c4897a1b
@@ -1058,4 +1015,81 @@
       device_id: 89d49889a0136d06079eed05c4897a1b
       entity_id: 1ece694928c3d8f3f6e38006f40c7a33
       domain: switch
+  mode: single
+
+- id: "system_auto_update_away"
+  alias: "System - Automatische Updates bei Abwesenheit"
+  description: "Install updates automatically when away"
+  trigger:
+    # Trigger when updates become available
+    - platform: state
+      entity_id:
+        - update.home_assistant_core_update
+        - update.home_assistant_supervisor_update
+        - update.home_assistant_operating_system_update
+      to: "on"
+    # Trigger when leaving home (in case updates are already pending)
+    - platform: state
+      entity_id: person.jonas_glawion
+      to: "not_home"
+  condition:
+    # Only if user is away
+    - condition: state
+      entity_id: person.jonas_glawion
+      state: "not_home"
+  action:
+    # Core Update
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: update.home_assistant_core_update
+              state: "on"
+          sequence:
+            - service: update.install
+              target:
+                entity_id: update.home_assistant_core_update
+              data:
+                backup: true
+    # Supervisor Update
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: update.home_assistant_supervisor_update
+              state: "on"
+          sequence:
+            - service: update.install
+              target:
+                entity_id: update.home_assistant_supervisor_update
+    # OS Update
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: update.home_assistant_operating_system_update
+              state: "on"
+          sequence:
+            - service: update.install
+              target:
+                entity_id: update.home_assistant_operating_system_update
+              data:
+                backup: true
+  mode: single
+
+# ============================================================================
+# SYSTEM MAINTENANCE
+# ============================================================================
+
+- id: "reset_blind_trackers"
+  alias: "System - Reset Blind Trackers (04:00)"
+  description: "Resets blind state trackers to ensure morning opening works"
+  trigger:
+    - platform: time
+      at: "04:00:00"
+  action:
+    - service: input_boolean.turn_off
+      target:
+        entity_id:
+          - input_boolean.blind_computer_last_opened
+          - input_boolean.blind_schlafen_last_opened
+          - input_boolean.blind_kuche_last_opened
+          - input_boolean.blind_yoga_last_opened
   mode: single

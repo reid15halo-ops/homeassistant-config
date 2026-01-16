@@ -60,14 +60,12 @@ ventilator_wintermodus_low:
   sequence:
     - action: fan.decrease_speed
       target:
-        entity_id:
-          - fan.ceiling_fan_with_light
+        entity_id: fan.deckenventilator_schlafen
       data:
         percentage_step: 9
-    - type: toggle
-      device_id: 3586709559e4e46394dfa54ebf906373
-      entity_id: a14baab7198c0de3311dbee8b11fedab
-      domain: fan
+    - service: fan.turn_off
+      target:
+        entity_id: fan.deckenventilator_schlafen
 
 notify_all:
   alias: Notify All Devices

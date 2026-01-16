@@ -10,8 +10,8 @@ homeassistant:
   elevation: 150
   unit_system: metric
   time_zone: Europe/Berlin
-  external_url: "https://reid15.duckdns.org:8123"
-  internal_url: "https://192.168.178.70:8123"
+  # external_url: "https://reid15.duckdns.org:8123"
+  # internal_url: "https://192.168.178.70:8123"
 
 # Standard includes
 automation: !include automations.yaml

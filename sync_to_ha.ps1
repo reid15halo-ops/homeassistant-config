@@ -26,11 +26,8 @@ Write-Host "  - input_boolean.yaml" -ForegroundColor White
 Write-Host "  - appdaemon/" -ForegroundColor White
 Write-Host ""
 
-$confirmation = Read-Host "Continue? (yes/no)"
-if ($confirmation -ne "yes") {
-    Write-Host "Cancelled." -ForegroundColor Yellow
-    exit 0
-}
+$confirmation = "yes"
+
 
 Write-Host ""
 Write-Host "Deploying files..." -ForegroundColor Cyan
