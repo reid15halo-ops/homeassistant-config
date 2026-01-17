@@ -1,4 +1,4 @@
-# ============================================================================
+﻿# ============================================================================
 # BEREINIGTE SCRIPTS.YAML
 # Duplikate entfernt - nur die aktive Version behalten
 # ============================================================================
@@ -63,7 +63,7 @@ ventilator_wintermodus_low:
         entity_id: fan.deckenventilator_schlafen
       data:
         percentage_step: 9
-    - service: fan.turn_off
+    - action: fan.turn_off
       target:
         entity_id: fan.deckenventilator_schlafen
 
@@ -79,7 +79,7 @@ notify_all:
       description: Notification title
       required: false
   sequence:
-    - service: notify.alexa_media_wohnzimmer
+    - action: notify.alexa_media_wohnzimmer
       data:
         title: "{{ title | default('Home Assistant') }}"
         message: "{{ message }}"
@@ -89,11 +89,11 @@ lights_bedtime:
   alias: Bedtime Light Scene
   mode: single
   sequence:
-    - service: light.turn_off
+    - action: light.turn_off
       target:
         area_id: all
       continue_on_error: true
-    - service: light.turn_on
+    - action: light.turn_on
       target:
         entity_id: light.schlafzimmer_licht
       data:
@@ -105,7 +105,7 @@ all_lights_off:
   alias: Turn Off All Lights
   mode: single
   sequence:
-    - service: light.turn_off
+    - action: light.turn_off
       target:
         entity_id: all
       continue_on_error: true
@@ -118,19 +118,19 @@ all_covers_open:
       description: Target position (0-100)
       default: 100
   sequence:
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.rollladen_computer_vorhang
         tracker_entity: input_boolean.blind_computer_last_opened
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.kuche_blind_vorhang
         tracker_entity: input_boolean.blind_kuche_last_opened
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.yoga_blind_vorhang
         tracker_entity: input_boolean.blind_yoga_last_opened
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.schlafen_blind_vorhang
         tracker_entity: input_boolean.blind_schlafen_last_opened
@@ -139,19 +139,19 @@ all_covers_close:
   alias: Close All Covers
   mode: single
   sequence:
-    - service: script.safe_close_blind
+    - action: script.safe_close_blind
       data:
         cover_entity: cover.rollladen_computer_vorhang
         tracker_entity: input_boolean.blind_computer_last_opened
-    - service: script.safe_close_blind
+    - action: script.safe_close_blind
       data:
         cover_entity: cover.kuche_blind_vorhang
         tracker_entity: input_boolean.blind_kuche_last_opened
-    - service: script.safe_close_blind
+    - action: script.safe_close_blind
       data:
         cover_entity: cover.yoga_blind_vorhang
         tracker_entity: input_boolean.blind_yoga_last_opened
-    - service: script.safe_close_blind
+    - action: script.safe_close_blind
       data:
         cover_entity: cover.schlafen_blind_vorhang
         tracker_entity: input_boolean.blind_schlafen_last_opened
@@ -173,11 +173,11 @@ light_toggle_with_brightness:
             - condition: template
               value_template: "{{ is_state(target_light, 'on') }}"
           sequence:
-            - service: light.turn_off
+            - action: light.turn_off
               target:
                 entity_id: "{{ target_light }}"
       default:
-        - service: light.turn_on
+        - action: light.turn_on
           target:
             entity_id: "{{ target_light }}"
           data:
@@ -217,20 +217,20 @@ safe_open_blind:
                     - condition: template
                       value_template: "{{ cover_entity == 'cover.schlafen_blind_vorhang' }}"
                   sequence:
-                    - service: cover.close_cover # Inverted!
+                    - action: cover.close_cover # Inverted!
                       target:
                         entity_id: "{{ cover_entity }}"
               default:
-                - service: cover.open_cover
+                - action: cover.open_cover
                   target:
                     entity_id: "{{ cover_entity }}"
             # Mark that we just opened it
-            - service: input_boolean.turn_on
+            - action: input_boolean.turn_on
               target:
                 entity_id: "{{ tracker_entity }}"
       default:
         # Skip opening - it was already opened
-        - service: system_log.write
+        - action: system_log.write
           data:
             message: "Skipped opening {{ cover_entity }} - already opened (prevents jamming)"
             level: warning
@@ -253,15 +253,15 @@ safe_close_blind:
             - condition: template
               value_template: "{{ cover_entity == 'cover.schlafen_blind_vorhang' }}"
           sequence:
-            - service: cover.open_cover # Inverted!
+            - action: cover.open_cover # Inverted!
               target:
                 entity_id: "{{ cover_entity }}"
       default:
-        - service: cover.close_cover
+        - action: cover.close_cover
           target:
             entity_id: "{{ cover_entity }}"
     # Mark that we just closed it (allows future opens)
-    - service: input_boolean.turn_off
+    - action: input_boolean.turn_off
       target:
         entity_id: "{{ tracker_entity }}"
 
@@ -274,7 +274,7 @@ heating_comfort_now:
   description: "Manually set heating to comfort temperature"
   mode: single
   sequence:
-    - service: climate.set_temperature
+    - action: climate.set_temperature
       target:
         entity_id:
           - climate.thermostat_bad
@@ -287,7 +287,7 @@ fan_winter_heat_now:
   description: "Manually start ceiling fan in winter heat distribution mode"
   mode: single
   sequence:
-    - service: fan.turn_on
+    - action: fan.turn_on
       target:
         entity_id: fan.ceiling_fan_with_light
       data:

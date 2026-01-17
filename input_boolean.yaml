@@ -77,3 +77,9 @@ blind_yoga_last_opened:
   name: "Blind Yoga - Last Opened"
   icon: mdi:window-shutter-open
   initial: false
+
+# Sleep Detection (auto-detected when in bed for 10 min after 22:00)
+someone_sleeping:
+  name: "Jemand schläft"
+  icon: mdi:bed
+  initial: false

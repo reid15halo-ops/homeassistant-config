@@ -1,4 +1,4 @@
-# ============================================================================
+﻿# ============================================================================
 # REID'S HOME ASSISTANT AUTOMATIONS
 # Generated based on preferences - 2026-01-08
 # ============================================================================
@@ -23,7 +23,7 @@
         - fri
   action:
     # Start heating 30 min before wake up
-    - service: climate.set_temperature
+    - action: climate.set_temperature
       target:
         entity_id:
           - climate.thermostat_bad
@@ -34,7 +34,7 @@
     - delay:
         minutes: 30
     # Gradual wake-up light in bedroom (30 min duration)
-    - service: light.turn_on
+    - action: light.turn_on
       target:
         entity_id: light.bett_licht
       data:
@@ -44,7 +44,7 @@
     # Open bedroom shutters at wake time
     - delay:
         minutes: 30
-    - service: light.turn_on
+    - action: light.turn_on
       target:
         entity_id: light.bett_licht
       data:
@@ -64,7 +64,7 @@
         - sun
   action:
     # Gradual light starting 30 min before
-    - service: light.turn_on
+    - action: light.turn_on
       target:
         entity_id: light.bett_licht
       data:
@@ -99,19 +99,19 @@
         - sun
   action:
     # Open all blinds to capture solar heat
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.rollladen_computer_vorhang
         tracker_entity: input_boolean.blind_computer_last_opened
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.schlafen_blind_vorhang
         tracker_entity: input_boolean.blind_schlafen_last_opened
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.kuche_blind_vorhang
         tracker_entity: input_boolean.blind_kuche_last_opened
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.yoga_blind_vorhang
         tracker_entity: input_boolean.blind_yoga_last_opened
@@ -142,19 +142,19 @@
       state: "home"
   action:
     # Open blinds for comfort and solar heating
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.rollladen_computer_vorhang
         tracker_entity: input_boolean.blind_computer_last_opened
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.schlafen_blind_vorhang
         tracker_entity: input_boolean.blind_schlafen_last_opened
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.kuche_blind_vorhang
         tracker_entity: input_boolean.blind_kuche_last_opened
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.yoga_blind_vorhang
         tracker_entity: input_boolean.blind_yoga_last_opened
@@ -188,19 +188,19 @@
       before: sunset
   action:
     # Open blinds for solar heat gain
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.rollladen_computer_vorhang
         tracker_entity: input_boolean.blind_computer_last_opened
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.schlafen_blind_vorhang
         tracker_entity: input_boolean.blind_schlafen_last_opened
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.kuche_blind_vorhang
         tracker_entity: input_boolean.blind_kuche_last_opened
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.yoga_blind_vorhang
         tracker_entity: input_boolean.blind_yoga_last_opened
@@ -227,19 +227,19 @@
           after: "10:00"
           weekday: [sat, sun]
   action:
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.rollladen_computer_vorhang
         tracker_entity: input_boolean.blind_computer_last_opened
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.schlafen_blind_vorhang
         tracker_entity: input_boolean.blind_schlafen_last_opened
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.kuche_blind_vorhang
         tracker_entity: input_boolean.blind_kuche_last_opened
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.yoga_blind_vorhang
         tracker_entity: input_boolean.blind_yoga_last_opened
@@ -260,19 +260,19 @@
     - condition: time
       after: "06:00"
   action:
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.rollladen_computer_vorhang
         tracker_entity: input_boolean.blind_computer_last_opened
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.schlafen_blind_vorhang
         tracker_entity: input_boolean.blind_schlafen_last_opened
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.kuche_blind_vorhang
         tracker_entity: input_boolean.blind_kuche_last_opened
-    - service: script.safe_open_blind
+    - action: script.safe_open_blind
       data:
         cover_entity: cover.yoga_blind_vorhang
         tracker_entity: input_boolean.blind_yoga_last_opened
@@ -289,7 +289,7 @@
     - condition: template
       value_template: "{{ now().month in [11, 12, 1, 2] }}"
   action:
-    - service: script.all_covers_close
+    - action: script.all_covers_close
   mode: single
 
 - id: "shutters_close_sunset_spring"
@@ -303,7 +303,7 @@
     - condition: template
       value_template: "{{ now().month in [3, 4, 10] }}"
   action:
-    - service: script.all_covers_close
+    - action: script.all_covers_close
   mode: single
 
 - id: "shutters_close_sunset_summer"
@@ -317,7 +317,7 @@
     - condition: template
       value_template: "{{ now().month in [5, 6, 7, 8, 9] }}"
   action:
-    - service: script.all_covers_close
+    - action: script.all_covers_close
   mode: single
 
 - id: "bedroom_shutters_sleep"
@@ -341,7 +341,7 @@
       entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_3
       state: "off"
   action:
-    - service: script.safe_close_blind
+    - action: script.safe_close_blind
       data:
         cover_entity: cover.schlafen_blind_vorhang
         tracker_entity: input_boolean.blind_schlafen_last_opened
@@ -366,7 +366,7 @@
       entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
       below: 50
   action:
-    - service: light.turn_on
+    - action: light.turn_on
       target:
         entity_id:
           - light.computer_licht_2
@@ -396,7 +396,7 @@
       entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
       state: "off"
   action:
-    - service: light.turn_off
+    - action: light.turn_off
       target:
         entity_id:
           - light.computer_licht_2
@@ -415,7 +415,7 @@
       entity_id: light.bad
       state: "off"
   action:
-    - service: light.turn_on
+    - action: light.turn_on
       target:
         entity_id: light.bad
       data:
@@ -431,7 +431,7 @@
       entity_id: binary_sensor.human_presence_detector_2_bewegung
       to: "off"
   action:
-    - service: light.turn_off
+    - action: light.turn_off
       target:
         entity_id: light.bad
   mode: single
@@ -452,7 +452,7 @@
       entity_id: light.kitchen_furniture
       state: "off"
   action:
-    - service: light.turn_on
+    - action: light.turn_on
       target:
         entity_id: light.kitchen_furniture
       data:
@@ -470,7 +470,7 @@
       for:
         minutes: 2
   action:
-    - service: light.turn_off
+    - action: light.turn_off
       target:
         entity_id: light.kitchen_furniture
   mode: single
@@ -491,7 +491,7 @@
     - condition: template
       value_template: "{{ now().month in [1, 2, 3, 4, 10, 11, 12] }}"
   action:
-    - service: climate.set_temperature
+    - action: climate.set_temperature
       target:
         entity_id:
           - climate.thermostat_bad
@@ -510,7 +510,7 @@
       for:
         minutes: 10
   action:
-    - service: climate.set_temperature
+    - action: climate.set_temperature
       target:
         entity_id:
           - climate.thermostat_bad
@@ -529,7 +529,7 @@
     - condition: template
       value_template: "{{ now().month in [1, 2, 3, 4, 10, 11, 12] }}"
   action:
-    - service: climate.set_temperature
+    - action: climate.set_temperature
       target:
         entity_id:
           - climate.thermostat_bad
@@ -576,7 +576,7 @@
             - condition: time
               weekday: [sat, sun]
   action:
-    - service: climate.set_temperature
+    - action: climate.set_temperature
       target:
         entity_id:
           - climate.thermostat_bad
@@ -607,7 +607,7 @@
       entity_id: person.jonas_glawion
       state: "not_home"
   action:
-    - service: vacuum.start
+    - action: vacuum.start
       target:
         entity_id: vacuum.roborock_q7_max
   mode: single
@@ -624,7 +624,7 @@
       entity_id: binary_sensor.roborock_q7_max_reinigen
       state: "on" # 'on' means cleaning for this binary sensor
   action:
-    - service: vacuum.return_to_base
+    - action: vacuum.return_to_base
       target:
         entity_id: vacuum.roborock_q7_max
   mode: single
@@ -646,7 +646,7 @@
       after: sunset
       before: sunrise
   action:
-    - service: light.turn_on
+    - action: light.turn_on
       target:
         entity_id:
           - light.computer_licht
@@ -660,7 +660,7 @@
             - condition: template
               value_template: "{{ now().month in [11, 12, 1, 2] }}"
           sequence:
-            - service: climate.set_temperature
+            - action: climate.set_temperature
               target:
                 entity_id:
                   - climate.thermostat_bad
@@ -683,10 +683,10 @@
       for:
         minutes: 10
   action:
-    - service: light.turn_off
+    - action: light.turn_off
       target:
         entity_id: all
-    - service: climate.set_temperature
+    - action: climate.set_temperature
       target:
         entity_id:
           - climate.thermostat_bad
@@ -727,11 +727,11 @@
       state: "off"
   action:
     # Turn off all lights
-    - service: light.turn_off
+    - action: light.turn_off
       target:
         entity_id: all
     # Night temperature
-    - service: climate.set_temperature
+    - action: climate.set_temperature
       target:
         entity_id:
           - climate.thermostat_bad
@@ -739,7 +739,7 @@
       data:
         temperature: 17
     # Close all shutters
-    - service: script.all_covers_close
+    - action: script.all_covers_close
   mode: single
 
 # ============================================================================
@@ -755,28 +755,28 @@
       to: "on"
   action:
     # Dim main lights
-    - service: light.turn_off
+    - action: light.turn_off
       target:
         entity_id: light.kuche_brine_1
-    - service: light.turn_off
+    - action: light.turn_off
       target:
         entity_id: light.kuche_birne_2_2
     # Ambient lights on low
-    - service: light.turn_on
+    - action: light.turn_on
       target:
         entity_id: light.buffet_licht
       data:
         brightness_pct: 20
         color_temp_kelvin: 2200
     # Dim computer light
-    - service: light.turn_on
+    - action: light.turn_on
       target:
         entity_id: light.computer_licht_2
       data:
         brightness_pct: 10
         color_temp_kelvin: 2200
     # Close shutters in living room
-    - service: script.safe_close_blind
+    - action: script.safe_close_blind
       data:
         cover_entity: cover.rollladen_computer_vorhang
         tracker_entity: input_boolean.blind_computer_last_opened
@@ -790,7 +790,7 @@
       entity_id: input_boolean.movie_mode
       to: "off"
   action:
-    - service: light.turn_on
+    - action: light.turn_on
       target:
         entity_id:
           - light.computer_licht_2
@@ -813,7 +813,7 @@
       entity_id: input_boolean.guest_mode
       to: "on"
   action:
-    - service: automation.turn_off
+    - action: automation.turn_off
       target:
         entity_id: automation.rollladen_schliessen_bei_sonnenuntergang_winter
   mode: single
@@ -834,7 +834,7 @@
       after: sunrise
       before: sunset
   action:
-    - service: script.all_covers_close
+    - action: script.all_covers_close
   mode: single
 
 # ============================================================================
@@ -856,7 +856,7 @@
             state: "on"
         sequence:
           # Random light on
-          - service: light.turn_on
+          - action: light.turn_on
             target:
               entity_id: "{{ ['light.computer_licht_2', 'light.buffet_licht', 'light.kuche_brine_1'] | random }}"
             data:
@@ -864,7 +864,7 @@
           - delay:
               minutes: "{{ range(30, 120) | random }}"
           # Random light off
-          - service: light.turn_off
+          - action: light.turn_off
             target:
               entity_id: "{{ ['light.computer_licht_2', 'light.buffet_licht', 'light.kuche_brine_1'] | random }}"
           - delay:
@@ -893,7 +893,7 @@
       for:
         minutes: 30
   action:
-    - service: notify.mobile_app_redmi_note_12_pro_5g
+    - action: notify.mobile_app_redmi_note_12_pro_5g
       data:
         title: "⚠️ Bewegung erkannt!"
         message: "Bewegung in deiner Wohnung während Abwesenheit"
@@ -911,7 +911,7 @@
       entity_id: person.reid15
       state: "not_home"
   action:
-    - service: notify.mobile_app_redmi_note_12_pro_5g
+    - action: notify.mobile_app_redmi_note_12_pro_5g
       data:
         title: "🚪 Tür geöffnet!"
         message: "Die Tür wurde geöffnet während du nicht zuhause bist"
@@ -1045,7 +1045,7 @@
               entity_id: update.home_assistant_core_update
               state: "on"
           sequence:
-            - service: update.install
+            - action: update.install
               target:
                 entity_id: update.home_assistant_core_update
               data:
@@ -1057,7 +1057,7 @@
               entity_id: update.home_assistant_supervisor_update
               state: "on"
           sequence:
-            - service: update.install
+            - action: update.install
               target:
                 entity_id: update.home_assistant_supervisor_update
     # OS Update
@@ -1067,7 +1067,7 @@
               entity_id: update.home_assistant_operating_system_update
               state: "on"
           sequence:
-            - service: update.install
+            - action: update.install
               target:
                 entity_id: update.home_assistant_operating_system_update
               data:
@@ -1085,7 +1085,7 @@
     - platform: time
       at: "04:00:00"
   action:
-    - service: input_boolean.turn_off
+    - action: input_boolean.turn_off
       target:
         entity_id:
           - input_boolean.blind_computer_last_opened
@@ -1105,4 +1105,189 @@
       for:
         minutes: 5
   action:
-    - service: script.fan_winter_heat_now
+    - action: script.fan_winter_heat_now
+
+# ============================================================================
+# BATHROOM LIGHT AUTOMATIONS
+# ============================================================================
+- id: "bad_licht_an_bei_prasenz"
+  alias: "Bad - Licht an bei Präsenz"
+  description: "Turn on bathroom light when presence detected"
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.human_presence_detector_bewegung
+      to: "on"
+  condition:
+    - condition: numeric_state
+      entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
+      below: 50
+  action:
+    - action: light.turn_on
+      target:
+        entity_id:
+          - light.bad
+          - light.bad_2
+      data:
+        brightness_pct: 100
+
+- id: "bad_licht_aus_keine_prasenz"
+  alias: "Bad - Licht aus ohne Präsenz"
+  description: "Turn off bathroom light when no presence for 3 minutes"
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.human_presence_detector_bewegung
+      to: "off"
+  action:
+    - action: light.turn_off
+      target:
+        entity_id:
+          - light.bad
+          - light.bad_2
+
+# ============================================================================
+# BEDROOM LIGHT AUTOMATIONS
+# ============================================================================
+- id: "schlafzimmer_licht_an_bei_prasenz"
+  alias: "Schlafzimmer - Licht an bei Präsenz"
+  description: "Turn on bedroom light when presence detected (only when dark)"
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.human_presence_detector_2_bewegung
+      to: "on"
+  condition:
+    - condition: state
+      entity_id: binary_sensor.dunkel_draussen
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.someone_sleeping
+      state: "off"
+  action:
+    - action: light.turn_on
+      target:
+        entity_id:
+          - light.schlafzimmer_licht
+      data:
+        brightness_pct: >
+          {% set hour = now().hour %}
+          {% if hour >= 22 or hour < 6 %}
+            20
+          {% else %}
+            80
+          {% endif %}
+        color_temp_kelvin: 2700
+
+- id: "schlafzimmer_licht_aus_keine_prasenz"
+  alias: "Schlafzimmer - Licht aus ohne Präsenz"
+  description: "Turn off bedroom light when no presence for 5 minutes"
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.human_presence_detector_2_bewegung
+      to: "off"
+  action:
+    - action: light.turn_off
+      target:
+        entity_id:
+          - light.schlafzimmer_licht
+
+# ============================================================================
+# KITCHEN LIGHT AUTOMATIONS
+# ============================================================================
+- id: "kuche_licht_an_bei_prasenz"
+  alias: "Küche - Licht an bei Präsenz"
+  description: "Turn on kitchen light when presence detected"
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_kuche_bewegung
+      to: "on"
+  condition:
+    - condition: numeric_state
+      entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
+      below: 50
+  action:
+    - action: light.turn_on
+      target:
+        entity_id:
+          - light.kitchen_furniture
+          - light.kuche_streifen
+          - light.kuche_birne_1
+          - light.kuche_birne_2_2
+          - light.kuche_birne_2
+          - light.kuche_brine_1
+          - light.kuche_blind_hintergrundbeleuchtung
+      data:
+        brightness_pct: 100
+
+- id: "kuche_licht_aus_keine_prasenz"
+  alias: "Küche - Licht aus ohne Bewegung"
+  description: "Turn off kitchen light immediately when no presence"
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_kuche_bewegung
+      to: "off"
+  action:
+    - action: light.turn_off
+      target:
+        entity_id:
+          - light.kitchen_furniture
+          - light.kuche_streifen
+          - light.kuche_birne_1
+          - light.kuche_birne_2_2
+          - light.kuche_birne_2
+          - light.kuche_brine_1
+          - light.kuche_blind_hintergrundbeleuchtung
+      data:
+        transition: 9
+
+# ============================================================================
+# SLEEP DETECTION
+# ============================================================================
+- id: "sleep_detection_on"
+  alias: "Schlafmodus - Aktivieren"
+  description: "Detect sleep: bedroom presence + no movement for 10 min after 22:00"
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.human_presence_detector_2_bewegung
+      to: "on"
+      for:
+        minutes: 10
+  condition:
+    - condition: time
+      after: "22:00:00"
+      before: "06:00:00"
+  action:
+    - action: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.someone_sleeping
+    - action: light.turn_off
+      target:
+        entity_id: light.schlafzimmer_licht
+
+- id: "sleep_detection_off"
+  alias: "Schlafmodus - Deaktivieren"
+  description: "Reset sleep mode when activity in living room or kitchen"
+  mode: single
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
+        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
+        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_3
+        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_4
+        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_5
+        - binary_sensor.motion_sensor_kuche_bewegung
+      to: "on"
+  condition:
+    - condition: state
+      entity_id: input_boolean.someone_sleeping
+      state: "on"
+  action:
+    - action: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.someone_sleeping
