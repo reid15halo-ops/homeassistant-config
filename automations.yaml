@@ -1093,3 +1093,16 @@
           - input_boolean.blind_kuche_last_opened
           - input_boolean.blind_yoga_last_opened
   mode: single
+
+- id: "deckenventilator_wintermode"
+  alias: "Deckenventilator - Wintermodus (Heizung an)"
+  description: "Turn on fan when heating is on to distribute heat"
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: climate.thermostat_computer
+      to: "heat"
+      for:
+        minutes: 5
+  action:
+    - service: script.fan_winter_heat_now

@@ -201,57 +201,13 @@ input_select:
     icon: mdi:home-assistant
 
 # ============================================================================
-# BINARY SENSOR - Templates
+# TEMPLATE - Modern Syntax
 # ============================================================================
-binary_sensor:
-  - platform: template
-    sensors:
-      sommerbetrieb_ortsbasiert:
-        friendly_name: "Sommerbetrieb (Außentemperatur)"
-        value_template: "{{ states('sensor.openweathermap_temperature')|float(0) > 18 }}"
-        icon_template: >-
-          {% if states('sensor.openweathermap_temperature')|float(0) > 18 %}
-            mdi:weather-sunny
-          {% else %}
-            mdi:snowflake
-          {% endif %}
-
-      jemand_zuhause:
-        friendly_name: "Jemand Zuhause"
-        value_template: >-
-          {{ is_state('binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1', 'on') or
-             is_state('binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2', 'on') or
-             is_state('binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_3', 'on') or
-             is_state('binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_4', 'on') or
-             is_state('binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_5', 'on') }}
-        icon_template: >-
-          {% if is_state('binary_sensor.jemand_zuhause', 'on') %}
-            mdi:home-account
-          {% else %}
-            mdi:home-outline
-          {% endif %}
-
-      heizperiode:
-        friendly_name: "Heizperiode aktiv"
-        value_template: "{{ now().month in [1, 2, 3, 4, 10, 11, 12] }}"
-        icon_template: mdi:radiator
-
-      dunkel_draussen:
-        friendly_name: "Dunkel draußen"
-        value_template: >-
-          {{ states('sensor.presence_sensor_fp2_f9cf_light_sensor_light_level')|float(100) < 30 or
-             is_state('sun.sun', 'below_horizon') }}
-        icon_template: mdi:weather-night
-
-# ============================================================================
-# SENSOR - Templates
-# ============================================================================
-sensor:
-  - platform: template
-    sensors:
-      aktuelle_jahreszeit:
-        friendly_name: "Aktuelle Jahreszeit"
-        value_template: >-
+template:
+  - sensor:
+      - name: "Aktuelle Jahreszeit"
+        unique_id: aktuelle_jahreszeit
+        state: >
           {% set month = now().month %}
           {% if month in [3, 4, 5] %}
             Frühling
@@ -262,7 +218,7 @@ sensor:
           {% else %}
             Winter
           {% endif %}
-        icon_template: >-
+        icon: >
           {% set month = now().month %}
           {% if month in [3, 4, 5] %}
             mdi:flower
@@ -274,9 +230,10 @@ sensor:
             mdi:snowflake
           {% endif %}
 
-      rollladen_offset_minuten:
-        friendly_name: "Rollladen Sonnenuntergang Offset"
-        value_template: >-
+      - name: "Rollladen Sonnenuntergang Offset"
+        unique_id: rollladen_offset_minuten
+        unit_of_measurement: "min"
+        state: >
           {% set month = now().month %}
           {% if month in [5, 6, 7, 8, 9] %}
             120
@@ -285,7 +242,55 @@ sensor:
           {% else %}
             0
           {% endif %}
-        unit_of_measurement: "min"
+
+  - binary_sensor:
+      - name: "Sommerbetrieb (Außentemperatur)"
+        unique_id: sommerbetrieb_ortsbasiert
+        state: "{{ states('sensor.openweathermap_temperature')|float(0) > 18 }}"
+        icon: >
+          {% if states('sensor.openweathermap_temperature')|float(0) > 18 %}
+            mdi:weather-sunny
+          {% else %}
+            mdi:snowflake
+          {% endif %}
+
+      - name: "Jemand Zuhause"
+        unique_id: jemand_zuhause
+        state: >
+          {{ is_state('binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1', 'on') or
+             is_state('binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2', 'on') or
+             is_state('binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_3', 'on') or
+             is_state('binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_4', 'on') or
+             is_state('binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_5', 'on') }}
+        icon: >
+          {% if is_state('binary_sensor.jemand_zuhause', 'on') %}
+            mdi:home-account
+          {% else %}
+            mdi:home-outline
+          {% endif %}
+
+      - name: "Heizperiode aktiv"
+        unique_id: heizperiode
+        state: "{{ now().month in [1, 2, 3, 4, 10, 11, 12] }}"
+        icon: mdi:radiator
+
+      - name: "Dunkel draußen"
+        unique_id: dunkel_draussen
+        state: >
+          {{ states('sensor.presence_sensor_fp2_f9cf_light_sensor_light_level')|float(100) < 30 or
+             is_state('sun.sun', 'below_horizon') }}
+        icon: mdi:weather-night
+
+# ============================================================================
+# BINARY SENSOR - Templates
+# ============================================================================
+
+# ============================================================================
+# SENSOR - Templates
+# ============================================================================
+sensor:
+  - platform: template
+    sensors:
 
 # ============================================================================
 # NOTIFY - Groups
