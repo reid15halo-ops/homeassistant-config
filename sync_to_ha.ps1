@@ -2,7 +2,7 @@
 # Copies files from your local repo to the Raspberry Pi running Home Assistant
 
 # CONFIGURATION
-$HA_CONFIG_PATH = "\\192.168.178.70\config"  # Samba share on your Pi
+$HA_CONFIG_PATH = "\\192.168.178.71\config"  # Samba share on your Pi
 $REPO_PATH = "C:\Users\reid1\Documents\homeassistant-config"
 
 Write-Host "=== Deploy to Raspberry Pi ===" -ForegroundColor Cyan
@@ -68,8 +68,8 @@ Write-Host "Deployment complete!" -ForegroundColor Green
 Write-Host ""
 
 # Auto-reload via API if token is available
-$HA_URL = "http://192.168.178.70:8123"
-$token = $env:HA_TOKEN
+$HA_URL = "http://192.168.178.71:8123"
+$token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhNTYxNTg2ZjI1OTM0OWNjOWRhMzE5MDU1YzAwYzM3OCIsImlhdCI6MTczNjUxMzQ3NCwiZXhwIjoyMDUxODczNDc0fQ.MiOiJhYThhNTIwMDk3ODNzZyYjI3YTE0NDMzN2E1NE1NWM5MSIsImlhdCI6MTc2ODA0Mzc4MiwiZXhwIjoyMDgzNDAzNzgyfQ.KLEL344KZijaM2Uta_DA"
 
 if ($token) {
     Write-Host "Reloading Home Assistant via API..." -ForegroundColor Cyan

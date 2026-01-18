@@ -369,7 +369,7 @@
     - action: light.turn_on
       target:
         entity_id:
-          - light.computer_licht_2
+          # - light.computer_licht_2
           - light.buffet_licht
       data:
         brightness_pct: "{{ 60 if now().hour >= 22 or now().hour < 6 else 80 }}"
@@ -399,7 +399,7 @@
     - action: light.turn_off
       target:
         entity_id:
-          - light.computer_licht_2
+          # - light.computer_licht_2
           - light.buffet_licht
   mode: single
 
@@ -577,8 +577,8 @@
     - action: light.turn_on
       target:
         entity_id:
-          - light.computer_licht
-          - light.buffet_lichtstreifen
+          # - light.computer_licht_2
+          - light.buffet_licht
       data:
         brightness_pct: 80
         color_temp_kelvin: 2700
@@ -693,13 +693,13 @@
       data:
         brightness_pct: 20
         color_temp_kelvin: 2200
-    # Dim computer light
-    - action: light.turn_on
-      target:
-        entity_id: light.computer_licht_2
-      data:
-        brightness_pct: 10
-        color_temp_kelvin: 2200
+    # Dim computer light (DISABLED)
+    # - action: light.turn_on
+    #   target:
+    #     entity_id: light.computer_licht_2
+    #   data:
+    #     brightness_pct: 10
+    #     color_temp_kelvin: 2200
     # Close shutters in living room
     - action: script.safe_close_blind
       data:
@@ -718,7 +718,7 @@
     - action: light.turn_on
       target:
         entity_id:
-          - light.computer_licht_2
+          # - light.computer_licht_2
           - light.buffet_licht
       data:
         brightness_pct: 60
@@ -783,7 +783,7 @@
           # Random light on
           - action: light.turn_on
             target:
-              entity_id: "{{ ['light.computer_licht_2', 'light.buffet_licht', 'light.kuche_brine_1'] | random }}"
+              entity_id: "{{ ['light.buffet_licht', 'light.kuche_brine_1'] | random }}"
             data:
               brightness_pct: "{{ range(50, 100) | random }}"
           - delay:
@@ -791,7 +791,7 @@
           # Random light off
           - action: light.turn_off
             target:
-              entity_id: "{{ ['light.computer_licht_2', 'light.buffet_licht', 'light.kuche_brine_1'] | random }}"
+              entity_id: "{{ ['light.buffet_licht', 'light.kuche_brine_1'] | random }}"
           - delay:
               minutes: "{{ range(15, 60) | random }}"
   mode: single
@@ -848,24 +848,18 @@
 
 - id: "cannabis_tent_fan_on"
   alias: "Cannabis Zelt - Lüfter AN (High Temp/Humidity)"
-  description: "Turn on exhaust fan when humidity > 55% or temp > 26°C (Strawberry Lemonade Flowering)"
+  description: "Turn on exhaust fan when humidity > 55% or temp > 26°C"
   trigger:
-    # Humidity Trigger (Early Bloom Target: 40-50%)
     - platform: numeric_state
-      entity_id: sensor.temperature_humidity_sensor_luftfeuchtigkeit
-      above: 50
-    # Temperature Trigger (Target: 21-26°C)
-    - type: temperature
-      device_id: 489c7522969073f4aebaf5f0a180e34d
-      entity_id: sensor.temperature_humidity_sensor_2_temperature
-      domain: sensor
-      trigger: device
+      entity_id: sensor.zelt_temperature_humidity_luftfeuchtigkeit
+      above: 55
+    - platform: numeric_state
+      entity_id: sensor.zelt_temperature_humidity_temperatur
       above: 26
   action:
-    - type: turn_on
-      device_id: 59f76e362f5e4362255fbc7a3e14661f
-      entity_id: c0d7c1a96441be922517ad7e01a9034c
-      domain: switch
+    - action: switch.turn_on
+      target:
+        entity_id: switch.aktivkohle
   mode: single
 
 - id: "cannabis_tent_fan_off"
@@ -873,73 +867,57 @@
   description: "Turn off exhaust fan when humidity < 45% AND temp < 24°C"
   trigger:
     - platform: numeric_state
-      entity_id: sensor.temperature_humidity_sensor_luftfeuchtigkeit
+      entity_id: sensor.zelt_temperature_humidity_luftfeuchtigkeit
       below: 45
   condition:
-    # Only turn off if temperature is also safe
-    - condition: device
-      type: is_temperature
-      device_id: 489c7522969073f4aebaf5f0a180e34d
-      entity_id: sensor.temperature_humidity_sensor_2_temperature
-      domain: sensor
+    - condition: numeric_state
+      entity_id: sensor.zelt_temperature_humidity_temperatur
       below: 24
   action:
-    - type: turn_off
-      device_id: 59f76e362f5e4362255fbc7a3e14661f
-      entity_id: c0d7c1a96441be922517ad7e01a9034c
-      domain: switch
+    - action: switch.turn_off
+      target:
+        entity_id: switch.aktivkohle
   mode: single
 
 - id: "cannabis_tent_heater_on"
   alias: "Cannabis Zelt - Heizung AN (Zu kalt)"
-  description: "Turn on heater when temp < 19°C (Strawberry Lemonade)"
+  description: "Turn on heater when temp < 20°C"
   trigger:
-    - type: temperature
-      device_id: 489c7522969073f4aebaf5f0a180e34d
-      entity_id: sensor.temperature_humidity_sensor_2_temperature
-      domain: sensor
-      trigger: device
+    - platform: numeric_state
+      entity_id: sensor.zelt_temperature_humidity_temperatur
       below: 20
   action:
-    - type: turn_on
-      device_id: 89d49889a0136d06079eed05c4897a1b
-      entity_id: 1ece694928c3d8f3f6e38006f40c7a33
-      domain: switch
+    - action: switch.turn_on
+      target:
+        entity_id: switch.growbox
   mode: single
 
 - id: "cannabis_tent_heater_off_target"
   alias: "Cannabis Zelt - Heizung AUS (Ziel erreicht)"
-  description: "Turn off heater when temp > 24°C"
+  description: "Turn off heater when temp > 25°C"
   trigger:
-    - type: temperature
-      device_id: 489c7522969073f4aebaf5f0a180e34d
-      entity_id: sensor.temperature_humidity_sensor_2_temperature
-      domain: sensor
-      trigger: device
+    - platform: numeric_state
+      entity_id: sensor.zelt_temperature_humidity_temperatur
       above: 25
   action:
-    - type: turn_off
-      device_id: 89d49889a0136d06079eed05c4897a1b
-      entity_id: 1ece694928c3d8f3f6e38006f40c7a33
-      domain: switch
+    - action: switch.turn_off
+      target:
+        entity_id: switch.growbox
   mode: single
 
 - id: "cannabis_tent_heater_safety"
   alias: "Cannabis Zelt - Heizung NOT-AUS (5 min Limit)"
-  description: "Safety: Turn off heater after 5 minutes to prevent overheating"
+  description: "Safety: Turn off heater after 5 minutes"
   trigger:
-    - platform: device
-      type: turned_on
-      device_id: 89d49889a0136d06079eed05c4897a1b
-      entity_id: 1ece694928c3d8f3f6e38006f40c7a33
-      domain: switch
+    - platform: state
+      entity_id: switch.growbox
+      to: "on"
       for:
         minutes: 5
   action:
-    - type: turn_off
-      device_id: 89d49889a0136d06079eed05c4897a1b
-      entity_id: 1ece694928c3d8f3f6e38006f40c7a33
-      domain: switch
+    - action: switch.turn_off
+      target:
+        entity_id: switch.growbox
   mode: single
 
 - id: "system_auto_update_away"
@@ -1041,18 +1019,16 @@
   mode: single
   trigger:
     - platform: state
-      entity_id: binary_sensor.human_presence_detector_bewegung
+      entity_id: binary_sensor.presence_bad_bewegung
       to: "on"
-  condition:
-    - condition: numeric_state
-      entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
-      below: 50
+  condition: []
+    # FP2 Sensor removed
   action:
     - action: light.turn_on
       target:
         entity_id:
-          - light.bad
           - light.bad_2
+          - light.bad_2_2
       data:
         brightness_pct: 100
 
@@ -1062,14 +1038,14 @@
   mode: single
   trigger:
     - platform: state
-      entity_id: binary_sensor.human_presence_detector_bewegung
+      entity_id: binary_sensor.presence_bad_bewegung
       to: "off"
   action:
     - action: light.turn_off
       target:
         entity_id:
-          - light.bad
           - light.bad_2
+          - light.bad_2_2
 
 # ============================================================================
 # BEDROOM LIGHT AUTOMATIONS
@@ -1080,7 +1056,7 @@
   mode: single
   trigger:
     - platform: state
-      entity_id: binary_sensor.human_presence_detector_2_bewegung
+      entity_id: binary_sensor.human_presence_detector_schlaf_bewegung
       to: "on"
   condition:
     - condition: state
@@ -1093,7 +1069,7 @@
     - action: light.turn_on
       target:
         entity_id:
-          - light.schlafzimmer_licht
+          - light.bett_licht_2
       data:
         brightness_pct: >
           {% set hour = now().hour %}
@@ -1110,13 +1086,13 @@
   mode: single
   trigger:
     - platform: state
-      entity_id: binary_sensor.human_presence_detector_2_bewegung
+      entity_id: binary_sensor.human_presence_detector_schlaf_bewegung
       to: "off"
   action:
     - action: light.turn_off
       target:
         entity_id:
-          - light.schlafzimmer_licht
+          - light.bett_licht_2
 
 # ============================================================================
 # KITCHEN LIGHT AUTOMATIONS
@@ -1129,10 +1105,8 @@
     - platform: state
       entity_id: binary_sensor.motion_sensor_kuche_bewegung
       to: "on"
-  condition:
-    - condition: numeric_state
-      entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
-      below: 50
+  condition: []
+    # FP2 Sensor removed
   action:
     - action: light.turn_on
       target:
@@ -1178,7 +1152,7 @@
   mode: single
   trigger:
     - platform: state
-      entity_id: binary_sensor.human_presence_detector_2_bewegung
+      entity_id: binary_sensor.human_presence_detector_schlaf_bewegung
       to: "on"
       for:
         minutes: 10
