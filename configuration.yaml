@@ -10,8 +10,11 @@ homeassistant:
   elevation: 150
   unit_system: metric
   time_zone: Europe/Berlin
-  # external_url: "https://reid15.duckdns.org:8123"
-  # internal_url: "https://192.168.178.70:8123"
+  external_url: "https://reid15.duckdns.org"
+  internal_url: "http://192.168.178.70:8123"
+
+# Mobile App - Required for Companion App functionality
+mobile_app:
 
 # Standard includes
 automation: !include automations.yaml
@@ -87,10 +90,12 @@ energy:
 default_config:
 bluetooth:
 
-# HTTP with SSL
+# HTTP configuration
+# NOTE: SSL is commented out until DuckDNS add-on generates certificates
+# Once /ssl/fullchain.pem exists, uncomment the ssl lines below
 http:
-  ssl_certificate: /ssl/fullchain.pem
-  ssl_key: /ssl/privkey.pem
+  # ssl_certificate: /ssl/fullchain.pem
+  # ssl_key: /ssl/privkey.pem
   use_x_forwarded_for: true
   trusted_proxies:
     - 0.0.0.0/0
