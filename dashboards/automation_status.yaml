@@ -12,19 +12,21 @@ views:
 
       # Presence Detection
       - type: entities
-        title: Presence Detection
+        title: Motion Detection
         show_header_toggle: false
         state_color: true
         entities:
           - entity: person.jonas_glawion
             name: Your Location
           - type: divider
-          - entity: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
-            name: Computer Area
-          - entity: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
-            name: Couch Area
+          - entity: binary_sensor.human_presence_detector_bewegung
+            name: Living Room Motion 1
+          - entity: binary_sensor.human_presence_detector_2_bewegung
+            name: Living Room Motion 2
           - entity: binary_sensor.motion_sensor_kuche_bewegung
             name: Kitchen Motion
+          - entity: binary_sensor.motion_sensor_bad_bewegung
+            name: Bathroom Motion
           - entity: binary_sensor.motion_sensor_schlafen_bewegung
             name: Bedroom Motion
 
@@ -91,9 +93,9 @@ views:
         title: Environmental Sensors
         show_header_toggle: false
         entities:
-          - entity: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
-            name: Light Level
-            icon: mdi:brightness-6
+          - entity: binary_sensor.jemand_zuhause
+            name: Someone Home
+            icon: mdi:home-account
           - entity: sensor.temperature_and_humidity_sensor_temperatur
             name: Temperature
             icon: mdi:thermometer

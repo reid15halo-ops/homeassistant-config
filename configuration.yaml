@@ -262,11 +262,11 @@ template:
       - name: "Jemand Zuhause"
         unique_id: jemand_zuhause
         state: >
-          {{ is_state('binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1', 'on') or
-             is_state('binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2', 'on') or
-             is_state('binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_3', 'on') or
-             is_state('binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_4', 'on') or
-             is_state('binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_5', 'on') }}
+          {{ is_state('binary_sensor.human_presence_detector_bewegung', 'on') or
+             is_state('binary_sensor.human_presence_detector_2_bewegung', 'on') or
+             is_state('binary_sensor.motion_sensor_kuche_bewegung', 'on') or
+             is_state('binary_sensor.motion_sensor_bad_bewegung', 'on') or
+             is_state('binary_sensor.motion_sensor_schlafen_bewegung', 'on') }}
         icon: >
           {% if is_state('binary_sensor.jemand_zuhause', 'on') %}
             mdi:home-account
@@ -281,9 +281,7 @@ template:
 
       - name: "Dunkel draußen"
         unique_id: dunkel_draussen
-        state: >
-          {{ states('sensor.presence_sensor_fp2_f9cf_light_sensor_light_level')|float(100) < 30 or
-             is_state('sun.sun', 'below_horizon') }}
+        state: "{{ is_state('sun.sun', 'below_horizon') }}"
         icon: mdi:weather-night
 
 # ============================================================================

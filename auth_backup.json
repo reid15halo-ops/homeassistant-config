@@ -1,0 +1,120 @@
+﻿{
+  "version": 1,
+  "minor_version": 1,
+  "key": "auth",
+  "data": {
+    "users": [
+      {
+        "id": "ec1fdd526c20478e8f9d143d159e8750",
+        "group_ids": [
+          "system-read-only"
+        ],
+        "is_owner": false,
+        "is_active": true,
+        "name": "Home Assistant Content",
+        "system_generated": true,
+        "local_only": false
+      },
+      {
+        "id": "0b9208f4ecdd4d9788aa932b529fdfeb",
+        "group_ids": [
+          "system-admin"
+        ],
+        "is_owner": false,
+        "is_active": true,
+        "name": "Supervisor",
+        "system_generated": true,
+        "local_only": false
+      },
+      {
+        "id": "75a32e6edefb4a4eb67a6f377ecc6b25",
+        "group_ids": [
+          "system-admin"
+        ],
+        "is_owner": true,
+        "is_active": true,
+        "name": "Jonas Glawion",
+        "system_generated": false,
+        "local_only": false
+      }
+    ],
+    "groups": [
+      {
+        "id": "system-admin",
+        "name": "Administrators"
+      },
+      {
+        "id": "system-users",
+        "name": "Users"
+      },
+      {
+        "id": "system-read-only",
+        "name": "Read Only"
+      }
+    ],
+    "credentials": [
+      {
+        "id": "9cdf88f7be2646758c60682c2ff4fb91",
+        "user_id": "75a32e6edefb4a4eb67a6f377ecc6b25",
+        "auth_provider_type": "homeassistant",
+        "auth_provider_id": null,
+        "data": {
+          "username": "reid15"
+        }
+      }
+    ],
+    "refresh_tokens": [
+      {
+        "id": "fc3b2a384b8548c99f20d9e5955699e2",
+        "user_id": "ec1fdd526c20478e8f9d143d159e8750",
+        "client_id": null,
+        "client_name": null,
+        "client_icon": null,
+        "token_type": "system",
+        "created_at": "2026-01-15T18:42:29.846130+00:00",
+        "access_token_expiration": 1800.0,
+        "token": "266302d211e085a8e9ad120dc8bccdf0776a133ac21dafb054527b7958344bc15b18dc8bd561cb69dd4a79778e90357848de52f36279e1ac81380acd4f2c9e08",
+        "jwt_key": "8dd6718f282f4c9112a0eafb3d4aa14fdf8530fad4087507404e30def11ce9a4061ef4c079c21551efd60646bf6a5e30a836eb08af7744b4628dbb51adf281fd",
+        "last_used_at": null,
+        "last_used_ip": null,
+        "expire_at": null,
+        "credential_id": null,
+        "version": "2026.1.0"
+      },
+      {
+        "id": "ca2e6a09138b40368d266372d6ba3b84",
+        "user_id": "0b9208f4ecdd4d9788aa932b529fdfeb",
+        "client_id": null,
+        "client_name": null,
+        "client_icon": null,
+        "token_type": "system",
+        "created_at": "2026-01-15T18:42:30.640230+00:00",
+        "access_token_expiration": 1800.0,
+        "token": "7ae2e705c2a1d09b7e540ae3f54e172d20b15f8968f89f079f28af5dccc1d4fff886d529e3d3aff9be4114586c9f7687039d6fddb5234f349e9b4b3817ba1fd3",
+        "jwt_key": "709c07278936bcfff38292f7221a184079e851734baf6d42b403e81a72e31b6384183d00849e0861ebe0a1f11605d4902500abdb5e8541d2014a963855e70138",
+        "last_used_at": "2026-01-18T13:17:34.069808+00:00",
+        "last_used_ip": "172.30.32.2",
+        "expire_at": null,
+        "credential_id": null,
+        "version": "2026.1.0"
+      },
+      {
+        "id": "8eb5c22452af4c31b26d43c28c3c2d09",
+        "user_id": "75a32e6edefb4a4eb67a6f377ecc6b25",
+        "client_id": "https://192.168.178.70:8123/",
+        "client_name": null,
+        "client_icon": null,
+        "token_type": "normal",
+        "created_at": "2026-01-15T20:32:07.228604+00:00",
+        "access_token_expiration": 1800.0,
+        "token": "68102dca66c7c7c624f49133eed1d9f53d79393f8a6688e17869974986e93e4c2c330b38ecb92fe2381aa0e090f802408fd9b02b9292677dfb572d29a5858047",
+        "jwt_key": "08e24e33c2646c26f3b8a813ba19598c165ecf9ca99a0898ded2cdc53c0d96092c3a2e74e83e801800b37975d68ad81bccfaadc432122bb36e403a6963a39dff",
+        "last_used_at": "2026-01-18T10:28:21.420256+00:00",
+        "last_used_ip": "192.168.178.49",
+        "expire_at": 1776508101.420256,
+        "credential_id": "9cdf88f7be2646758c60682c2ff4fb91",
+        "version": "2026.1.0"
+      }
+    ]
+  }
+}

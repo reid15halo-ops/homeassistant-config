@@ -322,10 +322,10 @@
 
 - id: "bedroom_shutters_sleep"
   alias: "Schlafzimmer - Rollläden schließen bei Schlaf"
-  description: "Close bedroom shutters when going to bed (presence in bed zone)"
+  description: "Close bedroom shutters when going to bed (motion in bedroom)"
   trigger:
     - platform: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_5
+      entity_id: binary_sensor.motion_sensor_schlafen_bewegung
       to: "on"
       for:
         minutes: 15
@@ -335,10 +335,10 @@
       before: "08:00"
     # Only if no one else detected elsewhere (sleep mode)
     - condition: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
+      entity_id: binary_sensor.human_presence_detector_bewegung
       state: "off"
     - condition: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_3
+      entity_id: binary_sensor.motion_sensor_kuche_bewegung
       state: "off"
   action:
     - action: script.safe_close_blind
@@ -352,19 +352,19 @@
 # ============================================================================
 
 - id: "light_wohnzimmer_presence"
-  alias: "Wohnzimmer - Licht bei Präsenz"
-  description: "Turn on living room lights when FP2 detects presence"
+  alias: "Wohnzimmer - Licht bei Bewegung"
+  description: "Turn on living room lights when motion detected"
   trigger:
     - platform: state
       entity_id:
-        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
-        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
+        - binary_sensor.human_presence_detector_bewegung
+        - binary_sensor.human_presence_detector_2_bewegung
       to: "on"
   condition:
-    # Only when dark (using FP2 light sensor)
-    - condition: numeric_state
-      entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
-      below: 50
+    # Only when dark (sun below horizon)
+    - condition: sun
+      after: sunset
+      before: sunrise
   action:
     - action: light.turn_on
       target:
@@ -377,23 +377,23 @@
   mode: single
 
 - id: "light_wohnzimmer_off_no_presence"
-  alias: "Wohnzimmer - Licht aus ohne Präsenz"
-  description: "Turn off living room lights after 120s no presence"
+  alias: "Wohnzimmer - Licht aus ohne Bewegung"
+  description: "Turn off living room lights after 120s no motion"
   trigger:
     - platform: state
       entity_id:
-        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
-        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
+        - binary_sensor.human_presence_detector_bewegung
+        - binary_sensor.human_presence_detector_2_bewegung
       to: "off"
       for:
         seconds: 120
   condition:
-    # All living room zones must be off
+    # All living room motion sensors must be off
     - condition: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
+      entity_id: binary_sensor.human_presence_detector_bewegung
       state: "off"
     - condition: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
+      entity_id: binary_sensor.human_presence_detector_2_bewegung
       state: "off"
   action:
     - action: light.turn_off
@@ -632,7 +632,7 @@
   description: "Sleep mode when in bedroom for 15 min at night"
   trigger:
     - platform: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_5
+      entity_id: binary_sensor.motion_sensor_schlafen_bewegung
       to: "on"
       for:
         minutes: 15
@@ -640,18 +640,15 @@
     - condition: time
       after: "22:00"
       before: "08:00"
-    # No one in other zones
+    # No one in other zones (no motion in living room or kitchen)
     - condition: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
+      entity_id: binary_sensor.human_presence_detector_bewegung
       state: "off"
     - condition: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
+      entity_id: binary_sensor.human_presence_detector_2_bewegung
       state: "off"
     - condition: state
       entity_id: binary_sensor.motion_sensor_kuche_bewegung
-      state: "off"
-    - condition: state
-      entity_id: binary_sensor.human_presence_detector_bewegung
       state: "off"
   action:
     # Turn off all lights
@@ -809,10 +806,10 @@
   trigger:
     - platform: state
       entity_id:
-        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
-        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
-        - binary_sensor.motion_sensor_kuche_bewegung
         - binary_sensor.human_presence_detector_bewegung
+        - binary_sensor.human_presence_detector_2_bewegung
+        - binary_sensor.motion_sensor_kuche_bewegung
+        - binary_sensor.motion_sensor_schlafen_bewegung
       to: "on"
   condition:
     - condition: state
