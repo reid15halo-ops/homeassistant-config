@@ -56,9 +56,9 @@ $filesToSync = @(
     "groups.yaml"
 )
 
-# Additional directories
 $dirsToSync = @(
-    "appdaemon"
+    "appdaemon",
+    "custom_zha_quirks"
 )
 
 # Sync files FROM Raspberry Pi TO local repo
