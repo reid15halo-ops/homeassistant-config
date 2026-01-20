@@ -62,9 +62,9 @@ zha:
 logger:
   default: warning
   logs:
-    homeassistant.components.zha: warning
-    zhaquirks: warning
-    zigpy: warning
+    homeassistant.components.zha: debug
+    zhaquirks: debug
+    zigpy: debug
 
 # Recorder - keeps DB small
 recorder:
@@ -178,6 +178,24 @@ input_number:
     mode: slider
     icon: mdi:timer
 
+  # Flux / Adaptive Lighting Helpers
+  flux_kelvin:
+    name: "Flux Target Kelvin"
+    min: 2000
+    max: 6500
+    step: 100
+    initial: 2700
+    mode: box
+    icon: mdi:temperature-kelvin
+  flux_brightness:
+    name: "Flux Target Brightness"
+    min: 1
+    max: 100
+    step: 1
+    initial: 80
+    mode: box
+    icon: mdi:brightness-6
+
 # ============================================================================
 # INPUT SELECT - Szenen & Modi
 # ============================================================================
@@ -283,6 +301,58 @@ template:
         unique_id: dunkel_draussen
         state: "{{ is_state('sun.sun', 'below_horizon') }}"
         icon: mdi:weather-night
+
+      # Skill: Advanced Presence Detection
+      - name: "Wohnzimmer True Presence"
+        unique_id: wohnzimmer_true_presence
+        delay_off: "00:01:00" # 1 min buffer
+        state: >
+          {{ 
+             is_state('binary_sensor.human_presence_detector_bewegung', 'on')
+             or is_state('binary_sensor.human_presence_detector_2_bewegung', 'on')
+             # or is_state('media_player.living_room_tv', 'playing') # Uncomment when TV is integrated
+          }}
+        icon: mdi:account-eye
+
+      - name: "Küche True Presence"
+        unique_id: kuche_true_presence
+        delay_off: "00:01:30" # 90s buffer for cooking
+        state: >
+          {{ 
+             is_state('binary_sensor.motion_sensor_kuche_bewegung', 'on')
+             or is_state('binary_sensor.human_presence_detector_3_bewegung', 'on')
+          }}
+        icon: mdi:chef-hat
+
+      - name: "Bad True Presence"
+        unique_id: bad_true_presence
+        delay_off: "00:02:00" # 2 min buffer (showering/brushing teeth)
+        state: >
+          {{ 
+             is_state('binary_sensor.motion_sensor_bad_bewegung', 'on')
+             or is_state('binary_sensor.badezimmer_motion_sensor', 'on')
+             or is_state('binary_sensor.presence_bad_bewegung', 'on')
+          }}
+        icon: mdi:shower
+
+      - name: "Schlafzimmer True Presence"
+        unique_id: schlafen_true_presence
+        delay_off: "00:00:30" # Short buffer
+        state: >
+          {{ 
+             is_state('binary_sensor.motion_sensor_schlafen_bewegung', 'on')
+             or is_state('binary_sensor.human_presence_detector_schlaf_bewegung', 'on')
+          }}
+        icon: mdi:bed
+
+      - name: "Kiffzimmer True Presence"
+        unique_id: kiffzimmer_true_presence
+        delay_off: "00:01:00" # 1 min buffer
+        state: >
+          {{ 
+             is_state('binary_sensor.kiffzimmer_motion_sensor', 'on')
+          }}
+        icon: mdi:cannabis
 
 # ============================================================================
 # ============================================================================
