@@ -1,0 +1,23 @@
+automation:
+  - id: system_health_alert
+    alias: System - Health Alert (Unavailable Devices)
+    description: Notify if critical devices are unavailable for 30 minutes
+    trigger:
+      - platform: state
+        entity_id:
+          - sensor.temperature_humidity_sensor_2_temperatur
+          - sensor.temperature_humidity_sensor_2_luftfeuchtigkeit
+        to: "unavailable"
+        for: "00:30:00"
+      - platform: state
+        entity_id:
+          - sensor.temperature_humidity_sensor_2_temperatur
+          - sensor.temperature_humidity_sensor_2_luftfeuchtigkeit
+        to: "unknown"
+        for: "00:30:00"
+    action:
+      - action: notify.mobile_app_redmi_note_12_pro_5g
+        data:
+          title: "⚠️ System Health Alert"
+          message: "Critical device {{ trigger.to_state.name }} is {{ trigger.to_state.state }}!"
+    mode: parallel

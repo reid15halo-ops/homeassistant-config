@@ -1,0 +1,74 @@
+automation:
+  - id: cannabis_tent_fan_on
+    alias: Cannabis Zelt - Lüfter AN (High Temp/Humidity)
+    description: Turn on exhaust fan when humidity > 55% or temp > 26°C
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.temperature_humidity_sensor_2_luftfeuchtigkeit
+        above: 55
+      - platform: numeric_state
+        entity_id: sensor.temperature_humidity_sensor_2_temperatur
+        above: 26
+    action:
+      - action: switch.turn_on
+        target:
+          entity_id: switch.kiffzimmer_aktivkohlefilter
+    mode: single
+
+  - id: cannabis_tent_fan_off
+    alias: Cannabis Zelt - Lüfter AUS (Optimal)
+    description: Turn off exhaust fan when humidity < 45% AND temp < 24°C
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.temperature_humidity_sensor_2_luftfeuchtigkeit
+        below: 45
+    condition:
+      - condition: numeric_state
+        entity_id: sensor.temperature_humidity_sensor_2_temperatur
+        below: 24
+    action:
+      - action: switch.turn_off
+        target:
+          entity_id: switch.kiffzimmer_aktivkohlefilter
+    mode: single
+
+  - id: cannabis_tent_heater_on
+    alias: Cannabis Zelt - Heizung AN (Zu kalt)
+    description: Turn on heater when temp < 20°C
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.temperature_humidity_sensor_2_temperatur
+        below: 20
+    action:
+      - action: switch.turn_on
+        target:
+          entity_id: switch.t34_smart_plug_schalter_1
+    mode: single
+
+  - id: cannabis_tent_heater_off_target
+    alias: Cannabis Zelt - Heizung AUS (Ziel erreicht)
+    description: Turn off heater when temp > 25°C
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.temperature_humidity_sensor_2_temperatur
+        above: 25
+    action:
+      - action: switch.turn_off
+        target:
+          entity_id: switch.t34_smart_plug_schalter_1
+    mode: single
+
+  - id: cannabis_tent_heater_safety
+    alias: Cannabis Zelt - Heizung NOT-AUS (5 min Limit)
+    description: "Safety: Turn off heater after 5 minutes"
+    trigger:
+      - platform: state
+        entity_id: switch.t34_smart_plug_schalter_1
+        to: "on"
+        for:
+          minutes: 5
+    action:
+      - action: switch.turn_off
+        target:
+          entity_id: switch.t34_smart_plug_schalter_1
+    mode: single

@@ -334,8 +334,6 @@
               target:
                 entity_id: light.buffet_licht
               data:
-                brightness_pct: "{{ states('input_number.flux_brightness')|int }}"
-                color_temp_kelvin: "{{ states('input_number.flux_kelvin')|int }}"
                 transition: 2
         - conditions:
             - condition: trigger
@@ -378,14 +376,11 @@
                   - light.kuche_birne_2_2
                   - light.kuche_birne_1
               data:
-                brightness_pct: "{{ states('input_number.flux_brightness')|int }}"
-                color_temp_kelvin: "{{ states('input_number.flux_kelvin')|int }}"
                 transition: 2
             - action: light.turn_on
               target:
                 entity_id: light.kuche_streifen
               data:
-                brightness_pct: "{{ states('input_number.flux_brightness')|int }}"
                 transition: 2
         - conditions:
             - condition: trigger
@@ -430,8 +425,6 @@
               target:
                 entity_id: light.bad_licht
               data:
-                brightness_pct: "{{ states('input_number.flux_brightness')|int }}"
-                color_temp_kelvin: "{{ states('input_number.flux_kelvin')|int }}"
                 transition: 2
         - conditions:
             - condition: trigger
@@ -468,8 +461,6 @@
               target:
                 entity_id: light.bett_licht
               data:
-                brightness_pct: "{{ states('input_number.flux_brightness')|int }}"
-                color_temp_kelvin: "{{ states('input_number.flux_kelvin')|int }}"
                 transition: 2
         - conditions:
             - condition: trigger
@@ -506,14 +497,11 @@
               target:
                 entity_id: light.computer_licht
               data:
-                brightness_pct: "{{ states('input_number.flux_brightness')|int }}"
-                color_temp_kelvin: "{{ states('input_number.flux_kelvin')|int }}"
                 transition: 2
             - action: light.turn_on
               target:
                 entity_id: light.kiffzimmer_lichtstreifen
               data:
-                brightness_pct: "{{ states('input_number.flux_brightness')|int }}"
                 transition: 2
         - conditions:
             - condition: trigger
@@ -892,75 +880,6 @@
         title: "\U0001F6AA Tür geöffnet!"
         message: Die Tür wurde geöffnet während du nicht zuhause bist
   mode: single
-- id: cannabis_tent_fan_on
-  alias: Cannabis Zelt - Lüfter AN (High Temp/Humidity)
-  description: Turn on exhaust fan when humidity > 55% or temp > 26°C
-  trigger:
-    - platform: numeric_state
-      entity_id: sensor.temperature_humidity_sensor_2_luftfeuchtigkeit
-      above: 55
-    - platform: numeric_state
-      entity_id: sensor.temperature_humidity_sensor_2_temperatur
-      above: 26
-  action:
-    - action: switch.turn_on
-      target:
-        entity_id: switch.kiffzimmer_aktivkohlefilter
-  mode: single
-- id: cannabis_tent_fan_off
-  alias: Cannabis Zelt - Lüfter AUS (Optimal)
-  description: Turn off exhaust fan when humidity < 45% AND temp < 24°C
-  trigger:
-    - platform: numeric_state
-      entity_id: sensor.temperature_humidity_sensor_2_luftfeuchtigkeit
-      below: 45
-  condition:
-    - condition: numeric_state
-      entity_id: sensor.temperature_humidity_sensor_2_temperatur
-      below: 24
-  action:
-    - action: switch.turn_off
-      target:
-        entity_id: switch.kiffzimmer_aktivkohlefilter
-  mode: single
-- id: cannabis_tent_heater_on
-  alias: Cannabis Zelt - Heizung AN (Zu kalt)
-  description: Turn on heater when temp < 20°C
-  trigger:
-    - platform: numeric_state
-      entity_id: sensor.temperature_humidity_sensor_2_temperatur
-      below: 20
-  action:
-    - action: switch.turn_on
-      target:
-        entity_id: switch.t34_smart_plug_schalter_1
-  mode: single
-- id: cannabis_tent_heater_off_target
-  alias: Cannabis Zelt - Heizung AUS (Ziel erreicht)
-  description: Turn off heater when temp > 25°C
-  trigger:
-    - platform: numeric_state
-      entity_id: sensor.temperature_humidity_sensor_2_temperatur
-      above: 25
-  action:
-    - action: switch.turn_off
-      target:
-        entity_id: switch.t34_smart_plug_schalter_1
-  mode: single
-- id: cannabis_tent_heater_safety
-  alias: Cannabis Zelt - Heizung NOT-AUS (5 min Limit)
-  description: "Safety: Turn off heater after 5 minutes"
-  trigger:
-    - platform: state
-      entity_id: switch.t34_smart_plug_schalter_1
-      to: "on"
-      for:
-        minutes: 5
-  action:
-    - action: switch.turn_off
-      target:
-        entity_id: switch.t34_smart_plug_schalter_1
-  mode: single
 - id: system_auto_update_away
   alias: System - Automatische Updates bei Abwesenheit
   description: Install updates automatically when away
@@ -1195,32 +1114,7 @@
     - action: input_boolean.turn_off
       target:
         entity_id: input_boolean.someone_sleeping
-- id: flux_update_values
-  alias: System - Update Flux Values
-  description: Calculate target Kelvin and Brightness based on sun
-  trigger:
-    - platform: time_pattern
-      minutes: /5
-    - platform: sun
-      event: sunset
-    - platform: sun
-      event: sunrise
-  action:
-    - action: input_number.set_value
-      target:
-        entity_id: input_number.flux_kelvin
-      data:
-        value:
-          "{% if is_state('sun.sun', 'above_horizon') %}\n  4500\n{% else %}\n
-          \ 2700\n{% endif %}\n"
-    - action: input_number.set_value
-      target:
-        entity_id: input_number.flux_brightness
-      data:
-        value:
-          "{% if is_state('sun.sun', 'above_horizon') %}\n  100\n{% else %}\n  60\n{%
-          endif %}\n"
-  mode: single
+
 - id: climate_window_protection
   alias: Heizung - Fenster offen Schutz
   description: Turn off heating if window is open
@@ -1276,18 +1170,17 @@
                 message: Heizperiode beendet (über 20°C für 24h)
   mode: single
 
-
 - id: living_room_lights_on_blind_close
   alias: Wohnzimmer - Licht an wenn Rollladen schließt
   description: Turn on living room lights when blind closes
   trigger:
     - platform: state
       entity_id: cover.rollladen_computer_vorhang
-      to: 'closed'
+      to: "closed"
   condition:
     - condition: state
       entity_id: input_boolean.auto_lights_living_room_blind_trigger
-      state: 'on'
+      state: "on"
   action:
     - action: script.living_room_lights_on_blind_close
   mode: single

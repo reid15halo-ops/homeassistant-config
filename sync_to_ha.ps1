@@ -70,6 +70,13 @@ if (Test-Path $quirksSource) {
     Write-Host "  Deployed: custom_zha_quirks/" -ForegroundColor Green
 }
 
+# Deploy packages folder
+$packagesSource = Join-Path $REPO_PATH "packages"
+if (Test-Path $packagesSource) {
+    Copy-Item -Path $packagesSource -Destination $HA_CONFIG_PATH -Force -Recurse
+    Write-Host "  Deployed: packages/" -ForegroundColor Green
+}
+
 Write-Host ""
 Write-Host "Deployment complete!" -ForegroundColor Green
 Write-Host ""
