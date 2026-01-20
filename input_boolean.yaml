@@ -83,3 +83,8 @@ someone_sleeping:
   name: "Jemand schläft"
   icon: mdi:bed
   initial: false
+
+auto_lights_living_room_blind_trigger:
+  name: "Auto Lights on Blind Close (Living Room)"
+  icon: mdi:lightbulb-auto
+  initial: true

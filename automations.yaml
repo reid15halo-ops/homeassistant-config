@@ -1275,3 +1275,18 @@
               data:
                 message: Heizperiode beendet (über 20°C für 24h)
   mode: single
+
+- id: living_room_lights_on_blind_close
+  alias: Wohnzimmer - Licht an wenn Rollladen schlie�t
+  description: Turn on living room lights when blind closes
+  trigger:
+    - platform: state
+      entity_id: cover.rollladen_computer_vorhang
+      to: 'closed'
+  condition:
+    - condition: state
+      entity_id: input_boolean.auto_lights_living_room_blind_trigger
+      state: 'on'
+  action:
+    - action: script.living_room_lights_on_blind_close
+  mode: single
