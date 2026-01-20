@@ -53,9 +53,6 @@ views:
             entities:
               - entity: cover.rollladen_computer_vorhang
                 name: Computer Blind
-              - type: custom:slider-entity-row
-                entity: cover.rollladen_computer_vorhang
-                name: Position
               - entity: input_boolean.blind_computer_last_opened
                 name: Status
                 icon: mdi:information-outline
@@ -68,7 +65,7 @@ views:
                 tap_action:
                   action: call-service
                   service: script.safe_open_blind
-                  service_data:
+                  data:
                     cover_entity: cover.rollladen_computer_vorhang
                     tracker_entity: input_boolean.blind_computer_last_opened
 
@@ -78,7 +75,7 @@ views:
                 tap_action:
                   action: call-service
                   service: script.safe_close_blind
-                  service_data:
+                  data:
                     cover_entity: cover.rollladen_computer_vorhang
                     tracker_entity: input_boolean.blind_computer_last_opened
 
@@ -98,7 +95,7 @@ views:
                 tap_action:
                   action: call-service
                   service: script.safe_open_blind
-                  service_data:
+                  data:
                     cover_entity: cover.schlafen_blind_vorhang
                     tracker_entity: input_boolean.blind_schlafen_last_opened
 
@@ -108,23 +105,27 @@ views:
                 tap_action:
                   action: call-service
                   service: script.safe_close_blind
-                  service_data:
+                  data:
                     cover_entity: cover.schlafen_blind_vorhang
                     tracker_entity: input_boolean.blind_schlafen_last_opened
 
-      # Lighting
+      # Lighting - Using correct entity IDs from automations
       - type: entities
         title: Main Lights
         show_header_toggle: false
         entities:
-          - entity: light.computer_licht_2
-            name: Computer Light
           - entity: light.buffet_licht
-            name: Buffet Light
-          - entity: light.rollladen_computer_hintergrundbeleuchtung
-            name: Computer Ambient
-          - entity: light.kuche_brine_1
-            name: Kitchen Light
+            name: Living Room Light
+          - entity: light.bett_licht
+            name: Bedroom Light
+          - entity: light.bad_licht
+            name: Bathroom Light
+          - entity: light.kuche_birne_1
+            name: Kitchen Light 1
+          - entity: light.kuche_birne_2_2
+            name: Kitchen Light 2
+          - entity: light.kuche_streifen
+            name: Kitchen Strip
 
       # Climate Quick View
       - type: horizontal-stack

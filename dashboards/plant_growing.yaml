@@ -10,118 +10,41 @@ views:
         content: |
           # 🌿 Kiffzimmer Grow Station
 
-      # === GAUGES ROW ===
-      - type: horizontal-stack
-        cards:
-          - type: gauge
-            entity: sensor.temperature_humidity_sensor_2_temperatur
-            name: Tent Temp
-            unit: "°C"
-            min: 15
-            max: 35
-            segments:
-              - from: 15
-                color: "#3498db"
-              - from: 20
-                color: "#2ecc71"
-              - from: 26
-                color: "#f39c12"
-              - from: 30
-                color: "#e74c3c"
-            needle: true
-
-          - type: gauge
-            entity: sensor.temperature_humidity_sensor_2_luftfeuchtigkeit
-            name: Tent RH
-            unit: "%"
-            min: 20
-            max: 90
-            segments:
-              - from: 20
-                color: "#e74c3c"
-              - from: 40
-                color: "#2ecc71"
-              - from: 65
-                color: "#f39c12"
-              - from: 80
-                color: "#3498db"
-            needle: true
+      # === PRESENCE ===
+      - type: entities
+        title: 📍 Room Status
+        show_header_toggle: false
+        state_color: true
+        entities:
+          - entity: binary_sensor.kiffzimmer_true_presence
+            name: Room Presence
+            icon: mdi:motion-sensor
 
       # === EQUIPMENT ===
       - type: entities
         title: ⚙️ Equipment
         show_header_toggle: false
         entities:
-          - entity: switch.kiffzimmer_aktivkohlefilter
-            name: Carbon Filter
-            icon: mdi:fan
-          - entity: switch.t34_smart_plug_schalter_1
-            name: Heater
-            icon: mdi:radiator
           - entity: light.kiffzimmer_lichtstreifen
             name: Grow Light
             icon: mdi:led-strip-variant
+          - entity: light.computer_licht
+            name: Room Light
+            icon: mdi:lightbulb
           - entity: cover.yoga_blind_vorhang
             name: Window Blind
             icon: mdi:blinds-horizontal
-
-      # === PLANTS ===
-      - type: glance
-        title: 🌱 Plants
-        show_state: true
-        entities:
-          - entity: sensor.sbht_003c_7ff9_humidity
-            name: L
-          - entity: sensor.sbht_003c_b922_humidity
-            name: M
-          - entity: sensor.hobeian_zg_303z_luftfeuchtigkeit
-            name: R
-          - entity: sensor.temperature_and_humidity_sensor_temperatur
-            name: Mother
-
-      # === MINI TEMPERATURE GRAPH ===
-      - type: history-graph
-        title: 🌡️ Temp
-        hours_to_show: 72
-        entities:
-          - entity: sensor.temperature_humidity_sensor_2_temperatur
-            name: Tent
-          - entity: sensor.sbht_003c_7ff9_temperature
-            name: L
-          - entity: sensor.sbht_003c_b922_temperature
-            name: M
-
-      # === MINI SOIL GRAPH ===
-      - type: history-graph
-        title: 💧 Soil
-        hours_to_show: 72
-        entities:
-          - entity: sensor.sbht_003c_7ff9_humidity
-            name: L
-          - entity: sensor.sbht_003c_b922_humidity
-            name: M
-
-      # === SAFETY ===
-      - type: glance
-        title: 🛡️ Safety
-        show_state: true
-        state_color: true
-        entities:
-          - entity: binary_sensor.aqara_water_leak_sensor_feuchte
-            name: Leak
-          - entity: binary_sensor.aqara_door_and_window_sensor_tur
-            name: Door
 
       # === QUICK ACTIONS ===
       - type: horizontal-stack
         cards:
           - type: button
-            name: Work
+            name: Work Mode
             icon: mdi:lightbulb-on
             tap_action:
               action: call-service
               service: light.turn_on
-              service_data:
+              data:
                 entity_id: light.kiffzimmer_lichtstreifen
                 brightness_pct: 100
 
@@ -130,14 +53,25 @@ views:
             icon: mdi:eye-off
             tap_action:
               action: call-service
-              service: cover.close_cover
-              service_data:
-                entity_id: cover.yoga_blind_vorhang
+              service: script.safe_close_blind
+              data:
+                cover_entity: cover.yoga_blind_vorhang
+                tracker_entity: input_boolean.blind_yoga_last_opened
 
       # === INFO ===
       - type: markdown
         content: |
-          ### 📋 Ranges
+          ### 📋 Optimal Ranges
           🌱 Seed: 20-25°C, 65-70%
           🌿 Veg: 22-28°C, 40-70%
           🌸 Flower: 20-26°C, 40-50%
+
+      # === AUTOMATION STATUS ===
+      - type: entities
+        title: 🤖 Automation
+        show_header_toggle: false
+        entities:
+          - entity: input_boolean.auto_lights_enabled
+            name: Auto Lights
+          - entity: input_boolean.auto_shutters_enabled
+            name: Auto Blinds

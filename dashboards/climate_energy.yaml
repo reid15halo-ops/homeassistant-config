@@ -13,27 +13,13 @@ views:
       # Temperature Overview
       - type: horizontal-stack
         cards:
-          - type: gauge
+          - type: thermostat
             entity: climate.thermostat_computer
             name: Computer Room
-            needle: true
-            min: 15
-            max: 25
-            severity:
-              green: 21
-              yellow: 19
-              red: 17
 
-          - type: gauge
+          - type: thermostat
             entity: climate.thermostat_bad
             name: Bathroom
-            needle: true
-            min: 15
-            max: 25
-            severity:
-              green: 21
-              yellow: 19
-              red: 17
 
       # Climate Controls
       - type: entities
@@ -52,14 +38,11 @@ views:
               action: call-service
               service: script.heating_comfort_now
 
-      # Fan Control for Heat Distribution
+      # Heat Distribution
       - type: entities
         title: Heat Distribution
         show_header_toggle: false
         entities:
-          - entity: fan.ceiling_fan_with_light
-            name: Living Room Fan
-          - type: divider
           - entity: script.fan_winter_heat_now
             name: Start Winter Heat Mode
             icon: mdi:fan-chevron-up

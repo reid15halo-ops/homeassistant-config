@@ -10,7 +10,7 @@ views:
           ## 🤖 Automation System Status
           Real-time view of all active automations and sensors
 
-      # Presence Detection
+      # Presence Detection - Using True Presence sensors
       - type: entities
         title: Motion Detection
         show_header_toggle: false
@@ -19,16 +19,16 @@ views:
           - entity: person.jonas_glawion
             name: Your Location
           - type: divider
-          - entity: binary_sensor.human_presence_detector_bewegung
-            name: Living Room Motion 1
-          - entity: binary_sensor.human_presence_detector_2_bewegung
-            name: Living Room Motion 2
-          - entity: binary_sensor.motion_sensor_kuche_bewegung
-            name: Kitchen Motion
-          - entity: binary_sensor.motion_sensor_bad_bewegung
-            name: Bathroom Motion
-          - entity: binary_sensor.motion_sensor_schlafen_bewegung
-            name: Bedroom Motion
+          - entity: binary_sensor.wohnzimmer_true_presence
+            name: Living Room Presence
+          - entity: binary_sensor.kuche_true_presence
+            name: Kitchen Presence
+          - entity: binary_sensor.bad_true_presence
+            name: Bathroom Presence
+          - entity: binary_sensor.schlafen_true_presence
+            name: Bedroom Presence
+          - entity: binary_sensor.kiffzimmer_true_presence
+            name: Kiffzimmer Presence
 
       # Active Modes
       - type: entities
@@ -83,12 +83,8 @@ views:
             name: Computer Room
           - entity: climate.thermostat_bad
             name: Bathroom
-          - entity: fan.ceiling_fan_with_light
-            name: Living Room Fan
-          - entity: fan.dc_fan_lamp
-            name: Bedroom Fan
 
-      # Light Sensor
+      # Environmental Sensors
       - type: entities
         title: Environmental Sensors
         show_header_toggle: false
@@ -96,9 +92,9 @@ views:
           - entity: binary_sensor.jemand_zuhause
             name: Someone Home
             icon: mdi:home-account
-          - entity: sensor.temperature_and_humidity_sensor_temperatur
-            name: Temperature
-            icon: mdi:thermometer
+          - entity: binary_sensor.heizperiode
+            name: Heating Season
+            icon: mdi:radiator
           - entity: sun.sun
             name: Sun Position
 
