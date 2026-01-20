@@ -2,1260 +2,1276 @@
   alias: Morgen - Aufwachen Werktag (05:00)
   description: Gradual wake-up light and heating on weekdays
   trigger:
-  - platform: time
-    at: 04:30
+    - platform: time
+      at: 04:30
   condition:
-  - condition: time
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-  action:
-  - action: climate.set_temperature
-    target:
-      entity_id:
-      - climate.thermostat_bad
-      - climate.thermostat_computer
-    data:
-      temperature: 23
-  - delay:
-      minutes: 30
-  - action: light.turn_on
-    target:
-      entity_id: light.bett_licht
-    data:
-      brightness_pct: 5
-      color_temp_kelvin: 2700
-      transition: 1800
-  - delay:
-      minutes: 30
-  - action: light.turn_on
-    target:
-      entity_id: light.bett_licht
-    data:
-      brightness_pct: 80
-  mode: single
-- id: morning_wakeup_weekend
-  alias: Morgen - Aufwachen Wochenende (10:00)
-  description: Weekend wake-up routine
-  trigger:
-  - platform: time
-    at: 09:30
-  condition:
-  - condition: time
-    weekday:
-    - sat
-    - sun
-  action:
-  - action: light.turn_on
-    target:
-      entity_id: light.bett_licht
-    data:
-      brightness_pct: 5
-      color_temp_kelvin: 2700
-      transition: 1800
-  mode: single
-- id: shutters_open_winter_weekend
-  alias: Rollläden - Öffnen Winter Wochenende
-  description: Open blinds on winter weekends for solar gain (free heating)
-  trigger:
-  - platform: sun
-    event: sunrise
-    offset: 01:00:00
-  condition:
-  - condition: template
-    value_template: '{{ now().month in [11, 12, 1, 2] }}'
-  - condition: time
-    weekday:
-    - sat
-    - sun
-  action:
-  - action: script.safe_open_blind
-    data:
-      cover_entity: cover.rollladen_computer_vorhang
-      tracker_entity: input_boolean.blind_computer_last_opened
-  - action: script.safe_open_blind
-    data:
-      cover_entity: cover.schlafen_blind_vorhang
-      tracker_entity: input_boolean.blind_schlafen_last_opened
-  - action: script.safe_open_blind
-    data:
-      cover_entity: cover.kuche_blind_vorhang
-      tracker_entity: input_boolean.blind_kuche_last_opened
-  - action: script.safe_open_blind
-    data:
-      cover_entity: cover.yoga_blind_vorhang
-      tracker_entity: input_boolean.blind_yoga_last_opened
-  mode: single
-- id: shutters_open_winter_weekday_morning_home
-  alias: Rollläden - Öffnen Winter Werktag Morgen (Zuhause)
-  description: Open blinds in winter weekday morning if you're home (sick day, home
-    office, etc.)
-  trigger:
-  - platform: sun
-    event: sunrise
-    offset: 01:00:00
-  condition:
-  - condition: template
-    value_template: '{{ now().month in [11, 12, 1, 2] }}'
-  - condition: time
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-  - condition: state
-    entity_id: person.jonas_glawion
-    state: home
-  action:
-  - action: script.safe_open_blind
-    data:
-      cover_entity: cover.rollladen_computer_vorhang
-      tracker_entity: input_boolean.blind_computer_last_opened
-  - action: script.safe_open_blind
-    data:
-      cover_entity: cover.schlafen_blind_vorhang
-      tracker_entity: input_boolean.blind_schlafen_last_opened
-  - action: script.safe_open_blind
-    data:
-      cover_entity: cover.kuche_blind_vorhang
-      tracker_entity: input_boolean.blind_kuche_last_opened
-  - action: script.safe_open_blind
-    data:
-      cover_entity: cover.yoga_blind_vorhang
-      tracker_entity: input_boolean.blind_yoga_last_opened
-  mode: single
-- id: shutters_open_winter_weekday_afternoon
-  alias: Rollläden - Öffnen Winter Werktag Nachmittag (Unterwegs)
-  description: Open blinds on winter weekdays at noon if you're away at work (solar
-    gain)
-  trigger:
-  - platform: time
-    at: '12:00:00'
-  condition:
-  - condition: template
-    value_template: '{{ now().month in [11, 12, 1, 2] }}'
-  - condition: time
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-  - condition: state
-    entity_id: person.jonas_glawion
-    state: not_home
-  - condition: sun
-    after: sunrise
-    before: sunset
-  action:
-  - action: script.safe_open_blind
-    data:
-      cover_entity: cover.rollladen_computer_vorhang
-      tracker_entity: input_boolean.blind_computer_last_opened
-  - action: script.safe_open_blind
-    data:
-      cover_entity: cover.schlafen_blind_vorhang
-      tracker_entity: input_boolean.blind_schlafen_last_opened
-  - action: script.safe_open_blind
-    data:
-      cover_entity: cover.kuche_blind_vorhang
-      tracker_entity: input_boolean.blind_kuche_last_opened
-  - action: script.safe_open_blind
-    data:
-      cover_entity: cover.yoga_blind_vorhang
-      tracker_entity: input_boolean.blind_yoga_last_opened
-  mode: single
-- id: shutters_open_spring_fall
-  alias: Rollläden - Öffnen Frühling/Herbst
-  description: Open blinds at sunrise in spring/fall
-  trigger:
-  - platform: sun
-    event: sunrise
-    offset: 00:30:00
-  condition:
-  - condition: template
-    value_template: '{{ now().month in [3, 4, 5, 9, 10] }}'
-  - condition: or
-    conditions:
     - condition: time
-      after: 05:00
       weekday:
-      - mon
-      - tue
-      - wed
-      - thu
-      - fri
-    - condition: time
-      after: '10:00'
-      weekday:
-      - sat
-      - sun
-  action:
-  - action: script.safe_open_blind
-    data:
-      cover_entity: cover.rollladen_computer_vorhang
-      tracker_entity: input_boolean.blind_computer_last_opened
-  - action: script.safe_open_blind
-    data:
-      cover_entity: cover.schlafen_blind_vorhang
-      tracker_entity: input_boolean.blind_schlafen_last_opened
-  - action: script.safe_open_blind
-    data:
-      cover_entity: cover.kuche_blind_vorhang
-      tracker_entity: input_boolean.blind_kuche_last_opened
-  - action: script.safe_open_blind
-    data:
-      cover_entity: cover.yoga_blind_vorhang
-      tracker_entity: input_boolean.blind_yoga_last_opened
-  mode: single
-- id: shutters_open_summer
-  alias: Rollläden - Öffnen Sommer
-  description: Open blinds early in summer (but not too early)
-  trigger:
-  - platform: sun
-    event: sunrise
-    offset: 00:00:00
-  condition:
-  - condition: template
-    value_template: '{{ now().month in [6, 7, 8] }}'
-  - condition: time
-    after: 06:00
-  action:
-  - action: script.safe_open_blind
-    data:
-      cover_entity: cover.rollladen_computer_vorhang
-      tracker_entity: input_boolean.blind_computer_last_opened
-  - action: script.safe_open_blind
-    data:
-      cover_entity: cover.schlafen_blind_vorhang
-      tracker_entity: input_boolean.blind_schlafen_last_opened
-  - action: script.safe_open_blind
-    data:
-      cover_entity: cover.kuche_blind_vorhang
-      tracker_entity: input_boolean.blind_kuche_last_opened
-  - action: script.safe_open_blind
-    data:
-      cover_entity: cover.yoga_blind_vorhang
-      tracker_entity: input_boolean.blind_yoga_last_opened
-  mode: single
-- id: shutters_close_sunset_winter
-  alias: Rollläden - Schließen bei Sonnenuntergang (Winter)
-  description: Close shutters at sunset in winter (Nov-Feb, no delay)
-  trigger:
-  - platform: sun
-    event: sunset
-    offset: 00:00:00
-  condition:
-  - condition: template
-    value_template: '{{ now().month in [11, 12, 1, 2] }}'
-  action:
-  - action: script.all_covers_close
-  mode: single
-- id: shutters_close_sunset_spring
-  alias: Rollläden - Schließen bei Sonnenuntergang (Frühling)
-  description: Close shutters at sunset +1h in spring (Mar-Apr, Oct)
-  trigger:
-  - platform: sun
-    event: sunset
-    offset: 01:00:00
-  condition:
-  - condition: template
-    value_template: '{{ now().month in [3, 4, 10] }}'
-  action:
-  - action: script.all_covers_close
-  mode: single
-- id: shutters_close_sunset_summer
-  alias: Rollläden - Schließen bei Sonnenuntergang (Sommer)
-  description: Close shutters at sunset +2h in summer (May-Sep)
-  trigger:
-  - platform: sun
-    event: sunset
-    offset: 02:00:00
-  condition:
-  - condition: template
-    value_template: '{{ now().month in [5, 6, 7, 8, 9] }}'
-  action:
-  - action: script.all_covers_close
-  mode: single
-- id: bedroom_shutters_sleep
-  alias: Schlafzimmer - Rollläden schließen bei Schlaf
-  description: Close bedroom shutters when going to bed (motion in bedroom)
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.motion_sensor_schlafen_bewegung
-    to: 'on'
-    for:
-      minutes: 15
-  condition:
-  - condition: time
-    after: '22:00'
-    before: 08:00
-  - condition: state
-    entity_id: binary_sensor.human_presence_detector_bewegung
-    state: 'off'
-  - condition: state
-    entity_id: binary_sensor.motion_sensor_kuche_bewegung
-    state: 'off'
-  action:
-  - action: script.safe_close_blind
-    data:
-      cover_entity: cover.schlafen_blind_vorhang
-      tracker_entity: input_boolean.blind_schlafen_last_opened
-  mode: single
-- id: light_wohnzimmer_smart_presence
-  alias: Wohnzimmer - Smartes Licht (True Presence)
-  description: Controls lights based on True Presence and Adaptive Lighting
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.wohnzimmer_true_presence
-    to: 'on'
-    id: occupied
-  - platform: state
-    entity_id: binary_sensor.wohnzimmer_true_presence
-    to: 'off'
-    for: 00:00:10
-    id: vacant
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: occupied
-      - condition: sun
-        after: sunset
-        before: sunrise
-      sequence:
-      - action: light.turn_on
-        target:
-          entity_id: light.buffet_licht
-        data:
-          brightness_pct: '{{ states(''input_number.flux_brightness'')|int }}'
-          color_temp_kelvin: '{{ states(''input_number.flux_kelvin'')|int }}'
-          transition: 2
-    - conditions:
-      - condition: trigger
-        id: vacant
-      sequence:
-      - action: light.turn_off
-        target:
-          entity_id: light.buffet_licht
-        data:
-          transition: 2
-  mode: restart
-- id: light_kuche_smart_presence
-  alias: Küche - Smartes Licht (True Presence)
-  description: Controls kitchen lights based on True Presence and Adaptive Lighting
-  triggers:
-  - entity_id:
-    - binary_sensor.human_presence_detector_3_bewegung
-    to:
-    - 'on'
-    id: occupied
-    trigger: state
-  - entity_id:
-    - binary_sensor.human_presence_detector_3_bewegung
-    to:
-    - 'off'
-    id: vacant
-    trigger: state
-  actions:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: occupied
-      - condition: sun
-        after: sunset
-        before: sunrise
-      sequence:
-      - action: light.turn_on
-        target:
-          entity_id:
-          - light.kuche_birne_2_2
-          - light.kuche_streifen
-          - light.kuche_birne_1
-        data:
-          brightness_pct: '{{ states(''input_number.flux_brightness'')|int }}'
-          color_temp_kelvin: '{{ states(''input_number.flux_kelvin'')|int }}'
-          transition: 2
-    - conditions:
-      - condition: trigger
-        id: vacant
-      sequence:
-      - action: light.turn_off
-        target:
-          entity_id:
-          - light.kuche_birne_2_2
-          - light.kuche_streifen
-          - light.kuche_birne_1
-        data:
-          transition: 2
-  mode: restart
-- id: light_bad_smart_presence
-  alias: Bad - Smartes Licht (True Presence)
-  description: Controls bathroom lights based on True Presence and Adaptive Lighting
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.bad_true_presence
-    to: 'on'
-    id: occupied
-  - platform: state
-    entity_id: binary_sensor.bad_true_presence
-    to: 'off'
-    id: vacant
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: occupied
-      - condition: or
-        conditions:
-        - condition: sun
-          after: sunset
-          before: sunrise
-        - condition: time
-          before: 08:00
-          after: '20:00'
-      sequence:
-      - action: light.turn_on
-        target:
-          entity_id: light.bad_licht
-        data:
-          brightness_pct: '{{ states(''input_number.flux_brightness'')|int }}'
-          color_temp_kelvin: '{{ states(''input_number.flux_kelvin'')|int }}'
-          transition: 2
-    - conditions:
-      - condition: trigger
-        id: vacant
-      sequence:
-      - action: light.turn_off
-        target:
-          entity_id: light.bad_licht
-        data:
-          transition: 2
-  mode: restart
-- id: light_schlafen_smart_presence
-  alias: Schlafzimmer - Smartes Licht (True Presence)
-  description: Controls bedroom lights based on True Presence and Adaptive Lighting
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.schlafen_true_presence
-    to: 'on'
-    id: occupied
-  - platform: state
-    entity_id: binary_sensor.schlafen_true_presence
-    to: 'off'
-    id: vacant
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: occupied
-      - condition: sun
-        after: sunset
-        before: sunrise
-      sequence:
-      - action: light.turn_on
-        target:
-          entity_id: light.bett_licht
-        data:
-          brightness_pct: '{{ states(''input_number.flux_brightness'')|int }}'
-          color_temp_kelvin: '{{ states(''input_number.flux_kelvin'')|int }}'
-          transition: 2
-    - conditions:
-      - condition: trigger
-        id: vacant
-      sequence:
-      - action: light.turn_off
-        target:
-          entity_id: light.bett_licht
-        data:
-          transition: 2
-  mode: restart
-- id: light_kiffzimmer_smart_presence
-  alias: Kiffzimmer - Smartes Licht (True Presence)
-  description: Controls Kiffzimmer lights based on True Presence and Adaptive Lighting
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.kiffzimmer_true_presence
-    to: 'on'
-    id: occupied
-  - platform: state
-    entity_id: binary_sensor.kiffzimmer_true_presence
-    to: 'off'
-    id: vacant
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: occupied
-      - condition: sun
-        after: sunset
-        before: sunrise
-      sequence:
-      - action: light.turn_on
-        target:
-          entity_id:
-          - light.kiffzimmer_lichtstreifen
-          - light.computer_licht
-        data:
-          brightness_pct: '{{ states(''input_number.flux_brightness'')|int }}'
-          color_temp_kelvin: '{{ states(''input_number.flux_kelvin'')|int }}'
-          transition: 2
-    - conditions:
-      - condition: trigger
-        id: vacant
-      sequence:
-      - action: light.turn_off
-        target:
-          entity_id:
-          - light.kiffzimmer_lichtstreifen
-          - light.computer_licht
-        data:
-          transition: 2
-  mode: restart
-- id: heating_presence_on
-  alias: Heizung - Komfort bei Anwesenheit
-  description: Set heating to comfort when home
-  trigger:
-  - platform: state
-    entity_id: person.jonas_glawion
-    to: home
-  condition:
-  - condition: template
-    value_template: '{{ now().month in [1, 2, 3, 4, 10, 11, 12] }}'
-  action:
-  - action: climate.set_temperature
-    target:
-      entity_id:
-      - climate.thermostat_bad
-      - climate.thermostat_computer
-    data:
-      temperature: '{{ 23 if now().month in [11, 12, 1, 2] else 22 }}'
-  mode: single
-- id: heating_away_eco
-  alias: Heizung - Eco bei Abwesenheit
-  description: Set heating to eco when away
-  trigger:
-  - platform: state
-    entity_id: person.jonas_glawion
-    to: not_home
-    for:
-      minutes: 10
-  action:
-  - action: climate.set_temperature
-    target:
-      entity_id:
-      - climate.thermostat_bad
-      - climate.thermostat_computer
-    data:
-      temperature: 18
-  mode: single
-- id: heating_night_mode
-  alias: Heizung - Nachtmodus
-  description: Reduce heating at night
-  trigger:
-  - platform: time
-    at: '22:00'
-  condition:
-  - condition: template
-    value_template: '{{ now().month in [1, 2, 3, 4, 10, 11, 12] }}'
-  action:
-  - action: climate.set_temperature
-    target:
-      entity_id:
-      - climate.thermostat_bad
-      - climate.thermostat_computer
-    data:
-      temperature: 17
-  mode: single
-- id: heating_morning_restore
-  alias: Heizung - Morgen Komfort wiederherstellen
-  description: Restore comfort heating in the morning if you're home
-  trigger:
-  - platform: time
-    at: 06:00
-    id: weekday
-  - platform: time
-    at: 09:00
-    id: weekend
-  condition:
-  - condition: template
-    value_template: '{{ now().month in [1, 2, 3, 4, 10, 11, 12] }}'
-  - condition: state
-    entity_id: person.jonas_glawion
-    state: home
-  - condition: or
-    conditions:
-    - condition: and
-      conditions:
-      - condition: trigger
-        id: weekday
-      - condition: time
-        weekday:
         - mon
         - tue
         - wed
         - thu
         - fri
-    - condition: and
-      conditions:
-      - condition: trigger
-        id: weekend
-      - condition: time
-        weekday:
+  action:
+    - action: climate.set_temperature
+      target:
+        entity_id:
+          - climate.thermostat_bad
+          - climate.thermostat_computer
+      data:
+        temperature: 23
+    - delay:
+        minutes: 30
+    - action: light.turn_on
+      target:
+        entity_id: light.bett_licht
+      data:
+        brightness_pct: 5
+        color_temp_kelvin: 2700
+        transition: 1800
+    - delay:
+        minutes: 30
+    - action: light.turn_on
+      target:
+        entity_id: light.bett_licht
+      data:
+        brightness_pct: 80
+  mode: single
+- id: morning_wakeup_weekend
+  alias: Morgen - Aufwachen Wochenende (10:00)
+  description: Weekend wake-up routine
+  trigger:
+    - platform: time
+      at: 09:30
+  condition:
+    - condition: time
+      weekday:
         - sat
         - sun
   action:
-  - action: climate.set_temperature
-    target:
-      entity_id:
-      - climate.thermostat_bad
-      - climate.thermostat_computer
-    data:
-      temperature: '{{ 23 if now().month in [11, 12, 1, 2] else 22 }}'
+    - action: light.turn_on
+      target:
+        entity_id: light.bett_licht
+      data:
+        brightness_pct: 5
+        color_temp_kelvin: 2700
+        transition: 1800
+  mode: single
+- id: shutters_open_winter_weekend
+  alias: Rollläden - Öffnen Winter Wochenende
+  description: Open blinds on winter weekends for solar gain (free heating)
+  trigger:
+    - platform: sun
+      event: sunrise
+      offset: 01:00:00
+  condition:
+    - condition: template
+      value_template: "{{ now().month in [11, 12, 1, 2] }}"
+    - condition: time
+      weekday:
+        - sat
+        - sun
+  action:
+    - action: script.safe_open_blind
+      data:
+        cover_entity: cover.rollladen_computer_vorhang
+        tracker_entity: input_boolean.blind_computer_last_opened
+    - action: script.safe_open_blind
+      data:
+        cover_entity: cover.schlafen_blind_vorhang
+        tracker_entity: input_boolean.blind_schlafen_last_opened
+    - action: script.safe_open_blind
+      data:
+        cover_entity: cover.kuche_blind_vorhang
+        tracker_entity: input_boolean.blind_kuche_last_opened
+    - action: script.safe_open_blind
+      data:
+        cover_entity: cover.yoga_blind_vorhang
+        tracker_entity: input_boolean.blind_yoga_last_opened
+  mode: single
+- id: shutters_open_winter_weekday_morning_home
+  alias: Rollläden - Öffnen Winter Werktag Morgen (Zuhause)
+  description:
+    Open blinds in winter weekday morning if you're home (sick day, home
+    office, etc.)
+  trigger:
+    - platform: sun
+      event: sunrise
+      offset: 01:00:00
+  condition:
+    - condition: template
+      value_template: "{{ now().month in [11, 12, 1, 2] }}"
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+    - condition: state
+      entity_id: person.jonas_glawion
+      state: home
+  action:
+    - action: script.safe_open_blind
+      data:
+        cover_entity: cover.rollladen_computer_vorhang
+        tracker_entity: input_boolean.blind_computer_last_opened
+    - action: script.safe_open_blind
+      data:
+        cover_entity: cover.schlafen_blind_vorhang
+        tracker_entity: input_boolean.blind_schlafen_last_opened
+    - action: script.safe_open_blind
+      data:
+        cover_entity: cover.kuche_blind_vorhang
+        tracker_entity: input_boolean.blind_kuche_last_opened
+    - action: script.safe_open_blind
+      data:
+        cover_entity: cover.yoga_blind_vorhang
+        tracker_entity: input_boolean.blind_yoga_last_opened
+  mode: single
+- id: shutters_open_winter_weekday_afternoon
+  alias: Rollläden - Öffnen Winter Werktag Nachmittag (Unterwegs)
+  description:
+    Open blinds on winter weekdays at noon if you're away at work (solar
+    gain)
+  trigger:
+    - platform: time
+      at: "12:00:00"
+  condition:
+    - condition: template
+      value_template: "{{ now().month in [11, 12, 1, 2] }}"
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+    - condition: state
+      entity_id: person.jonas_glawion
+      state: not_home
+    - condition: sun
+      after: sunrise
+      before: sunset
+  action:
+    - action: script.safe_open_blind
+      data:
+        cover_entity: cover.rollladen_computer_vorhang
+        tracker_entity: input_boolean.blind_computer_last_opened
+    - action: script.safe_open_blind
+      data:
+        cover_entity: cover.schlafen_blind_vorhang
+        tracker_entity: input_boolean.blind_schlafen_last_opened
+    - action: script.safe_open_blind
+      data:
+        cover_entity: cover.kuche_blind_vorhang
+        tracker_entity: input_boolean.blind_kuche_last_opened
+    - action: script.safe_open_blind
+      data:
+        cover_entity: cover.yoga_blind_vorhang
+        tracker_entity: input_boolean.blind_yoga_last_opened
+  mode: single
+- id: shutters_open_spring_fall
+  alias: Rollläden - Öffnen Frühling/Herbst
+  description: Open blinds at sunrise in spring/fall
+  trigger:
+    - platform: sun
+      event: sunrise
+      offset: 00:30:00
+  condition:
+    - condition: template
+      value_template: "{{ now().month in [3, 4, 5, 9, 10] }}"
+    - condition: or
+      conditions:
+        - condition: time
+          after: 05:00
+          weekday:
+            - mon
+            - tue
+            - wed
+            - thu
+            - fri
+        - condition: time
+          after: "10:00"
+          weekday:
+            - sat
+            - sun
+  action:
+    - action: script.safe_open_blind
+      data:
+        cover_entity: cover.rollladen_computer_vorhang
+        tracker_entity: input_boolean.blind_computer_last_opened
+    - action: script.safe_open_blind
+      data:
+        cover_entity: cover.schlafen_blind_vorhang
+        tracker_entity: input_boolean.blind_schlafen_last_opened
+    - action: script.safe_open_blind
+      data:
+        cover_entity: cover.kuche_blind_vorhang
+        tracker_entity: input_boolean.blind_kuche_last_opened
+    - action: script.safe_open_blind
+      data:
+        cover_entity: cover.yoga_blind_vorhang
+        tracker_entity: input_boolean.blind_yoga_last_opened
+  mode: single
+- id: shutters_open_summer
+  alias: Rollläden - Öffnen Sommer
+  description: Open blinds early in summer (but not too early)
+  trigger:
+    - platform: sun
+      event: sunrise
+      offset: 00:00:00
+  condition:
+    - condition: template
+      value_template: "{{ now().month in [6, 7, 8] }}"
+    - condition: time
+      after: 06:00
+  action:
+    - action: script.safe_open_blind
+      data:
+        cover_entity: cover.rollladen_computer_vorhang
+        tracker_entity: input_boolean.blind_computer_last_opened
+    - action: script.safe_open_blind
+      data:
+        cover_entity: cover.schlafen_blind_vorhang
+        tracker_entity: input_boolean.blind_schlafen_last_opened
+    - action: script.safe_open_blind
+      data:
+        cover_entity: cover.kuche_blind_vorhang
+        tracker_entity: input_boolean.blind_kuche_last_opened
+    - action: script.safe_open_blind
+      data:
+        cover_entity: cover.yoga_blind_vorhang
+        tracker_entity: input_boolean.blind_yoga_last_opened
+  mode: single
+- id: shutters_close_sunset_winter
+  alias: Rollläden - Schließen bei Sonnenuntergang (Winter)
+  description: Close shutters at sunset in winter (Nov-Feb, no delay)
+  trigger:
+    - platform: sun
+      event: sunset
+      offset: 00:00:00
+  condition:
+    - condition: template
+      value_template: "{{ now().month in [11, 12, 1, 2] }}"
+  action:
+    - action: script.all_covers_close
+  mode: single
+- id: shutters_close_sunset_spring
+  alias: Rollläden - Schließen bei Sonnenuntergang (Frühling)
+  description: Close shutters at sunset +1h in spring (Mar-Apr, Oct)
+  trigger:
+    - platform: sun
+      event: sunset
+      offset: 01:00:00
+  condition:
+    - condition: template
+      value_template: "{{ now().month in [3, 4, 10] }}"
+  action:
+    - action: script.all_covers_close
+  mode: single
+- id: shutters_close_sunset_summer
+  alias: Rollläden - Schließen bei Sonnenuntergang (Sommer)
+  description: Close shutters at sunset +2h in summer (May-Sep)
+  trigger:
+    - platform: sun
+      event: sunset
+      offset: 02:00:00
+  condition:
+    - condition: template
+      value_template: "{{ now().month in [5, 6, 7, 8, 9] }}"
+  action:
+    - action: script.all_covers_close
+  mode: single
+- id: bedroom_shutters_sleep
+  alias: Schlafzimmer - Rollläden schließen bei Schlaf
+  description: Close bedroom shutters when going to bed (motion in bedroom)
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_schlafen_bewegung
+      to: "on"
+      for:
+        minutes: 15
+  condition:
+    - condition: time
+      after: "22:00"
+      before: 08:00
+    - condition: state
+      entity_id: binary_sensor.human_presence_detector_bewegung
+      state: "off"
+    - condition: state
+      entity_id: binary_sensor.motion_sensor_kuche_bewegung
+      state: "off"
+  action:
+    - action: script.safe_close_blind
+      data:
+        cover_entity: cover.schlafen_blind_vorhang
+        tracker_entity: input_boolean.blind_schlafen_last_opened
+  mode: single
+- id: light_wohnzimmer_smart_presence
+  alias: Wohnzimmer - Smartes Licht (True Presence)
+  description: Controls lights based on True Presence and Adaptive Lighting
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.wohnzimmer_true_presence
+      to: "on"
+      id: occupied
+    - platform: state
+      entity_id: binary_sensor.wohnzimmer_true_presence
+      to: "off"
+      for: 00:00:10
+      id: vacant
+  action:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: occupied
+            - condition: sun
+              after: sunset
+              before: sunrise
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id: light.buffet_licht
+              data:
+                brightness_pct: "{{ states('input_number.flux_brightness')|int }}"
+                color_temp_kelvin: "{{ states('input_number.flux_kelvin')|int }}"
+                transition: 2
+        - conditions:
+            - condition: trigger
+              id: vacant
+          sequence:
+            - action: light.turn_off
+              target:
+                entity_id: light.buffet_licht
+              data:
+                transition: 2
+  mode: restart
+- id: light_kuche_smart_presence
+  alias: Küche - Smartes Licht (True Presence)
+  description: Controls kitchen lights based on True Presence and Adaptive Lighting
+  triggers:
+    - entity_id:
+        - binary_sensor.human_presence_detector_3_bewegung
+      to:
+        - "on"
+      id: occupied
+      trigger: state
+    - entity_id:
+        - binary_sensor.human_presence_detector_3_bewegung
+      to:
+        - "off"
+      id: vacant
+      trigger: state
+  actions:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: occupied
+            - condition: sun
+              after: sunset
+              before: sunrise
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id:
+                  - light.kuche_birne_2_2
+                  - light.kuche_birne_1
+              data:
+                brightness_pct: "{{ states('input_number.flux_brightness')|int }}"
+                color_temp_kelvin: "{{ states('input_number.flux_kelvin')|int }}"
+                transition: 2
+            - action: light.turn_on
+              target:
+                entity_id: light.kuche_streifen
+              data:
+                brightness_pct: "{{ states('input_number.flux_brightness')|int }}"
+                transition: 2
+        - conditions:
+            - condition: trigger
+              id: vacant
+          sequence:
+            - action: light.turn_off
+              target:
+                entity_id:
+                  - light.kuche_birne_2_2
+                  - light.kuche_streifen
+                  - light.kuche_birne_1
+              data:
+                transition: 2
+  mode: restart
+- id: light_bad_smart_presence
+  alias: Bad - Smartes Licht (True Presence)
+  description: Controls bathroom lights based on True Presence and Adaptive Lighting
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.bad_true_presence
+      to: "on"
+      id: occupied
+    - platform: state
+      entity_id: binary_sensor.bad_true_presence
+      to: "off"
+      id: vacant
+  action:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: occupied
+            - condition: or
+              conditions:
+                - condition: sun
+                  after: sunset
+                  before: sunrise
+                - condition: time
+                  before: 08:00
+                  after: "20:00"
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id: light.bad_licht
+              data:
+                brightness_pct: "{{ states('input_number.flux_brightness')|int }}"
+                color_temp_kelvin: "{{ states('input_number.flux_kelvin')|int }}"
+                transition: 2
+        - conditions:
+            - condition: trigger
+              id: vacant
+          sequence:
+            - action: light.turn_off
+              target:
+                entity_id: light.bad_licht
+              data:
+                transition: 2
+  mode: restart
+- id: light_schlafen_smart_presence
+  alias: Schlafzimmer - Smartes Licht (True Presence)
+  description: Controls bedroom lights based on True Presence and Adaptive Lighting
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.schlafen_true_presence
+      to: "on"
+      id: occupied
+    - platform: state
+      entity_id: binary_sensor.schlafen_true_presence
+      to: "off"
+      id: vacant
+  action:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: occupied
+            - condition: sun
+              after: sunset
+              before: sunrise
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id: light.bett_licht
+              data:
+                brightness_pct: "{{ states('input_number.flux_brightness')|int }}"
+                color_temp_kelvin: "{{ states('input_number.flux_kelvin')|int }}"
+                transition: 2
+        - conditions:
+            - condition: trigger
+              id: vacant
+          sequence:
+            - action: light.turn_off
+              target:
+                entity_id: light.bett_licht
+              data:
+                transition: 2
+  mode: restart
+- id: light_kiffzimmer_smart_presence
+  alias: Kiffzimmer - Smartes Licht (True Presence)
+  description: Controls Kiffzimmer lights based on True Presence and Adaptive Lighting
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.kiffzimmer_true_presence
+      to: "on"
+      id: occupied
+    - platform: state
+      entity_id: binary_sensor.kiffzimmer_true_presence
+      to: "off"
+      id: vacant
+  action:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: occupied
+            - condition: sun
+              after: sunset
+              before: sunrise
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id: light.computer_licht
+              data:
+                brightness_pct: "{{ states('input_number.flux_brightness')|int }}"
+                color_temp_kelvin: "{{ states('input_number.flux_kelvin')|int }}"
+                transition: 2
+            - action: light.turn_on
+              target:
+                entity_id: light.kiffzimmer_lichtstreifen
+              data:
+                brightness_pct: "{{ states('input_number.flux_brightness')|int }}"
+                transition: 2
+        - conditions:
+            - condition: trigger
+              id: vacant
+          sequence:
+            - action: light.turn_off
+              target:
+                entity_id:
+                  - light.kiffzimmer_lichtstreifen
+                  - light.computer_licht
+              data:
+                transition: 2
+  mode: restart
+- id: heating_presence_on
+  alias: Heizung - Komfort bei Anwesenheit
+  description: Set heating to comfort when home
+  trigger:
+    - platform: state
+      entity_id: person.jonas_glawion
+      to: home
+  condition:
+    - condition: template
+      value_template: "{{ now().month in [1, 2, 3, 4, 10, 11, 12] }}"
+  action:
+    - action: climate.set_temperature
+      target:
+        entity_id:
+          - climate.thermostat_bad
+          - climate.thermostat_computer
+      data:
+        temperature: "{{ 23 if now().month in [11, 12, 1, 2] else 22 }}"
+  mode: single
+- id: heating_away_eco
+  alias: Heizung - Eco bei Abwesenheit
+  description: Set heating to eco when away
+  trigger:
+    - platform: state
+      entity_id: person.jonas_glawion
+      to: not_home
+      for:
+        minutes: 10
+  action:
+    - action: climate.set_temperature
+      target:
+        entity_id:
+          - climate.thermostat_bad
+          - climate.thermostat_computer
+      data:
+        temperature: 18
+  mode: single
+- id: heating_night_mode
+  alias: Heizung - Nachtmodus
+  description: Reduce heating at night
+  trigger:
+    - platform: time
+      at: "22:00"
+  condition:
+    - condition: template
+      value_template: "{{ now().month in [1, 2, 3, 4, 10, 11, 12] }}"
+  action:
+    - action: climate.set_temperature
+      target:
+        entity_id:
+          - climate.thermostat_bad
+          - climate.thermostat_computer
+      data:
+        temperature: 17
+  mode: single
+- id: heating_morning_restore
+  alias: Heizung - Morgen Komfort wiederherstellen
+  description: Restore comfort heating in the morning if you're home
+  trigger:
+    - platform: time
+      at: 06:00
+      id: weekday
+    - platform: time
+      at: 09:00
+      id: weekend
+  condition:
+    - condition: template
+      value_template: "{{ now().month in [1, 2, 3, 4, 10, 11, 12] }}"
+    - condition: state
+      entity_id: person.jonas_glawion
+      state: home
+    - condition: or
+      conditions:
+        - condition: and
+          conditions:
+            - condition: trigger
+              id: weekday
+            - condition: time
+              weekday:
+                - mon
+                - tue
+                - wed
+                - thu
+                - fri
+        - condition: and
+          conditions:
+            - condition: trigger
+              id: weekend
+            - condition: time
+              weekday:
+                - sat
+                - sun
+  action:
+    - action: climate.set_temperature
+      target:
+        entity_id:
+          - climate.thermostat_bad
+          - climate.thermostat_computer
+      data:
+        temperature: "{{ 23 if now().month in [11, 12, 1, 2] else 22 }}"
   mode: single
 - id: roborock_clean_workday
   alias: Roborock - Reinigung an Werktagen (12:00)
   description: Start vacuum when away on workdays at 12:00
   trigger:
-  - platform: time
-    at: '12:00:00'
+    - platform: time
+      at: "12:00:00"
   condition:
-  - condition: time
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-  - condition: state
-    entity_id: person.jonas_glawion
-    state: not_home
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+    - condition: state
+      entity_id: person.jonas_glawion
+      state: not_home
   action:
-  - action: vacuum.start
-    target:
-      entity_id: vacuum.roborock_q7_max
+    - action: vacuum.start
+      target:
+        entity_id: vacuum.roborock_q7_max
   mode: single
 - id: roborock_stop_on_arrival
   alias: Roborock - Stopp bei Heimkehr
   description: Stop vacuum and return to dock when arriving home
   trigger:
-  - platform: state
-    entity_id: person.jonas_glawion
-    to: home
+    - platform: state
+      entity_id: person.jonas_glawion
+      to: home
   condition:
-  - condition: state
-    entity_id: binary_sensor.roborock_q7_max_reinigen
-    state: 'on'
+    - condition: state
+      entity_id: binary_sensor.roborock_q7_max_reinigen
+      state: "on"
   action:
-  - action: vacuum.return_to_base
-    target:
-      entity_id: vacuum.roborock_q7_max
+    - action: vacuum.return_to_base
+      target:
+        entity_id: vacuum.roborock_q7_max
   mode: single
 - id: welcome_home
   alias: Willkommen - Licht an bei Heimkehr
   description: Turn on lights when arriving home
   trigger:
-  - platform: state
-    entity_id: person.jonas_glawion
-    to: home
+    - platform: state
+      entity_id: person.jonas_glawion
+      to: home
   condition:
-  - condition: sun
-    after: sunset
-    before: sunrise
+    - condition: sun
+      after: sunset
+      before: sunrise
   action:
-  - action: light.turn_on
-    target:
-      entity_id:
-      - light.buffet_licht
-    data:
-      brightness_pct: 80
-      color_temp_kelvin: 2700
-  - choose:
-    - conditions:
-      - condition: template
-        value_template: '{{ now().month in [11, 12, 1, 2] }}'
-      sequence:
-      - action: climate.set_temperature
-        target:
-          entity_id:
-          - climate.thermostat_bad
-          - climate.thermostat_computer
-        data:
-          temperature: 23
+    - action: light.turn_on
+      target:
+        entity_id:
+          - light.buffet_licht
+      data:
+        brightness_pct: 80
+        color_temp_kelvin: 2700
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ now().month in [11, 12, 1, 2] }}"
+          sequence:
+            - action: climate.set_temperature
+              target:
+                entity_id:
+                  - climate.thermostat_bad
+                  - climate.thermostat_computer
+              data:
+                temperature: 23
   mode: single
 - id: away_mode_activate
   alias: Abwesenheit - Alles aus
   description: Turn off lights and reduce heating when leaving
   trigger:
-  - platform: state
-    entity_id: person.jonas_glawion
-    to: not_home
-    for:
-      minutes: 10
+    - platform: state
+      entity_id: person.jonas_glawion
+      to: not_home
+      for:
+        minutes: 10
   action:
-  - action: light.turn_off
-    target:
-      entity_id: all
-  - action: climate.set_temperature
-    target:
-      entity_id:
-      - climate.thermostat_bad
-      - climate.thermostat_computer
-    data:
-      temperature: 18
+    - action: light.turn_off
+      target:
+        entity_id: all
+    - action: climate.set_temperature
+      target:
+        entity_id:
+          - climate.thermostat_bad
+          - climate.thermostat_computer
+      data:
+        temperature: 18
   mode: single
 - id: sleep_mode
   alias: Schlafmodus - Aktivieren
   description: Sleep mode when in bedroom for 15 min at night
   trigger:
-  - platform: state
-    entity_id: binary_sensor.motion_sensor_schlafen_bewegung
-    to: 'on'
-    for:
-      minutes: 15
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_schlafen_bewegung
+      to: "on"
+      for:
+        minutes: 15
   condition:
-  - condition: time
-    after: '22:00'
-    before: 08:00
-  - condition: state
-    entity_id: binary_sensor.human_presence_detector_bewegung
-    state: 'off'
-  - condition: state
-    entity_id: binary_sensor.human_presence_detector_2_bewegung
-    state: 'off'
-  - condition: state
-    entity_id: binary_sensor.motion_sensor_kuche_bewegung
-    state: 'off'
+    - condition: time
+      after: "22:00"
+      before: 08:00
+    - condition: state
+      entity_id: binary_sensor.human_presence_detector_bewegung
+      state: "off"
+    - condition: state
+      entity_id: binary_sensor.human_presence_detector_2_bewegung
+      state: "off"
+    - condition: state
+      entity_id: binary_sensor.motion_sensor_kuche_bewegung
+      state: "off"
   action:
-  - action: light.turn_off
-    target:
-      entity_id: all
-  - action: climate.set_temperature
-    target:
-      entity_id:
-      - climate.thermostat_bad
-      - climate.thermostat_computer
-    data:
-      temperature: 17
-  - action: script.all_covers_close
+    - action: light.turn_off
+      target:
+        entity_id: all
+    - action: climate.set_temperature
+      target:
+        entity_id:
+          - climate.thermostat_bad
+          - climate.thermostat_computer
+      data:
+        temperature: 17
+    - action: script.all_covers_close
   mode: single
 - id: movie_mode
   alias: Filmzeit - Aktivieren
   description: Movie mode - dim lights, close shutters, ambient on
   trigger:
-  - platform: state
-    entity_id: input_boolean.movie_mode
-    to: 'on'
+    - platform: state
+      entity_id: input_boolean.movie_mode
+      to: "on"
   action:
-  - action: light.turn_off
-    target:
-      entity_id: light.kuche_brine_1
-  - action: light.turn_off
-    target:
-      entity_id: light.kuche_birne_2_2
-  - action: light.turn_on
-    target:
-      entity_id: light.buffet_licht
-    data:
-      brightness_pct: 20
-      color_temp_kelvin: 2200
-  - action: script.safe_close_blind
-    data:
-      cover_entity: cover.rollladen_computer_vorhang
-      tracker_entity: input_boolean.blind_computer_last_opened
+    - action: light.turn_off
+      target:
+        entity_id: light.kuche_birne_1
+    - action: light.turn_off
+      target:
+        entity_id: light.kuche_birne_2_2
+    - action: light.turn_on
+      target:
+        entity_id: light.buffet_licht
+      data:
+        brightness_pct: 20
+        color_temp_kelvin: 2200
+    - action: script.safe_close_blind
+      data:
+        cover_entity: cover.rollladen_computer_vorhang
+        tracker_entity: input_boolean.blind_computer_last_opened
   mode: single
 - id: movie_mode_off
   alias: Filmzeit - Deaktivieren
   description: End movie mode
   trigger:
-  - platform: state
-    entity_id: input_boolean.movie_mode
-    to: 'off'
+    - platform: state
+      entity_id: input_boolean.movie_mode
+      to: "off"
   action:
-  - action: light.turn_on
-    target:
-      entity_id:
-      - light.buffet_licht
-    data:
-      brightness_pct: 60
-      color_temp_kelvin: 2700
+    - action: light.turn_on
+      target:
+        entity_id:
+          - light.buffet_licht
+      data:
+        brightness_pct: 60
+        color_temp_kelvin: 2700
   mode: single
 - id: guest_mode_on
   alias: Gästemodus - Längere Timeouts
   description: Disable automatic shutters and keep lights on longer when guests
   trigger:
-  - platform: state
-    entity_id: input_boolean.guest_mode
-    to: 'on'
+    - platform: state
+      entity_id: input_boolean.guest_mode
+      to: "on"
   action:
-  - action: automation.turn_off
-    target:
-      entity_id: automation.rollladen_schliessen_bei_sonnenuntergang_winter
+    - action: automation.turn_off
+      target:
+        entity_id: automation.rollladen_schliessen_bei_sonnenuntergang_winter
   mode: single
 - id: sun_protection
   alias: Sonnenschutz - Rollläden bei Hitze
   description: Close shutters when too hot
   trigger:
-  - platform: numeric_state
-    entity_id: sensor.openweathermap_temperature
-    above: 25
+    - platform: numeric_state
+      entity_id: sensor.openweathermap_temperature
+      above: 25
   condition:
-  - condition: sun
-    after: sunrise
-    before: sunset
+    - condition: sun
+      after: sunrise
+      before: sunset
   action:
-  - action: script.all_covers_close
+    - action: script.all_covers_close
   mode: single
 - id: vacation_presence_simulation
   alias: Urlaub - Anwesenheitssimulation
   description: Simulate presence when on vacation
   trigger:
-  - platform: state
-    entity_id: input_boolean.vacation_mode
-    to: 'on'
+    - platform: state
+      entity_id: input_boolean.vacation_mode
+      to: "on"
   action:
-  - repeat:
-      while:
-      - condition: state
-        entity_id: input_boolean.vacation_mode
-        state: 'on'
-      sequence:
-      - action: light.turn_on
-        target:
-          entity_id: '{{ [''light.buffet_licht'', ''light.kuche_brine_1''] | random
-            }}'
-        data:
-          brightness_pct: '{{ range(50, 100) | random }}'
-      - delay:
-          minutes: '{{ range(30, 120) | random }}'
-      - action: light.turn_off
-        target:
-          entity_id: '{{ [''light.buffet_licht'', ''light.kuche_brine_1''] | random
-            }}'
-      - delay:
-          minutes: '{{ range(15, 60) | random }}'
+    - repeat:
+        while:
+          - condition: state
+            entity_id: input_boolean.vacation_mode
+            state: "on"
+        sequence:
+          - action: light.turn_on
+            target:
+              entity_id:
+                "{{ ['light.buffet_licht', 'light.kuche_birne_1'] | random
+                }}"
+            data:
+              brightness_pct: "{{ range(50, 100) | random }}"
+          - delay:
+              minutes: "{{ range(30, 120) | random }}"
+          - action: light.turn_off
+            target:
+              entity_id:
+                "{{ ['light.buffet_licht', 'light.kuche_birne_1'] | random
+                }}"
+          - delay:
+              minutes: "{{ range(15, 60) | random }}"
   mode: single
 - id: security_motion_alert
   alias: Sicherheit - Bewegung bei Abwesenheit
   description: Alert when motion detected while away
   trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.human_presence_detector_bewegung
-    - binary_sensor.human_presence_detector_2_bewegung
-    - binary_sensor.motion_sensor_kuche_bewegung
-    - binary_sensor.motion_sensor_schlafen_bewegung
-    to: 'on'
+    - platform: state
+      entity_id:
+        - binary_sensor.human_presence_detector_bewegung
+        - binary_sensor.human_presence_detector_2_bewegung
+        - binary_sensor.motion_sensor_kuche_bewegung
+        - binary_sensor.motion_sensor_schlafen_bewegung
+      to: "on"
   condition:
-  - condition: state
-    entity_id: person.reid15
-    state: not_home
-    for:
-      minutes: 30
+    - condition: state
+      entity_id: person.jonas_glawion
+      state: not_home
+      for:
+        minutes: 30
   action:
-  - action: notify.mobile_app_redmi_note_12_pro_5g
-    data:
-      title: ⚠️ Bewegung erkannt!
-      message: Bewegung in deiner Wohnung während Abwesenheit
+    - action: notify.mobile_app_redmi_note_12_pro_5g
+      data:
+        title: ⚠️ Bewegung erkannt!
+        message: Bewegung in deiner Wohnung während Abwesenheit
   mode: single
 - id: security_door_alert
   alias: Sicherheit - Tür geöffnet bei Abwesenheit
   description: Alert when door opens while away
   trigger:
-  - platform: state
-    entity_id: binary_sensor.contact_sensor
-    to: 'on'
+    - platform: state
+      entity_id: binary_sensor.aqara_door_and_window_sensor_tur
+      to: "on"
   condition:
-  - condition: state
-    entity_id: person.reid15
-    state: not_home
+    - condition: state
+      entity_id: person.jonas_glawion
+      state: not_home
   action:
-  - action: notify.mobile_app_redmi_note_12_pro_5g
-    data:
-      title: "\U0001F6AA Tür geöffnet!"
-      message: Die Tür wurde geöffnet während du nicht zuhause bist
+    - action: notify.mobile_app_redmi_note_12_pro_5g
+      data:
+        title: "\U0001F6AA Tür geöffnet!"
+        message: Die Tür wurde geöffnet während du nicht zuhause bist
   mode: single
 - id: cannabis_tent_fan_on
   alias: Cannabis Zelt - Lüfter AN (High Temp/Humidity)
   description: Turn on exhaust fan when humidity > 55% or temp > 26°C
   trigger:
-  - platform: numeric_state
-    entity_id: sensor.zelt_temperature_humidity_luftfeuchtigkeit
-    above: 55
-  - platform: numeric_state
-    entity_id: sensor.zelt_temperature_humidity_temperatur
-    above: 26
+    - platform: numeric_state
+      entity_id: sensor.temperature_humidity_sensor_2_luftfeuchtigkeit
+      above: 55
+    - platform: numeric_state
+      entity_id: sensor.temperature_humidity_sensor_2_temperatur
+      above: 26
   action:
-  - action: switch.turn_on
-    target:
-      entity_id: switch.aktivkohle
+    - action: switch.turn_on
+      target:
+        entity_id: switch.kiffzimmer_aktivkohlefilter
   mode: single
 - id: cannabis_tent_fan_off
   alias: Cannabis Zelt - Lüfter AUS (Optimal)
   description: Turn off exhaust fan when humidity < 45% AND temp < 24°C
   trigger:
-  - platform: numeric_state
-    entity_id: sensor.zelt_temperature_humidity_luftfeuchtigkeit
-    below: 45
+    - platform: numeric_state
+      entity_id: sensor.temperature_humidity_sensor_2_luftfeuchtigkeit
+      below: 45
   condition:
-  - condition: numeric_state
-    entity_id: sensor.zelt_temperature_humidity_temperatur
-    below: 24
+    - condition: numeric_state
+      entity_id: sensor.temperature_humidity_sensor_2_temperatur
+      below: 24
   action:
-  - action: switch.turn_off
-    target:
-      entity_id: switch.aktivkohle
+    - action: switch.turn_off
+      target:
+        entity_id: switch.kiffzimmer_aktivkohlefilter
   mode: single
 - id: cannabis_tent_heater_on
   alias: Cannabis Zelt - Heizung AN (Zu kalt)
   description: Turn on heater when temp < 20°C
   trigger:
-  - platform: numeric_state
-    entity_id: sensor.zelt_temperature_humidity_temperatur
-    below: 20
+    - platform: numeric_state
+      entity_id: sensor.temperature_humidity_sensor_2_temperatur
+      below: 20
   action:
-  - action: switch.turn_on
-    target:
-      entity_id: switch.growbox
+    - action: switch.turn_on
+      target:
+        entity_id: switch.t34_smart_plug_schalter_1
   mode: single
 - id: cannabis_tent_heater_off_target
   alias: Cannabis Zelt - Heizung AUS (Ziel erreicht)
   description: Turn off heater when temp > 25°C
   trigger:
-  - platform: numeric_state
-    entity_id: sensor.zelt_temperature_humidity_temperatur
-    above: 25
+    - platform: numeric_state
+      entity_id: sensor.temperature_humidity_sensor_2_temperatur
+      above: 25
   action:
-  - action: switch.turn_off
-    target:
-      entity_id: switch.growbox
+    - action: switch.turn_off
+      target:
+        entity_id: switch.t34_smart_plug_schalter_1
   mode: single
 - id: cannabis_tent_heater_safety
   alias: Cannabis Zelt - Heizung NOT-AUS (5 min Limit)
-  description: 'Safety: Turn off heater after 5 minutes'
+  description: "Safety: Turn off heater after 5 minutes"
   trigger:
-  - platform: state
-    entity_id: switch.growbox
-    to: 'on'
-    for:
-      minutes: 5
+    - platform: state
+      entity_id: switch.t34_smart_plug_schalter_1
+      to: "on"
+      for:
+        minutes: 5
   action:
-  - action: switch.turn_off
-    target:
-      entity_id: switch.growbox
+    - action: switch.turn_off
+      target:
+        entity_id: switch.t34_smart_plug_schalter_1
   mode: single
 - id: system_auto_update_away
   alias: System - Automatische Updates bei Abwesenheit
   description: Install updates automatically when away
   trigger:
-  - platform: state
-    entity_id:
-    - update.home_assistant_core_update
-    - update.home_assistant_supervisor_update
-    - update.home_assistant_operating_system_update
-    to: 'on'
-  - platform: state
-    entity_id: person.jonas_glawion
-    to: not_home
+    - platform: state
+      entity_id:
+        - update.home_assistant_core_update
+        - update.home_assistant_supervisor_update
+        - update.home_assistant_operating_system_update
+      to: "on"
+    - platform: state
+      entity_id: person.jonas_glawion
+      to: not_home
   condition:
-  - condition: state
-    entity_id: person.jonas_glawion
-    state: not_home
+    - condition: state
+      entity_id: person.jonas_glawion
+      state: not_home
   action:
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: update.home_assistant_core_update
-        state: 'on'
-      sequence:
-      - action: update.install
-        target:
-          entity_id: update.home_assistant_core_update
-        data:
-          backup: true
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: update.home_assistant_supervisor_update
-        state: 'on'
-      sequence:
-      - action: update.install
-        target:
-          entity_id: update.home_assistant_supervisor_update
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: update.home_assistant_operating_system_update
-        state: 'on'
-      sequence:
-      - action: update.install
-        target:
-          entity_id: update.home_assistant_operating_system_update
-        data:
-          backup: true
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: update.home_assistant_core_update
+              state: "on"
+          sequence:
+            - action: update.install
+              target:
+                entity_id: update.home_assistant_core_update
+              data:
+                backup: true
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: update.home_assistant_supervisor_update
+              state: "on"
+          sequence:
+            - action: update.install
+              target:
+                entity_id: update.home_assistant_supervisor_update
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: update.home_assistant_operating_system_update
+              state: "on"
+          sequence:
+            - action: update.install
+              target:
+                entity_id: update.home_assistant_operating_system_update
+              data:
+                backup: true
   mode: single
 - id: reset_blind_trackers
   alias: System - Reset Blind Trackers (04:00)
   description: Resets blind state trackers to ensure morning opening works
   trigger:
-  - platform: time
-    at: 04:00:00
+    - platform: time
+      at: 04:00:00
   action:
-  - action: input_boolean.turn_off
-    target:
-      entity_id:
-      - input_boolean.blind_computer_last_opened
-      - input_boolean.blind_schlafen_last_opened
-      - input_boolean.blind_kuche_last_opened
-      - input_boolean.blind_yoga_last_opened
+    - action: input_boolean.turn_off
+      target:
+        entity_id:
+          - input_boolean.blind_computer_last_opened
+          - input_boolean.blind_schlafen_last_opened
+          - input_boolean.blind_kuche_last_opened
+          - input_boolean.blind_yoga_last_opened
   mode: single
 - id: deckenventilator_wintermode
   alias: Deckenventilator - Wintermodus (Heizung an)
   description: Turn on fan when heating is on to distribute heat
   mode: single
   trigger:
-  - platform: state
-    entity_id: climate.thermostat_computer
-    to: heat
-    for:
-      minutes: 5
+    - platform: state
+      entity_id: climate.thermostat_computer
+      to: heat
+      for:
+        minutes: 5
   action:
-  - action: script.fan_winter_heat_now
+    - action: script.fan_winter_heat_now
 - id: bad_licht_an_bei_prasenz
   alias: Bad - Licht an bei Präsenz
   description: Turn on bathroom light when presence detected
   triggers:
-  - entity_id: []
-    to:
-    - 'on'
-    trigger: state
+    - entity_id: []
+      to:
+        - "on"
+      trigger: state
   conditions: []
   actions:
-  - action: light.turn_on
-    target:
-      entity_id:
-      - light.bad_2
-    data:
-      brightness_pct: 100
-      rgb_color:
-      - 102
-      - 232
-      - 255
+    - action: light.turn_on
+      target:
+        entity_id:
+          - light.bad_2
+      data:
+        brightness_pct: 100
+        rgb_color:
+          - 102
+          - 232
+          - 255
   mode: single
 - id: bad_licht_aus_keine_prasenz
   alias: Bad - Licht aus ohne Präsenz
   description: Turn off bathroom light when no presence for 3 minutes
   mode: single
   trigger:
-  - platform: state
-    entity_id: binary_sensor.presence_bad_bewegung
-    to: 'off'
+    - platform: state
+      entity_id: binary_sensor.presence_bad_bewegung
+      to: "off"
   action:
-  - action: light.turn_off
-    target:
-      entity_id:
-      - light.bad_2
-      - light.bad_2_2
+    - action: light.turn_off
+      target:
+        entity_id:
+          - light.bad_2
+          - light.bad_2_2
 - id: schlafzimmer_licht_an_bei_prasenz
   alias: Schlafzimmer - Licht an bei Präsenz
   description: Turn on bedroom light when presence detected (only when dark)
   mode: single
   trigger:
-  - platform: state
-    entity_id: binary_sensor.human_presence_detector_schlaf_bewegung
-    to: 'on'
+    - platform: state
+      entity_id: binary_sensor.human_presence_detector_schlaf_bewegung
+      to: "on"
   condition:
-  - condition: state
-    entity_id: binary_sensor.dunkel_draussen
-    state: 'on'
-  - condition: state
-    entity_id: input_boolean.someone_sleeping
-    state: 'off'
+    - condition: state
+      entity_id: binary_sensor.dunkel_draussen
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.someone_sleeping
+      state: "off"
   action:
-  - action: light.turn_on
-    target:
-      entity_id:
-      - light.bett_licht_2
-    data:
-      brightness_pct: "{% set hour = now().hour %} {% if hour >= 22 or hour < 6 %}\n
-        \ 20\n{% else %}\n  80\n{% endif %}\n"
-      color_temp_kelvin: 2700
+    - action: light.turn_on
+      target:
+        entity_id:
+          - light.bett_licht_2
+      data:
+        brightness_pct:
+          "{% set hour = now().hour %} {% if hour >= 22 or hour < 6 %}\n
+          \ 20\n{% else %}\n  80\n{% endif %}\n"
+        color_temp_kelvin: 2700
 - id: schlafzimmer_licht_aus_keine_prasenz
   alias: Schlafzimmer - Licht aus ohne Präsenz
   description: Turn off bedroom light when no presence for 5 minutes
   mode: single
   trigger:
-  - platform: state
-    entity_id: binary_sensor.human_presence_detector_schlaf_bewegung
-    to: 'off'
+    - platform: state
+      entity_id: binary_sensor.human_presence_detector_schlaf_bewegung
+      to: "off"
   action:
-  - action: light.turn_off
-    target:
-      entity_id:
-      - light.bett_licht_2
+    - action: light.turn_off
+      target:
+        entity_id:
+          - light.bett_licht_2
 - id: kuche_licht_an_bei_prasenz
   alias: Küche - Licht an bei Präsenz
   description: Turn on kitchen light when presence detected
   triggers:
-  - entity_id:
-    - binary_sensor.human_presence_detector_3_bewegung
-    to:
-    - 'on'
-    trigger: state
+    - entity_id:
+        - binary_sensor.human_presence_detector_3_bewegung
+      to:
+        - "on"
+      trigger: state
   conditions: []
   actions:
-  - action: light.turn_on
-    target:
-      entity_id:
-      - light.kuche_streifen
-      - light.kuche_birne_1
-      - light.kuche_birne_2_2
-      - light.kuche_blind_hintergrundbeleuchtung
-    data:
-      brightness_pct: 100
+    - action: light.turn_on
+      target:
+        entity_id:
+          - light.kuche_birne_1
+          - light.kuche_birne_2_2
+          - light.kuche_rollladen_hintergrundbeleuchtung
+      data:
+        brightness_pct: 100
+    - action: light.turn_on
+      target:
+        entity_id: light.kuche_streifen
+      data:
+        brightness_pct: 100
   mode: single
 - id: kuche_licht_aus_keine_prasenz
   alias: Küche - Licht aus ohne Bewegung
   description: Turn off kitchen light immediately when no presence
   triggers:
-  - entity_id:
-    - binary_sensor.human_presence_detector_3_bewegung
-    to:
-    - 'off'
-    trigger: state
+    - entity_id:
+        - binary_sensor.human_presence_detector_3_bewegung
+      to:
+        - "off"
+      trigger: state
   actions:
-  - action: light.turn_off
-    target:
-      entity_id:
-      - light.kuche_birne_1
-      - light.kuche_birne_2_2
-      - light.kuche_blind_hintergrundbeleuchtung
-      device_id: 2717a62b4f1fbe07a073d0a6e3215b99
-    data:
-      transition: 9
+    - action: light.turn_off
+      target:
+        entity_id:
+          - light.kuche_birne_1
+          - light.kuche_birne_2_2
+          - light.kuche_rollladen_hintergrundbeleuchtung
+        device_id: 2717a62b4f1fbe07a073d0a6e3215b99
+      data:
+        transition: 9
   mode: single
 - id: sleep_detection_on
   alias: Schlafmodus - Aktivieren
-  description: 'Detect sleep: bedroom presence + no movement for 10 min after 22:00'
+  description: "Detect sleep: bedroom presence + no movement for 10 min after 22:00"
   mode: single
   trigger:
-  - platform: state
-    entity_id: binary_sensor.human_presence_detector_schlaf_bewegung
-    to: 'on'
-    for:
-      minutes: 10
+    - platform: state
+      entity_id: binary_sensor.human_presence_detector_schlaf_bewegung
+      to: "on"
+      for:
+        minutes: 10
   condition:
-  - condition: time
-    after: '22:00:00'
-    before: 06:00:00
+    - condition: time
+      after: "22:00:00"
+      before: 06:00:00
   action:
-  - action: input_boolean.turn_on
-    target:
-      entity_id: input_boolean.someone_sleeping
-  - action: light.turn_off
-    target:
-      entity_id: light.schlafzimmer_licht
+    - action: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.someone_sleeping
+    - action: light.turn_off
+      target:
+        entity_id: light.bett_licht
 - id: sleep_detection_off
   alias: Schlafmodus - Deaktivieren
   description: Reset sleep mode when activity in living room or kitchen
   mode: single
   trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
-    - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
-    - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_3
-    - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_4
-    - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_5
-    - binary_sensor.motion_sensor_kuche_bewegung
-    to: 'on'
+    - platform: state
+      entity_id:
+        - binary_sensor.wohnzimmer_true_presence
+        - binary_sensor.motion_sensor_kuche_bewegung
+      to: "on"
   condition:
-  - condition: state
-    entity_id: input_boolean.someone_sleeping
-    state: 'on'
-  action:
-  - action: input_boolean.turn_off
-    target:
+    - condition: state
       entity_id: input_boolean.someone_sleeping
+      state: "on"
+  action:
+    - action: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.someone_sleeping
 - id: flux_update_values
   alias: System - Update Flux Values
   description: Calculate target Kelvin and Brightness based on sun
   trigger:
-  - platform: time_pattern
-    minutes: /5
-  - platform: sun
-    event: sunset
-  - platform: sun
-    event: sunrise
+    - platform: time_pattern
+      minutes: /5
+    - platform: sun
+      event: sunset
+    - platform: sun
+      event: sunrise
   action:
-  - action: input_number.set_value
-    target:
-      entity_id: input_number.flux_kelvin
-    data:
-      value: "{% if is_state('sun.sun', 'above_horizon') %}\n  4500\n{% else %}\n
-        \ 2700\n{% endif %}\n"
-  - action: input_number.set_value
-    target:
-      entity_id: input_number.flux_brightness
-    data:
-      value: "{% if is_state('sun.sun', 'above_horizon') %}\n  100\n{% else %}\n  60\n{%
-        endif %}\n"
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.flux_kelvin
+      data:
+        value:
+          "{% if is_state('sun.sun', 'above_horizon') %}\n  4500\n{% else %}\n
+          \ 2700\n{% endif %}\n"
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.flux_brightness
+      data:
+        value:
+          "{% if is_state('sun.sun', 'above_horizon') %}\n  100\n{% else %}\n  60\n{%
+          endif %}\n"
   mode: single
 - id: climate_window_protection
   alias: Heizung - Fenster offen Schutz
   description: Turn off heating if window is open
   trigger:
-  - platform: state
-    entity_id: binary_sensor.aqara_door_and_window_sensor_tur
-    to: 'on'
-    for: 00:00:30
+    - platform: state
+      entity_id: binary_sensor.aqara_door_and_window_sensor_tur
+      to: "on"
+      for: 00:00:30
   action:
-  - action: climate.set_hvac_mode
-    target:
-      entity_id: climate.thermostat_bad
-    data:
-      hvac_mode: 'off'
-  - action: notify.mobile_app_redmi_note_12_pro_5g
-    data:
-      message: 'Heizung aus: Fenster offen!'
+    - action: climate.set_hvac_mode
+      target:
+        entity_id: climate.thermostat_bad
+      data:
+        hvac_mode: "off"
+    - action: notify.mobile_app_redmi_note_12_pro_5g
+      data:
+        message: "Heizung aus: Fenster offen!"
 - id: system_heating_season_auto
   alias: System - Heizperiode Automatik
   description: Toggle heating mode based on outside temperature
   trigger:
-  - platform: numeric_state
-    entity_id: sensor.openweathermap_temperature
-    below: 15
-    for: '24:00:00'
-    id: winter_start
-  - platform: numeric_state
-    entity_id: sensor.openweathermap_temperature
-    above: 20
-    for: '24:00:00'
-    id: winter_end
+    - platform: numeric_state
+      entity_id: sensor.openweathermap_temperature
+      below: 15
+      for: "24:00:00"
+      id: winter_start
+    - platform: numeric_state
+      entity_id: sensor.openweathermap_temperature
+      above: 20
+      for: "24:00:00"
+      id: winter_end
   action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: winter_start
-      sequence:
-      - action: input_boolean.turn_on
-        target:
-          entity_id: input_boolean.heizung_winter_mode
-      - action: notify.mobile_app_redmi_note_12_pro_5g
-        data:
-          message: Heizperiode aktiviert (unter 15°C für 24h)
-    - conditions:
-      - condition: trigger
-        id: winter_end
-      sequence:
-      - action: input_boolean.turn_off
-        target:
-          entity_id: input_boolean.heizung_winter_mode
-      - action: notify.mobile_app_redmi_note_12_pro_5g
-        data:
-          message: Heizperiode beendet (über 20°C für 24h)
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: winter_start
+          sequence:
+            - action: input_boolean.turn_on
+              target:
+                entity_id: input_boolean.heizung_winter_mode
+            - action: notify.mobile_app_redmi_note_12_pro_5g
+              data:
+                message: Heizperiode aktiviert (unter 15°C für 24h)
+        - conditions:
+            - condition: trigger
+              id: winter_end
+          sequence:
+            - action: input_boolean.turn_off
+              target:
+                entity_id: input_boolean.heizung_winter_mode
+            - action: notify.mobile_app_redmi_note_12_pro_5g
+              data:
+                message: Heizperiode beendet (über 20°C für 24h)
   mode: single
