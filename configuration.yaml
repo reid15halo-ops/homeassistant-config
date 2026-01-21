@@ -179,6 +179,25 @@ input_number:
     mode: slider
     icon: mdi:timer
 
+  # Flux (Adaptive Lighting)
+  flux_kelvin:
+    name: "Flux Target Kelvin"
+    min: 2000
+    max: 6500
+    initial: 2700
+    step: 100
+    mode: box
+    icon: mdi:thermometer-lines
+
+  flux_brightness:
+    name: "Flux Target Brightness"
+    min: 1
+    max: 100
+    initial: 80
+    step: 1
+    mode: box
+    icon: mdi:brightness-6
+
 # ============================================================================
 # INPUT SELECT - Szenen & Modi
 # ============================================================================

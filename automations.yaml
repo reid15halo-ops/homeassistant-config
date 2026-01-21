@@ -1184,3 +1184,80 @@
   action:
     - action: script.living_room_lights_on_blind_close
   mode: single
+
+- id: flux_update_schedule
+  alias: Flux - Update Adaptive Values
+  description: Updates flux_kelvin and flux_brightness based on time of day
+  trigger:
+    - platform: time_pattern
+      minutes: "/5"
+  action:
+    - choose:
+        # Night (22:00 - 06:00)
+        - conditions:
+            - condition: or
+              conditions:
+                - condition: time
+                  after: "22:00:00"
+                - condition: time
+                  before: "06:00:00"
+          sequence:
+            - action: input_number.set_value
+              target:
+                entity_id: input_number.flux_kelvin
+              data:
+                value: 2200
+            - action: input_number.set_value
+              target:
+                entity_id: input_number.flux_brightness
+              data:
+                value: 30
+        # Morning (06:00 - 10:00)
+        - conditions:
+            - condition: time
+              after: "06:00:00"
+              before: "10:00:00"
+          sequence:
+            - action: input_number.set_value
+              target:
+                entity_id: input_number.flux_kelvin
+              data:
+                value: 2700
+            - action: input_number.set_value
+              target:
+                entity_id: input_number.flux_brightness
+              data:
+                value: 60
+        # Day (10:00 - 19:00)
+        - conditions:
+            - condition: time
+              after: "10:00:00"
+              before: "19:00:00"
+          sequence:
+            - action: input_number.set_value
+              target:
+                entity_id: input_number.flux_kelvin
+              data:
+                value: 5000
+            - action: input_number.set_value
+              target:
+                entity_id: input_number.flux_brightness
+              data:
+                value: 100
+        # Evening (19:00 - 22:00)
+        - conditions:
+            - condition: time
+              after: "19:00:00"
+              before: "22:00:00"
+          sequence:
+            - action: input_number.set_value
+              target:
+                entity_id: input_number.flux_kelvin
+              data:
+                value: 3000
+            - action: input_number.set_value
+              target:
+                entity_id: input_number.flux_brightness
+              data:
+                value: 80
+  mode: single
