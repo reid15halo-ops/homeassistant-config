@@ -31,7 +31,7 @@ views:
           - entity: light.computer_licht
             name: Room Light
             icon: mdi:lightbulb
-          - entity: cover.yoga_blind_vorhang
+          - entity: cover.kiffzimmer_rollladen
             name: Window Blind
             icon: mdi:blinds-horizontal
 
@@ -55,7 +55,7 @@ views:
               action: call-service
               service: script.safe_close_blind
               data:
-                cover_entity: cover.yoga_blind_vorhang
+                cover_entity: cover.kiffzimmer_rollladen
                 tracker_entity: input_boolean.blind_yoga_last_opened
 
       # === INFO ===

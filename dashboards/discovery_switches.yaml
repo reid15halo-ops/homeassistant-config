@@ -241,14 +241,13 @@ views:
           - entity: binary_sensor.heizlufter_steckdose_problem
           - entity: binary_sensor.human_presence_detector_bewegung
           - entity: binary_sensor.human_presence_detector_2_bewegung
-          - entity: cover.rollladen_computer_vorhang
-          - entity: cover.yoga_blind_vorhang
-          - entity: cover.kuche_blind_vorhang
-          - entity: cover.schlafen_blind_vorhang
+          - entity: cover.wohnzimmer_rollladen
+          - entity: cover.kiffzimmer_rollladen
+          - entity: cover.kuche_rollladen
+          - entity: cover.schlafzimmer_rollladen
           - entity: switch.t34_smart_plug_schalter_1
           - entity: switch.t34_smart_plug_schalter_1_2
           - entity: binary_sensor.motion_sensor_schlafen_bewegung
           - entity: switch.fritz_box_6690_cable_port_forward_reidhomeassistant
           - entity: binary_sensor.git_pull_aktiv
           - entity: switch.git_pull
-

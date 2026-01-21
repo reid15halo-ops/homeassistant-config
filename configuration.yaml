@@ -12,7 +12,9 @@ homeassistant:
   time_zone: Europe/Berlin
   external_url: "https://reid15.duckdns.org"
   internal_url: "http://192.168.178.70:8123"
-  packages: !include_dir_named packages
+  packages:
+    plant_growing: !include packages/plant_growing.yaml
+    system_health: !include packages/system_health.yaml
 
 # Mobile App - Required for Companion App functionality
 mobile_app:
@@ -106,8 +108,8 @@ http:
 # ============================================================================
 input_number:
   # Rollladen Position Tracking
-  pos_computer:
-    name: "Rollladen Computer Position"
+  pos_wohnzimmer:
+    name: "Rollladen Wohnzimmer Position"
     min: 0
     max: 100
     step: 1
@@ -122,15 +124,15 @@ input_number:
     unit_of_measurement: "%"
     mode: box
     icon: mdi:window-shutter
-  pos_yoga:
-    name: "Rollladen Yoga Position"
+  pos_kiffzimmer:
+    name: "Rollladen Kiffzimmer Position"
     min: 0
     max: 100
     step: 1
     unit_of_measurement: "%"
     mode: box
     icon: mdi:window-shutter
-  pos_schlafen:
+  pos_schlafzimmer:
     name: "Rollladen Schlafzimmer Position"
     min: 0
     max: 100
@@ -252,9 +254,9 @@ template:
   - binary_sensor:
       - name: "Sommerbetrieb (Außentemperatur)"
         unique_id: sommerbetrieb_ortsbasiert
-        state: "{{ states('sensor.openweathermap_temperature')|float(0) > 18 }}"
+        state: "{{ state_attr('weather.forecast_home', 'temperature')|float(0) > 18 }}"
         icon: >
-          {% if states('sensor.openweathermap_temperature')|float(0) > 18 %}
+          {% if state_attr('weather.forecast_home', 'temperature')|float(0) > 18 %}
             mdi:weather-sunny
           {% else %}
             mdi:snowflake
@@ -263,8 +265,7 @@ template:
       - name: "Jemand Zuhause"
         unique_id: jemand_zuhause
         state: >
-          {{ is_state('binary_sensor.human_presence_detector_bewegung', 'on') or
-             is_state('binary_sensor.human_presence_detector_2_bewegung', 'on') or
+          {{ is_state('binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1', 'on') or
              is_state('binary_sensor.motion_sensor_kuche_bewegung', 'on') or
              is_state('binary_sensor.motion_sensor_bad_bewegung', 'on') or
              is_state('binary_sensor.motion_sensor_schlafen_bewegung', 'on') }}
@@ -291,8 +292,7 @@ template:
         delay_off: "00:01:00" # 1 min buffer
         state: >
           {{ 
-             is_state('binary_sensor.human_presence_detector_bewegung', 'on')
-             or is_state('binary_sensor.human_presence_detector_2_bewegung', 'on')
+             is_state('binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1', 'on')
              # or is_state('media_player.living_room_tv', 'playing') # Uncomment when TV is integrated
           }}
         icon: mdi:account-eye
@@ -304,6 +304,7 @@ template:
           {{ 
              is_state('binary_sensor.motion_sensor_kuche_bewegung', 'on')
              or is_state('binary_sensor.human_presence_detector_3_bewegung', 'on')
+             or is_state('binary_sensor.kuche_presence_sensor', 'on')
           }}
         icon: mdi:chef-hat
 

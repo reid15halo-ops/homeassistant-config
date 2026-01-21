@@ -1,3 +1,7 @@
+# ============================================================================
+# PLANT GROWING AUTOMATIONS
+# Audited: 2026-01-21
+# ============================================================================
 automation:
   - id: cannabis_tent_fan_on
     alias: Cannabis Zelt - Lüfter AN (High Temp/Humidity)
@@ -12,7 +16,7 @@ automation:
     action:
       - action: switch.turn_on
         target:
-          entity_id: switch.kiffzimmer_aktivkohlefilter
+          entity_id: switch.aktivkohle
     mode: single
 
   - id: cannabis_tent_fan_off
@@ -29,7 +33,7 @@ automation:
     action:
       - action: switch.turn_off
         target:
-          entity_id: switch.kiffzimmer_aktivkohlefilter
+          entity_id: switch.aktivkohle
     mode: single
 
   - id: cannabis_tent_heater_on
@@ -42,7 +46,7 @@ automation:
     action:
       - action: switch.turn_on
         target:
-          entity_id: switch.t34_smart_plug_schalter_1
+          entity_id: switch.heizlufter_schalter_1
     mode: single
 
   - id: cannabis_tent_heater_off_target
@@ -55,7 +59,7 @@ automation:
     action:
       - action: switch.turn_off
         target:
-          entity_id: switch.t34_smart_plug_schalter_1
+          entity_id: switch.heizlufter_schalter_1
     mode: single
 
   - id: cannabis_tent_heater_safety
@@ -63,12 +67,12 @@ automation:
     description: "Safety: Turn off heater after 5 minutes"
     trigger:
       - platform: state
-        entity_id: switch.t34_smart_plug_schalter_1
+        entity_id: switch.heizlufter_schalter_1
         to: "on"
         for:
           minutes: 5
     action:
       - action: switch.turn_off
         target:
-          entity_id: switch.t34_smart_plug_schalter_1
+          entity_id: switch.heizlufter_schalter_1
     mode: single

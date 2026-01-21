@@ -9,7 +9,7 @@ ambient_feuerlicht_warm_flicker:
   sequence:
     - target:
         entity_id:
-          - light.computer_licht_2
+          - light.computer_licht
           - light.buffet_licht
       data:
         init_states: 30,55,62
@@ -39,10 +39,13 @@ ambient_velvet_rainbow:
         step_h: 2
         t: 3
     - repeat:
-        count: 100000
+        while:
+          - condition: state
+            entity_id: input_select.ambient_modus
+            state: "Velvet Rainbow"
         sequence:
           - target:
-              entity_id: light.computer_licht_2
+              entity_id: light.computer_licht
             data:
               hs_color:
                 - "{{ hue }}"
@@ -89,13 +92,10 @@ lights_bedtime:
   alias: Bedtime Light Scene
   mode: single
   sequence:
-    - action: light.turn_off
-      target:
-        area_id: all
-      continue_on_error: true
+    - action: script.all_lights_off
     - action: light.turn_on
       target:
-        entity_id: light.schlafzimmer_licht
+        entity_id: light.bett_licht
       data:
         brightness_pct: "{{ states('input_number.night_mode_brightness')|int(15) }}"
         color_temp_kelvin: 2700
@@ -107,7 +107,23 @@ all_lights_off:
   sequence:
     - action: light.turn_off
       target:
-        entity_id: all
+        entity_id:
+          - light.bad
+          - light.bad_2
+          - light.buffet_licht
+          - light.buffet_lichtstreifen
+          - light.bett_licht
+          - light.bett_licht_2
+          - light.computer_licht
+          - light.kleiderschrank_2
+          - light.kuche_birne_1
+          - light.kuche_birne_2_2
+          - light.kuche_streifen
+          - light.kuche_blind_hintergrundbeleuchtung
+          - light.rollladen_computer_hintergrundbeleuchtung
+          - light.yoga_blind_hintergrundbeleuchtung
+          - light.schlafen_blind_hintergrundbeleuchtung
+          - light.deckenventilator_wohnzimmer
       continue_on_error: true
 
 all_covers_open:
@@ -120,20 +136,20 @@ all_covers_open:
   sequence:
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.rollladen_computer_vorhang
-        tracker_entity: input_boolean.blind_computer_last_opened
+        cover_entity: cover.wohnzimmer_rollladen
+        tracker_entity: input_boolean.blind_wohnzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.kuche_blind_vorhang
+        cover_entity: cover.kuche_rollladen
         tracker_entity: input_boolean.blind_kuche_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.yoga_blind_vorhang
-        tracker_entity: input_boolean.blind_yoga_last_opened
+        cover_entity: cover.kiffzimmer_rollladen
+        tracker_entity: input_boolean.blind_kiffzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.schlafen_blind_vorhang
-        tracker_entity: input_boolean.blind_schlafen_last_opened
+        cover_entity: cover.schlafzimmer_rollladen
+        tracker_entity: input_boolean.blind_schlafzimmer_last_opened
 
 all_covers_close:
   alias: Close All Covers
@@ -141,20 +157,20 @@ all_covers_close:
   sequence:
     - action: script.safe_close_blind
       data:
-        cover_entity: cover.rollladen_computer_vorhang
-        tracker_entity: input_boolean.blind_computer_last_opened
+        cover_entity: cover.wohnzimmer_rollladen
+        tracker_entity: input_boolean.blind_wohnzimmer_last_opened
     - action: script.safe_close_blind
       data:
-        cover_entity: cover.kuche_blind_vorhang
+        cover_entity: cover.kuche_rollladen
         tracker_entity: input_boolean.blind_kuche_last_opened
     - action: script.safe_close_blind
       data:
-        cover_entity: cover.yoga_blind_vorhang
-        tracker_entity: input_boolean.blind_yoga_last_opened
+        cover_entity: cover.kiffzimmer_rollladen
+        tracker_entity: input_boolean.blind_kiffzimmer_last_opened
     - action: script.safe_close_blind
       data:
-        cover_entity: cover.schlafen_blind_vorhang
-        tracker_entity: input_boolean.blind_schlafen_last_opened
+        cover_entity: cover.schlafzimmer_rollladen
+        tracker_entity: input_boolean.blind_schlafzimmer_last_opened
 
 light_toggle_with_brightness:
   alias: Toggle Light with Smart Brightness
@@ -199,11 +215,11 @@ safe_open_blind:
   mode: single
   fields:
     cover_entity:
-      description: "Cover entity to open (e.g., cover.rollladen_computer_vorhang)"
-      example: "cover.rollladen_computer_vorhang"
+      description: "Cover entity to open (e.g., cover.wohnzimmer_rollladen)"
+      example: "cover.wohnzimmer_rollladen"
     tracker_entity:
-      description: "Tracker boolean (e.g., input_boolean.blind_computer_last_opened)"
-      example: "input_boolean.blind_computer_last_opened"
+      description: "Tracker boolean (e.g., input_boolean.blind_wohnzimmer_last_opened)"
+      example: "input_boolean.blind_wohnzimmer_last_opened"
   sequence:
     # Only open if the last action was NOT an open (tracker = false)
     - choose:
@@ -215,7 +231,7 @@ safe_open_blind:
                 # Special handling for inverted Schlafen blind
                 - conditions:
                     - condition: template
-                      value_template: "{{ cover_entity == 'cover.schlafen_blind_vorhang' }}"
+                      value_template: "{{ cover_entity == 'cover.schlafzimmer_rollladen' }}"
                   sequence:
                     - action: cover.close_cover # Inverted!
                       target:
@@ -241,17 +257,17 @@ safe_close_blind:
   mode: single
   fields:
     cover_entity:
-      description: "Cover entity to close (e.g., cover.rollladen_computer_vorhang)"
-      example: "cover.rollladen_computer_vorhang"
+      description: "Cover entity to close (e.g., cover.wohnzimmer_rollladen)"
+      example: "cover.wohnzimmer_rollladen"
     tracker_entity:
-      description: "Tracker boolean (e.g., input_boolean.blind_computer_last_opened)"
-      example: "input_boolean.blind_computer_last_opened"
+      description: "Tracker boolean (e.g., input_boolean.blind_wohnzimmer_last_opened)"
+      example: "input_boolean.blind_wohnzimmer_last_opened"
   sequence:
     - choose:
         # Special handling for inverted Schlafen blind
         - conditions:
             - condition: template
-              value_template: "{{ cover_entity == 'cover.schlafen_blind_vorhang' }}"
+              value_template: "{{ cover_entity == 'cover.schlafzimmer_rollladen' }}"
           sequence:
             - action: cover.open_cover # Inverted!
               target:
@@ -289,7 +305,7 @@ fan_winter_heat_now:
   sequence:
     - action: fan.turn_on
       target:
-        entity_id: fan.ceiling_fan_with_light
+        entity_id: fan.deckenventilator_wohnzimmer
       data:
         percentage: 33 # Low speed to avoid draft
         direction: "reverse" # Updraft to mix warm air at ceiling
@@ -308,7 +324,7 @@ living_room_lights_on_blind_close:
         brightness_pct: 80
     - action: light.turn_on
       target:
-        entity_id: light.ceiling_fan_with_light # Verify entity ID
+        entity_id: light.deckenventilator_wohnzimmer # Verify entity ID
       data:
         brightness_pct: 50
         color_temp_kelvin: 2700

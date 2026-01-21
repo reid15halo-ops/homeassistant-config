@@ -58,13 +58,13 @@ fire_effect:
 
 # Blind State Tracking (prevents opening twice in a row)
 # true = last action was OPEN, false = last action was CLOSE
-blind_computer_last_opened:
-  name: "Blind Computer - Last Opened"
+blind_wohnzimmer_last_opened:
+  name: "Blind Wohnzimmer - Last Opened"
   icon: mdi:window-shutter-open
   initial: false
 
-blind_schlafen_last_opened:
-  name: "Blind Schlafen - Last Opened"
+blind_schlafzimmer_last_opened:
+  name: "Blind Schlafzimmer - Last Opened"
   icon: mdi:window-shutter-open
   initial: false
 
@@ -73,8 +73,8 @@ blind_kuche_last_opened:
   icon: mdi:window-shutter-open
   initial: false
 
-blind_yoga_last_opened:
-  name: "Blind Yoga - Last Opened"
+blind_kiffzimmer_last_opened:
+  name: "Blind Kiffzimmer - Last Opened"
   icon: mdi:window-shutter-open
   initial: false
 
@@ -88,3 +88,9 @@ auto_lights_living_room_blind_trigger:
   name: "Auto Lights on Blind Close (Living Room)"
   icon: mdi:lightbulb-auto
   initial: true
+
+# Cleaning Mode
+cleaning_mode:
+  name: "Reinigungsmodus"
+  icon: mdi:broom
+  initial: false

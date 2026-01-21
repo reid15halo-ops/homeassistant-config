@@ -1,9 +1,16 @@
 ﻿- id: morning_wakeup_weekday
-  alias: Morgen - Aufwachen Werktag (05:00)
-  description: Gradual wake-up light and heating on weekdays
+  alias: Morgen - Aufwachen Werktag (04:30 - 05:30)
+  description: Gradual wake-up light and heating on weekdays (Robust against restarts)
   trigger:
     - platform: time
       at: 04:30
+      id: heat_start
+    - platform: time
+      at: 05:00
+      id: light_start
+    - platform: time
+      at: 05:30
+      id: light_end
   condition:
     - condition: time
       weekday:
@@ -13,30 +20,39 @@
         - thu
         - fri
   action:
-    - action: climate.set_temperature
-      target:
-        entity_id:
-          - climate.thermostat_bad
-          - climate.thermostat_computer
-      data:
-        temperature: 23
-    - delay:
-        minutes: 30
-    - action: light.turn_on
-      target:
-        entity_id: light.bett_licht
-      data:
-        brightness_pct: 5
-        color_temp_kelvin: 2700
-        transition: 1800
-    - delay:
-        minutes: 30
-    - action: light.turn_on
-      target:
-        entity_id: light.bett_licht
-      data:
-        brightness_pct: 80
-  mode: single
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: heat_start
+          sequence:
+            - action: climate.set_temperature
+              target:
+                entity_id:
+                  - climate.thermostat_bad
+                  - climate.thermostat_computer
+              data:
+                temperature: 23
+        - conditions:
+            - condition: trigger
+              id: light_start
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id: light.bett_licht
+              data:
+                brightness_pct: 5
+                color_temp_kelvin: 2700
+                transition: 1800
+        - conditions:
+            - condition: trigger
+              id: light_end
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id: light.bett_licht
+              data:
+                brightness_pct: 80
+  mode: parallel
 - id: morning_wakeup_weekend
   alias: Morgen - Aufwachen Wochenende (10:00)
   description: Weekend wake-up routine
@@ -74,20 +90,20 @@
   action:
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.rollladen_computer_vorhang
-        tracker_entity: input_boolean.blind_computer_last_opened
+        cover_entity: cover.wohnzimmer_rollladen
+        tracker_entity: input_boolean.blind_wohnzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.schlafen_blind_vorhang
-        tracker_entity: input_boolean.blind_schlafen_last_opened
+        cover_entity: cover.schlafzimmer_rollladen
+        tracker_entity: input_boolean.blind_schlafzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.kuche_blind_vorhang
+        cover_entity: cover.kuche_rollladen
         tracker_entity: input_boolean.blind_kuche_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.yoga_blind_vorhang
-        tracker_entity: input_boolean.blind_yoga_last_opened
+        cover_entity: cover.kiffzimmer_rollladen
+        tracker_entity: input_boolean.blind_kiffzimmer_last_opened
   mode: single
 - id: shutters_open_winter_weekday_morning_home
   alias: Rollläden - Öffnen Winter Werktag Morgen (Zuhause)
@@ -114,20 +130,20 @@
   action:
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.rollladen_computer_vorhang
-        tracker_entity: input_boolean.blind_computer_last_opened
+        cover_entity: cover.wohnzimmer_rollladen
+        tracker_entity: input_boolean.blind_wohnzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.schlafen_blind_vorhang
-        tracker_entity: input_boolean.blind_schlafen_last_opened
+        cover_entity: cover.schlafzimmer_rollladen
+        tracker_entity: input_boolean.blind_schlafzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.kuche_blind_vorhang
+        cover_entity: cover.kuche_rollladen
         tracker_entity: input_boolean.blind_kuche_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.yoga_blind_vorhang
-        tracker_entity: input_boolean.blind_yoga_last_opened
+        cover_entity: cover.kiffzimmer_rollladen
+        tracker_entity: input_boolean.blind_kiffzimmer_last_opened
   mode: single
 - id: shutters_open_winter_weekday_afternoon
   alias: Rollläden - Öffnen Winter Werktag Nachmittag (Unterwegs)
@@ -156,20 +172,20 @@
   action:
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.rollladen_computer_vorhang
-        tracker_entity: input_boolean.blind_computer_last_opened
+        cover_entity: cover.wohnzimmer_rollladen
+        tracker_entity: input_boolean.blind_wohnzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.schlafen_blind_vorhang
-        tracker_entity: input_boolean.blind_schlafen_last_opened
+        cover_entity: cover.schlafzimmer_rollladen
+        tracker_entity: input_boolean.blind_schlafzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.kuche_blind_vorhang
+        cover_entity: cover.kuche_rollladen
         tracker_entity: input_boolean.blind_kuche_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.yoga_blind_vorhang
-        tracker_entity: input_boolean.blind_yoga_last_opened
+        cover_entity: cover.kiffzimmer_rollladen
+        tracker_entity: input_boolean.blind_kiffzimmer_last_opened
   mode: single
 - id: shutters_open_spring_fall
   alias: Rollläden - Öffnen Frühling/Herbst
@@ -196,92 +212,26 @@
           weekday:
             - sat
             - sun
+    - condition: state
+      entity_id: input_boolean.cleaning_mode
+      state: "off"
   action:
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.rollladen_computer_vorhang
-        tracker_entity: input_boolean.blind_computer_last_opened
+        cover_entity: cover.wohnzimmer_rollladen
+        tracker_entity: input_boolean.blind_wohnzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.schlafen_blind_vorhang
-        tracker_entity: input_boolean.blind_schlafen_last_opened
+        cover_entity: cover.schlafzimmer_rollladen
+        tracker_entity: input_boolean.blind_schlafzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.kuche_blind_vorhang
+        cover_entity: cover.kuche_rollladen
         tracker_entity: input_boolean.blind_kuche_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.yoga_blind_vorhang
-        tracker_entity: input_boolean.blind_yoga_last_opened
-  mode: single
-- id: shutters_open_summer
-  alias: Rollläden - Öffnen Sommer
-  description: Open blinds early in summer (but not too early)
-  trigger:
-    - platform: sun
-      event: sunrise
-      offset: 00:00:00
-  condition:
-    - condition: template
-      value_template: "{{ now().month in [6, 7, 8] }}"
-    - condition: time
-      after: 06:00
-  action:
-    - action: script.safe_open_blind
-      data:
-        cover_entity: cover.rollladen_computer_vorhang
-        tracker_entity: input_boolean.blind_computer_last_opened
-    - action: script.safe_open_blind
-      data:
-        cover_entity: cover.schlafen_blind_vorhang
-        tracker_entity: input_boolean.blind_schlafen_last_opened
-    - action: script.safe_open_blind
-      data:
-        cover_entity: cover.kuche_blind_vorhang
-        tracker_entity: input_boolean.blind_kuche_last_opened
-    - action: script.safe_open_blind
-      data:
-        cover_entity: cover.yoga_blind_vorhang
-        tracker_entity: input_boolean.blind_yoga_last_opened
-  mode: single
-- id: shutters_close_sunset_winter
-  alias: Rollläden - Schließen bei Sonnenuntergang (Winter)
-  description: Close shutters at sunset in winter (Nov-Feb, no delay)
-  trigger:
-    - platform: sun
-      event: sunset
-      offset: 00:00:00
-  condition:
-    - condition: template
-      value_template: "{{ now().month in [11, 12, 1, 2] }}"
-  action:
-    - action: script.all_covers_close
-  mode: single
-- id: shutters_close_sunset_spring
-  alias: Rollläden - Schließen bei Sonnenuntergang (Frühling)
-  description: Close shutters at sunset +1h in spring (Mar-Apr, Oct)
-  trigger:
-    - platform: sun
-      event: sunset
-      offset: 01:00:00
-  condition:
-    - condition: template
-      value_template: "{{ now().month in [3, 4, 10] }}"
-  action:
-    - action: script.all_covers_close
-  mode: single
-- id: shutters_close_sunset_summer
-  alias: Rollläden - Schließen bei Sonnenuntergang (Sommer)
-  description: Close shutters at sunset +2h in summer (May-Sep)
-  trigger:
-    - platform: sun
-      event: sunset
-      offset: 02:00:00
-  condition:
-    - condition: template
-      value_template: "{{ now().month in [5, 6, 7, 8, 9] }}"
-  action:
-    - action: script.all_covers_close
+        cover_entity: cover.kiffzimmer_rollladen
+        tracker_entity: input_boolean.blind_kiffzimmer_last_opened
   mode: single
 - id: bedroom_shutters_sleep
   alias: Schlafzimmer - Rollläden schließen bei Schlaf
@@ -297,16 +247,19 @@
       after: "22:00"
       before: 08:00
     - condition: state
-      entity_id: binary_sensor.human_presence_detector_bewegung
+      entity_id: binary_sensor.wohnzimmer_true_presence
       state: "off"
     - condition: state
       entity_id: binary_sensor.motion_sensor_kuche_bewegung
       state: "off"
+    - condition: state
+      entity_id: input_boolean.cleaning_mode
+      state: "off"
   action:
     - action: script.safe_close_blind
       data:
-        cover_entity: cover.schlafen_blind_vorhang
-        tracker_entity: input_boolean.blind_schlafen_last_opened
+        cover_entity: cover.schlafzimmer_rollladen
+        tracker_entity: input_boolean.blind_schlafzimmer_last_opened
   mode: single
 - id: light_wohnzimmer_smart_presence
   alias: Wohnzimmer - Smartes Licht (True Presence)
@@ -350,13 +303,13 @@
   description: Controls kitchen lights based on True Presence and Adaptive Lighting
   triggers:
     - entity_id:
-        - binary_sensor.human_presence_detector_3_bewegung
+        - binary_sensor.kuche_true_presence
       to:
         - "on"
       id: occupied
       trigger: state
     - entity_id:
-        - binary_sensor.human_presence_detector_3_bewegung
+        - binary_sensor.kuche_true_presence
       to:
         - "off"
       id: vacant
@@ -369,6 +322,9 @@
             - condition: sun
               after: sunset
               before: sunrise
+            - condition: state
+              entity_id: input_boolean.cleaning_mode
+              state: "off"
           sequence:
             - action: light.turn_on
               target:
@@ -385,6 +341,9 @@
         - conditions:
             - condition: trigger
               id: vacant
+            - condition: state
+              entity_id: input_boolean.cleaning_mode
+              state: "off"
           sequence:
             - action: light.turn_off
               target:
@@ -420,19 +379,25 @@
                 - condition: time
                   before: 08:00
                   after: "20:00"
+            - condition: state
+              entity_id: input_boolean.cleaning_mode
+              state: "off"
           sequence:
             - action: light.turn_on
               target:
-                entity_id: light.bad_licht
+                entity_id: light.bad
               data:
                 transition: 2
         - conditions:
             - condition: trigger
               id: vacant
+            - condition: state
+              entity_id: input_boolean.cleaning_mode
+              state: "off"
           sequence:
             - action: light.turn_off
               target:
-                entity_id: light.bad_licht
+                entity_id: light.bad
               data:
                 transition: 2
   mode: restart
@@ -456,6 +421,9 @@
             - condition: sun
               after: sunset
               before: sunrise
+            - condition: state
+              entity_id: input_boolean.cleaning_mode
+              state: "off"
           sequence:
             - action: light.turn_on
               target:
@@ -465,6 +433,9 @@
         - conditions:
             - condition: trigger
               id: vacant
+            - condition: state
+              entity_id: input_boolean.cleaning_mode
+              state: "off"
           sequence:
             - action: light.turn_off
               target:
@@ -492,6 +463,9 @@
             - condition: sun
               after: sunset
               before: sunrise
+            - condition: state
+              entity_id: input_boolean.cleaning_mode
+              state: "off"
           sequence:
             - action: light.turn_on
               target:
@@ -506,6 +480,9 @@
         - conditions:
             - condition: trigger
               id: vacant
+            - condition: state
+              entity_id: input_boolean.cleaning_mode
+              state: "off"
           sequence:
             - action: light.turn_off
               target:
@@ -696,9 +673,7 @@
       for:
         minutes: 10
   action:
-    - action: light.turn_off
-      target:
-        entity_id: all
+    - action: script.all_lights_off
     - action: climate.set_temperature
       target:
         entity_id:
@@ -721,18 +696,16 @@
       after: "22:00"
       before: 08:00
     - condition: state
-      entity_id: binary_sensor.human_presence_detector_bewegung
+      entity_id: binary_sensor.wohnzimmer_true_presence
       state: "off"
     - condition: state
-      entity_id: binary_sensor.human_presence_detector_2_bewegung
+      entity_id: binary_sensor.wohnzimmer_true_presence
       state: "off"
     - condition: state
       entity_id: binary_sensor.motion_sensor_kuche_bewegung
       state: "off"
   action:
-    - action: light.turn_off
-      target:
-        entity_id: all
+    - action: script.all_lights_off
     - action: climate.set_temperature
       target:
         entity_id:
@@ -764,8 +737,8 @@
         color_temp_kelvin: 2200
     - action: script.safe_close_blind
       data:
-        cover_entity: cover.rollladen_computer_vorhang
-        tracker_entity: input_boolean.blind_computer_last_opened
+        cover_entity: cover.wohnzimmer_rollladen
+        tracker_entity: input_boolean.blind_wohnzimmer_last_opened
   mode: single
 - id: movie_mode_off
   alias: Filmzeit - Deaktivieren
@@ -800,7 +773,8 @@
   description: Close shutters when too hot
   trigger:
     - platform: numeric_state
-      entity_id: sensor.openweathermap_temperature
+      entity_id: weather.forecast_home
+      attribute: temperature
       above: 25
   condition:
     - condition: sun
@@ -940,10 +914,10 @@
     - action: input_boolean.turn_off
       target:
         entity_id:
-          - input_boolean.blind_computer_last_opened
-          - input_boolean.blind_schlafen_last_opened
+          - input_boolean.blind_wohnzimmer_last_opened
+          - input_boolean.blind_schlafzimmer_last_opened
           - input_boolean.blind_kuche_last_opened
-          - input_boolean.blind_yoga_last_opened
+          - input_boolean.blind_kiffzimmer_last_opened
   mode: single
 - id: deckenventilator_wintermode
   alias: Deckenventilator - Wintermodus (Heizung an)
@@ -991,7 +965,7 @@
       target:
         entity_id:
           - light.bad_2
-          - light.bad_2_2
+          - light.bad_2
 - id: schlafzimmer_licht_an_bei_prasenz
   alias: Schlafzimmer - Licht an bei Präsenz
   description: Turn on bedroom light when presence detected (only when dark)
@@ -1046,7 +1020,7 @@
         entity_id:
           - light.kuche_birne_1
           - light.kuche_birne_2_2
-          - light.kuche_rollladen_hintergrundbeleuchtung
+          - light.kuche_blind_hintergrundbeleuchtung
       data:
         brightness_pct: 100
     - action: light.turn_on
@@ -1070,7 +1044,7 @@
         entity_id:
           - light.kuche_birne_1
           - light.kuche_birne_2_2
-          - light.kuche_rollladen_hintergrundbeleuchtung
+          - light.kuche_blind_hintergrundbeleuchtung
         device_id: 2717a62b4f1fbe07a073d0a6e3215b99
       data:
         transition: 9
@@ -1137,12 +1111,14 @@
   description: Toggle heating mode based on outside temperature
   trigger:
     - platform: numeric_state
-      entity_id: sensor.openweathermap_temperature
+      entity_id: weather.forecast_home
+      attribute: temperature
       below: 15
       for: "24:00:00"
       id: winter_start
     - platform: numeric_state
-      entity_id: sensor.openweathermap_temperature
+      entity_id: weather.forecast_home
+      attribute: temperature
       above: 20
       for: "24:00:00"
       id: winter_end
@@ -1175,7 +1151,7 @@
   description: Turn on living room lights when blind closes
   trigger:
     - platform: state
-      entity_id: cover.rollladen_computer_vorhang
+      entity_id: cover.wohnzimmer_rollladen
       to: "closed"
   condition:
     - condition: state
@@ -1184,3 +1160,73 @@
   action:
     - action: script.living_room_lights_on_blind_close
   mode: single
+
+- id: light_computer_fp2
+  alias: Computer - Licht bei Anwesenheit (FP2)
+  description: Turn on computer lights when presence detected by FP2, especially when blinds are closed.
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
+      to: "on"
+      id: occupied
+    - platform: state
+      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
+      to: "off"
+      for: 00:01:00
+      id: vacant
+  action:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: occupied
+            - condition: or
+              conditions:
+                - condition: state
+                  entity_id: cover.wohnzimmer_rollladen
+                  state: "closed"
+                - condition: numeric_state
+                  entity_id: cover.wohnzimmer_rollladen
+                  attribute: current_position
+                  below: 10
+                - condition: sun
+                  after: sunset
+                  before: sunrise
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id: light.computer_licht
+              data:
+                transition: 2
+            - action: fan.turn_on
+              target:
+                entity_id: fan.deckenventilator_wohnzimmer
+        - conditions:
+            - condition: trigger
+              id: vacant
+          sequence:
+            - action: light.turn_off
+              target:
+                entity_id: light.computer_licht
+              data:
+                transition: 2
+            - action: fan.turn_off
+              target:
+                entity_id: fan.deckenventilator_wohnzimmer
+  mode: restart
+
+- id: cleaning_mode_active
+  alias: Reinigungsmodus - Aktivieren
+  description: Turn on all lights to max brightness for cleaning
+  trigger:
+    - platform: state
+      entity_id: input_boolean.cleaning_mode
+      to: "on"
+  action:
+    - action: script.all_covers_open
+    - action: light.turn_on
+      target:
+        entity_id: all
+      data:
+        brightness_pct: 100
+        color_temp_kelvin: 4000
+  mode: restart
