@@ -263,21 +263,22 @@
   mode: single
 - id: light_wohnzimmer_smart_presence
   alias: Wohnzimmer - Smartes Licht (True Presence)
-  description: Controls lights based on True Presence and FP2 Light Sensor (triggers when dark)
+  description: Controls lights based on FP2 Presence and Light Sensor (triggers when dark)
   trigger:
     - platform: state
-      entity_id: binary_sensor.wohnzimmer_true_presence
+      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
       to: "on"
       id: occupied
     - platform: state
-      entity_id: binary_sensor.wohnzimmer_true_presence
+      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
       to: "off"
-      for: 00:00:10
+      for: 00:01:00
       id: vacant
     - platform: numeric_state
       entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
       below: 30
       id: got_dark
+
   condition:
     - condition: state
       entity_id: input_boolean.auto_lights_enabled
@@ -304,7 +305,7 @@
             - condition: trigger
               id: got_dark
             - condition: state
-              entity_id: binary_sensor.wohnzimmer_true_presence
+              entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
               state: "on"
           sequence:
             - action: light.turn_on
