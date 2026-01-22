@@ -295,10 +295,17 @@
           sequence:
             - action: light.turn_on
               target:
-                entity_id:
-                  - light.buffet_lichtstreifen
-                  - light.deckenventilator_wohnzimmer
+                entity_id: light.buffet_lichtstreifen
               data:
+                brightness_pct: 100
+                color_temp_kelvin: 2700
+                transition: 2
+            - action: light.turn_on
+              target:
+                entity_id: light.deckenventilator_wohnzimmer
+              data:
+                brightness_pct: 50
+                color_temp_kelvin: 2700
                 transition: 2
         # Turn on if it gets dark while already present
         - conditions:
@@ -310,10 +317,17 @@
           sequence:
             - action: light.turn_on
               target:
-                entity_id:
-                  - light.buffet_lichtstreifen
-                  - light.deckenventilator_wohnzimmer
+                entity_id: light.buffet_lichtstreifen
               data:
+                brightness_pct: 100
+                color_temp_kelvin: 2700
+                transition: 2
+            - action: light.turn_on
+              target:
+                entity_id: light.deckenventilator_wohnzimmer
+              data:
+                brightness_pct: 50
+                color_temp_kelvin: 2700
                 transition: 2
         # Turn off when vacant
         - conditions:
