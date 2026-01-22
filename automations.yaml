@@ -281,6 +281,9 @@
       entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
       below: 30
       id: got_dark
+    - platform: time_pattern
+      minutes: "/5"
+      id: periodic_check
   condition:
     - condition: state
       entity_id: input_boolean.auto_lights_enabled
@@ -337,24 +340,25 @@
 - id: light_kuche_smart_presence
   alias: Küche - Smartes Licht (True Presence)
   description: Controls kitchen lights based on True Presence and Adaptive Lighting
-  triggers:
-    - entity_id:
-        - binary_sensor.kuche_true_presence
-      to:
-        - "on"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.kuche_true_presence
+      to: "on"
       id: occupied
-      trigger: state
-    - entity_id:
-        - binary_sensor.kuche_true_presence
-      to:
-        - "off"
+    - platform: state
+      entity_id: binary_sensor.kuche_true_presence
+      to: "off"
       id: vacant
-      trigger: state
-  actions:
+    - platform: time_pattern
+      minutes: "/5"
+      id: periodic_check
+  action:
     - choose:
+        # Case 1: Occupied AND Dark -> Turn ON
         - conditions:
-            - condition: trigger
-              id: occupied
+            - condition: state
+              entity_id: binary_sensor.kuche_true_presence
+              state: "on"
             - condition: sun
               after: sunset
               before: sunrise
@@ -367,16 +371,14 @@
                 entity_id:
                   - light.kuche_birne_2_2
                   - light.kuche_birne_1
+                  - light.kuche_streifen
               data:
                 transition: 2
-            - action: light.turn_on
-              target:
-                entity_id: light.kuche_streifen
-              data:
-                transition: 2
+        # Case 2: Vacant -> Turn OFF
         - conditions:
-            - condition: trigger
-              id: vacant
+            - condition: state
+              entity_id: binary_sensor.kuche_true_presence
+              state: "off"
             - condition: state
               entity_id: input_boolean.cleaning_mode
               state: "off"
@@ -385,8 +387,8 @@
               target:
                 entity_id:
                   - light.kuche_birne_2_2
-                  - light.kuche_streifen
                   - light.kuche_birne_1
+                  - light.kuche_streifen
               data:
                 transition: 2
   mode: restart
@@ -402,11 +404,16 @@
       entity_id: binary_sensor.bad_true_presence
       to: "off"
       id: vacant
+    - platform: time_pattern
+      minutes: "/5"
+      id: periodic_check
   action:
     - choose:
+        # Case 1: Occupied AND (Dark OR Night) -> Turn ON
         - conditions:
-            - condition: trigger
-              id: occupied
+            - condition: state
+              entity_id: binary_sensor.bad_true_presence
+              state: "on"
             - condition: or
               conditions:
                 - condition: sun
@@ -424,9 +431,11 @@
                 entity_id: light.bad
               data:
                 transition: 2
+        # Case 2: Vacant -> Turn OFF
         - conditions:
-            - condition: trigger
-              id: vacant
+            - condition: state
+              entity_id: binary_sensor.bad_true_presence
+              state: "off"
             - condition: state
               entity_id: input_boolean.cleaning_mode
               state: "off"
@@ -449,11 +458,16 @@
       entity_id: binary_sensor.schlafen_true_presence
       to: "off"
       id: vacant
+    - platform: time_pattern
+      minutes: "/5"
+      id: periodic_check
   action:
     - choose:
+        # Case 1: Occupied AND Dark -> Turn ON
         - conditions:
-            - condition: trigger
-              id: occupied
+            - condition: state
+              entity_id: binary_sensor.schlafen_true_presence
+              state: "on"
             - condition: sun
               after: sunset
               before: sunrise
@@ -466,9 +480,11 @@
                 entity_id: light.bett_licht
               data:
                 transition: 2
+        # Case 2: Vacant -> Turn OFF
         - conditions:
-            - condition: trigger
-              id: vacant
+            - condition: state
+              entity_id: binary_sensor.schlafen_true_presence
+              state: "off"
             - condition: state
               entity_id: input_boolean.cleaning_mode
               state: "off"
@@ -491,15 +507,20 @@
       entity_id: binary_sensor.kiffzimmer_true_presence
       to: "off"
       id: vacant
+    - platform: time_pattern
+      minutes: "/5"
+      id: periodic_check
   condition:
     - condition: state
       entity_id: input_boolean.auto_lights_enabled
       state: "on"
   action:
     - choose:
+        # Case 1: Occupied AND Dark -> Turn ON
         - conditions:
-            - condition: trigger
-              id: occupied
+            - condition: state
+              entity_id: binary_sensor.kiffzimmer_true_presence
+              state: "on"
             - condition: sun
               after: sunset
               before: sunrise
@@ -509,26 +530,21 @@
           sequence:
             - action: light.turn_on
               target:
-                entity_id: light.computer_licht
-              data:
-                transition: 2
-            - action: light.turn_on
-              target:
                 entity_id: light.kiffzimmer_lichtstreifen
               data:
                 transition: 2
+        # Case 2: Vacant -> Turn OFF
         - conditions:
-            - condition: trigger
-              id: vacant
+            - condition: state
+              entity_id: binary_sensor.kiffzimmer_true_presence
+              state: "off"
             - condition: state
               entity_id: input_boolean.cleaning_mode
               state: "off"
           sequence:
             - action: light.turn_off
               target:
-                entity_id:
-                  - light.kiffzimmer_lichtstreifen
-                  - light.computer_licht
+                entity_id: light.kiffzimmer_lichtstreifen
               data:
                 transition: 2
   mode: restart
