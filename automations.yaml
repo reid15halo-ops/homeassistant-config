@@ -296,8 +296,8 @@
             - action: light.turn_on
               target:
                 entity_id:
-                  - light.buffet_licht
-                  - light.computer_licht
+                  - light.buffet_lichtstreifen
+                  - light.deckenventilator_wohnzimmer
               data:
                 transition: 2
         # Turn on if it gets dark while already present
@@ -311,8 +311,8 @@
             - action: light.turn_on
               target:
                 entity_id:
-                  - light.buffet_licht
-                  - light.computer_licht
+                  - light.buffet_lichtstreifen
+                  - light.deckenventilator_wohnzimmer
               data:
                 transition: 2
         # Turn off when vacant
@@ -323,8 +323,8 @@
             - action: light.turn_off
               target:
                 entity_id:
-                  - light.buffet_licht
-                  - light.computer_licht
+                  - light.buffet_lichtstreifen
+                  - light.deckenventilator_wohnzimmer
               data:
                 transition: 2
   mode: restart
