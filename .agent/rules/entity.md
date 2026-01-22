@@ -170,7 +170,7 @@ binary_sensor.roborock_q7_max_reinigen
 
 | Domain | Example | Description |
 |--------|---------|-------------|
-| `light.*` | `light.buffet_licht` | All light entities |
+| `light.*` | `light.wohnzimmer_buffet_licht` | All light entities |
 | `cover.*_vorhang` | `cover.rollladen_computer_vorhang` | Roller blinds |
 | `binary_sensor.*_bewegung` | `binary_sensor.motion_sensor_kuche_bewegung` | Motion sensors |
 | `binary_sensor.*_true_presence` | `binary_sensor.wohnzimmer_true_presence` | Combined presence |
