@@ -90,19 +90,19 @@
   action:
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.wohnzimmer_rollladen
+        cover_entity: cover.rollladen_computer_vorhang
         tracker_entity: input_boolean.blind_wohnzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.schlafzimmer_rollladen
+        cover_entity: cover.schlafen_blind_vorhang
         tracker_entity: input_boolean.blind_schlafzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.kuche_rollladen
+        cover_entity: cover.kuche_blind_vorhang
         tracker_entity: input_boolean.blind_kuche_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.kiffzimmer_rollladen
+        cover_entity: cover.yoga_blind_vorhang
         tracker_entity: input_boolean.blind_kiffzimmer_last_opened
   mode: single
 - id: shutters_open_winter_weekday_morning_home
@@ -130,19 +130,19 @@
   action:
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.wohnzimmer_rollladen
+        cover_entity: cover.rollladen_computer_vorhang
         tracker_entity: input_boolean.blind_wohnzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.schlafzimmer_rollladen
+        cover_entity: cover.schlafen_blind_vorhang
         tracker_entity: input_boolean.blind_schlafzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.kuche_rollladen
+        cover_entity: cover.kuche_blind_vorhang
         tracker_entity: input_boolean.blind_kuche_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.kiffzimmer_rollladen
+        cover_entity: cover.yoga_blind_vorhang
         tracker_entity: input_boolean.blind_kiffzimmer_last_opened
   mode: single
 - id: shutters_open_winter_weekday_afternoon
@@ -172,19 +172,19 @@
   action:
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.wohnzimmer_rollladen
+        cover_entity: cover.rollladen_computer_vorhang
         tracker_entity: input_boolean.blind_wohnzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.schlafzimmer_rollladen
+        cover_entity: cover.schlafen_blind_vorhang
         tracker_entity: input_boolean.blind_schlafzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.kuche_rollladen
+        cover_entity: cover.kuche_blind_vorhang
         tracker_entity: input_boolean.blind_kuche_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.kiffzimmer_rollladen
+        cover_entity: cover.yoga_blind_vorhang
         tracker_entity: input_boolean.blind_kiffzimmer_last_opened
   mode: single
 - id: shutters_open_spring_fall
@@ -218,19 +218,19 @@
   action:
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.wohnzimmer_rollladen
+        cover_entity: cover.rollladen_computer_vorhang
         tracker_entity: input_boolean.blind_wohnzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.schlafzimmer_rollladen
+        cover_entity: cover.schlafen_blind_vorhang
         tracker_entity: input_boolean.blind_schlafzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.kuche_rollladen
+        cover_entity: cover.kuche_blind_vorhang
         tracker_entity: input_boolean.blind_kuche_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.kiffzimmer_rollladen
+        cover_entity: cover.yoga_blind_vorhang
         tracker_entity: input_boolean.blind_kiffzimmer_last_opened
   mode: single
 - id: bedroom_shutters_sleep
@@ -258,7 +258,7 @@
   action:
     - action: script.safe_close_blind
       data:
-        cover_entity: cover.schlafzimmer_rollladen
+        cover_entity: cover.schlafen_blind_vorhang
         tracker_entity: input_boolean.blind_schlafzimmer_last_opened
   mode: single
 - id: light_wohnzimmer_smart_presence
@@ -741,7 +741,7 @@
         color_temp_kelvin: 2200
     - action: script.safe_close_blind
       data:
-        cover_entity: cover.wohnzimmer_rollladen
+        cover_entity: cover.rollladen_computer_vorhang
         tracker_entity: input_boolean.blind_wohnzimmer_last_opened
   mode: single
 - id: movie_mode_off
@@ -824,8 +824,8 @@
   trigger:
     - platform: state
       entity_id:
-        - binary_sensor.human_presence_detector_bewegung
-        - binary_sensor.human_presence_detector_2_bewegung
+        - binary_sensor.presence_bad_bewegung
+        - binary_sensor.human_presence_detector_schlaf_bewegung
         - binary_sensor.motion_sensor_kuche_bewegung
         - binary_sensor.motion_sensor_schlafen_bewegung
       to: "on"
@@ -1164,7 +1164,7 @@
   description: Turn on living room lights when blind closes
   trigger:
     - platform: state
-      entity_id: cover.wohnzimmer_rollladen
+      entity_id: cover.rollladen_computer_vorhang
       to: "closed"
   condition:
     - condition: state
@@ -1195,10 +1195,10 @@
             - condition: or
               conditions:
                 - condition: state
-                  entity_id: cover.wohnzimmer_rollladen
+                  entity_id: cover.rollladen_computer_vorhang
                   state: "closed"
                 - condition: numeric_state
-                  entity_id: cover.wohnzimmer_rollladen
+                  entity_id: cover.rollladen_computer_vorhang
                   attribute: current_position
                   below: 10
                 - condition: sun
