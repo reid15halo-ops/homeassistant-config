@@ -1,4 +1,4 @@
-- id: morning_wakeup_weekday
+﻿- id: morning_wakeup_weekday
   alias: Morgen - Aufwachen Werktag (04:30 - 05:30)
   description: Gradual wake-up light and heating on weekdays (Robust against restarts)
   trigger:
@@ -74,7 +74,7 @@
         transition: 1800
   mode: single
 - id: shutters_open_winter_weekend
-  alias: Rollläden - Öffnen Winter Wochenende
+  alias: RolllÃ¤den - Ã–ffnen Winter Wochenende
   description: Open blinds on winter weekends for solar gain (free heating)
   trigger:
     - platform: sun
@@ -106,7 +106,7 @@
         tracker_entity: input_boolean.blind_kiffzimmer_last_opened
   mode: single
 - id: shutters_open_winter_weekday_morning_home
-  alias: Rollläden - Öffnen Winter Werktag Morgen (Zuhause)
+  alias: RolllÃ¤den - Ã–ffnen Winter Werktag Morgen (Zuhause)
   description:
     Open blinds in winter weekday morning if you're home (sick day, home
     office, etc.)
@@ -146,7 +146,7 @@
         tracker_entity: input_boolean.blind_kiffzimmer_last_opened
   mode: single
 - id: shutters_open_winter_weekday_afternoon
-  alias: Rollläden - Öffnen Winter Werktag Nachmittag (Unterwegs)
+  alias: RolllÃ¤den - Ã–ffnen Winter Werktag Nachmittag (Unterwegs)
   description:
     Open blinds on winter weekdays at noon if you're away at work (solar
     gain)
@@ -188,7 +188,7 @@
         tracker_entity: input_boolean.blind_kiffzimmer_last_opened
   mode: single
 - id: shutters_close_sunset_winter
-  alias: Rollläden - Schließen bei Sonnenuntergang (Winter)
+  alias: RolllÃ¤den - SchlieÃŸen bei Sonnenuntergang (Winter)
   description: Close blinds 1 hour after sunset in winter
   trigger:
     - platform: sun
@@ -219,7 +219,7 @@
         tracker_entity: input_boolean.blind_kiffzimmer_last_opened
   mode: single
 - id: shutters_open_spring_fall
-  alias: Rollläden - Öffnen Frühling/Herbst
+  alias: RolllÃ¤den - Ã–ffnen FrÃ¼hling/Herbst
   description: Open blinds at sunrise in spring/fall
   trigger:
     - platform: sun
@@ -265,7 +265,7 @@
         tracker_entity: input_boolean.blind_kiffzimmer_last_opened
   mode: single
 - id: bedroom_shutters_sleep
-  alias: Schlafzimmer - Rollläden schließen bei Schlaf
+  alias: Schlafzimmer - RolllÃ¤den schlieÃŸen bei Schlaf
   description: Close bedroom shutters when going to bed (motion in bedroom)
   trigger:
     - platform: state
@@ -369,7 +369,7 @@
   mode: restart
 
 - id: light_kuche_smart_presence
-  alias: Küche - Smartes Licht (True Presence)
+  alias: KÃ¼che - Smartes Licht (True Presence)
   description: Controls kitchen lights based on True Presence and Adaptive Lighting
   trigger:
     - platform: state
@@ -851,7 +851,7 @@
         transition: 2
   mode: single
 - id: guest_mode_on
-  alias: Gästemodus - Längere Timeouts
+  alias: GÃ¤stemodus - LÃ¤ngere Timeouts
   description: Disable automatic shutters and keep lights on longer when guests
   trigger:
     - platform: state
@@ -863,7 +863,7 @@
         entity_id: automation.rollladen_schliessen_bei_sonnenuntergang_winter
   mode: single
 - id: sun_protection
-  alias: Sonnenschutz - Rollläden bei Hitze
+  alias: Sonnenschutz - RolllÃ¤den bei Hitze
   description: Close shutters when too hot
   trigger:
     - platform: numeric_state
@@ -932,10 +932,10 @@
     - action: notify.mobile_app_redmi_note_12_pro_5g
       data:
         title: ?? Bewegung erkannt!
-        message: Bewegung in deiner Wohnung während Abwesenheit
+        message: Bewegung in deiner Wohnung wÃ¤hrend Abwesenheit
   mode: single
 - id: security_door_alert
-  alias: Sicherheit - Tür geöffnet bei Abwesenheit
+  alias: Sicherheit - TÃ¼r geÃ¶ffnet bei Abwesenheit
   description: Alert when door opens while away
   trigger:
     - platform: state
@@ -948,8 +948,8 @@
   action:
     - action: notify.mobile_app_redmi_note_12_pro_5g
       data:
-        title: "\U0001F6AA Tür geöffnet!"
-        message: Die Tür wurde geöffnet während du nicht zuhause bist
+        title: "\U0001F6AA TÃ¼r geÃ¶ffnet!"
+        message: Die TÃ¼r wurde geÃ¶ffnet wÃ¤hrend du nicht zuhause bist
   mode: single
 - id: system_auto_update_away
   alias: System - Automatische Updates bei Abwesenheit
@@ -1113,7 +1113,7 @@
                 entity_id: input_boolean.heizung_winter_mode
             - action: notify.mobile_app_redmi_note_12_pro_5g
               data:
-                message: Heizperiode aktiviert (unter 15°C für 24h)
+                message: Heizperiode aktiviert (unter 15Â°C fÃ¼r 24h)
         - conditions:
             - condition: trigger
               id: winter_end
@@ -1123,11 +1123,11 @@
                 entity_id: input_boolean.heizung_winter_mode
             - action: notify.mobile_app_redmi_note_12_pro_5g
               data:
-                message: Heizperiode beendet (über 20°C für 24h)
+                message: Heizperiode beendet (Ã¼ber 20Â°C fÃ¼r 24h)
   mode: single
 
 - id: living_room_lights_on_blind_close
-  alias: Wohnzimmer - Licht an wenn Rollladen schließt
+  alias: Wohnzimmer - Licht an wenn Rollladen schlieÃŸt
   description: Turn on living room lights when blind closes
   trigger:
     - platform: state
@@ -1320,7 +1320,7 @@
     - action: notify.mobile_app_redmi_note_12_pro_5g
       data:
         title: "?? Reinigung gestartet"
-        message: "Putzfrau ist eingetroffen. Modus AKTIVIERT. Honorar: 25/Std."
+        message: "Putzfrau ist eingetroffen. Modus AKTIVIERT. Honorar: 25Â€/Std."
   mode: single
 
 - id: cleaning_person_exit
@@ -1350,7 +1350,7 @@
           {% set cost = duration * 25 %}
           Reinigung beendet.
           Dauer: {{ duration | round(2) }} Std.
-          Honorar: {{ cost | round(2) }} 
+          Honorar: {{ cost | round(2) }} Â€
   mode: single
 
 # ============================================================================
@@ -1358,7 +1358,7 @@
 # ============================================================================
 - id: summer_ceiling_fan_auto
   alias: "Sommer - Deckenventilator bei Hitze"
-  description: "Start ceiling fan when temperature is above 24°C and you're home"
+  description: "Start ceiling fan when temperature is above 24Â°C and you're home"
   trigger:
     - platform: numeric_state
       entity_id: weather.forecast_home
@@ -1386,8 +1386,8 @@
   mode: single
 
 - id: summer_ceiling_fan_off
-  alias: "Sommer - Deckenventilator aus bei Kühle"
-  description: "Turn off ceiling fan when temperature drops below 22°C"
+  alias: "Sommer - Deckenventilator aus bei KÃ¼hle"
+  description: "Turn off ceiling fan when temperature drops below 22Â°C"
   trigger:
     - platform: numeric_state
       entity_id: weather.forecast_home
@@ -1403,7 +1403,7 @@
   mode: single
 
 - id: summer_peak_sun_blinds_close
-  alias: "Sommer - Rollläden bei Sonnenhöchststand"
+  alias: "Sommer - RolllÃ¤den bei SonnenhÃ¶chststand"
   description: "Close blinds when sun is at its peak (high solar elevation) to keep apartment cool"
   trigger:
     - platform: numeric_state
@@ -1421,7 +1421,7 @@
   mode: single
 
 - id: summer_evening_blinds_open
-  alias: "Sommer - Rollläden öffnen am Abend"
+  alias: "Sommer - RolllÃ¤den Ã¶ffnen am Abend"
   description: "Open blinds in the evening to let cool air in"
   trigger:
     - platform: numeric_state
@@ -1518,7 +1518,7 @@
 # ============================================================================
 - id: heating_cold_bedroom
   alias: "Heizung - Kaltes Schlafzimmer"
-  description: "Keep bedroom cooler than other rooms (max 18°C)"
+  description: "Keep bedroom cooler than other rooms (max 18Â°C)"
   trigger:
     - platform: time
       at: "06:00:00"
@@ -1538,156 +1538,75 @@
       data:
         temperature: 18
   mode: single
-#   = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
- 
- #   D O O R   S E N S O R   A U T O M A T I O N S 
- 
- #   = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
- 
- 
- 
- -   i d :   w a r d r o b e _ l i g h t _ a u t o 
- 
-     a l i a s :   K l e i d e r s c h r a n k   -   L i c h t   A u t o m a t i k 
- 
-     d e s c r i p t i o n :   T u r n   l i g h t   o n / o f f   w h e n   w a r d r o b e   d o o r   o p e n s / c l o s e s 
- 
-     t r i g g e r : 
- 
-         -   p l a t f o r m :   s t a t e 
- 
-             e n t i t y _ i d :   b i n a r y _ s e n s o r . a q a r a _ d o o r _ a n d _ w i n d o w _ s e n s o r _ t u r _ 2 
- 
-             f r o m :   " o f f " 
- 
-             t o :   " o n " 
- 
-             i d :   " o p e n " 
- 
-         -   p l a t f o r m :   s t a t e 
- 
-             e n t i t y _ i d :   b i n a r y _ s e n s o r . a q a r a _ d o o r _ a n d _ w i n d o w _ s e n s o r _ t u r _ 2 
- 
-             f r o m :   " o n " 
- 
-             t o :   " o f f " 
- 
-             i d :   " c l o s e " 
- 
-     a c t i o n : 
- 
-         -   c h o o s e : 
- 
-                 -   c o n d i t i o n s : 
- 
-                         -   c o n d i t i o n :   t r i g g e r 
- 
-                             i d :   " o p e n " 
- 
-                     s e q u e n c e : 
- 
-                         -   a c t i o n :   l i g h t . t u r n _ o n 
- 
-                             t a r g e t : 
- 
-                                 e n t i t y _ i d :   l i g h t . k l e i d e r s c h r a n k _ 2 
- 
-                             d a t a : 
- 
-                                 b r i g h t n e s s _ p c t :   1 0 0 
- 
-                                 c o l o r _ t e m p _ k e l v i n :   4 0 0 0 
- 
-                 -   c o n d i t i o n s : 
- 
-                         -   c o n d i t i o n :   t r i g g e r 
- 
-                             i d :   " c l o s e " 
- 
-                     s e q u e n c e : 
- 
-                         -   a c t i o n :   l i g h t . t u r n _ o f f 
- 
-                             t a r g e t : 
- 
-                                 e n t i t y _ i d :   l i g h t . k l e i d e r s c h r a n k _ 2 
- 
-     m o d e :   r e s t a r t 
- 
- 
- 
- -   i d :   k i f f z i m m e r _ d o o r _ l i g h t 
- 
-     a l i a s :   K i f f z i m m e r   -   L i c h t   b e i   T %]%r %? f f n u n g 
- 
-     d e s c r i p t i o n :   T u r n   o n   l i g h t   w h e n   d o o r   o p e n s   i f   d a r k 
- 
-     t r i g g e r : 
- 
-         -   p l a t f o r m :   s t a t e 
- 
-             e n t i t y _ i d :   b i n a r y _ s e n s o r . a q a r a _ d o o r _ a n d _ w i n d o w _ s e n s o r _ t u r _ 3 
- 
-             t o :   " o n " 
- 
-     c o n d i t i o n : 
- 
-         -   c o n d i t i o n :   o r 
- 
-             c o n d i t i o n s : 
- 
-                 -   c o n d i t i o n :   s u n 
- 
-                     a f t e r :   s u n s e t 
- 
-                     b e f o r e :   s u n r i s e 
- 
-                 -   c o n d i t i o n :   s t a t e 
- 
-                     e n t i t y _ i d :   b i n a r y _ s e n s o r . d u n k e l _ d r a u s s e n 
- 
-                     s t a t e :   " o n " 
- 
-     a c t i o n : 
- 
-         -   a c t i o n :   l i g h t . t u r n _ o n 
- 
-             t a r g e t : 
- 
-                 e n t i t y _ i d :   l i g h t . k i f f z i m m e r _ l i c h t s t r e i f e n 
- 
-             d a t a : 
- 
-                 b r i g h t n e s s _ p c t :   5 0 
- 
-                 c o l o r _ t e m p _ k e l v i n :   3 0 0 0 
- 
-     m o d e :   s i n g l e 
- 
- 
- 
- -   i d :   k i f f z i m m e r _ s m e l l _ p r e v e n t i o n 
- 
-     a l i a s :   K i f f z i m m e r   -   G e r u c h s s c h u t z   ( T %]%r   o f f e n ) 
- 
-     d e s c r i p t i o n :   E n s u r e   e x h a u s t   f a n   i s   O N   w h e n   d o o r   o p e n s   t o   p r e v e n t   s m e l l   e s c a p e 
- 
-     t r i g g e r : 
- 
-         -   p l a t f o r m :   s t a t e 
- 
-             e n t i t y _ i d :   b i n a r y _ s e n s o r . a q a r a _ d o o r _ a n d _ w i n d o w _ s e n s o r _ t u r _ 3 
- 
-             t o :   " o n " 
- 
-     a c t i o n : 
- 
-         -   a c t i o n :   s w i t c h . t u r n _ o n 
- 
-             t a r g e t : 
- 
-                 e n t i t y _ i d :   s w i t c h . a k t i v k o h l e _ 2 
- 
-     m o d e :   s i n g l e 
- 
- 
+# ============================================================================
+# DOOR SENSOR AUTOMATIONS
+# ============================================================================
+
+- id: wardrobe_light_auto
+  alias: Kleiderschrank - Licht Automatik
+  description: Light on when door open. Off when door closed OR bedroom vacant.
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.aqara_door_and_window_sensor_tur_2
+      from: "off"
+      to: "on"
+      id: "door_open"
+    - platform: state
+      entity_id: binary_sensor.aqara_door_and_window_sensor_tur_2
+      from: "on"
+      to: "off"
+      id: "door_close"
+    - platform: state
+      entity_id: binary_sensor.schlafen_true_presence
+      to: "off"
+      for: "00:02:00"
+      id: "vacant"
+  action:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: "door_open"
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id: light.kleiderschrank_2
+              data:
+                brightness_pct: 100
+                color_temp_kelvin: 4000
+        - conditions:
+            - condition: or
+              conditions:
+                - condition: trigger
+                  id: "door_close"
+                - condition: trigger
+                  id: "vacant"
+          sequence:
+            - action: light.turn_off
+              target:
+                entity_id: light.kleiderschrank_2
+  mode: restart
+
+- id: kiffzimmer_door_light
+  alias: Kiffzimmer - Licht bei T%]%r%Âffnung
+  description: Turn on light when door opens if dark
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.aqara_door_and_window_sensor_tur_3
+      to: "on"
+  condition:
+    - condition: or
+      conditions:
+        - condition: sun
+          after: sunset
+          before: sunrise
+        - condition: state
+          entity_id: binary_sensor.dunkel_draussen
+          state: "on"
+  action:
+    - action: light.turn_on
+      target:
+        entity_id: light.kiffzimmer_lichtstreifen
+      data:
+        brightness_pct: 50
+        color_temp_kelvin: 3000
+  mode: single

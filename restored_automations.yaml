@@ -1,0 +1,72 @@
+# ============================================================================
+# DOOR SENSOR AUTOMATIONS
+# ============================================================================
+
+- id: wardrobe_light_auto
+  alias: Kleiderschrank - Licht Automatik
+  description: Light on when door open. Off when door closed OR bedroom vacant.
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.aqara_door_and_window_sensor_tur_2
+      from: "off"
+      to: "on"
+      id: "door_open"
+    - platform: state
+      entity_id: binary_sensor.aqara_door_and_window_sensor_tur_2
+      from: "on"
+      to: "off"
+      id: "door_close"
+    - platform: state
+      entity_id: binary_sensor.schlafen_true_presence
+      to: "off"
+      for: "00:02:00"
+      id: "vacant"
+  action:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: "door_open"
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id: light.kleiderschrank_2
+              data:
+                brightness_pct: 100
+                color_temp_kelvin: 4000
+        - conditions:
+            - condition: or
+              conditions:
+                - condition: trigger
+                  id: "door_close"
+                - condition: trigger
+                  id: "vacant"
+          sequence:
+            - action: light.turn_off
+              target:
+                entity_id: light.kleiderschrank_2
+  mode: restart
+
+- id: kiffzimmer_door_light
+  alias: Kiffzimmer - Licht bei Türöffnung
+  description: Turn on light when door opens if dark
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.aqara_door_and_window_sensor_tur_3
+      to: "on"
+  condition:
+    - condition: or
+      conditions:
+        - condition: sun
+          after: sunset
+          before: sunrise
+        - condition: state
+          entity_id: binary_sensor.dunkel_draussen
+          state: "on"
+  action:
+    - action: light.turn_on
+      target:
+        entity_id: light.kiffzimmer_lichtstreifen
+      data:
+        brightness_pct: 50
+        color_temp_kelvin: 3000
+  mode: single
