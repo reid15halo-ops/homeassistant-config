@@ -263,14 +263,17 @@
   mode: single
 - id: light_wohnzimmer_smart_presence
   alias: Wohnzimmer - Smartes Licht (True Presence)
-  description: Controls lights based on FP2 Presence and Light Sensor (triggers when dark)
   trigger:
     - platform: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
+      entity_id:
+        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
+        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
       to: "on"
       id: occupied
     - platform: state
-      entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
+      entity_id:
+        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
+        - binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
       to: "off"
       for: 00:01:00
       id: vacant
@@ -278,7 +281,6 @@
       entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
       below: 30
       id: got_dark
-
   condition:
     - condition: state
       entity_id: input_boolean.auto_lights_enabled
@@ -307,13 +309,18 @@
                 brightness_pct: 50
                 color_temp_kelvin: 2700
                 transition: 2
-        # Turn on if it gets dark while already present
+        # Turn on if it gets dark while already present (Sensor 1 OR Sensor 2)
         - conditions:
             - condition: trigger
               id: got_dark
-            - condition: state
-              entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
-              state: "on"
+            - condition: or
+              conditions:
+                - condition: state
+                  entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
+                  state: "on"
+                - condition: state
+                  entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
+                  state: "on"
           sequence:
             - action: light.turn_on
               target:
@@ -329,10 +336,16 @@
                 brightness_pct: 50
                 color_temp_kelvin: 2700
                 transition: 2
-        # Turn off when vacant
+        # Turn off when vacant (Both must be off)
         - conditions:
             - condition: trigger
               id: vacant
+            - condition: state
+              entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
+              state: "off"
+            - condition: state
+              entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_2
+              state: "off"
           sequence:
             - action: light.turn_off
               target:
