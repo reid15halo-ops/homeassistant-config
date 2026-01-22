@@ -35,6 +35,10 @@ gaming_mode:
 stream_mode:
   name: "Streaming-Modus"
   icon: mdi:video
+cleaning_mode:
+  name: "Putzmodus"
+  icon: mdi:broom
+  initial: false
 
 # Automation Toggles
 auto_lights_enabled:

@@ -484,6 +484,10 @@
       entity_id: binary_sensor.kiffzimmer_true_presence
       to: "off"
       id: vacant
+  condition:
+    - condition: state
+      entity_id: input_boolean.auto_lights_enabled
+      state: "on"
   action:
     - choose:
         - conditions:
@@ -965,7 +969,10 @@
       to:
         - "on"
       trigger: state
-  conditions: []
+  conditions:
+    - condition: state
+      entity_id: input_boolean.auto_lights_enabled
+      state: "on"
   actions:
     - action: light.turn_on
       target:
@@ -1001,6 +1008,9 @@
       entity_id: binary_sensor.human_presence_detector_schlaf_bewegung
       to: "on"
   condition:
+    - condition: state
+      entity_id: input_boolean.auto_lights_enabled
+      state: "on"
     - condition: state
       entity_id: binary_sensor.dunkel_draussen
       state: "on"
@@ -1039,7 +1049,10 @@
       to:
         - "on"
       trigger: state
-  conditions: []
+  conditions:
+    - condition: state
+      entity_id: input_boolean.auto_lights_enabled
+      state: "on"
   actions:
     - action: light.turn_on
       target:
@@ -1260,4 +1273,66 @@
                 entity_id: input_number.flux_brightness
               data:
                 value: 80
+  mode: single
+- id: cleaning_person_entrance
+  alias: "Putzfrau - Einzug/Eintritt erkannt"
+  description: Detects cleaning person entrance and prepares apartment
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.aqara_door_and_window_sensor_tur
+      to: "on"
+  condition:
+    - condition: time
+      weekday: [wed, thu, fri]
+      after: "08:00:00"
+      before: "15:00:00"
+    - condition: state
+      entity_id: person.jonas_glawion
+      state: "not_home"
+    - condition: state
+      entity_id: input_boolean.cleaning_mode
+      state: "off"
+  action:
+    - action: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.cleaning_mode
+    - action: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.auto_lights_enabled
+    - action: script.all_covers_open
+    - action: light.turn_on
+      target:
+        entity_id: all
+      data:
+        brightness_pct: 100
+        color_temp_kelvin: 6500
+    - action: notify.mobile_app_redmi_note_12_pro_5g
+      data:
+        title: "🧹 Reinigung gestartet"
+        message: "Putzfrau ist eingetroffen. Modus AKTIVIERT. Honorar: 25€/Std."
+  mode: single
+
+- id: cleaning_person_exit
+  alias: "Putzfrau - Austritt/Ende"
+  description: Detects cleaning person exit (or manual off) and reports cost
+  trigger:
+    - platform: state
+      entity_id: input_boolean.cleaning_mode
+      to: "off"
+  action:
+    - action: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.auto_lights_enabled
+    - action: light.turn_off
+      target:
+        entity_id: all
+    - action: notify.mobile_app_redmi_note_12_pro_5g
+      data:
+        title: "🧹 Reinigung beendet"
+        message: >
+          {% set duration = (as_timestamp(now()) - as_timestamp(states.input_boolean.cleaning_mode.last_changed)) / 3600 %}
+          {% set cost = duration * 25 %}
+          Reinigung beendet.
+          Dauer: {{ duration | round(2) }} Std.
+          Honorar: {{ cost | round(2) }} €
   mode: single

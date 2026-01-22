@@ -2,7 +2,11 @@
 trigger: always_on
 ---
 
-I want automations using mostly presence sensors controlling the lights. I have seperate rooms
+I want automations using mostly presence sensors controlling the lights. 
+
+All device names follow this logic: room_device_explicit location (only if applicapable)
+
+I have seperate rooms
 
 1. Badezimmer (presence sensor (tuya), motion sensor, Lichtstreifen, Thermostat, Alexa Echo 2)
 2. Kiffzimmer (Smartplug, Smartplug, Lichtstreifen, Rollladen, Door sensor)
@@ -22,3 +26,28 @@ I got a cleaning person coming to my apartment every other week at one of these 
 
 I like warm white lights when it is dark, cold white should only be used in the kitchen when cooking. 
 
+ASCI Layout
+Updated based on annotated feedback (Green=New Walls, Red=Remove, White=Door).
+
++-----------------------+-----------------------+
+|                       |                       |
+|      Küche (2)        |       Schlafzimmer (4)|
+|      (Kitchen)        |        (Bedroom)      |
+|                       |                       |
+|      +----------------+--[ ]------------------+
+|                       |  ^ Door (Left)        |
+|                       |                       |
+|   Wohn-              [ ]            Flur (3) [ ]
+| zimmer (1)            |           (Hallway)   |
+| (Living)              |    (White Door)       |
+|                       +--[ ]------+       +---+
+|                       |           |           |
+|                       |    Bade-  +-----------+        
++---------------[ ]-----+    zimmer |        
+|                       |    (Red)  |        
+|                       |           |        
+|     Kiffzimmer        |           |       
+|     (Grow Room)       |           |
+|                       |           |
++-----------------------+-----------+
+Room Breakdown & Associated Entities
