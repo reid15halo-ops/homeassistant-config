@@ -287,32 +287,11 @@
       state: "on"
   action:
     - choose:
-        # Turn on when occupied AND dark (light < 30 lux)
+        # Case 1: Someone is present AND it is dark -> Turn ON
         - conditions:
-            - condition: trigger
-              id: occupied
             - condition: numeric_state
               entity_id: sensor.presence_sensor_fp2_f9cf_light_sensor_light_level
               below: 30
-          sequence:
-            - action: light.turn_on
-              target:
-                entity_id: light.buffet_lichtstreifen
-              data:
-                brightness_pct: 100
-                color_temp_kelvin: 2700
-                transition: 2
-            - action: light.turn_on
-              target:
-                entity_id: light.deckenventilator_wohnzimmer
-              data:
-                brightness_pct: 50
-                color_temp_kelvin: 2700
-                transition: 2
-        # Turn on if it gets dark while already present (Sensor 1 OR Sensor 2)
-        - conditions:
-            - condition: trigger
-              id: got_dark
             - condition: or
               conditions:
                 - condition: state
@@ -336,10 +315,9 @@
                 brightness_pct: 50
                 color_temp_kelvin: 2700
                 transition: 2
-        # Turn off when vacant (Both must be off)
+
+        # Case 2: No one is present -> Turn OFF
         - conditions:
-            - condition: trigger
-              id: vacant
             - condition: state
               entity_id: binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1
               state: "off"
