@@ -811,6 +811,7 @@
       data:
         brightness_pct: 60
         color_temp_kelvin: 2700
+        transition: 2
   mode: single
 - id: guest_mode_on
   alias: Gästemodus - Längere Timeouts
@@ -860,6 +861,7 @@
                 }}"
             data:
               brightness_pct: "{{ range(50, 100) | random }}"
+              transition: 2
           - delay:
               minutes: "{{ range(30, 120) | random }}"
           - action: light.turn_off
@@ -867,6 +869,8 @@
               entity_id:
                 "{{ ['light.buffet_licht', 'light.kuche_birne_1'] | random
                 }}"
+            data:
+              transition: 2
           - delay:
               minutes: "{{ range(15, 60) | random }}"
   mode: single
@@ -987,133 +991,7 @@
         minutes: 5
   action:
     - action: script.fan_winter_heat_now
-- id: bad_licht_an_bei_prasenz
-  alias: Bad - Licht an bei Präsenz
-  description: Turn on bathroom light when presence detected
-  triggers:
-    - entity_id: []
-      to:
-        - "on"
-      trigger: state
-  conditions:
-    - condition: state
-      entity_id: input_boolean.auto_lights_enabled
-      state: "on"
-  actions:
-    - action: light.turn_on
-      target:
-        entity_id:
-          - light.bad_2
-      data:
-        brightness_pct: 100
-        rgb_color:
-          - 102
-          - 232
-          - 255
-  mode: single
-- id: bad_licht_aus_keine_prasenz
-  alias: Bad - Licht aus ohne Präsenz
-  description: Turn off bathroom light when no presence for 3 minutes
-  mode: single
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.presence_bad_bewegung
-      to: "off"
-  action:
-    - action: light.turn_off
-      target:
-        entity_id:
-          - light.bad_2
-          - light.bad_2
-- id: schlafzimmer_licht_an_bei_prasenz
-  alias: Schlafzimmer - Licht an bei Präsenz
-  description: Turn on bedroom light when presence detected (only when dark)
-  mode: single
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.human_presence_detector_schlaf_bewegung
-      to: "on"
-  condition:
-    - condition: state
-      entity_id: input_boolean.auto_lights_enabled
-      state: "on"
-    - condition: state
-      entity_id: binary_sensor.dunkel_draussen
-      state: "on"
-    - condition: state
-      entity_id: input_boolean.someone_sleeping
-      state: "off"
-  action:
-    - action: light.turn_on
-      target:
-        entity_id:
-          - light.bett_licht_2
-      data:
-        brightness_pct:
-          "{% set hour = now().hour %} {% if hour >= 22 or hour < 6 %}\n
-          \ 20\n{% else %}\n  80\n{% endif %}\n"
-        color_temp_kelvin: 2700
-- id: schlafzimmer_licht_aus_keine_prasenz
-  alias: Schlafzimmer - Licht aus ohne Präsenz
-  description: Turn off bedroom light when no presence for 5 minutes
-  mode: single
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.human_presence_detector_schlaf_bewegung
-      to: "off"
-  action:
-    - action: light.turn_off
-      target:
-        entity_id:
-          - light.bett_licht_2
-- id: kuche_licht_an_bei_prasenz
-  alias: Küche - Licht an bei Präsenz
-  description: Turn on kitchen light when presence detected
-  triggers:
-    - entity_id:
-        - binary_sensor.human_presence_detector_3_bewegung
-      to:
-        - "on"
-      trigger: state
-  conditions:
-    - condition: state
-      entity_id: input_boolean.auto_lights_enabled
-      state: "on"
-  actions:
-    - action: light.turn_on
-      target:
-        entity_id:
-          - light.kuche_birne_1
-          - light.kuche_birne_2_2
-          - light.kuche_blind_hintergrundbeleuchtung
-      data:
-        brightness_pct: 100
-    - action: light.turn_on
-      target:
-        entity_id: light.kuche_streifen
-      data:
-        brightness_pct: 100
-  mode: single
-- id: kuche_licht_aus_keine_prasenz
-  alias: Küche - Licht aus ohne Bewegung
-  description: Turn off kitchen light immediately when no presence
-  triggers:
-    - entity_id:
-        - binary_sensor.human_presence_detector_3_bewegung
-      to:
-        - "off"
-      trigger: state
-  actions:
-    - action: light.turn_off
-      target:
-        entity_id:
-          - light.kuche_birne_1
-          - light.kuche_birne_2_2
-          - light.kuche_blind_hintergrundbeleuchtung
-        device_id: 2717a62b4f1fbe07a073d0a6e3215b99
-      data:
-        transition: 9
-  mode: single
+
 - id: sleep_detection_on
   alias: Schlafmodus - Aktivieren
   description: "Detect sleep: bedroom presence + no movement for 10 min after 22:00"
@@ -1398,6 +1276,7 @@
       data:
         brightness_pct: 100
         color_temp_kelvin: 6500
+        transition: 2
     - action: notify.mobile_app_redmi_note_12_pro_5g
       data:
         title: "🧹 Reinigung gestartet"
@@ -1418,6 +1297,8 @@
     - action: light.turn_off
       target:
         entity_id: all
+      data:
+        transition: 2
     - action: notify.mobile_app_redmi_note_12_pro_5g
       data:
         title: "🧹 Reinigung beendet"
