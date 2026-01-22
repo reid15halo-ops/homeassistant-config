@@ -1,5 +1,5 @@
 ﻿# Home Assistant Inventory Report
-Generated: 2026-01-21 18:44:55
+Generated: 2026-01-22 16:59:35
 
 ## Integrations
 - **adguard**: 1 configured
@@ -227,8 +227,8 @@ Total Devices: 138
 - HACS (Unknown Model)
 
 ## Entities
-Total Entities: 811
-- **automation**: 65
+Total Entities: 835
+- **automation**: 80
 - **binary_sensor**: 85
 - **button**: 37
 - **climate**: 2
@@ -237,15 +237,15 @@ Total Entities: 811
 - **event**: 3
 - **fan**: 2
 - **image**: 2
-- **input_boolean**: 20
-- **input_number**: 8
-- **input_select**: 2
+- **input_boolean**: 21
+- **input_number**: 10
+- **input_select**: 3
 - **light**: 24
 - **number**: 7
 - **person**: 2
 - **script**: 14
 - **select**: 16
-- **sensor**: 324
+- **sensor**: 329
 - **siren**: 1
 - **switch**: 99
 - **time**: 4
@@ -256,17 +256,13 @@ Total Entities: 811
 - **weather**: 1
 
 ## Automations (YAML)
-Total Automations: 47
-- Morgen - Aufwachen Werktag (05:00)
+Total Automations: 55
+- Morgen - Aufwachen Werktag (04:30 - 05:30)
 - Morgen - Aufwachen Wochenende (10:00)
 - Rolllõden - Íffnen Winter Wochenende
 - Rolllõden - Íffnen Winter Werktag Morgen (Zuhause)
 - Rolllõden - Íffnen Winter Werktag Nachmittag (Unterwegs)
 - Rolllõden - Íffnen Fr³hling/Herbst
-- Rolllõden - Íffnen Sommer
-- Rolllõden - Schlie▀en bei Sonnenuntergang (Winter)
-- Rolllõden - Schlie▀en bei Sonnenuntergang (Fr³hling)
-- Rolllõden - Schlie▀en bei Sonnenuntergang (Sommer)
 - Schlafzimmer - Rolllõden schlie▀en bei Schlaf
 - Wohnzimmer - Smartes Licht (True Presence)
 - K³che - Smartes Licht (True Presence)
@@ -304,6 +300,18 @@ Total Automations: 47
 - System - Heizperiode Automatik
 - Wohnzimmer - Licht an wenn Rollladen schlie▀t
 - Computer - Licht bei Anwesenheit (FP2)
+- Flux - Update Adaptive Values
+- Putzfrau - Einzug/Eintritt erkannt
+- Reinigungsmodus - Aktivieren
+- Putzfrau - Austritt/Ende
+- Sommer - Deckenventilator bei Hitze
+- Sommer - Deckenventilator aus bei K³hle
+- Sommer - Rolllõden bei Sonnenh÷chststand
+- Sommer - Rolllõden ÷ffnen am Abend
+- Nacht - Dimmbeleuchtung Bad
+- Nacht - Bad Licht aus
+- Nacht - Orientierungslicht Flur
+- Heizung - Kaltes Schlafzimmer
 
 ## Scripts (YAML)
 Total Scripts: 14
