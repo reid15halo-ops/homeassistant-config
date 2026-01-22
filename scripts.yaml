@@ -136,19 +136,19 @@ all_covers_open:
   sequence:
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.rollladen_computer_vorhang
+        cover_entity: cover.wohnzimmer_rollladen
         tracker_entity: input_boolean.blind_wohnzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.kuche_blind_vorhang
+        cover_entity: cover.kuche_rollladen
         tracker_entity: input_boolean.blind_kuche_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.yoga_blind_vorhang
+        cover_entity: cover.kiffzimmer_rollladen
         tracker_entity: input_boolean.blind_kiffzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.schlafen_blind_vorhang
+        cover_entity: cover.schlafzimmer_rollladen
         tracker_entity: input_boolean.blind_schlafzimmer_last_opened
 
 all_covers_close:
@@ -157,19 +157,19 @@ all_covers_close:
   sequence:
     - action: script.safe_close_blind
       data:
-        cover_entity: cover.rollladen_computer_vorhang
+        cover_entity: cover.wohnzimmer_rollladen
         tracker_entity: input_boolean.blind_wohnzimmer_last_opened
     - action: script.safe_close_blind
       data:
-        cover_entity: cover.kuche_blind_vorhang
+        cover_entity: cover.kuche_rollladen
         tracker_entity: input_boolean.blind_kuche_last_opened
     - action: script.safe_close_blind
       data:
-        cover_entity: cover.yoga_blind_vorhang
+        cover_entity: cover.kiffzimmer_rollladen
         tracker_entity: input_boolean.blind_kiffzimmer_last_opened
     - action: script.safe_close_blind
       data:
-        cover_entity: cover.schlafen_blind_vorhang
+        cover_entity: cover.schlafzimmer_rollladen
         tracker_entity: input_boolean.blind_schlafzimmer_last_opened
 
 light_toggle_with_brightness:
@@ -231,7 +231,7 @@ safe_open_blind:
                 # Special handling for inverted Schlafen blind
                 - conditions:
                     - condition: template
-                      value_template: "{{ cover_entity == 'cover.schlafen_blind_vorhang' }}"
+                      value_template: "{{ cover_entity == 'cover.schlafzimmer_rollladen' }}"
                   sequence:
                     - action: cover.close_cover # Inverted!
                       target:
@@ -267,7 +267,7 @@ safe_close_blind:
         # Special handling for inverted Schlafen blind
         - conditions:
             - condition: template
-              value_template: "{{ cover_entity == 'cover.schlafen_blind_vorhang' }}"
+              value_template: "{{ cover_entity == 'cover.schlafzimmer_rollladen' }}"
           sequence:
             - action: cover.open_cover # Inverted!
               target:

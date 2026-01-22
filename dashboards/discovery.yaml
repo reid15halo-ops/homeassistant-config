@@ -67,12 +67,12 @@ views:
           - entity: sensor.get_hacs_arbeitsspeicher_in_prozent
           - entity: sensor.motion_sensor_schlafzimmer_batterie
           - entity: sensor.motion_sensor_schlafzimmer_temperatur
-          - entity: sensor.cannabis_feuchtigkeit_links_batterie
-          - entity: sensor.cannabis_feuchtigkeit_links_luftfeuchtigkeit
-          - entity: sensor.cannabis_feuchtigkeit_links_temperatur
-          - entity: sensor.cannabis_mitte_batterie
-          - entity: sensor.cannabis_mitte_luftfeuchtigkeit
-          - entity: sensor.cannabis_mitte_temperatur
+          - entity: sensor.kiffzimmer_cannabis_zelt_pflanze_links_batterie
+          - entity: sensor.kiffzimmer_cannabis_zelt_pflanze_links_luftfeuchtigkeit
+          - entity: sensor.kiffzimmer_cannabis_zelt_pflanze_links_temperatur
+          - entity: sensor.kiffzimmer_cannabis_zelt_pflanze_mitte_batterie
+          - entity: sensor.kiffzimmer_cannabis_zelt_pflanze_mitte_luftfeuchtigkeit
+          - entity: sensor.kiffzimmer_cannabis_zelt_pflanze_mitte_temperatur
           - entity: sensor.hobeian_zg_303z_batterie
           - entity: sensor.hobeian_zg_303z_temperatur
           - entity: sensor.hobeian_zg_303z_luftfeuchtigkeit
@@ -114,4 +114,3 @@ views:
           - entity: sensor.motion_sensor_schlafen_temperatur
           - entity: sensor.git_pull_cpu_prozent
           - entity: sensor.git_pull_arbeitsspeicher_in_prozent
-

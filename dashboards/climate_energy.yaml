@@ -74,16 +74,16 @@ views:
         entities:
           - type: section
             label: "Blind Tracking (Anti-Jam)"
-          - entity: input_boolean.blind_computer_last_opened
+          - entity: input_boolean.blind_wohnzimmer_last_opened
             name: Computer Blind
             icon: mdi:window-shutter
-          - entity: input_boolean.blind_schlafen_last_opened
+          - entity: input_boolean.blind_schlafzimmer_last_opened
             name: Bedroom Blind
             icon: mdi:window-shutter
           - entity: input_boolean.blind_kuche_last_opened
             name: Kitchen Blind
             icon: mdi:window-shutter
-          - entity: input_boolean.blind_yoga_last_opened
+          - entity: input_boolean.blind_kiffzimmer_last_opened
             name: Yoga Blind
             icon: mdi:window-shutter
 

@@ -1,4 +1,4 @@
-﻿- id: morning_wakeup_weekday
+- id: morning_wakeup_weekday
   alias: Morgen - Aufwachen Werktag (04:30 - 05:30)
   description: Gradual wake-up light and heating on weekdays (Robust against restarts)
   trigger:
@@ -90,19 +90,19 @@
   action:
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.rollladen_computer_vorhang
+        cover_entity: cover.wohnzimmer_rollladen
         tracker_entity: input_boolean.blind_wohnzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.schlafen_blind_vorhang
+        cover_entity: cover.schlafzimmer_rollladen
         tracker_entity: input_boolean.blind_schlafzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.kuche_blind_vorhang
+        cover_entity: cover.kuche_rollladen
         tracker_entity: input_boolean.blind_kuche_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.yoga_blind_vorhang
+        cover_entity: cover.kiffzimmer_rollladen
         tracker_entity: input_boolean.blind_kiffzimmer_last_opened
   mode: single
 - id: shutters_open_winter_weekday_morning_home
@@ -130,19 +130,19 @@
   action:
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.rollladen_computer_vorhang
+        cover_entity: cover.wohnzimmer_rollladen
         tracker_entity: input_boolean.blind_wohnzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.schlafen_blind_vorhang
+        cover_entity: cover.schlafzimmer_rollladen
         tracker_entity: input_boolean.blind_schlafzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.kuche_blind_vorhang
+        cover_entity: cover.kuche_rollladen
         tracker_entity: input_boolean.blind_kuche_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.yoga_blind_vorhang
+        cover_entity: cover.kiffzimmer_rollladen
         tracker_entity: input_boolean.blind_kiffzimmer_last_opened
   mode: single
 - id: shutters_open_winter_weekday_afternoon
@@ -172,19 +172,50 @@
   action:
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.rollladen_computer_vorhang
+        cover_entity: cover.wohnzimmer_rollladen
         tracker_entity: input_boolean.blind_wohnzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.schlafen_blind_vorhang
+        cover_entity: cover.schlafzimmer_rollladen
         tracker_entity: input_boolean.blind_schlafzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.kuche_blind_vorhang
+        cover_entity: cover.kuche_rollladen
         tracker_entity: input_boolean.blind_kuche_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.yoga_blind_vorhang
+        cover_entity: cover.kiffzimmer_rollladen
+        tracker_entity: input_boolean.blind_kiffzimmer_last_opened
+  mode: single
+- id: shutters_close_sunset_winter
+  alias: Rollläden - Schließen bei Sonnenuntergang (Winter)
+  description: Close blinds 1 hour after sunset in winter
+  trigger:
+    - platform: sun
+      event: sunset
+      offset: "01:00:00"
+  condition:
+    - condition: template
+      value_template: "{{ now().month in [11, 12, 1, 2] }}"
+    - condition: state
+      entity_id: input_boolean.auto_shutters_enabled
+      state: "on"
+  action:
+    - action: script.safe_close_blind
+      data:
+        cover_entity: cover.wohnzimmer_rollladen
+        tracker_entity: input_boolean.blind_wohnzimmer_last_opened
+    - action: script.safe_close_blind
+      data:
+        cover_entity: cover.schlafzimmer_rollladen
+        tracker_entity: input_boolean.blind_schlafzimmer_last_opened
+    - action: script.safe_close_blind
+      data:
+        cover_entity: cover.kuche_rollladen
+        tracker_entity: input_boolean.blind_kuche_last_opened
+    - action: script.safe_close_blind
+      data:
+        cover_entity: cover.kiffzimmer_rollladen
         tracker_entity: input_boolean.blind_kiffzimmer_last_opened
   mode: single
 - id: shutters_open_spring_fall
@@ -218,19 +249,19 @@
   action:
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.rollladen_computer_vorhang
+        cover_entity: cover.wohnzimmer_rollladen
         tracker_entity: input_boolean.blind_wohnzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.schlafen_blind_vorhang
+        cover_entity: cover.schlafzimmer_rollladen
         tracker_entity: input_boolean.blind_schlafzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.kuche_blind_vorhang
+        cover_entity: cover.kuche_rollladen
         tracker_entity: input_boolean.blind_kuche_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.yoga_blind_vorhang
+        cover_entity: cover.kiffzimmer_rollladen
         tracker_entity: input_boolean.blind_kiffzimmer_last_opened
   mode: single
 - id: bedroom_shutters_sleep
@@ -258,7 +289,7 @@
   action:
     - action: script.safe_close_blind
       data:
-        cover_entity: cover.schlafen_blind_vorhang
+        cover_entity: cover.schlafzimmer_rollladen
         tracker_entity: input_boolean.blind_schlafzimmer_last_opened
   mode: single
 - id: light_wohnzimmer_smart_presence
@@ -359,9 +390,15 @@
             - condition: state
               entity_id: binary_sensor.kuche_true_presence
               state: "on"
-            - condition: sun
-              after: sunset
-              before: sunrise
+            - condition: or
+              conditions:
+                - condition: state
+                  entity_id: sun.sun
+                  state: "below_horizon"
+                - condition: numeric_state
+                  entity_id: sun.sun
+                  attribute: elevation
+                  below: 4
             - condition: state
               entity_id: input_boolean.cleaning_mode
               state: "off"
@@ -793,7 +830,7 @@
         color_temp_kelvin: 2200
     - action: script.safe_close_blind
       data:
-        cover_entity: cover.rollladen_computer_vorhang
+        cover_entity: cover.wohnzimmer_rollladen
         tracker_entity: input_boolean.blind_wohnzimmer_last_opened
   mode: single
 - id: movie_mode_off
@@ -894,7 +931,7 @@
   action:
     - action: notify.mobile_app_redmi_note_12_pro_5g
       data:
-        title: ⚠️ Bewegung erkannt!
+        title: ?? Bewegung erkannt!
         message: Bewegung in deiner Wohnung während Abwesenheit
   mode: single
 - id: security_door_alert
@@ -1094,7 +1131,7 @@
   description: Turn on living room lights when blind closes
   trigger:
     - platform: state
-      entity_id: cover.rollladen_computer_vorhang
+      entity_id: cover.wohnzimmer_rollladen
       to: "closed"
   condition:
     - condition: state
@@ -1125,10 +1162,10 @@
             - condition: or
               conditions:
                 - condition: state
-                  entity_id: cover.rollladen_computer_vorhang
+                  entity_id: cover.wohnzimmer_rollladen
                   state: "closed"
                 - condition: numeric_state
-                  entity_id: cover.rollladen_computer_vorhang
+                  entity_id: cover.wohnzimmer_rollladen
                   attribute: current_position
                   below: 10
                 - condition: sun
@@ -1258,7 +1295,10 @@
         entity_id: input_boolean.cleaning_mode
     - action: input_boolean.turn_off
       target:
-        entity_id: input_boolean.auto_lights_enabled
+        entity_id:
+          - input_boolean.auto_lights_enabled
+          - input_boolean.auto_shutters_enabled
+          - input_boolean.auto_heating_enabled
   mode: single
 
 - id: cleaning_mode_active
@@ -1279,8 +1319,8 @@
         transition: 2
     - action: notify.mobile_app_redmi_note_12_pro_5g
       data:
-        title: "🧹 Reinigung gestartet"
-        message: "Putzfrau ist eingetroffen. Modus AKTIVIERT. Honorar: 25€/Std."
+        title: "?? Reinigung gestartet"
+        message: "Putzfrau ist eingetroffen. Modus AKTIVIERT. Honorar: 25/Std."
   mode: single
 
 - id: cleaning_person_exit
@@ -1293,7 +1333,10 @@
   action:
     - action: input_boolean.turn_on
       target:
-        entity_id: input_boolean.auto_lights_enabled
+        entity_id:
+          - input_boolean.auto_lights_enabled
+          - input_boolean.auto_shutters_enabled
+          - input_boolean.auto_heating_enabled
     - action: light.turn_off
       target:
         entity_id: all
@@ -1301,13 +1344,13 @@
         transition: 2
     - action: notify.mobile_app_redmi_note_12_pro_5g
       data:
-        title: "🧹 Reinigung beendet"
+        title: "?? Reinigung beendet"
         message: >
           {% set duration = (as_timestamp(now()) - as_timestamp(states.input_boolean.cleaning_mode.last_changed)) / 3600 %}
           {% set cost = duration * 25 %}
           Reinigung beendet.
           Dauer: {{ duration | round(2) }} Std.
-          Honorar: {{ cost | round(2) }} €
+          Honorar: {{ cost | round(2) }} 
   mode: single
 
 # ============================================================================
@@ -1495,3 +1538,156 @@
       data:
         temperature: 18
   mode: single
+#   = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+ 
+ #   D O O R   S E N S O R   A U T O M A T I O N S 
+ 
+ #   = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+ 
+ 
+ 
+ -   i d :   w a r d r o b e _ l i g h t _ a u t o 
+ 
+     a l i a s :   K l e i d e r s c h r a n k   -   L i c h t   A u t o m a t i k 
+ 
+     d e s c r i p t i o n :   T u r n   l i g h t   o n / o f f   w h e n   w a r d r o b e   d o o r   o p e n s / c l o s e s 
+ 
+     t r i g g e r : 
+ 
+         -   p l a t f o r m :   s t a t e 
+ 
+             e n t i t y _ i d :   b i n a r y _ s e n s o r . a q a r a _ d o o r _ a n d _ w i n d o w _ s e n s o r _ t u r _ 2 
+ 
+             f r o m :   " o f f " 
+ 
+             t o :   " o n " 
+ 
+             i d :   " o p e n " 
+ 
+         -   p l a t f o r m :   s t a t e 
+ 
+             e n t i t y _ i d :   b i n a r y _ s e n s o r . a q a r a _ d o o r _ a n d _ w i n d o w _ s e n s o r _ t u r _ 2 
+ 
+             f r o m :   " o n " 
+ 
+             t o :   " o f f " 
+ 
+             i d :   " c l o s e " 
+ 
+     a c t i o n : 
+ 
+         -   c h o o s e : 
+ 
+                 -   c o n d i t i o n s : 
+ 
+                         -   c o n d i t i o n :   t r i g g e r 
+ 
+                             i d :   " o p e n " 
+ 
+                     s e q u e n c e : 
+ 
+                         -   a c t i o n :   l i g h t . t u r n _ o n 
+ 
+                             t a r g e t : 
+ 
+                                 e n t i t y _ i d :   l i g h t . k l e i d e r s c h r a n k _ 2 
+ 
+                             d a t a : 
+ 
+                                 b r i g h t n e s s _ p c t :   1 0 0 
+ 
+                                 c o l o r _ t e m p _ k e l v i n :   4 0 0 0 
+ 
+                 -   c o n d i t i o n s : 
+ 
+                         -   c o n d i t i o n :   t r i g g e r 
+ 
+                             i d :   " c l o s e " 
+ 
+                     s e q u e n c e : 
+ 
+                         -   a c t i o n :   l i g h t . t u r n _ o f f 
+ 
+                             t a r g e t : 
+ 
+                                 e n t i t y _ i d :   l i g h t . k l e i d e r s c h r a n k _ 2 
+ 
+     m o d e :   r e s t a r t 
+ 
+ 
+ 
+ -   i d :   k i f f z i m m e r _ d o o r _ l i g h t 
+ 
+     a l i a s :   K i f f z i m m e r   -   L i c h t   b e i   T %]%r %? f f n u n g 
+ 
+     d e s c r i p t i o n :   T u r n   o n   l i g h t   w h e n   d o o r   o p e n s   i f   d a r k 
+ 
+     t r i g g e r : 
+ 
+         -   p l a t f o r m :   s t a t e 
+ 
+             e n t i t y _ i d :   b i n a r y _ s e n s o r . a q a r a _ d o o r _ a n d _ w i n d o w _ s e n s o r _ t u r _ 3 
+ 
+             t o :   " o n " 
+ 
+     c o n d i t i o n : 
+ 
+         -   c o n d i t i o n :   o r 
+ 
+             c o n d i t i o n s : 
+ 
+                 -   c o n d i t i o n :   s u n 
+ 
+                     a f t e r :   s u n s e t 
+ 
+                     b e f o r e :   s u n r i s e 
+ 
+                 -   c o n d i t i o n :   s t a t e 
+ 
+                     e n t i t y _ i d :   b i n a r y _ s e n s o r . d u n k e l _ d r a u s s e n 
+ 
+                     s t a t e :   " o n " 
+ 
+     a c t i o n : 
+ 
+         -   a c t i o n :   l i g h t . t u r n _ o n 
+ 
+             t a r g e t : 
+ 
+                 e n t i t y _ i d :   l i g h t . k i f f z i m m e r _ l i c h t s t r e i f e n 
+ 
+             d a t a : 
+ 
+                 b r i g h t n e s s _ p c t :   5 0 
+ 
+                 c o l o r _ t e m p _ k e l v i n :   3 0 0 0 
+ 
+     m o d e :   s i n g l e 
+ 
+ 
+ 
+ -   i d :   k i f f z i m m e r _ s m e l l _ p r e v e n t i o n 
+ 
+     a l i a s :   K i f f z i m m e r   -   G e r u c h s s c h u t z   ( T %]%r   o f f e n ) 
+ 
+     d e s c r i p t i o n :   E n s u r e   e x h a u s t   f a n   i s   O N   w h e n   d o o r   o p e n s   t o   p r e v e n t   s m e l l   e s c a p e 
+ 
+     t r i g g e r : 
+ 
+         -   p l a t f o r m :   s t a t e 
+ 
+             e n t i t y _ i d :   b i n a r y _ s e n s o r . a q a r a _ d o o r _ a n d _ w i n d o w _ s e n s o r _ t u r _ 3 
+ 
+             t o :   " o n " 
+ 
+     a c t i o n : 
+ 
+         -   a c t i o n :   s w i t c h . t u r n _ o n 
+ 
+             t a r g e t : 
+ 
+                 e n t i t y _ i d :   s w i t c h . a k t i v k o h l e _ 2 
+ 
+     m o d e :   s i n g l e 
+ 
+ 

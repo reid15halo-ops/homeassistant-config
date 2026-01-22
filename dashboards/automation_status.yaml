@@ -92,7 +92,7 @@ views:
           - entity: binary_sensor.jemand_zuhause
             name: Someone Home
             icon: mdi:home-account
-          - entity: binary_sensor.heizperiode
+          - entity: binary_sensor.heizperiode_aktiv
             name: Heating Season
             icon: mdi:radiator
           - entity: sun.sun

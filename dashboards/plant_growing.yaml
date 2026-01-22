@@ -56,7 +56,7 @@ views:
               service: script.safe_close_blind
               data:
                 cover_entity: cover.kiffzimmer_rollladen
-                tracker_entity: input_boolean.blind_yoga_last_opened
+                tracker_entity: input_boolean.blind_kiffzimmer_last_opened
 
       # === INFO ===
       - type: markdown

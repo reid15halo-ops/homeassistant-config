@@ -3,36 +3,18 @@ views:
   - title: Debug
     cards:
       - type: entities
-        title: Left Plant (Permanent Marker)
+        title: Left Plant (Links)
         entities:
-          - entity: sensor.cannabis_feuchtigkeit_l
-          - entity: sensor.cannabis_temperatur_l
-          - entity: sensor.l_cannabis_erdfeuchte
-          - entity: sensor.l_cannabis_temperatur
-          - entity: sensor.permanent_marker_l_cannabis_soil_moisture
-          - entity: sensor.permanent_marker_l_cannabis_temperature
+          - entity: sensor.kiffzimmer_cannabis_zelt_pflanze_links_temperatur
+          - entity: sensor.kiffzimmer_cannabis_zelt_pflanze_links_luftfeuchtigkeit
+          - entity: sensor.kiffzimmer_cannabis_zelt_pflanze_links_batterie
 
       - type: entities
-        title: Middle Plant (Cap Junky)
+        title: Middle Plant (Mitte)
         entities:
-          - entity: sensor.cannabis_mitte_feuchtigkeit
-          - entity: sensor.cannabis_mitte_erdfeuchte
-          - entity: sensor.cannabis_mitte_temperatur
-          - entity: sensor.m_cannabis_erdfeuchte
-          - entity: sensor.m_cannabis_temperatur
-          - entity: sensor.cap_junky_m_cannabis_soil_moisture
-          - entity: sensor.cap_junky_m_cannabis_temperature
-
-      - type: entities
-        title: Right Plant (Candy Store)
-        entities:
-          - entity: sensor.cannabis_rechts_feuchtigkeit
-          - entity: sensor.cannabis_rechts_erdfeuchte
-          - entity: sensor.cannabis_rechts_temperatur
-          - entity: sensor.r_cannabis_erdfeuchte
-          - entity: sensor.r_cannabis_temperatur
-          - entity: sensor.candy_store_r_cannabis_soil_moisture
-          - entity: sensor.candy_store_r_cannabis_temperature
+          - entity: sensor.kiffzimmer_cannabis_zelt_pflanze_mitte_temperatur
+          - entity: sensor.kiffzimmer_cannabis_zelt_pflanze_mitte_luftfeuchtigkeit
+          - entity: sensor.kiffzimmer_cannabis_zelt_pflanze_mitte_batterie
 
       - type: entities
         title: Environment
