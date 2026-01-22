@@ -1376,3 +1376,189 @@
           Dauer: {{ duration | round(2) }} Std.
           Honorar: {{ cost | round(2) }} €
   mode: single
+
+# ============================================================================
+# SUMMER AUTOMATIONS
+# ============================================================================
+- id: summer_ceiling_fan_auto
+  alias: "Sommer - Deckenventilator bei Hitze"
+  description: "Start ceiling fan when temperature is above 24°C and you're home"
+  trigger:
+    - platform: numeric_state
+      entity_id: weather.forecast_home
+      attribute: temperature
+      above: 24
+    - platform: state
+      entity_id: person.jonas_glawion
+      to: "home"
+  condition:
+    - condition: state
+      entity_id: person.jonas_glawion
+      state: "home"
+    - condition: numeric_state
+      entity_id: weather.forecast_home
+      attribute: temperature
+      above: 24
+    - condition: template
+      value_template: "{{ now().month in [5, 6, 7, 8, 9] }}"
+  action:
+    - action: fan.turn_on
+      target:
+        entity_id: fan.deckenventilator_wohnzimmer
+      data:
+        percentage: 66
+  mode: single
+
+- id: summer_ceiling_fan_off
+  alias: "Sommer - Deckenventilator aus bei Kühle"
+  description: "Turn off ceiling fan when temperature drops below 22°C"
+  trigger:
+    - platform: numeric_state
+      entity_id: weather.forecast_home
+      attribute: temperature
+      below: 22
+  condition:
+    - condition: template
+      value_template: "{{ now().month in [5, 6, 7, 8, 9] }}"
+  action:
+    - action: fan.turn_off
+      target:
+        entity_id: fan.deckenventilator_wohnzimmer
+  mode: single
+
+- id: summer_peak_sun_blinds_close
+  alias: "Sommer - Rollläden bei Sonnenhöchststand"
+  description: "Close blinds when sun is at its peak (high solar elevation) to keep apartment cool"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.sun_solar_elevation
+      above: 50
+  condition:
+    - condition: template
+      value_template: "{{ now().month in [5, 6, 7, 8, 9] }}"
+    - condition: numeric_state
+      entity_id: weather.forecast_home
+      attribute: temperature
+      above: 22
+  action:
+    - action: script.all_covers_close
+  mode: single
+
+- id: summer_evening_blinds_open
+  alias: "Sommer - Rollläden öffnen am Abend"
+  description: "Open blinds in the evening to let cool air in"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.sun_solar_elevation
+      below: 15
+  condition:
+    - condition: template
+      value_template: "{{ now().month in [5, 6, 7, 8, 9] }}"
+    - condition: sun
+      before: sunset
+      after: sunrise
+    - condition: state
+      entity_id: person.jonas_glawion
+      state: "home"
+  action:
+    - action: script.all_covers_open
+  mode: single
+
+# ============================================================================
+# NIGHT MODE AUTOMATIONS
+# ============================================================================
+- id: night_bathroom_low_light
+  alias: "Nacht - Dimmbeleuchtung Bad"
+  description: "Use low light when going to bathroom at night"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.bad_true_presence
+      to: "on"
+  condition:
+    - condition: time
+      after: "22:00:00"
+      before: "07:00:00"
+    - condition: state
+      entity_id: input_boolean.sleep_mode
+      state: "on"
+  action:
+    - action: light.turn_on
+      target:
+        entity_id: light.bad_2
+      data:
+        brightness_pct: 10
+        color_temp_kelvin: 2200
+  mode: single
+
+- id: night_bathroom_light_off
+  alias: "Nacht - Bad Licht aus"
+  description: "Turn off bathroom light when leaving at night"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.bad_true_presence
+      to: "off"
+  condition:
+    - condition: time
+      after: "22:00:00"
+      before: "07:00:00"
+  action:
+    - action: light.turn_off
+      target:
+        entity_id:
+          - light.bad_2
+          - light.bad
+  mode: single
+
+- id: night_hallway_guide_light
+  alias: "Nacht - Orientierungslicht Flur"
+  description: "Brief low light to guide to bathroom at night"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.schlafen_true_presence
+      to: "off"
+  condition:
+    - condition: time
+      after: "22:00:00"
+      before: "07:00:00"
+    - condition: state
+      entity_id: input_boolean.sleep_mode
+      state: "on"
+  action:
+    - action: light.turn_on
+      target:
+        entity_id: light.bett_licht
+      data:
+        brightness_pct: 5
+        color_temp_kelvin: 2200
+    - delay:
+        minutes: 5
+    - action: light.turn_off
+      target:
+        entity_id: light.bett_licht
+  mode: restart
+
+# ============================================================================
+# COLD BEDROOM HEATING
+# ============================================================================
+- id: heating_cold_bedroom
+  alias: "Heizung - Kaltes Schlafzimmer"
+  description: "Keep bedroom cooler than other rooms (max 18°C)"
+  trigger:
+    - platform: time
+      at: "06:00:00"
+    - platform: time
+      at: "22:00:00"
+    - platform: state
+      entity_id: input_boolean.heizung_winter_mode
+      to: "on"
+  condition:
+    - condition: state
+      entity_id: input_boolean.heizung_winter_mode
+      state: "on"
+  action:
+    - action: climate.set_temperature
+      target:
+        entity_id: climate.thermostat_computer
+      data:
+        temperature: 18
+  mode: single
