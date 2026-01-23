@@ -1,4 +1,4 @@
-﻿- id: morning_wakeup_weekday
+- id: morning_wakeup_weekday
   alias: Morgen - Aufwachen Werktag (04:30 - 05:30)
   description: Gradual wake-up light and heating on weekdays (Robust against restarts)
   trigger:
@@ -38,7 +38,7 @@
           sequence:
             - action: light.turn_on
               target:
-                entity_id: light.schlafzimmer_bett_licht
+                entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
               data:
                 brightness_pct: 5
                 color_temp_kelvin: 2700
@@ -49,7 +49,7 @@
           sequence:
             - action: light.turn_on
               target:
-                entity_id: light.schlafzimmer_bett_licht
+                entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
               data:
                 brightness_pct: 80
   mode: parallel
@@ -67,14 +67,14 @@
   action:
     - action: light.turn_on
       target:
-        entity_id: light.schlafzimmer_bett_licht
+        entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
       data:
         brightness_pct: 5
         color_temp_kelvin: 2700
         transition: 1800
   mode: single
 - id: shutters_open_winter_weekend
-  alias: RolllÃ¤den - Ã–ffnen Winter Wochenende
+  alias: RolllÃƒÆ’Ã‚Â¤den - ÃƒÆ’Ã¢â‚¬â€œffnen Winter Wochenende
   description: Open blinds on winter weekends for solar gain (free heating)
   trigger:
     - platform: sun
@@ -106,7 +106,7 @@
         tracker_entity: input_boolean.blind_kiffzimmer_last_opened
   mode: single
 - id: shutters_open_winter_weekday_morning_home
-  alias: RolllÃ¤den - Ã–ffnen Winter Werktag Morgen (Zuhause)
+  alias: RolllÃƒÆ’Ã‚Â¤den - ÃƒÆ’Ã¢â‚¬â€œffnen Winter Werktag Morgen (Zuhause)
   description:
     Open blinds in winter weekday morning if you're home (sick day, home
     office, etc.)
@@ -146,7 +146,7 @@
         tracker_entity: input_boolean.blind_kiffzimmer_last_opened
   mode: single
 - id: shutters_open_winter_weekday_afternoon
-  alias: RolllÃ¤den - Ã–ffnen Winter Werktag Nachmittag (Unterwegs)
+  alias: RolllÃƒÆ’Ã‚Â¤den - ÃƒÆ’Ã¢â‚¬â€œffnen Winter Werktag Nachmittag (Unterwegs)
   description:
     Open blinds on winter weekdays at noon if you're away at work (solar
     gain)
@@ -188,7 +188,7 @@
         tracker_entity: input_boolean.blind_kiffzimmer_last_opened
   mode: single
 - id: shutters_close_sunset_winter
-  alias: RolllÃ¤den - SchlieÃŸen bei Sonnenuntergang (Winter)
+  alias: RolllÃƒÆ’Ã‚Â¤den - SchlieÃƒÆ’Ã…Â¸en bei Sonnenuntergang (Winter)
   description: Close blinds 1 hour after sunset in winter
   trigger:
     - platform: sun
@@ -219,7 +219,7 @@
         tracker_entity: input_boolean.blind_kiffzimmer_last_opened
   mode: single
 - id: shutters_open_spring_fall
-  alias: RolllÃ¤den - Ã–ffnen FrÃ¼hling/Herbst
+  alias: RolllÃƒÆ’Ã‚Â¤den - ÃƒÆ’Ã¢â‚¬â€œffnen FrÃƒÆ’Ã‚Â¼hling/Herbst
   description: Open blinds at sunrise in spring/fall
   trigger:
     - platform: sun
@@ -265,11 +265,11 @@
         tracker_entity: input_boolean.blind_kiffzimmer_last_opened
   mode: single
 - id: bedroom_shutters_sleep
-  alias: Schlafzimmer - RolllÃ¤den schlieÃŸen bei Schlaf
+  alias: Schlafzimmer - RolllÃƒÆ’Ã‚Â¤den schlieÃƒÆ’Ã…Â¸en bei Schlaf
   description: Close bedroom shutters when going to bed (motion in bedroom)
   trigger:
     - platform: state
-      entity_id: binary_sensor.wohnzimmer_motion_sensor_schlafen_bewegung
+      entity_id: binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
       to: "on"
       for:
         minutes: 15
@@ -278,10 +278,10 @@
       after: "22:00"
       before: 08:00
     - condition: state
-      entity_id: binary_sensor.wohnzimmer_true_presence
+      entity_id: binary_sensor.wohnzimmer_presence_sensor
       state: "off"
     - condition: state
-      entity_id: binary_sensor.kuche_motion_sensor_kueche_bewegung
+      entity_id: binary_sensor.kuche_kueche_motion_sensor
       state: "off"
     - condition: state
       entity_id: input_boolean.cleaning_mode
@@ -369,15 +369,15 @@
   mode: restart
 
 - id: light_kuche_smart_presence
-  alias: KÃ¼che - Smartes Licht (True Presence)
+  alias: KÃƒÆ’Ã‚Â¼che - Smartes Licht (True Presence)
   description: Controls kitchen lights based on True Presence and Adaptive Lighting
   trigger:
     - platform: state
-      entity_id: binary_sensor.kuche_true_presence
+      entity_id: binary_sensor.kuche_presence_sensor
       to: "on"
       id: occupied
     - platform: state
-      entity_id: binary_sensor.kuche_true_presence
+      entity_id: binary_sensor.kuche_presence_sensor
       to: "off"
       id: vacant
     - platform: time_pattern
@@ -388,7 +388,7 @@
         # Case 1: Occupied AND Dark -> Turn ON
         - conditions:
             - condition: state
-              entity_id: binary_sensor.kuche_true_presence
+              entity_id: binary_sensor.kuche_presence_sensor
               state: "on"
             - condition: or
               conditions:
@@ -414,7 +414,7 @@
         # Case 2: Vacant -> Turn OFF
         - conditions:
             - condition: state
-              entity_id: binary_sensor.kuche_true_presence
+              entity_id: binary_sensor.kuche_presence_sensor
               state: "off"
             - condition: state
               entity_id: input_boolean.cleaning_mode
@@ -434,11 +434,11 @@
   description: Controls bathroom lights based on True Presence and Adaptive Lighting
   trigger:
     - platform: state
-      entity_id: binary_sensor.bad_true_presence
+      entity_id: binary_sensor.badezimmer_presence_sensor
       to: "on"
       id: occupied
     - platform: state
-      entity_id: binary_sensor.bad_true_presence
+      entity_id: binary_sensor.badezimmer_presence_sensor
       to: "off"
       id: vacant
     - platform: time_pattern
@@ -449,7 +449,7 @@
         # Case 1: Occupied AND (Dark OR Night) -> Turn ON
         - conditions:
             - condition: state
-              entity_id: binary_sensor.bad_true_presence
+              entity_id: binary_sensor.badezimmer_presence_sensor
               state: "on"
             - condition: or
               conditions:
@@ -465,13 +465,13 @@
           sequence:
             - action: light.turn_on
               target:
-                entity_id: light.badezimmer_bad
+                entity_id: light.schlafzimmer_badezimmer_lichtstreifen
               data:
                 transition: 2
         # Case 2: Vacant -> Turn OFF
         - conditions:
             - condition: state
-              entity_id: binary_sensor.bad_true_presence
+              entity_id: binary_sensor.badezimmer_presence_sensor
               state: "off"
             - condition: state
               entity_id: input_boolean.cleaning_mode
@@ -479,7 +479,7 @@
           sequence:
             - action: light.turn_off
               target:
-                entity_id: light.badezimmer_bad
+                entity_id: light.schlafzimmer_badezimmer_lichtstreifen
               data:
                 transition: 2
   mode: restart
@@ -488,11 +488,11 @@
   description: Controls bedroom lights based on True Presence and Adaptive Lighting
   trigger:
     - platform: state
-      entity_id: binary_sensor.schlafen_true_presence
+      entity_id: binary_sensor.schlafzimmer_presence_sensor
       to: "on"
       id: occupied
     - platform: state
-      entity_id: binary_sensor.schlafen_true_presence
+      entity_id: binary_sensor.schlafzimmer_presence_sensor
       to: "off"
       id: vacant
     - platform: time_pattern
@@ -503,7 +503,7 @@
         # Case 1: Occupied AND Dark -> Turn ON
         - conditions:
             - condition: state
-              entity_id: binary_sensor.schlafen_true_presence
+              entity_id: binary_sensor.schlafzimmer_presence_sensor
               state: "on"
             - condition: sun
               after: sunset
@@ -514,13 +514,13 @@
           sequence:
             - action: light.turn_on
               target:
-                entity_id: light.schlafzimmer_bett_licht
+                entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
               data:
                 transition: 2
         # Case 2: Vacant -> Turn OFF
         - conditions:
             - condition: state
-              entity_id: binary_sensor.schlafen_true_presence
+              entity_id: binary_sensor.schlafzimmer_presence_sensor
               state: "off"
             - condition: state
               entity_id: input_boolean.cleaning_mode
@@ -528,7 +528,7 @@
           sequence:
             - action: light.turn_off
               target:
-                entity_id: light.schlafzimmer_bett_licht
+                entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
               data:
                 transition: 2
   mode: restart
@@ -537,11 +537,11 @@
   description: Controls Kiffzimmer lights based on True Presence and Adaptive Lighting
   trigger:
     - platform: state
-      entity_id: binary_sensor.kiffzimmer_true_presence
+      entity_id: binary_sensor.kiffzimmer_presence_sensor
       to: "on"
       id: occupied
     - platform: state
-      entity_id: binary_sensor.kiffzimmer_true_presence
+      entity_id: binary_sensor.kiffzimmer_presence_sensor
       to: "off"
       id: vacant
     - platform: time_pattern
@@ -556,7 +556,7 @@
         # Case 1: Occupied AND Dark -> Turn ON
         - conditions:
             - condition: state
-              entity_id: binary_sensor.kiffzimmer_true_presence
+              entity_id: binary_sensor.kiffzimmer_presence_sensor
               state: "on"
             - condition: sun
               after: sunset
@@ -573,7 +573,7 @@
         # Case 2: Vacant -> Turn OFF
         - conditions:
             - condition: state
-              entity_id: binary_sensor.kiffzimmer_true_presence
+              entity_id: binary_sensor.kiffzimmer_presence_sensor
               state: "off"
             - condition: state
               entity_id: input_boolean.cleaning_mode
@@ -739,7 +739,7 @@
     - action: light.turn_on
       target:
         entity_id:
-          - light.wohnzimmer_buffet_licht
+          - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
       data:
         brightness_pct: 80
         color_temp_kelvin: 2700
@@ -780,7 +780,7 @@
   description: Sleep mode when in bedroom for 15 min at night
   trigger:
     - platform: state
-      entity_id: binary_sensor.wohnzimmer_motion_sensor_schlafen_bewegung
+      entity_id: binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
       to: "on"
       for:
         minutes: 15
@@ -789,13 +789,13 @@
       after: "22:00"
       before: 08:00
     - condition: state
-      entity_id: binary_sensor.wohnzimmer_true_presence
+      entity_id: binary_sensor.wohnzimmer_presence_sensor
       state: "off"
     - condition: state
-      entity_id: binary_sensor.wohnzimmer_true_presence
+      entity_id: binary_sensor.wohnzimmer_presence_sensor
       state: "off"
     - condition: state
-      entity_id: binary_sensor.kuche_motion_sensor_kueche_bewegung
+      entity_id: binary_sensor.kuche_kueche_motion_sensor
       state: "off"
   action:
     - action: script.all_lights_off
@@ -824,7 +824,7 @@
         entity_id: light.kuche_kueche_deckenlicht_2
     - action: light.turn_on
       target:
-        entity_id: light.wohnzimmer_buffet_licht
+        entity_id: light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
       data:
         brightness_pct: 20
         color_temp_kelvin: 2200
@@ -844,14 +844,14 @@
     - action: light.turn_on
       target:
         entity_id:
-          - light.wohnzimmer_buffet_licht
+          - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
       data:
         brightness_pct: 60
         color_temp_kelvin: 2700
         transition: 2
   mode: single
 - id: guest_mode_on
-  alias: GÃ¤stemodus - LÃ¤ngere Timeouts
+  alias: GÃƒÆ’Ã‚Â¤stemodus - LÃƒÆ’Ã‚Â¤ngere Timeouts
   description: Disable automatic shutters and keep lights on longer when guests
   trigger:
     - platform: state
@@ -863,7 +863,7 @@
         entity_id: automation.rollladen_schliessen_bei_sonnenuntergang_winter
   mode: single
 - id: sun_protection
-  alias: Sonnenschutz - RolllÃ¤den bei Hitze
+  alias: Sonnenschutz - RolllÃƒÆ’Ã‚Â¤den bei Hitze
   description: Close shutters when too hot
   trigger:
     - platform: numeric_state
@@ -894,7 +894,7 @@
           - action: light.turn_on
             target:
               entity_id:
-                "{{ ['light.wohnzimmer_buffet_licht', 'light.kuche_kueche_deckenlicht_1'] | random
+                "{{ ['light.wohnzimmer_wohnzimmer_buffet_lichtstreifen', 'light.kuche_kueche_deckenlicht_1'] | random
                 }}"
             data:
               brightness_pct: "{{ range(50, 100) | random }}"
@@ -904,7 +904,7 @@
           - action: light.turn_off
             target:
               entity_id:
-                "{{ ['light.wohnzimmer_buffet_licht', 'light.kuche_kueche_deckenlicht_1'] | random
+                "{{ ['light.wohnzimmer_wohnzimmer_buffet_lichtstreifen', 'light.kuche_kueche_deckenlicht_1'] | random
                 }}"
             data:
               transition: 2
@@ -919,8 +919,8 @@
       entity_id:
         - binary_sensor.badezimmer_badezimmer_presence_sensor_bewegung
         - binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
-        - binary_sensor.kuche_motion_sensor_kueche_bewegung
-        - binary_sensor.wohnzimmer_motion_sensor_schlafen_bewegung
+        - binary_sensor.kuche_kueche_motion_sensor
+        - binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
       to: "on"
   condition:
     - condition: state
@@ -932,14 +932,14 @@
     - action: notify.mobile_app_redmi_note_12_pro_5g
       data:
         title: ?? Bewegung erkannt!
-        message: Bewegung in deiner Wohnung wÃ¤hrend Abwesenheit
+        message: Bewegung in deiner Wohnung wÃƒÆ’Ã‚Â¤hrend Abwesenheit
   mode: single
 - id: security_door_alert
-  alias: Sicherheit - TÃ¼r geÃ¶ffnet bei Abwesenheit
+  alias: Sicherheit - TÃƒÆ’Ã‚Â¼r geÃƒÆ’Ã‚Â¶ffnet bei Abwesenheit
   description: Alert when door opens while away
   trigger:
     - platform: state
-      entity_id: binary_sensor.wohnzimmer_aqara_door_and_window_sensor_tuer
+      entity_id: binary_sensor.no_area_aqara_door_and_window_sensor_tuer
       to: "on"
   condition:
     - condition: state
@@ -948,8 +948,8 @@
   action:
     - action: notify.mobile_app_redmi_note_12_pro_5g
       data:
-        title: "\U0001F6AA TÃ¼r geÃ¶ffnet!"
-        message: Die TÃ¼r wurde geÃ¶ffnet wÃ¤hrend du nicht zuhause bist
+        title: "\U0001F6AA TÃƒÆ’Ã‚Â¼r geÃƒÆ’Ã‚Â¶ffnet!"
+        message: Die TÃƒÆ’Ã‚Â¼r wurde geÃƒÆ’Ã‚Â¶ffnet wÃƒÆ’Ã‚Â¤hrend du nicht zuhause bist
   mode: single
 - id: system_auto_update_away
   alias: System - Automatische Updates bei Abwesenheit
@@ -1049,7 +1049,7 @@
         entity_id: input_boolean.someone_sleeping
     - action: light.turn_off
       target:
-        entity_id: light.schlafzimmer_bett_licht
+        entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
 - id: sleep_detection_off
   alias: Schlafmodus - Deaktivieren
   description: Reset sleep mode when activity in living room or kitchen
@@ -1057,8 +1057,8 @@
   trigger:
     - platform: state
       entity_id:
-        - binary_sensor.wohnzimmer_true_presence
-        - binary_sensor.kuche_motion_sensor_kueche_bewegung
+        - binary_sensor.wohnzimmer_presence_sensor
+        - binary_sensor.kuche_kueche_motion_sensor
       to: "on"
   condition:
     - condition: state
@@ -1074,7 +1074,7 @@
   description: Turn off heating if window is open
   trigger:
     - platform: state
-      entity_id: binary_sensor.wohnzimmer_aqara_door_and_window_sensor_tuer
+      entity_id: binary_sensor.no_area_aqara_door_and_window_sensor_tuer
       to: "on"
       for: 00:00:30
   action:
@@ -1113,7 +1113,7 @@
                 entity_id: input_boolean.heizung_winter_mode
             - action: notify.mobile_app_redmi_note_12_pro_5g
               data:
-                message: Heizperiode aktiviert (unter 15Â°C fÃ¼r 24h)
+                message: Heizperiode aktiviert (unter 15Ãƒâ€šÃ‚Â°C fÃƒÆ’Ã‚Â¼r 24h)
         - conditions:
             - condition: trigger
               id: winter_end
@@ -1123,11 +1123,11 @@
                 entity_id: input_boolean.heizung_winter_mode
             - action: notify.mobile_app_redmi_note_12_pro_5g
               data:
-                message: Heizperiode beendet (Ã¼ber 20Â°C fÃ¼r 24h)
+                message: Heizperiode beendet (ÃƒÆ’Ã‚Â¼ber 20Ãƒâ€šÃ‚Â°C fÃƒÆ’Ã‚Â¼r 24h)
   mode: single
 
 - id: living_room_lights_on_blind_close
-  alias: Wohnzimmer - Licht an wenn Rollladen schlieÃŸt
+  alias: Wohnzimmer - Licht an wenn Rollladen schlieÃƒÆ’Ã…Â¸t
   description: Turn on living room lights when blind closes
   trigger:
     - platform: state
@@ -1276,7 +1276,7 @@
   description: Detects cleaning person entrance and prepares apartment
   trigger:
     - platform: state
-      entity_id: binary_sensor.wohnzimmer_aqara_door_and_window_sensor_tuer
+      entity_id: binary_sensor.no_area_aqara_door_and_window_sensor_tuer
       to: "on"
   condition:
     - condition: time
@@ -1320,7 +1320,7 @@
     - action: notify.mobile_app_redmi_note_12_pro_5g
       data:
         title: "?? Reinigung gestartet"
-        message: "Putzfrau ist eingetroffen. Modus AKTIVIERT. Honorar: 25Â€/Std."
+        message: "Putzfrau ist eingetroffen. Modus AKTIVIERT. Honorar: 25Ãƒâ€šÃ¢â€šÂ¬/Std."
   mode: single
 
 - id: cleaning_person_exit
@@ -1350,7 +1350,7 @@
           {% set cost = duration * 25 %}
           Reinigung beendet.
           Dauer: {{ duration | round(2) }} Std.
-          Honorar: {{ cost | round(2) }} Â€
+          Honorar: {{ cost | round(2) }} Ãƒâ€šÃ¢â€šÂ¬
   mode: single
 
 # ============================================================================
@@ -1358,7 +1358,7 @@
 # ============================================================================
 - id: summer_ceiling_fan_auto
   alias: "Sommer - Deckenventilator bei Hitze"
-  description: "Start ceiling fan when temperature is above 24Â°C and you're home"
+  description: "Start ceiling fan when temperature is above 24Ãƒâ€šÃ‚Â°C and you're home"
   trigger:
     - platform: numeric_state
       entity_id: weather.no_area_forecast_zuhause
@@ -1386,8 +1386,8 @@
   mode: single
 
 - id: summer_ceiling_fan_off
-  alias: "Sommer - Deckenventilator aus bei KÃ¼hle"
-  description: "Turn off ceiling fan when temperature drops below 22Â°C"
+  alias: "Sommer - Deckenventilator aus bei KÃƒÆ’Ã‚Â¼hle"
+  description: "Turn off ceiling fan when temperature drops below 22Ãƒâ€šÃ‚Â°C"
   trigger:
     - platform: numeric_state
       entity_id: weather.no_area_forecast_zuhause
@@ -1403,7 +1403,7 @@
   mode: single
 
 - id: summer_peak_sun_blinds_close
-  alias: "Sommer - RolllÃ¤den bei SonnenhÃ¶chststand"
+  alias: "Sommer - RolllÃƒÆ’Ã‚Â¤den bei SonnenhÃƒÆ’Ã‚Â¶chststand"
   description: "Close blinds when sun is at its peak (high solar elevation) to keep apartment cool"
   trigger:
     - platform: numeric_state
@@ -1421,7 +1421,7 @@
   mode: single
 
 - id: summer_evening_blinds_open
-  alias: "Sommer - RolllÃ¤den Ã¶ffnen am Abend"
+  alias: "Sommer - RolllÃƒÆ’Ã‚Â¤den ÃƒÆ’Ã‚Â¶ffnen am Abend"
   description: "Open blinds in the evening to let cool air in"
   trigger:
     - platform: numeric_state
@@ -1448,7 +1448,7 @@
   description: "Use low light when going to bathroom at night"
   trigger:
     - platform: state
-      entity_id: binary_sensor.bad_true_presence
+      entity_id: binary_sensor.badezimmer_presence_sensor
       to: "on"
   condition:
     - condition: time
@@ -1471,7 +1471,7 @@
   description: "Turn off bathroom light when leaving at night"
   trigger:
     - platform: state
-      entity_id: binary_sensor.bad_true_presence
+      entity_id: binary_sensor.badezimmer_presence_sensor
       to: "off"
   condition:
     - condition: time
@@ -1482,7 +1482,7 @@
       target:
         entity_id:
           - light.schlafzimmer_badezimmer_lichtstreifen
-          - light.badezimmer_bad
+          - light.schlafzimmer_badezimmer_lichtstreifen
   mode: single
 
 - id: night_hallway_guide_light
@@ -1490,7 +1490,7 @@
   description: "Brief low light to guide to bathroom at night"
   trigger:
     - platform: state
-      entity_id: binary_sensor.schlafen_true_presence
+      entity_id: binary_sensor.schlafzimmer_presence_sensor
       to: "off"
   condition:
     - condition: time
@@ -1502,7 +1502,7 @@
   action:
     - action: light.turn_on
       target:
-        entity_id: light.schlafzimmer_bett_licht
+        entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
       data:
         brightness_pct: 5
         color_temp_kelvin: 2200
@@ -1510,7 +1510,7 @@
         minutes: 5
     - action: light.turn_off
       target:
-        entity_id: light.schlafzimmer_bett_licht
+        entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
   mode: restart
 
 # ============================================================================
@@ -1518,7 +1518,7 @@
 # ============================================================================
 - id: heating_cold_bedroom
   alias: "Heizung - Kaltes Schlafzimmer"
-  description: "Keep bedroom cooler than other rooms (max 18Â°C)"
+  description: "Keep bedroom cooler than other rooms (max 18Ãƒâ€šÃ‚Â°C)"
   trigger:
     - platform: time
       at: "06:00:00"
@@ -1547,17 +1547,17 @@
   description: Light on when door open. Off when door closed OR bedroom vacant.
   trigger:
     - platform: state
-      entity_id: binary_sensor.wohnzimmer_aqara_door_and_window_sensor_tuer_2
+      entity_id: binary_sensor.no_area_aqara_door_and_window_sensor_tuer_2
       from: "off"
       to: "on"
       id: "door_open"
     - platform: state
-      entity_id: binary_sensor.wohnzimmer_aqara_door_and_window_sensor_tuer_2
+      entity_id: binary_sensor.no_area_aqara_door_and_window_sensor_tuer_2
       from: "on"
       to: "off"
       id: "door_close"
     - platform: state
-      entity_id: binary_sensor.schlafen_true_presence
+      entity_id: binary_sensor.schlafzimmer_presence_sensor
       to: "off"
       for: "00:02:00"
       id: "vacant"
@@ -1587,7 +1587,7 @@
   mode: restart
 
 - id: kiffzimmer_door_light
-  alias: Kiffzimmer - Licht bei T%]%r%Âffnung
+  alias: Kiffzimmer - Licht bei T%]%r%Ãƒâ€šffnung
   description: Turn on light when door opens if dark
   trigger:
     - platform: state
@@ -1609,4 +1609,59 @@
       data:
         brightness_pct: 50
         color_temp_kelvin: 3000
+  mode: single
+
+# AI Automations merged
+# ============================================================================
+# AI AUTOMATIONS - Powered by n8n & LLMs
+# ============================================================================
+
+# 1. THE GROW BOT (Cannabis Manager)
+# Checks environment every hour and sends data to n8n for analysis
+- id: ai_grow_bot_check
+  alias: "AI - Grow Bot Check (Hourly)"
+  description: "Sends sensor data to n8n every hour for LLM analysis"
+  trigger:
+    - platform: time_pattern
+      hours: "/1"
+  action:
+    - action: rest_command.n8n_grow_bot_check
+      data:
+        temperature: "{{ states('sensor.kiffzimmer_kiffzimmer_zelt_humidity_sensor_temperatur') }}"
+        humidity: "{{ states('sensor.kiffzimmer_kiffzimmer_zelt_humidity_sensor_luftfeuchtigkeit') }}"
+        stage: "Early Flowering" # You might want to make this an input_select later
+        timestamp: "{{ now().isoformat() }}"
+  mode: single
+
+# 2. THE CLEANING TRACKER
+# Calculates cost and generates report when cleaning mode ends
+- id: ai_cleaning_tracker
+  alias: "AI - Cleaning Tracker Report"
+  description: "Triggers n8n workflow when cleaning mode is disabled"
+  trigger:
+    - platform: state
+      entity_id: input_boolean.cleaning_mode
+      from: "on"
+      to: "off"
+  action:
+    - action: rest_command.n8n_cleaning_report
+      data:
+        start_time: "{{ trigger.from_state.last_changed.isoformat() }}"
+        end_time: "{{ now().isoformat() }}"
+        hourly_rate: 25
+  mode: single
+
+# 3. VOICE NOTIFICATIONS (Jarvis)
+# Example trigger: Water Leak (Critical)
+- id: ai_voice_alert_leak
+  alias: "AI - Voice Alert (Water Leak)"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.no_area_aqara_water_leak_sensor_wasserleck
+      to: "on"
+  action:
+    - action: rest_command.n8n_voice_notify
+      data:
+        message: "Critical alert. Water leak detected in the apartment. Please check immediately."
+        voice_id: "Rachel" # ElevenLabs Voice ID
   mode: single

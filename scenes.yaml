@@ -3,34 +3,34 @@
   name: Filmabend
   icon: mdi:movie-open
   entities:
-    light.kuche_birne_1: off
-    light.kuche_birne_2_2: off
-    light.kuche_streifen: off
-    light.deckenventilator_wohnzimmer: off
-    light.buffet_licht:
+    light.kuche_kueche_deckenlicht_1: off
+    light.kuche_kueche_deckenlicht_2: off
+    light.kuche_kueche_lichtstreifen: off
+    light.wohnzimmer_wohnzimmer_deckenventilator_u_licht: off
+    light.wohnzimmer_wohnzimmer_buffet_lichtstreifen:
       state: on
       brightness_pct: 20
       color_temp_kelvin: 2200
-    light.computer_licht:
+    light.wohnzimmer_wohnzimmer_buffet_lichtstreifen:
       state: on
       brightness_pct: 15
       rgb_color: [255, 140, 0] # Sanftes Orange/Amber
-    cover.wohnzimmer_rollladen:
+    cover.wohnzimmer_wohnzimmer_rollladen_vorhang:
       state: closed
 
 - id: scene_cooking
   name: Kochen Profi
   icon: mdi:chef-hat
   entities:
-    light.kuche_birne_1:
+    light.kuche_kueche_deckenlicht_1:
       state: on
       brightness_pct: 100
       color_temp_kelvin: 4500
-    light.kuche_birne_2_2:
+    light.kuche_kueche_deckenlicht_2:
       state: on
       brightness_pct: 100
       color_temp_kelvin: 4500
-    light.kuche_streifen:
+    light.kuche_kueche_lichtstreifen:
       state: on
       brightness_pct: 100
       color_temp_kelvin: 4500
@@ -39,13 +39,13 @@
   name: Gaming Modus
   icon: mdi:controller
   entities:
-    light.deckenventilator_wohnzimmer: off
-    light.buffet_licht: off
-    light.computer_licht:
+    light.wohnzimmer_wohnzimmer_deckenventilator_u_licht: off
+    light.wohnzimmer_wohnzimmer_buffet_lichtstreifen: off
+    light.wohnzimmer_wohnzimmer_buffet_lichtstreifen:
       state: on
       brightness_pct: 60
       rgb_color: [128, 0, 128] # Lila/Purple
-    light.buffet_lichtstreifen:
+    light.wohnzimmer_wohnzimmer_buffet_lichtstreifen:
       state: on
       brightness_pct: 40
       rgb_color: [0, 255, 255] # Cyan
@@ -54,15 +54,15 @@
   name: Romantik
   icon: mdi:heart
   entities:
-    light.bett_licht:
+    light.schlafzimmer_schlafzimmer_bett_lichtstreifen:
       state: on
       brightness_pct: 20
       rgb_color: [255, 60, 60] # Tiefes Warmrot
-    light.buffet_licht:
+    light.wohnzimmer_wohnzimmer_buffet_lichtstreifen:
       state: on
       brightness_pct: 10
       color_temp_kelvin: 2000
-    light.bad_2:
+    light.schlafzimmer_badezimmer_lichtstreifen:
       state: on
       brightness_pct: 10
       color_temp_kelvin: 2000
@@ -71,9 +71,9 @@
   name: Grow Check
   icon: mdi:magnify
   entities:
-    light.kiffzimmer_lichtstreifen:
+    light.kiffzimmer_kiffzimmer_lichtstreifen:
       state: on
       brightness_pct: 100
-      color_temp_kelvin: 4000 # Neutralweiß (wichtig für Diagnose)
-    cover.kiffzimmer_rollladen:
-      state: closed # Privatsphäre
+      color_temp_kelvin: 4000 # NeutralweiÃŸ (wichtig fÃ¼r Diagnose)
+    cover.kiffzimmer_kiffzimmer_rollladen_vorhang:
+      state: closed # PrivatsphÃ¤re

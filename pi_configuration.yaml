@@ -1,4 +1,4 @@
-# ============================================================================
+﻿# ============================================================================
 # REID'S HOME ASSISTANT - COMPLETE CONFIGURATION
 # Generated: 2026-01-08
 # ============================================================================
@@ -20,7 +20,9 @@ homeassistant:
 mobile_app:
 
 # Standard includes
-automation: !include automations.yaml
+automation:
+  - !include automations.yaml
+  - !include automations_ai.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 input_boolean: !include input_boolean.yaml
@@ -126,7 +128,7 @@ rest_command:
     content_type: "application/json"
 
 # ============================================================================
-# INPUT NUMBER - RolllÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤den & Heizung
+# INPUT NUMBER - RolllÃ¤den & Heizung
 # ============================================================================
 input_number:
   # Rollladen Position Tracking
@@ -139,7 +141,7 @@ input_number:
     mode: box
     icon: mdi:window-shutter
   pos_kuche:
-    name: "Rollladen KÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼che Position"
+    name: "Rollladen KÃ¼che Position"
     min: 0
     max: 100
     step: 1
@@ -170,7 +172,7 @@ input_number:
     max: 25
     step: 0.5
     initial: 23
-    unit_of_measurement: "ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°C"
+    unit_of_measurement: "Â°C"
     mode: slider
     icon: mdi:thermometer
   heizung_solltemperatur_eco:
@@ -179,7 +181,7 @@ input_number:
     max: 20
     step: 0.5
     initial: 18
-    unit_of_measurement: "ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°C"
+    unit_of_measurement: "Â°C"
     mode: slider
     icon: mdi:thermometer-low
   heizung_solltemperatur_nacht:
@@ -188,7 +190,7 @@ input_number:
     max: 19
     step: 0.5
     initial: 17
-    unit_of_measurement: "ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°C"
+    unit_of_measurement: "Â°C"
     mode: slider
     icon: mdi:thermometer-low
 
@@ -244,7 +246,7 @@ input_select:
       - "Arbeit"
       - "Entspannen"
       - "Schlafen"
-      - "GÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤ste"
+      - "GÃ¤ste"
       - "Urlaub"
     initial: "Normal"
     icon: mdi:home-assistant
@@ -259,7 +261,7 @@ template:
         state: >
           {% set month = now().month %}
           {% if month in [3, 4, 5] %}
-            FrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼hling
+            FrÃ¼hling
           {% elif month in [6, 7, 8] %}
             Sommer
           {% elif month in [9, 10, 11] %}
@@ -293,7 +295,7 @@ template:
           {% endif %}
 
   - binary_sensor:
-      - name: "Sommerbetrieb (AuÃƒÆ’Ã†â€™Ãƒâ€¦Ã‚Â¸entemperatur)"
+      - name: "Sommerbetrieb (AuÃŸentemperatur)"
         unique_id: sommerbetrieb_ortsbasiert
         state: "{{ state_attr('weather.forecast_home', 'temperature')|float(0) > 18 }}"
         icon: >
@@ -307,9 +309,9 @@ template:
         unique_id: jemand_zuhause
         state: >
           {{ is_state('binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1', 'on') or
-             is_state('binary_sensor.kuche_kueche_motion_sensor', 'on') or
-             is_state('binary_sensor.badezimmer_badezimmer_motion_sensor', 'on') or
-             is_state('binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung', 'on') }}
+             is_state('binary_sensor.kuche_motion_sensor_kueche_bewegung', 'on') or
+             is_state('binary_sensor.badezimmer_badezimmer_motion_sensor_bad_bewegung', 'on') or
+             is_state('binary_sensor.wohnzimmer_motion_sensor_schlafen_bewegung', 'on') }}
         icon: >
           {% if is_state('binary_sensor.jemand_zuhause', 'on') %}
             mdi:home-account
@@ -322,14 +324,14 @@ template:
         state: "{{ now().month in [1, 2, 3, 4, 10, 11, 12] }}"
         icon: mdi:radiator
 
-      - name: "Dunkel draußen"
+      - name: "Dunkel drauÃŸen"
         unique_id: dunkel_draussen
         state: "{{ is_state('sun.sun', 'below_horizon') }}"
         icon: mdi:weather-night
 
       # Skill: Advanced Presence Detection
-      - name: "Wohnzimmer Presence Sensor"
-        unique_id: wohnzimmer_presence_sensor
+      - name: "Wohnzimmer True Presence"
+        unique_id: wohnzimmer_true_presence
         delay_off: "00:01:00" # 1 min buffer
         state: >
           {{ 
@@ -338,38 +340,40 @@ template:
           }}
         icon: mdi:account-eye
 
-      - name: "Küche Presence Sensor"
-        unique_id: kuche_presence_sensor
+      - name: "KÃ¼che True Presence"
+        unique_id: kuche_true_presence
         delay_off: "00:01:30" # 90s buffer for cooking
         state: >
           {{ 
-             is_state('binary_sensor.kuche_kueche_motion_sensor', 'on')
+             is_state('binary_sensor.kuche_motion_sensor_kueche_bewegung', 'on')
+             or is_state('binary_sensor.kuche_kueche_presence_sensor_bewegung', 'on')
              or is_state('binary_sensor.kuche_kueche_presence_sensor_bewegung', 'on')
           }}
         icon: mdi:chef-hat
 
-      - name: "Badezimmer Presence Sensor"
-        unique_id: badezimmer_presence_sensor
+      - name: "Bad True Presence"
+        unique_id: bad_true_presence
         delay_off: "00:02:00" # 2 min buffer (showering/brushing teeth)
         state: >
           {{ 
-             is_state('binary_sensor.badezimmer_badezimmer_motion_sensor', 'on')
+             is_state('binary_sensor.badezimmer_badezimmer_motion_sensor_bad_bewegung', 'on')
+             or is_state('binary_sensor.badezimmer_badezimmer_motion_sensor', 'on')
              or is_state('binary_sensor.badezimmer_badezimmer_presence_sensor_bewegung', 'on')
           }}
         icon: mdi:shower
 
-      - name: "Schlafzimmer Presence Sensor"
-        unique_id: schlafzimmer_presence_sensor
+      - name: "Schlafzimmer True Presence"
+        unique_id: schlafen_true_presence
         delay_off: "00:00:30" # Short buffer
         state: >
           {{ 
-             is_state('binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung', 'on')
-             or is_state('binary_sensor.schlafzimmer_schlafzimmer_tuersensor_opening', 'on')
+             is_state('binary_sensor.wohnzimmer_motion_sensor_schlafen_bewegung', 'on')
+             or is_state('binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung', 'on')
           }}
         icon: mdi:bed
 
-      - name: "Kiffzimmer Presence Sensor"
-        unique_id: kiffzimmer_presence_sensor
+      - name: "Kiffzimmer True Presence"
+        unique_id: kiffzimmer_true_presence
         delay_off: "00:01:00" # 1 min buffer
         state: >
           {{ 
@@ -390,3 +394,4 @@ notify:
     name: alle_geraete
     services:
       - service: mobile_app_redmi_note_12_pro_5g
+

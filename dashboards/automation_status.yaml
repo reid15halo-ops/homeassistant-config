@@ -19,15 +19,15 @@ views:
           - entity: person.jonas_glawion
             name: Your Location
           - type: divider
-          - entity: binary_sensor.wohnzimmer_true_presence
+          - entity: binary_sensor.wohnzimmer_presence_sensor
             name: Living Room Presence
-          - entity: binary_sensor.kuche_true_presence
+          - entity: binary_sensor.kuche_presence_sensor
             name: Kitchen Presence
-          - entity: binary_sensor.bad_true_presence
+          - entity: binary_sensor.badezimmer_presence_sensor
             name: Bathroom Presence
-          - entity: binary_sensor.schlafen_true_presence
+          - entity: binary_sensor.schlafzimmer_presence_sensor
             name: Bedroom Presence
-          - entity: binary_sensor.kiffzimmer_true_presence
+          - entity: binary_sensor.kiffzimmer_presence_sensor
             name: Kiffzimmer Presence
 
       # Active Modes

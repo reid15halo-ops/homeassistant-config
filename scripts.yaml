@@ -1,4 +1,4 @@
-﻿# ============================================================================
+# ============================================================================
 # BEREINIGTE SCRIPTS.YAML
 # Duplikate entfernt - nur die aktive Version behalten
 # ============================================================================
@@ -10,7 +10,7 @@ ambient_feuerlicht_warm_flicker:
     - target:
         entity_id:
           - light.wohnzimmer_computer_licht
-          - light.wohnzimmer_buffet_licht
+          - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
       data:
         init_states: 30,55,62
         backgrounds:
@@ -29,7 +29,7 @@ ambient_feuerlicht_warm_flicker:
       action: tplink.random_effect
 
 ambient_velvet_rainbow:
-  alias: Ambient – Velvet Rainbow
+  alias: Ambient â€“ Velvet Rainbow
   mode: restart
   sequence:
     - variables:
@@ -58,7 +58,7 @@ ambient_velvet_rainbow:
               hue: "{{ (hue + step_h) % 360 }}"
 
 ventilator_wintermodus_low:
-  alias: Ventilator – Wintermodus Low
+  alias: Ventilator â€“ Wintermodus Low
   mode: single
   sequence:
     - action: fan.decrease_speed
@@ -95,7 +95,7 @@ lights_bedtime:
     - action: script.all_lights_off
     - action: light.turn_on
       target:
-        entity_id: light.schlafzimmer_bett_licht
+        entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
       data:
         brightness_pct: "{{ states('input_number.night_mode_brightness')|int(15) }}"
         color_temp_kelvin: 2700
@@ -108,11 +108,11 @@ all_lights_off:
     - action: light.turn_off
       target:
         entity_id:
-          - light.badezimmer_bad
           - light.schlafzimmer_badezimmer_lichtstreifen
-          - light.wohnzimmer_buffet_licht
+          - light.schlafzimmer_badezimmer_lichtstreifen
           - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
-          - light.schlafzimmer_bett_licht
+          - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
+          - light.schlafzimmer_schlafzimmer_bett_lichtstreifen
           - light.schlafzimmer_schlafzimmer_bett_lichtstreifen
           - light.wohnzimmer_computer_licht
           - light.schlafzimmer_schlafzimmer_kleiderschrank_lichtstreifen
@@ -299,7 +299,7 @@ heating_comfort_now:
         temperature: "{{ 23 if now().month in [11, 12, 1, 2] else 22 }}"
 
 fan_winter_heat_now:
-  alias: "Ventilator - Winter Wärmeverteilung starten"
+  alias: "Ventilator - Winter WÃ¤rmeverteilung starten"
   description: "Manually start ceiling fan in winter heat distribution mode"
   mode: single
   sequence:
@@ -316,7 +316,7 @@ living_room_lights_on_blind_close:
     - action: light.turn_on
       target:
         entity_id:
-          - light.wohnzimmer_buffet_licht
+          - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
           - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
           - light.wohnzimmer_wohnzimmer_rollladen_hintergrundbeleuchtung
       data:
@@ -328,3 +328,124 @@ living_room_lights_on_blind_close:
       data:
         brightness_pct: 50
         color_temp_kelvin: 2700
+
+# ============================================================================
+# NEW UTILITY SCRIPTS
+# ============================================================================
+
+goodnight:
+  alias: "Gute Nacht Routine"
+  description: "Turn off all lights, close blinds, set heating to night mode"
+  mode: single
+  sequence:
+    # Turn off all lights
+    - action: script.all_lights_off
+    # Close all blinds
+    - action: script.all_covers_close
+    # Set heating to night temperature
+    - action: climate.set_temperature
+      target:
+        entity_id:
+          - climate.badezimmer_thermostat_bad
+          - climate.wohnzimmer_thermostat_computer
+      data:
+        temperature: "{{ states('input_number.heizung_solltemperatur_nacht') | float(17) }}"
+    # Activate sleep mode
+    - action: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.sleep_mode
+    # Notify
+    - action: notify.mobile_app_redmi_note_12_pro_5g
+      data:
+        title: "Gute Nacht 🌙"
+        message: "Alle Lichter aus, Rollläden zu, Heizung auf Nachtmodus."
+      continue_on_error: true
+
+leaving_home:
+  alias: "Haus Verlassen"
+  description: "Activate away mode, close blinds, set ECO heating, turn off everything"
+  mode: single
+  sequence:
+    # Turn off all lights
+    - action: script.all_lights_off
+    # Close all blinds
+    - action: script.all_covers_close
+    # Set heating to ECO
+    - action: climate.set_temperature
+      target:
+        entity_id:
+          - climate.badezimmer_thermostat_bad
+          - climate.wohnzimmer_thermostat_computer
+      data:
+        temperature: "{{ states('input_number.heizung_solltemperatur_eco') | float(18) }}"
+    # Turn off fans
+    - action: fan.turn_off
+      target:
+        entity_id:
+          - fan.wohnzimmer_wohnzimmer_deckenventilator_u_licht
+          - fan.schlafzimmer_schlafzimmer_deckenventilator_u_licht
+      continue_on_error: true
+    # Activate away mode
+    - action: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.away_mode
+    # Deactivate sleep mode
+    - action: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.sleep_mode
+
+movie_mode:
+  alias: "Filmabend Modus"
+  description: "Dim lights for movie watching, close blinds"
+  mode: single
+  sequence:
+    # Close living room blind
+    - action: script.safe_close_blind
+      data:
+        cover_entity: cover.wohnzimmer_wohnzimmer_rollladen_vorhang
+        tracker_entity: input_boolean.blind_wohnzimmer_last_opened
+    # Dim buffet light to ambient
+    - action: light.turn_on
+      target:
+        entity_id: light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
+      data:
+        brightness_pct: 15
+        color_temp_kelvin: 2200
+    # Turn off ceiling light
+    - action: light.turn_off
+      target:
+        entity_id: light.wohnzimmer_wohnzimmer_deckenventilator_u_licht
+    # Turn off kitchen lights
+    - action: light.turn_off
+      target:
+        entity_id:
+          - light.kuche_kueche_deckenlicht_1
+          - light.kuche_kueche_deckenlicht_2
+          - light.kuche_kueche_lichtstreifen
+    # Activate movie mode flag
+    - action: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.movie_mode
+
+coming_home:
+  alias: "Heimkommen"
+  description: "Deactivate away mode, warm up house, turn on welcome lights"
+  mode: single
+  sequence:
+    # Deactivate away mode
+    - action: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.away_mode
+    # Set heating to comfort
+    - action: climate.set_temperature
+      target:
+        entity_id:
+          - climate.badezimmer_thermostat_bad
+          - climate.wohnzimmer_thermostat_computer
+      data:
+        temperature: "{{ states('input_number.heizung_solltemperatur_komfort') | float(23) }}"
+    # Open blinds if daytime
+    - condition: state
+      entity_id: sun.sun
+      state: "above_horizon"
+    - action: script.all_covers_open

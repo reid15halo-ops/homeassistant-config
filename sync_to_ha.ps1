@@ -84,7 +84,7 @@ Write-Host ""
 
 # Auto-reload via API if token is available
 $HA_URL = "http://192.168.178.70:8123"
-$token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhNTYxNTg2ZjI1OTM0OWNjOWRhMzE5MDU1YzAwYzM3OCIsImlhdCI6MTczNjUxMzQ3NCwiZXhwIjoyMDUxODczNDc0fQ.MiOiJhYThhNTIwMDk3ODNzZyYjI3YTE0NDMzN2E1NE1NWM5MSIsImlhdCI6MTc2ODA0Mzc4MiwiZXhwIjoyMDgzNDAzNzgyfQ.KLEL344KZijaM2Uta_DA"
+$token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI3OWYxOWU4Nzk0OTM0ZWI3YWY3OWQ3NDQ3MTJhNTM4NSIsImlhdCI6MTc2OTE4NzAyNiwiZXhwIjoyMDg0NTQ3MDI2fQ.hnjwIBvi2LSI37EwYuFQt55v8mGDnbzqN2QHXmuBQvs"
 
 if ($token) {
     Write-Host "Reloading Home Assistant via API..." -ForegroundColor Cyan
