@@ -1,0 +1,39 @@
+- id: morning_wakeup_weekday
+  alias: Morgen - Aufwachen Werktag (05:00)
+  description: Gradual wake-up light and heating on weekdays
+  trigger:
+    - platform: time
+      at: 04:30
+  condition:
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+  action:
+    - action: climate.set_temperature
+      target:
+        entity_id:
+          - climate.thermostat_bad
+          - climate.thermostat_computer
+      data:
+        temperature: 23
+    - delay:
+        minutes: 30
+    - action: light.turn_on
+      target:
+        entity_id: light.bett_licht
+      data:
+        brightness_pct: 5
+        color_temp_kelvin: 2700
+        transition: 1800
+    - delay:
+        minutes: 30
+    - action: light.turn_on
+      target:
+        entity_id: light.bett_licht
+      data:
+        brightness_pct: 80
+  mode: single

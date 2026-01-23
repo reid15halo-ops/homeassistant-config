@@ -1,0 +1,3077 @@
+In diesem Kurs wirst du vom absoluten Anfänger zum echten AI Automations Profi und lernst dabei die wertvollste
+0:06
+Fähigkeit der nächsten Dekade komplett kostenfrei. Faktisch wird es die letzte Fähigkeit sein, die wirklich noch einen
+0:12
+Wert hat, denn laut einer aktuellen McKinsy Studie sind bis 2030 57% aller
+0:17
+Arbeitsstunden vollständig automatisierbar. in manchen Jobs sogar bis zu 90% und das MIT sagt, dass 11,7 %
+0:25
+ihren Job vollständig verlieren werden und dabei gehen wir nur vom aktuellen Stand der künstlichen Intelligenz aus.
+0:31
+Gleichzeitig scheint eine Fähigkeit über allen anderen zu stehen die Nachfrage nach AI Fluency, also die Fähigkeit AI
+0:39
+Tools zu nutzen und zu managen, ist ja in nur 2 Jahren um das siebenfache gestiegen, schneller als jeder andere
+0:45
+Skill. Faktisch ist AI Automatisierung damit die letzte wirklich zukunftssichere Fähigkeit. Während
+0:51
+praktisch alle anderen Bürojobs vollständig durch KI ersetzt werden, wirst du mit diesem Skill zu den
+0:57
+Gewinnern gehören. Bin selbst der lebende Beweis dafür. Ich habe über die letzten dre Jahre mehrere hoch siebenstellige KI Unternehmen aufgebaut,
+1:04
+wie meine eigene KI Beratungs und Implementierungsagentur, die du auf kiberatung.de findest. mit meinem 30
+1:09
+köpfigen Team hunderte Kundenprojekte umgesetzt für klassische Mittelständler über Hind Champions bis hin zu
+1:14
+europäischen Weltmarktführern und ein Netzwerk aus den führenden KI Forschern, Professoren und Unternehmern direkt im
+1:20
+Silken Valley geschaffen. Zusätzlich habe ich die letzten Jahre hunderte heute bekannte KI Agenturen ausgebildet.
+1:26
+Anfang 2024 die erst zertifizierte AI Automations Manager Ausbildung mit mittlerweile hunderten erfolgreichen
+1:33
+Absolventen ins Leben berufen. Nebenbei diverse heute allgegenwärtige KI Lösung wie AI Voice Agents und Corp LMs in
+1:40
+dutzenden Stunden kostenloser Videokurse hier auf diesem YouTube-Kanal eingeführt und bin von Herzen dankbar für die
+1:46
+unzähligen, positiven Rückmeldung, die ich dafür die letzten Jahre erhalten habe. Ich sag dir das alles, damit du
+1:52
+sicher sein kannst, dass ich wirklich sattelfest bin in dem, was ich dir in diesem Kurs zeigen werde und dieses
+1:58
+Wissen zu 100% aus der Praxis kommt. Im folgenden wirst du also alles lernen, was du über AI Automations wissen musst,
+2:05
+selbst wenn du noch absoluter Anfänger bist, bisher noch nie etwas damit zu tun hattest und nein, dafür musst du auch
+2:11
+nicht programmieren können. Dabei gehen wir Schritt für Schritt durch vier Kapitel. Erstens, das Fundament. Was ist
+2:16
+AI Automation überhaupt? Welche Arten von AI Automations gibt es? Welche Tools musst du kennen und wie genau
+2:22
+funktionieren Automationen? Und keine Sorge, selbst wenn du keinen technischen Hintergrund hast, wirst du alles
+2:28
+verstehen und anschließend besser mitdreden können als 99% der Leute. Zweitens, die Kernkonzepte. Ich sehe
+2:33
+immer wieder, dass dieser Bereich in Kursen komplett ausgelassen und übersprungen wird. Doch tatsächlich ist er der wichtigste von allen. Die meisten
+2:40
+fokussieren sich nämlich nur auf die rein technische Umsetzung von KI Automatisierung. Dabei macht dies aber
+2:46
+nur 20% der Skills aus, die du brauchst, um mit AI Automations auch Geld zu
+2:51
+verdienen. Während andere Hunderte Stunden investieren, um auf 100% im technischen Wissen zu kommen, werde ich
+2:57
+dir in wenigen Minuten die 80% der Grundprinzipien teilen, die nötig sind,
+3:02
+um reale KI Projekte erfolgreich umzusetzen. Drittens, die Umsetzung. Du wirst mir über die Schulter schauen und
+3:09
+gemeinsam bauen wir vier der gerade am meisten gefragten AI Automation Use
+3:14
+Cases in der Praxis sodass du sie nur noch eins zu eins kopieren brauchst. Dadurch wirst du nicht nur sicher in der
+3:20
+Einrichtung von KI Lösungen, sondern kannst diese auch direkt in deinem Unternehmen implementieren oder weiterverkauf und ja gehören auch
+3:27
+führende AI Voice Agent Lösung. Und das letzte Kapitel ist die Monetarisierung. All dieses Wissen bringt dir nämlich
+3:33
+nichts, wenn du nicht weißt, wie du damit Geld verdienen kannst. Und daher erhältst du von mir hier einen klaren Fahrplan, wie genau sich die hier erlten
+3:40
+Fähigkeiten dann auch in deinem Geldbeutel bemerkbar machen. Egal, ob du Angestellt bist, Unternehmer oder deine
+3:46
+eigene KI Agentur aufbauen willst. Also fangen wir jetzt noch mal vorne an. Warum sind AI Automations überhaupt so
+Warum AI Automations?
+3:52
+wichtig? Wie bereits angedeutet, zeigt McKinsy in ihrer aktuellen Studie, dass 60 bis 70% der heutigen
+3:57
+Arbeitsaktivitäten technisch automatisierbar sind. in den USA konkret 57% aller Arbeitsstunden, davon 44%
+4:05
+durch Software Agents und 13 % durch Robotik. In administrativen und standardisierten Bürojobs liegt das
+4:11
+automatisierbare Aufgabenbündel sogar bei 70 bis 80% der Zeit. Der aktuelle Future of Jobs Report des WEF zeigt
+4:18
+parallel dazu, dass etwa 40% der Unternehmen planen, Personal dort abzubauen, wo KI Aufgaben übernimmt.
+4:24
+Doch das Entscheidende dabei ist, während 40% der Unternehmensstellen abbauen wollen, suchen gleichzeitig zwei
+4:30
+Drittel aller Unternehmen händeringend nach Mitarbeitern mit spezifischen AI Skills, insbesondere AI Workflow
+4:37
+Automation. 50% der Arbeitgeber plan ihr komplettes Geschäftsmodell wegen KI neu auszurichten und 80% wollen massiv in
+4:45
+Upskilling ihrer Mitarbeiter investieren. Auch die CEOs der führende Techunternehmen sprechen seit langem
+4:50
+ganz offen darüber. Dario Omodi, CEO von Enhropic, dem Unternehmen hinter Clot sagt: "Die meisten Menschen
+4:56
+unterschätzen, wie schnell AI voranschreitet. Ich rate allen inklusive normaler Bürger AI zu lernen und zu
+5:02
+nutzen. Sam Oldman CEO von Open AI sagt: "Das Wichtigste, dass du jetzt studieren kannst, ist wirklich gut mit den neuen
+5:08
+AI Tools umzugehen." Und er meint damit nicht nur ChatG zu bedienen, sondern echte Automatisierungen zu bauen, die er
+5:14
+selbst täglich nutzt, um AI in seine Prozesse einzubinden. Also auf der einen Seite entlassen Unternehmen gerade
+5:21
+reihenweise Mitarbeiter, weil sie durch AI ersetzt werden. Viele finden aktuell aufgrund des Jobstops, ja, nicht mal
+5:26
+mehr neue Jobs und auf der anderen Seite suchen Sie händeringend nach Menschen, die AI Fluent sind, also die neuesten KI
+5:33
+Tools nicht nur nutzen, sondern vor allem sinnvoll und Gewinn bringt ins Unternehmen integrieren. Professor Dr.
+5:38
+Sebastian Trun, Gründer von Google X und einer der bedeutendsten KI Pioniere unserer Zeit, bringt es auf den Punkt,
+5:43
+als ich ihn gefragt habe, worauf es jetzt ankommt. Eine radikale Neugier. Fast jede Form
+5:48
+der Arbeit wird durch KI verändert werden. Die die da mitmachen, die ganz vorne schwimmen, die werden gewinnen.
+5:55
+Die die hinten anbleiben, werden verlieren. Ist relativ einfach. Das mag in verschiedenen Branchen sich
+6:01
+unterschiedlich auswirken. Also in äh Branchen, die sehr physikalisch sind, viel mit Hand gearbeitet wird, sind
+6:06
+weniger beeinflusst im Moment, obwohl inzwischen auch in der Robotik viel gemacht wird. Leute, die im Büro arbeiten und immer
+6:11
+wieder die gleiche Sache machen, die werden stärker beeinflusst werden und es ist die Pflicht der Unternehmer da ganz vorne dran zu sein.
+6:17
+Also, wenn du dieser Pflicht ganz vorne mit dabei zu sein und AI Fluent zu werden, jetzt nachkommen willst, egal ob
+6:23
+du Arbeitnehmer bist und deine Karriere fördern willst, du diese einmalige Chance nutzen willst, um dich selbständig zu machen mit deiner
+6:28
+KI-Agentur, um frei zu werden oder bereits Unternehmer bist, so wie ich und du deine Gewinne steigern willst, dann
+6:34
+ist dieser Kurs hier alles, was du brauchst. Und das, was ich immer wieder sehe, ist sobald jemand einmal richtig
+6:40
+verstanden hat, wie KI Automatisierungen funktionieren und was damit möglich ist, dann verändert sich etwas. Erst im
+6:45
+Unternehmen und dann auch im gesamten Leben. Deshalb machst du jetzt bequem, hol dir einen Kaffee, schließ mal alle
+6:51
+deine Tabs und schenk dir selbst diese Zeit. Denn was du hier lernst, kann dich nicht nur beruflich weiterbringen. Es
+6:57
+würde dich zu einem der Menschen machen, die von KI profitieren, anstatt von ihr ersetzt zu werden. Also schauen wir uns
+AI Automations Grundlagen
+7:03
+an, was AI Automations überhaupt sind. Der Begriff wird mittlerweile inflationär herumgeworfen, doch die
+7:09
+wenigsten verstehen wirklich, was dahinter steckt und genau deshalb verlieren sie sich in Toolparalyse und
+7:15
+bauen am Ende gar nichts mehr. Das erste, was du also verstehen musst, ist der AI Teil. Der ist relativ neu. Automationen selbst, die gibt's schon
+7:21
+seit Jahrzehnten. Eine Automation ist ganz einfach gesagt ein System, das eine Aufgabe für dich erledigt, ohne dass du
+7:27
+auch nur einen Finger krumm machen musst. Die sogenannten Automationen der alten Welt liefen dabei auf Plattformen
+7:33
+wie UIPH und wurden von Mittelständern die letzten 10 bis 15 Jahre genutzt, um simple Dinge zu automatisieren. Jemand
+7:39
+füllt ein Formular aus und Namen und E-Mail landen dann automatisch in einer Datenbank. Es war also ein stumpfes,
+7:44
+wenn dann Prinzip und konnte in der Praxis da ja schnell extrem ausufernd werden mit unzähligen Logiken, Regeln
+7:51
+und Edge Cases, die abgedeckt werden mussten. Und das war tatsächlich extrem wertvoll, denn es befreite Menschen von
+7:57
+den wirklich stupiden Aufgaben und für Unternehmer bedeutete es nicht noch mehr Personal für diesen Kleinkram einstellen
+8:02
+zu müssen. Jahrzehnte lang lief das also so und alle waren relativ happy. Bis dann Ende 2022 ChatGBT kam und die Welt
+8:10
+aus den Angeln gehoben hat, denn ChatGBT hat der Automatisierung einen komplett neuen Motor eingebaut, der es plötzlich
+8:16
+möglich macht, Aufgaben zu automatisieren, die vorher immer noch ein menschliches Gehirn braucht. Das ist der fundamentale Unterschied. Alte
+8:22
+Automation konnten Daten von A nach B verschieben. AI Automations können denken, selbst entscheiden und
+8:28
+vielleicht sogar kreativ sein. Die einfachste Definition ist also eine AI Automation ist ein System, das
+8:34
+künstliche Intelligenz nutzt, um Aufgaben zu erledigen, für die es eigentlich einen Menschen benötigt. Do
+8:39
+bevor wir jetzt hier direkt in die Praxis gehen, das wird der spannendste Teil dieses Videos, müssen wir uns noch kurz die AI Automation Landschaft aus
+8:46
+der Vogelperspektive anschauen. Problem ist nämlich, dass es ein extrem weiter Begriff ist, in den viele Dinge
+8:52
+gleichzeitig reinfallen und die meisten schnell völlig überfordert sind, weil sie denken, sie müssten tausende Tools
+8:57
+gleichzeitig kennen und irgendwie miteinander verknüpfen. Es liegt vor allem an den ganzen Updates, die sich quasi wöchentlich überschlagen und der
+9:04
+Vielzahl an Begriffen wie KI Agenten, Voice Agents, Workflows und so weiter,
+9:09
+die alle gar keine offizielle Definition haben, weil sie so neu sind. In der Umsetzung von hunderten KI Projekten mit
+9:15
+meiner eigenen KI Beratungs und Implementierungsagentur Everlast AI und der Ausbildung von zahlreichen anderen
+9:20
+KI Agenturen war es mir wichtig für dieses Chaos einen Kompass zu entwickeln, der dir dabei hilft bei all
+9:27
+den vielen Möglichkeiten die richtige Richtung zu finden. Dabei bin ich auf folgende vier Kategorien gekommen, in
+9:32
+denen es sich lohnt zu denken. Erstens Voice Agents, KI Chatbots, Workflow Automations und Corporate LMS. AI Voice
+9:39
+Agents sind KI Systeme, die telefonieren können. Sprich sie nehmen Anruf entgegen, führen Gespräche und erledigen
+9:44
+Aufgaben am Telefon, ohne dass ein Mensch rangehen muss. Ein Voice Agent kann beispielsweise alte Leads anrufen,
+9:50
+qualifizieren und bei Interesse direkt einen Termin mit dem Vertrieb buchen oder im Kundenservice eingehende Anrufe
+9:56
+beantworten und nur die wirklich komplexen Fälle an einen Menschen weiterleihen. KI Chatbots sind KI
+10:01
+Systeme, die schriftlich kommunizieren, z.B. auf einer Website in WhatsApp, in E-Mails im Kern überall, wo Text
+10:07
+ausgetauscht wird. Ein Chatboot kann Kundenanfragen beantworten, Supporttickets bearbeiten oder Leads qualifizieren. Ist 247 verfügbar und
+10:15
+wird mit der Zeit immer günstiger anstatt teurer. Voice Agents und KI Chatbots fassen viele übrigens auch
+10:20
+unter dem Begriff Conversational AI, also KI in der Konversation mit Menschen
+10:25
+zusammen. Da sich die meisten in der Praxis jedoch erstmal auf eine dieser beiden Lösungen fokussieren, finde ich
+10:30
+besser sie getrennt zu betrachten. Workflow Automations sind AI Automations, die komplette Prozesse von
+10:35
+A bis Z durchlaufen. mehrere Schritte hintereinander ausführen und dabei verschiedene Tools miteinander verbinden. Das sind die langweiligen
+10:42
+Routineprozesse, die es in der Regel nicht in solche YouTube Videos hier schaffen, weil sie nicht schick genug aussehen, aber in der Praxis tatsächlich
+10:49
+oft am stärksten nachgefragt sind von deutschen Unternehmen aus der Realwirtschaft. Alle der drei soeben genannten Systeme werden wir gleich
+10:55
+übrigens gemeinsam an einem echten Beispiel umsetzen. Corporate LMS sind unternehmenseigene KI Arbeitsbereiche,
+11:02
+die mit internen Daten trainiert werden und DSGVO konform auf europäischen Servern laufen und die Produktivität im
+11:08
+Arbeiten mit KI erhöhen. Da dies ganz eigenes Thema für sich ist, habe ich dazu bereits einen separaten Kurs
+11:14
+veröffentlicht. Das mächtige dabei ist jetzt aber, dass diese vier Kategorien nicht nur isoliert voneinander funktionieren, sondern du sie auch
+11:20
+kombinieren kannst sass am Ende komplette KI Infrastrukturen entstehen, die vollständig automatisiert ablaufen
+11:27
+und einen massiven Mehrwertstift. Nun, da du den Kompass hast mit vier Richtungen, in die du segeln kannst,
+11:33
+macht es Sinn noch kurz über die verschiedenen Bauteile für dein Schiff, also die Tools zu sprechen. Und das Gute
+11:39
+dabei ist, dass du eben nicht tausende davon brauchst, sondern nur diese sieben grundlegenden Kategorien, auf denen
+11:45
+alles basiert. Erstens, E-Pass Plattformen, das steht für Integration Plattform Ass Service und ist nur der
+11:52
+fancy Sammelbegriff für all die Tools, mit denen du Workflow Automations wirklich bauen kannst. Die bekanntesten
+11:58
+sind Sapier, Make und NN. Diese sind wie dein Steuerrad oder die Kommandozentrale, alle Tools
+12:04
+zusammenlaufen. Zweitens Orchestration Layer. Diese sind sehr ähnlich zu, nur
+12:10
+eben speziell für AA Voice Agents und Chatbots oder andere Arten von Automations, sodass du innerhalb von
+12:16
+Minuten deine KI Agenten zusammenklicken und verwalten kannst. Genau wie ja vereinen sie viele Services und
+12:22
+vereinfachen Dinge wie Anbindung von Telefonnummern. Hierzu gehören Tools wie Vapi, 11 Labs oder auch Live Kit.
+12:29
+Drittens, Datenbanken und Tabellen. Das sind die Lagerräume unter Deck, in denen alle wichtigen Informationen gespeichert
+12:36
+werden, die du in deinen Automation brauchst. Hierzu zählen Excel Tabellen, Google Sheets, die oft für den Anfang
+12:41
+ausreichen, sowie professionelle Tools wie Airtable oder Superbase, die du brauchst, sobald deine Automation größer
+12:47
+wird. Viertens KI Modelle und LMS. Das sind die eigentlichen Gehirne an Bord, die Offiziere, die denken, verstehen und
+12:53
+eigenständig Entscheidungen treffen können. Die bekanntesten sind sicher die GBT Modelle von Open AI, Clote von
+12:58
+Anthropic, Gemini von Google sowie eine Vielzahl von Open Source Modellen wie Quen oder Deepse fünftens Corporate
+13:05
+Workspaces und Kommunikationstools. Das ist quasi die Grundausstattung deines Schiffs. Die wichtigsten sind Google
+13:11
+Workspace und Microsoft 365. Diese bündeln eine Vielzahl von wichtigen Unternehmensanwendungen wie
+13:17
+E-Mailprogramme, Kalender und digitale Datenablangen. Diese brauchen wir fast in jeder Automation, um Daten zu
+13:23
+speichern, Termine zu buchen und mit anderen Tools oder Menschen zu kommunizieren und sind daher als
+13:28
+Grundlage essentiell. Tatsächlich hat nicht jedes, ja, deutsche oder Europäische Unternehmen diese Grundlage
+13:33
+und allein diese einzuführen hat oft bereits einen enormen Mehrwert. Sechstens, Formulare und Dateneingabe.
+13:40
+Das sind der Steg bzw. die Eingänge zu deinem Schiff über die Informationen reinkommen. In der Regel, um deinen
+13:46
+Workflow zu starten. Das sind Tools, die oft in Corporate Workspaces inkludiert sind, wie Microsoft Forms, Google Forms
+13:53
+oder spezialisierte Tools wie Jotform. Siebtens, Aufgabenspezifische Tools. Das sind all die Tools, die nicht in die
+14:00
+anderen Kategorien passen, weil sie auf nur eine Aufgabe spezialisiert sind, aber trotzdem wichtig sind. Z.B.
+14:06
+Hubsword oder Relation Flow als CRM System oder Trello als Projektmanagement Tools. Nun, da du den Überblick über die
+14:12
+sieben wichtigsten Kategorien hast, kommen wir zur entscheidenden Frage. Wie funktionieren Automationen genau in der
+14:18
+Praxis? Lass uns dafür diese Chipsanalogie jetzt wieder beiseite legen und uns zwei andere Bilder anschauen, die das Ganze noch klarer
+14:24
+machen. Stell dir deine Automation wie eine Fabrik vor, in der verschiedene Stationen nacheinander abgearbeitet
+14:29
+werden. Oder noch persönlicher, während deine Automation abläuft, ist es so wie bei einem Umzug, bei dem all deine
+14:35
+Freunde vorbeikommen, um zu helfen. Jeder bringt dabei sein eigenes Wissen oder seine Fähigkeiten mit. Der eine plant die Route, der andere schleppt die
+14:41
+Möbel, der nächste räumt schon mal in der Wohnung ein und indem du deine Workflow aufbaust, bist du praktisch der
+14:47
+Chef in der Fabrik oder eben der Freund, für den alle anderen den Umzug machen, während er zuschaut. Sobald du weißt,
+14:53
+was jedes Tool kann, kannst du sie so zusammenstellen, dass sie reibungslos zusammenarbeiten. Das ist ein bisschen wie mit Legosteinen zu bauen. Du klickst
+15:00
+einfach die richtigen Teile zusammen, um daraus etwas großartiges zu bauen. Du entscheidest, welche Tools du in welcher
+15:05
+Reihenfolge verbindest und wie KI das gesamte System intelligenter macht. Welche KI Modelle nutzt du dabei?
+15:11
+Geminite, GBT, Clote für komplexe Aufgaben, Misstral als europäische Open Source Alternative. Es gibt so viele
+15:17
+Entscheidungen, die du hier treffen musst, aber genau das ist das Spannende daran. Du kannst deine Kreativität einsetzen, um diese Probleme zu lösen.
+15:24
+Es ist also wirklich so wie Rätsel lösen oder Puzzeln, weshalb ich und viele andere auch so lieben. Ich sag mir
+15:29
+einfach, okay, ich weiß jetzt, wie das Endresultat aussehen muss. Wie kann ich KI nutzen, um das zu erreichen? Das
+15:35
+zwingt dich dann dazu zu erforschen, welche KI Tools die richtigen sind. In der Praxis folgt eine Automation dabei
+15:40
+in der Regel immer dem gleichen Aufbau. Stell dir dazu einfach eine Automation vor wie ein Fließband in einer
+15:46
+Autofabrik, bei dem verschiedene Stationen nacheinander abgearbeitet werden, um am Ende ein fertiges Auto zu
+15:51
+haben. Jede Station hat eine spezifische Aufgabe und das Werkstück wird weiter an die nächste Station gegehen. Die
+15:57
+einfachste Form, sich eine AI Automation vorzustellen, ist nach dem Input Prozess Output Prinzip, auf das du im übrigen
+16:04
+jedes Unternehmen der Welt herunterbrechen kannst. Schauen wir uns dafür drei reale Beispiele an. Mercedes, Nvidia und einen Eisverkäufer. Bei
+16:11
+Mercedes kommen tausende Teile von Zulieferern wie Motoren, Sitze, Reifen, Elektronik oder Karosserieteile rein.
+16:18
+Das ist der Input. Dann startet der Prozess. Das ist die Montage am Fließband, der alles zusammengebaut,
+16:24
+lackiert und geprüft wird. Und am Ende gibt es den Output. Das ist das fertige Auto, was du kaufen kannst. Bei Nvidia
+16:31
+kommen Kundenanforderungen für Gaming, Rechenzentren oder KI Lösungen rein. Das
+16:36
+ist der Input. Und jetzt Achtung, denn die meisten denken, der Prozess bei Nvidia sei die Chippproduktion in einer riesigen Fabrik. Tatsächlich ist das
+16:42
+aber nicht der Fall. Das macht TSMC in Taiwan. Der eigentliche Prozess bei Nvidia ist das Entwickeln der
+16:48
+Chiparchitekturen wie Hopper oder Blackwell, das Programmieren der Kuda Software und dann gehen die Designs an
+16:54
+TSMC zur Fertigung. Das ist ein Teil Output und gleichzeitig der Input für TSMC. Die fertigen Chips kommen dann
+17:01
+zurück zu Nvidia, wo sie auf Platinen montiert mit Kühlern ausgestattet und zu fertigen Grafikkarten zusammengebaut
+17:07
+werden. Und am Ende gibt es den Output. Das sind die fertigen RTX Grafikkarten oder KI Chips, von denen Nvidia, wie wir
+17:13
+alle wissen, ziemlich gut leben kann. Das ist ein perfektes Beispiel dafür, dass ein Prozess auch lang und komplex sein kann mit vielen verschiedenen
+17:19
+Stationen und Unternehmen. Der Output am Ende aber denkbar einfach ist, nämlich ein fertiges Produkt mit dem Geld
+17:25
+verdient wird. Bei unserem Eisverkäufer ist es deutlich einfacher. Eine Kundenbestellung kommt rein. Welche Sorte in Waffel oder im Becher, das ist
+17:32
+der Input. Dann startet der Prozess. Das Eis wird portioniert, serviert und bezahlt. Und am Ende gibt es dann den
+17:37
+Output. Das ist das fertige Eis für den Kunden. Das sind alles Wertschöpfungs bzw. Kernprozesse von Unternehmen, auf
+17:44
+denen alles basiert. Und genau dieses Prinzip lässt sich auch auf alle noch so kleinen Teilprozesse herunterbrechen,
+17:50
+bis hin zum Schreiben einer einfachen E-Mail. Es gibt immer einen Input, also einen Auslöser, die Verarbeitung dieses
+17:56
+Inputs und ein fertiges Ergebnis. Allein mit diesem Verständnis bist du jetzt schon mal deutlich weiter als viele
+18:01
+Unternehmen selbst da draußen. Und um das nur noch gleich in der Praxis anwenden zu können, ist es jetzt noch wichtig, die Sprache zu kennen, mit der
+18:08
+diese ganzen Automation Tools arbeiten. Konkreten Namen dafür können sich zwar je nach Tool etwas unterscheiden, aber
+18:14
+das Prinzip ist immer das gleiche. Erstens, der Trigger, das ist der Startknopf, der das ganze System in Gang
+18:19
+setzt bzw. Das ist der Moment, in dem die Automation weiß, jetzt geht es los. Das kann sein, wenn eine neue E-Mail
+18:25
+reinkommt, ein Formular ausgefüllt wird, ein bestimmtes Datum erreicht ist oder einfach eine feste Uhrzeit wie jeden
+18:30
+Morgen um 9 Uhr. Ohne Trigger steht das Fließband still, denn die Automation muss ja wissen, wann sie starten soll.
+18:37
+Zweitens, die Logik. Das sind die Entscheidungspunkte, an denen kontrolliert wird, welchen Weg das Werkstück bzw. die Daten nehmen sollen.
+18:44
+Z.B. Wenn die E-Mail das Wort Kundenanfrage enthält, dann leite sie an den Vertrieb weiter. Wenn nicht, dann
+18:50
+speichere sie nur ab. Und hier kann auch KI einsetzen, um komplexe Entscheidungen zu treffen, die über simple, wenn dann
+18:56
+Regeln hinausgehen. Drittens, die Data Transformation. Das ist wie die verschiedenen Bearbeitungsstationen am
+19:02
+Fließband, wo das Werkstück in Form gebracht wird. In einer Automation bedeutet das Daten in das richtige
+19:08
+Format zu bringen, Listen aufzusplitten, Texte zu strukturieren oder Information zu extrahieren, damit der nächste
+19:14
+Schritt damit arbeiten kann. Viertens, die Actions. Das ist die eigentliche Arbeit, die getan wird, die Station, wo
+19:20
+konkret etwas passiert. In einer Automation sind das Dinge wie E-Mails über Gmail verschicken, Einträge in
+19:25
+Airtable erstellen, Angebote als PDF generieren oder Termine im Outlook Kalender buchen. Meistens gibt es
+19:31
+mehrere Actions nacheinander, genau wie ein Auto, das Stück für Stück zusammengebaut wird. Bei Sapier heißen
+19:36
+diese Actions übrigens auch genauso, nämlich Actions bei Power Automate von Microsoft Aktion, bei Maccom Modul und
+19:43
+bei N8N Note. Alles ist aber wie gesagt exakt das gleiche. Und fünftens, der Output. Das ist das fertige Ergebnis. Am
+19:50
+Ende in einer Automation ist es z.B. eine versendete E-Mail, ein gespeichertes Dokument, ein gebuchter
+19:55
+Termin oder ein aktualisierter Datenbankeintrag. Und genau wie in der Autofabrik, wo am Ende jedes Auto
+20:00
+dokumentiert wird. Mit allen Spezifikationen dokumentiert auch deine Automation, was sie gemacht hat, damit
+20:06
+du später nachvollziehen kannst, ob und wie alles geklappt hat. Und überall dazwischen kannst du jetzt mit
+20:11
+künstlicher Intelligenz arbeiten. Das ist wie der Meister am Fließband, der nicht nur stumpf seine Anleitung folgt, sondern mitdenkt. Probleme erkennt und
+20:17
+eigenständig Entscheidungen trifft basierend auf seine Erfahrung. Das ist auch der fundamentale Unterschied zwischen alten Automationen und AI
+20:25
+Automations, denn die KI kann verstehen, analysieren und kreativ sein, anstatt nur stumpf Regeln zu befolgen. Der
+20:31
+heilige Gral, um solche Automations nun in der Praxis richtig gut umsetzen zu können, ist API, HTTP Request und
+20:38
+Waphooks einmal grundlegend zu verstehen. Im Kern machen es dir all diese genialen Plattform wie Sapia, Make
+20:44
+oder Nitnämlich extrem einfach. Sie haben zahlreiche Tools bereits für dich integriert und du kannst deine
+20:50
+Automation mit wenigen Klicks zusammenbauen. Das ist das, was die meisten relativ schnell selbst hinbekommen. Das Problem dabei ist
+20:56
+jedoch, dass du extrem eingeschränkt in deinen Möglichkeiten bist und schnell vor Grenzen stößt und Dinge nicht
+21:02
+automatisieren kannst, die aber automatisierbar wären. API schnell zu verstehen ist also eine deiner
+21:07
+wertvollsten Fähigkeiten. Wenn du das einmal beherrcht, wirst du auf alle anderen wie ein Magier wirkt. Ganz kurz,
+21:13
+was ist eine API? API steht für Application Programming Interface auf Deutsch Programmierschnittstelle und ist
+21:19
+im Kern der offizielle Weg, wie externe Programme mit einer Software kommunizieren können, ohne dass du
+21:25
+Zugriff auf den internen Code brauchst. Unternehmen wie Google, Slag oder auch Open AI bieten ihre API öffentlich an,
+21:32
+weil sie damit ihr Produkt deutlich wertvoller machen. Denn je mehr andere Tools sich anbinden können, desto
+21:37
+unverzichtbarer wird ihre Software im Unternehmensalltag und gleichzeitig sparen sie sich Supportanfragen, weil
+21:43
+Entwickler selbst Lösung bauen können, das ständig nachzufragen. Webs und HTTP Request sind die beiden Arten, wie diese
+21:49
+Kommunikation stattfindet. Ein HTTP Request ist, wenn deine Automation aktiv eine Anfrage stellt, z.B. gibt mir alle
+21:56
+Leads aus dem CRM oder erstelle einen neuen Kalendereintrag. Das System antwortet dann mit den gewünschten Daten
+22:02
+oder bestätigt, dass die Aktion ausgeführt wurde. Ein Webhook ist das Gegenteil. Statt dass deine Automation
+22:08
+alle paar Minuten nachfragt, ist schon eine neue Bestellung da, meldet sich das System automatisch bei dir, sobald etwas
+22:14
+bestimmtes passiert. Z.B. schickt Stripe ein Webhook an deine Automation, sobald eine Zahlung eingegangen ist. Das spart
+22:20
+extrem viel Rechenleistung und Zeit, weil du nicht ständig nachfragen musst. Lass mich dir das jetzt aber einfach mal kurz in der Praxis zeigen. Also schauen
+So funktionieren Webhooks
+22:26
+wir uns an, wie Webhooks funktionieren am Beispiel von Make.com. Das hier wird eine Getre. Das bedeutet, wir wollen
+22:33
+Daten bekommen. Wir bauen also einen Trigger, der auf eingehende Daten wartet. Erstell dir dazu einfach einen
+22:39
+kostenlosen Account bei Mac.com. Bin jetzt hier schon eingeloggt und dann klickst du einfach einmal auf Create
+22:44
+Szenario und ich empfehle dir jetzt wirklich einmal hier kurz zu stoppen und das eins zu eins mitzumachen, denn so
+22:49
+wirst du wirklich den größten Lerneffekt haben. Füge hier dann dein erstes Modul hinzu, schau dir kurz die Apps an und du
+22:55
+siehst jetzt hier, du hast einen Bereich für Webhooks. Den klickst du einmal an, klickst dann hier auf Custom Webhook und
+23:01
+dann hier einmal auf Create Webhook. So, jetzt wird der Webhook auch schon erstellt. Dann kannst du ihm hier einen
+23:06
+Namen geben und den nennst du beispielsweise Everlast AI. Du hast jetzt hier auch noch die Option noch eine Authentication mit anzugeben. Das
+23:13
+lasse ich dir einfach halt halber erst einmal weg und werde ich gleich in einem anderen Beispiel noch mal zeigen. Bedeutet, du kannst den Webhook ohne
+23:20
+Authentication aufrufen. Dann klickst du hinten einal auf save und so der Webhook ist in dem Fall jetzt auch schon
+23:25
+erstellt und fertig. M macht das hier auch super einfach hier und generiert direkt eine URL, über die dann der Webhook zu erreichen ist. Die kopierst
+23:32
+du jetzt einmal direkt. Und jetzt kommt auch schon der wichtigste Part. Du musst dein Webhook einmal testen und das
+23:37
+einfachste kostenlose Tool hierzu ist Hostman. Hostman ist ein Tool zum Testen und Entwickeln von API und Webs genutzt
+23:44
+wird. Es simuliert HTTP Request, also genau das, was externe Systeme machen, wenn sie einen Webhook aufrufen. Der
+23:50
+größte Vorteil ist, du kannst hier beliebig oft testen, du kannst verschiedene Datenstrukturen ausprobieren und Fehler finden und
+23:56
+beheben, bevor der Webhook dann tatsächlich live geht. Ja, lass uns das jetzt hier schon mal anlegen. Ich bin jetzt hier in Postman eingeloggt. Hier
+24:02
+hast du jetzt einen neuen Workspace erstellt und klickst dann hier einmal unten auf das Plus und erstellst hier
+24:08
+sozusagen einen neuen Request. Das da du den Webhook jetzt testen willst, musst du auch einmal auf Post umstellen, da du
+24:14
+hier Daten zum Webhook senden willst. Stell dir das vor wie die Post, die versendet wird. Die Post request brauchst du immer beim Versenden von
+24:21
+Daten und Get Request zum Empfangen von Daten. In die URL gibst du jetzt einmal den Webhook ein, den du gerade generiert
+24:27
+hast, also genau diese URL. Dann kannst du jetzt noch verschiedene Parameter mitgeben, die dann in deinem Header
+24:33
+angezeigt werden. Z.B. eine Authentication, wie eben erwähnt oder andere Headertypen hier definieren. Das
+24:38
+lasse ich jetzt aber auch der Einfachheitshalb weg. Du fokussierst dich jetzt auf den Body, das heißt, du kannst hier Daten mitgeben, die dann der
+24:45
+Webhook verarbeiten soll. Dafür habe ich jetzt auch schon mal ein paar Daten vorbereitet. Dazu klickst du einmal hier
+24:50
+auf RAW, um einen RAW Body mitzusenden und belässt das Dropdown auf Jason. Dann
+24:55
+kopierst du einmal die Struktur der Daten hier rein. Das heißt, du siehst, du hast hier eine Jason Struktur, die du
+25:01
+mitgibst. Das ist in dem Fall der Name, E-Mail, Message und einen aktuellen Timestamp. Ja, und dann wartest du
+25:07
+jetzt, dass dein Webhook diese Daten empfängt, um sie dann weiter verarbeiten zu können. So, jetzt gehst du zurück zu
+25:12
+Melk. Du siehst hier unten ist dreht sich jetzt etwas. Das bedeutet, dass dieser Webhook aktuell darauf wartet,
+25:17
+einen Eingang zu bekommen, um die Datenstruktur definieren zu können. Das heißt, du gehst jetzt wieder zurück zu
+25:23
+Postman, klickst hier einmal auf Cent und siehst hier, du bekommst jetzt die Antwort accepted. Das bedeutet nichts
+25:29
+anderes als dass der Webhook, den du jetzt über Mac gehostet und gerade erstellt hast, deine Daten empfangen und
+25:34
+akzeptiert hat. Wenn du zurückgehst zu Mac, siehst du auch schon successfully determinant. Das bedeutet, der Webhook
+25:40
+hat deine Daten perfekt empfangen. So, du kannst jetzt einmal weitergehen und damit hast du jetzt auch schon dein Webhook verifiziert und siehst, dass es
+25:47
+funktioniert und Daten empfangen werden können. Ja, das kannst du jetzt noch ein bisschen visualisieren. Ich habe uns jetzt hierzu einfach mal ein Google
+25:53
+Sheet vorbereitet mit genau den Daten, die du eben versendet hast und ich möchte jetzt von dem Postband Account
+25:58
+über den Webhook bei Mac.com die Daten in diesem Google Sheet eintragen. Das ist ganz einfach bei Mac. Du gehst hier
+26:04
+einfach auf ein neues Modul hinzufügen, nimmst dir einmal Google Sheet, dann sagst du, du willst eine Row hinzufügen,
+26:10
+dann poppt ein neues Google Sheet Modul auf. Das heißt, hier habe ich jetzt meine Google Sheets Connection auch schon eingerichtet. Du willst hier eine
+26:17
+Search Method für deine Datei haben. Das heißt, du gibst hier einmal manuell deine Spreadsheet ID von der Tabelle,
+26:22
+die du erstellt hast, ein und das hier auch dann den Sheet Namen bzw. Das ist dann in dem Fall Tabelle 1 und dann
+26:29
+kannst du auch die Colum Range eingeben. Das ist in dem Fall von A bis Z und kannst jetzt deine Spalte befüllen. Ja,
+26:36
+und jetzt kommt die Magie ins Spiel. Du bekommst hier aus deinem vorherigen Webhook Modul alle Daten, die du gerade
+26:42
+über Postman gesendet hast und kannst sie hier direkt auswählen und die dann in deinem Google Sheet eintragen. Das mache ich jetzt einmal kurz und dann
+26:49
+klickst du noch einmal auf save und dann bist du in dem Fall auch schon fertig und kannst hier einmal deine Module abspeichern. Als letzten Schritt musst
+26:55
+du jetzt einmal noch den Workflow aktivieren. Dazu gehst du einmal hier auf den Workflow Szenariamen und aktivierst hier einmal den Workflow. Ich
+27:02
+habe jetzt hier den Free Account, da kannst du nur zwei gleichzeitig aktiviert haben. Ich habe einen einfach deaktiviert und aktiviere jetzt den
+27:08
+Workflow. So, jetzt ist der Workflow und der Webhook sozusagen bereit und kann Daten empfangen. Und jetzt kannst du das
+27:13
+auch direkt noch mal über Postman testen und die Daten einfach noch mal senden. Du bekommst wie da ein Accepted und
+27:19
+kannst jetzt schauen, ob die Daten in dein Google Sheet angekommen sind und ja, perfekt sind angekommen. Du kannst es auch noch einmal mit einem zweiten
+27:25
+Request testen und bekommst jetzt hier auch ein accepted und siehst die Daten kommen an. Top. Das war also schon mal
+APIs in der Praxis
+27:31
+der erste einfache Weg, selbst mit Webs und API umgehen zu können. Und damit hast du bereits jetzt wirklich schon mal
+27:37
+einen riesen Schritt gemeistert. Da wir gleich in unseren Use Casases, die wir umsetzen, auch mit N8N, das ist aktuell
+27:43
+für die meisten deutschen Unternehmen einfach die beste Lösung, arbeiten werden, zeige ich dir jetzt noch mal, wie du in Nadn schnell und einfach mit
+27:49
+API arbeiten kannst. Also, ich befinde mich jetzt hier in Nadn. Ähm, wenn du das hier mitmachen willst, kannst du dir
+27:54
+einfach auch schnell und einfach einen kostenlosen Cloud Account bei NHN erstellen. Als Beispiel werden wir jetzt
+28:00
+die Open AI API nutzen und einen kleinen Request senden, was natürlich perfekt für alle AI Automations ist. Und bevor
+28:06
+du jetzt anfängst den Workflow Netn aufzubauen, solltest du dir immer die API Dokumentation anschauen. Die
+28:12
+bekommst du von so gut wie jedem gängigen Tool. Im Falle von Open AI haben wir natürlich eine super detaillierte Dokumentation online und
+28:18
+hier kannst du alles nachsehen, welche URLs angesprochen werden, welche Request Body Information du hier reingeben
+28:24
+kannst und ja im Endeffekt wie ein Example Request, also eine Beispielanfrage aussieht und wie ein
+28:29
+Response, also die Antwort aussieht. Als erstes fügst du jetzt hier einen http Request Note hinzu. Der muss auf Post
+28:36
+umgestellt werden, weil du in dem Fall wieder Daten senden möchtest. Das tust du jetzt einmal. Dann hast du einmal die
+28:41
+URL, die du ansprechen möchtest. In dem Fall ist das die Chat Competitions API von Open AI. Dann kannst du hier schon
+28:48
+den Body eingeben. Das heißt, du kannst hier einfach ein Buddy definieren, was an diesen API Endpunkt geschickt werden
+28:53
+soll. Dann nimmst du einmal Jason dafür und sagst specify request body using Jason und kannst dann hier einmal dein
+29:00
+Request Drink kopieren. Das heißt, du siehst hier im Endeffekt, welches Modul du benutzen möchtest, welche Rolle du
+29:06
+haben möchtest und die Message, die du senden willst. Ja, und du kannst das je nach API Documentation mit verschiedenen
+29:11
+weiteren Parametern erweitern. In dem Fall hast du jetzt einmal die Max Tokens, also die maximalen Tokens
+29:17
+angegeben mit 100. Okay, dann lass uns das jetzt einmal durchlaufen lassen. Das funktioniert jetzt nicht. Warum? Ja,
+29:23
+weil du eine Authentication brauchst. Das heißt, ohne Authentication wird es nicht möglich sein, hier ein Request zu senden, denn natürlich muss jede Anfrage
+29:31
+authentifiziert, also geprüft werden, ob du sie auch wirklich senden darfst. Dafür brauchst du einen Schlüssel, also
+29:37
+einen Key, mit dem du dich legitimieren kannst. Das heißt, du gehst jetzt einmal auf Authentication, einmal auf Generic
+29:43
+Credital Type, sagst jetzt einmal hier Select und suchst dir einmal den Braer
+29:49
+Off aus und sagst hier einmal, du möchtest einen neuen Bira Token erstellen. Um diesen Token zu bekommen, gehst du jetzt einmal in die Open AI
+29:55
+Plattform, gehst ins Settings und erstellst dir einmal einen neuen Secret Key. Du suchst dir dafür einfach ein
+30:01
+Projekt aus, in dem Fall das Default Projekt. Kannst du jetzt hier noch verschiedene Permissions aussuchen, um
+30:06
+diesen API Key zu restriktieren. Du lässt das in dem Fall jetzt einfach mal auf all, also auf alle, dass du dann mit
+30:12
+diesem Key alle Permissions hast. Gehst jetzt einmal auf Create Secret Key, ja, und dann ist der Key auch schon generiert. Den kopierst du dir einmal,
+30:18
+gehst damit dann zurück in NN, postest den hier einmal bei BR Token und klickst auf speichern. Dann machst du das alles
+30:24
+wieder zu und machst noch einmal eine neue Execution und sehe da, du hast eine Antwort von der Open AI API erhalten und
+30:32
+hast hier deine Antwort auf deine Frage bekommen. So, das war jetzt also ein echter API Call mit NN, den du gerade
+30:37
+gemacht hast. Da kannst du jetzt schon mal wirklich stolz auf dich sein. Du hast jetzt natürlich diesen http Request über den http Request Node von gemacht
+30:45
+und hier die ganze Arbeit manuell erledigt. Das ist sehr gut, indem du die hier mit eingegeben hast und
+30:51
+verschiedene Sachen über diesen Jason Body manuell konfiguriert hast. Aber NNN bietet natürlich auch noch komfortablere
+30:56
+Möglichkeiten und z.B. zum Fall von Open AI den Open AI Note, den du jetzt hier einmal hochziehen kannst und sagst
+31:02
+Message Model. Hier hast du nun eine vereinfachte Möglichkeit, genau diese API anzusprechen. Und das machen wir
+31:08
+jetzt mal testweise. Ich habe jetzt hier auch die Creditentials von eben noch mal angelegt. Will einfach einen Text senden und wähle dazu Model Message. Du kannst
+31:15
+dir auch wieder wie vorhin ein Modell aussuchen. Dazu klickst du einmal auf Tes und gibst z.B. 4.1 ein. Ich nehme
+31:21
+jetzt hier einfach mal das 4.1 Mini. Und jetzt kannst du hier genau so die gleiche Frage stellen und einmal auf
+31:26
+Execute Note klicken. Dann bekommst du jetzt auch direkt die Antwort von der API, aber natürlich extrem vereinfacht,
+31:32
+weil NITN die jetzt hier die ganze Arbeit abgenommen hat. Also bevor wir jetzt in den praktischen und spannendsten Teil kommen, fassen wir
+31:38
+noch mal kurz zusammen, was du bereits gelernt hast. Du weißt nun, was AI Automations sind, wie sie sich von alten
+31:44
+Automations unterscheiden. Kennst die vier Arten von AI Automations. Du weißt, welche sieben Tool Kategorien es gibt
+31:50
+und wie sie zusammenarbeiten. Du verstehst das Input Prozess Output Prinzip, auf dem jede Automation
+31:55
+basiert. Du kennst die fünf Bausteine und du weißt, was API sind und wie du schnell jede API testen kannst. Wenn du
+32:03
+jetzt das Gefühl hast noch mal etwas davon wiederholen zu müssen, nutze die Kapitel hier unten und springe einfach
+32:08
+an die richtigen Stellen. Es lohnt sich wirklich diese Dinge noch mal fundamental zu verstehen. Und wenn du das gemacht hast, dann kannst du jetzt
+32:14
+wirklich einmal kurz stoppen, dir auf die Schulter klopfen, denn du bist nun 99% der Menschen, sogar 99% der KIG
+32:21
+Gurus da draußen, die dir erklären wollen, wie du mit KI Geld verdienst, bereits meilenweit voraus. Lass mich dir
+Die 80/20
+32:27
+nun noch meine wichtigsten Learnings mitgeben, mit denen ich die letzten Jahre achtstellige Umsätze durch AI
+32:32
+Automations gemacht habe. Denn ich sehe immer wieder, dass das technische Wissen zwar wichtig ist, aber die wirklich
+32:38
+erfolgreichen KI Agenturen, die wir begleiten und die erfolgreichsten Leute im AI Automation Bereich allgemein ein
+32:44
+paar wesentliche Dinge verstanden haben, die die meisten ignorieren. Selbst in irgendwelchen staatlichen Zertifikatslehrgängen lernst du sowas
+32:51
+einfach nicht, da ihnen die Praxiserfahrung fehlt. Auf dich es aber ankommt, wenn du mehr erreichen willst,
+32:57
+als einfach ein paar Knöpfe zu drücken und über den AI Act zu schwadronieren.
+33:03
+Also erstens verstehe 80% der Grundlagen in ein bis zwei Stunden anstatt 100
+33:08
+Stunden für 100% zu investieren. Das ist das Pareto Prinzip und genau das, was wir hier gerade gemacht haben, denn die
+33:15
+meisten verschwenden Wochen oder Monate, damit jedes einzelne Feature von jedem Tool zu lernen. Dabei brauchst du in der
+33:21
+Praxis nur die Kernkonzepte zu verstehen, um loszulegen. Und den Rest lernst du dann sowieso beim Bauen,
+33:27
+weshalb es viel wichtiger ist, schnell ins Machen zu kommen, anstatt ewig Tutorial zu schauen, denn die meisten
+33:33
+starten tendenziell zu spät anstatt zu früh. Also, wenn du mit diesem Tutorial hier fertig bist, dann reicht das voll
+33:38
+und ganz aus. Zweitens, AI Automation ist kein Selbstzweck. Die Frage ist immer, was genau bringt diese
+33:44
+Automatisierung konkret? Spart sie Zeit, steigert sie Umsatz oder idealerweise beides? Ich sehe ständig Leute, die mega
+33:51
+komplexe Automations bauen, die am Ende kaum Mehrwert bringen, weil sie vergessen haben, sich vorher zu fragen, ob sich der Aufwand überhaupt lohnt.
+33:58
+Meine Vorausregel ist, dass eine Automation entweder mindestens 10 Stunden pro Monat einsparen muss oder
+34:03
+direkt messieren sollte. Alles andere ist nur eine Spielerei. Du glaubst nicht, wie viele Unternehmer sich schon
+34:09
+bei uns als Kunden beworben haben, die Personenteils in vollzeit auf Workflows angesetzt haben, die am Ende vielleicht
+34:15
+10 Minuten pro Woche sparen. El Musk hat daher aus meiner Sicht absolut recht damit, wenn er sagt,
+34:24
+also frage dich immer zuerst, warum ein Prozess existiert, ob du ihn nicht komplett eliminieren kannst und erst
+34:29
+dann beginnst du ihn von den First Principles aus zu automatisieren. Einer der Hauptgründe, warum Kunden und so
+34:36
+viel Geld für Automatisierung bezahlen, ist, weil wir ihnen sagen, was sie komplett lassen sollen und nicht, weil
+34:41
+wir blind jede Idee einfach technisch umsetzen. Drittens, kynetisches Denken und die engpass konzentrierte Strategie
+34:48
+nach Wolfgang Mev. Das Prinzip wird von Milliardenunternehmen wie würd angewandt und stammt aus der Pflanzenbiologie.
+34:54
+Heißt dort Minimum gesetzt von Libig und besagt, dass eine Pflanze immer nur so schnell wachsen kann, wie der knappste
+35:00
+Nährstoff zulässt. Selbst wenn du massenhaft Stickstoff, Phosphor und Kalium hast, aber Magnesium fehlt, wird
+35:06
+die Pflanze nicht wachsen. Erst wenn du das Magnesium ergänzt hast, macht es Sinn, die anderen Nährstoffe zu erhöhen.
+35:11
+Genauso funktioniert es auch im Unternehmen. Es gibt immer einen größten Engpass, der alles ausbremst und nur
+35:17
+dort macht Automation wirklich Sinn. Selbst wenn du den zweitgrößen Engpass löst, bringt das fast nichts, weil der
+35:23
+größte Engpass trotzdem alles limitiert. In der Praxis heißt das konkret frage dich, wo im Unternehmen gerade am
+35:29
+meisten Zeit verschwendet wird oder wo die meisten Fehler passieren oder wo die größten Reibungsverluste sind. Und genau
+35:36
+dort setzt du dann deine Automation an. Natürlich hilft es dir, je mehr Ideen du hast und weißt, was andere machen, denn
+35:42
+dann kommst du natürlich auch auf bessere Ideen und genau das nimmst du auch aus diesem Kurs hier mit. Viertens, date hinten und nicht vorne. Die meisten
+35:49
+denken, sie müssen am Anfang eines Prozesses anfangen zu automatisieren und bauen dann einfach Schritt für Schritt
+35:55
+drauf los. Dabei ist es viel klüger am Ende zu starten, denn wenn du weißt, was am Ende rauskommen soll, kannst du dann
+36:00
+von dort aus rückwärts abarbeiten und jeden Schritt so bauen, dass er genau das liefert, was der nächste Schritt
+36:06
+braucht. Genau wie bei Nvidia, die am Ende eine fertige Grafikkarte haben wollen und von dort aus rückwärts
+36:12
+planen, welche Schritte und Partner wirklich nötig sind. Fünftens, je langweiliger, desto besser. Die besten
+36:18
+Systeme sind nicht fancy, sondern sehr simpel. Wenn ich unsere erfolgreichsten Kundenprojekte der letzten mindestens 3
+36:24
+Jahre anschaue, dann sind über 70% davon simple Workflow Automations, die Excel
+36:29
+Tabellen obsolet machen, Daten von A nach B verschieben oder Reports generieren und keine komplexen Multient
+36:36
+Systeme, sondern einfach solide Automations, die langweilige Routineaufgaben übernehmen und genau die
+36:42
+bringen am Ende den größten Return on Invest, weil sie zuverlässig laufen und wenig Wartung brauchen. Sechstens, du
+36:48
+musst to agnostisch bleiben. Es gibt keine Pauschallösung, die für alle passt. Und wer dir etwas anderes erzählt, lügt für Geld oder hat einfach
+36:55
+keine Ahnung. Schau, ich verdiene kaum Geld mit irgendwelchen Affiliate Deals, obwohl ich mit meinem Kanal dieser Größe
+37:00
+locker hohe fünfstellige Umsätze nur durch Sponsorings machen könnte. Ich empfehle seit jeher immer nur die effizientesten Lösungen, die wir selbst
+37:07
+nutzen, denn nur das macht dich nachhaltig wirklich zum echten Profi. Manche Kunden brauchen NN, weil sie
+37:13
+DSGVO konform auf europäischen Servern arbeiten wollen. Andere nehmen make, weil sie mit der Struktur am besten
+37:19
+klarkommen. Andere wieder sind mit SP hier gut bedient, weil sie einfach nur schnell was zusammenklicken wollen. Wenn
+37:25
+du tool agnostisch bleibst, bist du immer unabhängig und wirst niemals zum Photoshop Philip, dess ein gesamtes
+37:31
+Unternehmen zusammenbricht, nur weil Photoshop in dem Beispiel NN beispielsweise nicht mehr State of the
+37:36
+Art ist. Und siebtens speziell für alle, die eine KI Agentur aufbauen wollen, Automation alleine ist noch kein
+37:42
+wertvoller Skill. Jeder kann heute mit ChatGBT und YouTube lernen, wie man in Make einen Workflow zusammenklickt. Das
+37:48
+ist eine ja Commodity geworden. Wertvoll bist du erst, wenn du verstehst, welche Automations für welche Branche Sinn
+37:54
+machen, wenn du Prozesse analysieren und Engpässe identifizieren kannst, wenn du mit Entscheidern sprechen und ihnen den
+38:00
+Return and Invest vorrechnen kannst und wenn du Projekte strukturiert umsetzen und betreuen kannst, das technische
+38:06
+Wissen ist nur 20% von dem Spiel. Die anderen 80% sind klassisches
+38:11
+Businessverständnis wie Marketing, Vertrieb und die Arbeit mit Kunden. Genau das werde ich dir am Ende dieses
+38:17
+Videos aber auch noch mal näher zeigen und was hier die wichtigsten Prinzipien sind. Großartig, du hast jetzt nicht nur
+38:22
+das technische Grundverständnis, sondern auch die wichtigsten strategischen Prinzipien, mit denen die Top Player in
+38:27
+diesem Markt arbeiten. Und genau damit können wir jetzt endlich in die Praxis gehen und gemeinsam vier echte US
+38:33
+Casases umsetzen. Ganz konkret setzen wir jetzt nicht irgendwas um, sondern vier der aktuell heißesten und vor allem
+Use Case 1
+38:40
+am meisten nachgefragtesten AI Automation Workflows. Beginn tun wir dabei mit einem AI Voice Agent
+38:47
+Rezeptionisten. Spannende ist, so gut wie jedes Unternehmen, welches ansatzweise ein Sekretariat oder eine
+38:53
+Rezeption hat, braucht diese KI Telefonassistentlösung. Wir kommen gleich zu den Details. Wir machen weiter
+38:59
+mit hyper personalisierten Outbound E-Mail Kampagnen. Die kannst du sogar selber nutzen, um Kunden zu gewinnen,
+39:05
+aber ist eben auch etwas, das von sehr vielen da draußen stark nachgefragt wird. Das Spannende hierbei wird sein,
+39:11
+dass du in diesem Rahmen auch gleich viele weitere Konzepte der AI Workflows und AI Automations kennenlernen wirst.
+39:18
+Wir machen dann weiter mit einer Lead Qualification Automation. Konkret geht es hier um einen ja Markifen Chatbot,
+39:24
+den wir gemeinsam im Rahmen von AA Automation Workflows bauen werden und wir schließen dann ab mit einer ja
+39:30
+wirklich langweiligen Automatisierung. Aber all das basiert hier auch auf einer Auswertung von hunderten Kunden, die ich gemacht habe, der wir festgestellt
+39:37
+haben, dass tatsächlich das Thema Angebotsautomatisierung ein ganz häufiger großer Usase ist, den wir mit
+39:43
+unseren Kunden gemeinsam umsetzen und der gerade im deutschen Mittelstand höchst nachgefragt ist. Diese ganze
+39:49
+Datei hier liefert dir alle Ressourcen. Wenn das nicht dein erster Kurs ist, dann kennst du das Konzept bereits von
+39:55
+uns. Ansonsten zum kurzen Überblick. Wir schauen uns jetzt jeweils die einzelne Lösung an. Wie genau sieht das aus? Ja,
+40:02
+also was ist die Lösung? Was ist der Nutzen davon überhaupt? Was lernst du hier? Wie ist das aufgebaut? Und hier
+40:07
+findest du dann auch alle Ressourcen verlinkt, so dass du mir jetzt wirklich gleich eins zu eins nachbauen kannst,
+40:13
+denn das ist der große Mehrwert, den du hier mitnehmen wirst, also dich wirklich hinzusetzen und genau das mit mir
+40:18
+gemeinsam durchzuführen, bis der Workflow steht. Und wichtig, das wird alles anfängerfreundlich sein. Selbst
+40:25
+wenn du keine Vorerfahrung hast mit Automations, wirst du hier mitkommen. Wir haben bereits einige tiefergehende
+40:31
+Kurse, wie hier zum Thema AI Voice Agents bereits auf dem Kanal, die dann noch tiefer reingehen. Ja, wenn du dann,
+40:38
+sage ich mal, deine ersten Schritte erfolgreich umgesetzt hast. Aber auch dieser AI Rezeptionist wird für dich spannt sein, selbst wenn du schon kleine
+40:44
+Vorerfahrungen hast, denn wir greifen hier auf ein relativ neuartiges Konzept der KI Telefonagenten zum aktuellen
+40:51
+Zeitpunkt zurück. Also, worum geht es jetzt bei unserer ersten Lösung? Wie gesagt, ein Voice Agent Rezeptionist.
+40:57
+Was ist das? Wir machen das am Beispiel von einer Immobilienverwaltungsfirma und bauen einen Rezeptionisten, also
+41:03
+einen Telefonagenten, der künstliche Intelligenz nutzt, um eingehende Anrufe zu bearbeiten. Kunden rufen also bei
+41:10
+Fragen unseren Agenten an und äußern ihre Probleme, z.B. Reparaturanfragen,
+41:15
+Verwaltungsanfragen, Notfälle, Mietanfragen, allgemeine Infos. Wir werden das ganz bewusst zu machen, dass sie ganz viele verschiedene Arten von
+41:22
+Anrufen reinkommen können, denn das wird ein sehr gutes Learning sein, ja, wie Ausufern so eine Lösung dann auch mal
+41:28
+werden kann. Der zentrale AI Rezeptionist nimmt diese dann entgegen und leitet bei Bedarf an Subagents.
+41:34
+Weiter der konkrete Nutzen hiervon ist, dass der AI Voice Agent Rezeptionist einer der beliebtesten KI
+41:40
+Telefonassistent Use Cases ist. Wir haben auch schon einige Case Studies dazu online, da er in vielen Branchen
+41:46
+sofort einen schnell erkennbaren Nutzen bietet. Er spart 100te Stunden an menschliche Arbeitszeit und liefert
+41:53
+einen 247 Support. Und in Wien vielen der dedizierten Voice Agent Kurse bereits hinreichend vorgerechnet ist es
+41:59
+für jedes Unternehmen da draußen hirnrissig, ja, für Sekretariatsanrufe noch Menschen zu beschäftigen,
+42:05
+insbesondere im Falle einer Hausverwaltung. Was lernst du jetzt in diesem US Case? Du lernst AI Voice Agent
+42:12
+Workflows und Subents zu bauen mit 11 Labs dazu gleich mehr. Du lernst Prompt Engineering, du lernst, wie du Knowledge
+42:18
+Basis richtig integrierst in Voice Agents. Du lernst Routing, also wie ein Agent an andere Agents richtig und
+42:25
+produktiv weiterleitet. Du lernst die Dokumentation davon, also ja, eine Übersicht zu schaffen über das, was dein
+42:31
+Workflow dann auch so erreicht und die FEQ Datenbank daraus abzudaten. Hier
+42:37
+hast du schon mal einen ersten Überblick, wie das Ganze aussehen wird, diese Agent Struktur und hier wird der
+42:43
+Workflow noch mal Schritt für Schritt beschrieben. Ich werde jetzt aber nicht alles vorlesen, weil wir das jetzt einfach gemeinsam umsetzen. Hier findest
+42:50
+du die direkten Links. Öffne dir diese Datei einfach. Du findest sie verlinkt in unserer KI Champions School
+42:56
+Community. Wir sind mittlerweile die größte deutsche kostenlose Community. Also, du kannst wirklich kostenlos beitreten und findest all die Infos,
+43:03
+alle Ressourcen kostenlos hier aus dem Kurs. Kannst alles öffnen und eins zu eins mit mir gemeinsam nachbauen. Und
+43:10
+demnach springen wir direkt rein. Womit arbeiten wir? Wir arbeiten mit 11 Labs. Das ist genauso ein Orchestration Layer, wie ich Ihnen vorhin erklärt habe.
+43:17
+11Labs ist dem einen oder anderen bekannt. Also hier kannst du jetzt erstmal wirklich einen kostenlosen Account anlegen, indem du hier auf
+43:22
+registrieren klickst und ist dir vielleicht schon bekannt eher als Kreativtool, denn mit Sicherheit siehst du den ganzen Tag auf YouTube oder
+43:28
+Instagram, ob bewusst oder unbewusst, ja, irgendwelche AI Videos, wo du irgendwelche AI Stimmen hörst und die
+43:34
+kommen zu 99% alle von 11 Labs. Und das Geniale ist ja, dass 11 Labs eben jetzt
+43:39
+die Entschadung getroffen hat. Okay, wir bieten nicht nur diese Verbraucher Stimmen an, die man für irgendwelche Marketing Videos verwenden kann, sondern
+43:45
+wir bauen noch einen eigenen Orchestration leer. Das heißt, wenn du dich einlogst in die Levels, dann kommst du oftmals erst in die Kreativplattform
+43:51
+und musst jetzt einmal wechseln in die Agents Plattform. Und hier kannst du jetzt KI Telefonassistenten von Grund
+43:58
+aufbauen. Wichtig ist mir auch noch mal zu betonen, dass wir zwar selbst mit dem Head of Dach, Head of Europe sogar von
+44:03
+11Labs eng zusammenarbeiten, dadurch echt wirklich tollen Support an vielen Stellen bekommen und auch unseren Kunden
+44:10
+auf schnellen Support möglich machen können und exklusive Ressourcen. Aber dieses Video hier ist in keinster Form
+44:16
+durch eine Kooperation oder Sponsoring entstanden. Deswegen findest du ja auch keine Kennzeichnung, sondern 11 Labs ist
+44:22
+zum aktuellen Zeitpunkt einfach die beste Lösung, was Voice Agents betrifft. Und deswegen bauen wir diesen US Case
+44:27
+auch gemeinsam mit 11 Labs. Es gibt auch viele Alternativplattformen. Das Prinzip, was du hier lernst, das kannst
+44:33
+du aber auch eins zu eins in anderen Plattformen wie Vapi oder weitere oder Fonio ja einsetzen. Also, wir haben
+44:39
+jetzt die Agents geöffnet. Das erste, was du machst, du klickst auf New Agent und dann auf Blank Template, also ein
+44:46
+leeres Template, dass wir hier erstellen. Dem Agent gebe ich jetzt einen Namen. Die Demofirma für die wie
+44:51
+das hier machen, die nenne ich Heimsteinrezeptionist. Also ne Heimstein, ja, Demo GmbH und so
+44:59
+nennen wir den AG und dann klickst du auf Create Agent und dann öffnet sich diese Oberfläche. Wichtig, wenn du das Video hier später schaust, dann die
+45:06
+Nutzeroberflächen, die verändern sich meist im Wochentakt, aber die Grundprinzipien, die werden immer gleich bleiben. Ja, das sind die
+45:11
+Grundprinzipien System Prompt, First Message Stimmen und so weiter. Und das
+45:17
+ist jetzt eben auch die Anweisung, die dein Agent bekommt. Also stell dir vor, du hast einen Praktikanten oder eben der
+45:23
+echte Sekretärin, die du telefonieren lässt. Im besten Fall hat die irgendwie einen Leitfahren, an dem sie sich
+45:28
+orientiert? Ja, wie stellt sie sich bestenfalls vor? Wie hat sie in gewissen Situation zu agieren und zu antworten?
+45:35
+Welche Gesprächsszenarien gibt es? Und genau das macht dieser System prompt, also er gibt genau das vor. Im übrigen
+45:41
+bietet Elevenlaps dir eine sehr schnelle Funktion, die echt charmant ist, wenn du schnell was haben möchtest. Ihr könnt hier z.B. sagen Rezeptionist für eine
+45:49
+Hausverwaltung namens Heimstein und klicke jetzt hier auf absenden und nun wird AI also ein KI Modell wie ChatGBT
+45:56
+oder Gemini genutzt, um einen Prompt zu erstellen und das gibt es schon mal eine gute ersten Aufschlag ja dafür wie sowas
+46:03
+aussehen kann und oftmals für einen ersten schnellen Demoentwurf in Ordnung, aber für unsere Ansprüche, die wir jetzt
+46:10
+an das Video haben, also wirklich produktionsfähigen, also ein Agent, den wir wirklich auch live einsetzen können. reicht es
+46:17
+natürlich nicht aus. Hier kannst du nun die Voices einstellen. Wie gesagt, Labs hat eine Vielzahl von Stimmen und so gut
+46:22
+wie jede Stimme, die du online so hörst im AI Bereich kommt von 11 Labs. Es empfiehlt sich grundsätzlich, das ist
+46:28
+nach wie vor eine so der geläufigsten Stimmen, die Susi zu wählen. Die findest du hier über die Suche. Im übrigen
+46:34
+findest du hier auch all deine gespeicherten Stimmen oder alle öffentlichen Stimmen. Du siehst, ich habe z.B. einen eigenen Voice Clone von
+46:40
+mir schon mal gemacht. Auch den könnte ich theoretisch telefonieren lassen. Übrigens kannst du dir in der Creative Plattform auch alle Stimmen anhören und
+46:46
+diese dort speichern. Ja, du kannst z.B. hier über die Filter ja nach explizit deutschen Stimmen sogar mit mit Akzenten
+46:53
+suchen und die Filter dann anwenden und dann findest du wirklich erstmal alle deutschen Stimmen und kannst s dann auch
+46:59
+sortieren. Ja, beispielsweise die neuesten Stimmen, die hochgeladen wurden oder eben die beliebtesten Stimmen und
+47:05
+so findest du dann auch Stimmen, die dir besonders gut gefallen. Wir gehen in diesem Fall, wie gesagt, mit der Susi.
+47:11
+Jetzt müssen wir natürlich hier noch einmal die Sprache umstellen. Wir wollen einen deutschen Agent haben, deswegen stellen wir das auf Deutsch. Wichtiger
+47:17
+Hinweis, du kannst auch multilinguale Agenten mit ja mehren Dutzend Sprachen
+47:23
+erstellen. Beispielsweise, wenn du in Luxemburg sitzt und teiltest bis zu fünf verschiedene Sprachen hast, dann
+47:28
+könntest du hier eben entsprechend auch noch Englisch, ja, oder auch noch Französisch als zusätzliche Sprache mit
+47:35
+auswählen. Das funktioniert auch soweit. Das haben wir durchaus in einigen Kundenprojekten im Einsatz. Wir wollen
+47:41
+es diesmal einfach halten, ja, mit einer deutschen Hausverwaltung und jetzt geht's um den Systemprompt. Wie gesagt,
+47:46
+den machen wir jetzt ein bisschen professioneller und dafür nutzt du als allererstes immer die Prompt Guides. Du
+47:51
+findest bei jedem Tool, genauso wie du API Documentations findest, die du im übrigen auch hier findest, ja, auf der
+47:58
+11 Labs Docs Seite, bekommst du die gesamte API Documentation. Darüber hatten wir vorhin gesprochen und siehst
+48:04
+dann eben auch was möglich ist. Also wie du über Workflow Automation Tools wie Make oder Netend, das machen wir gleich
+48:09
+auch gemeinsam, deinen Agenten abrufen kannst, um ihn weiterführend in Automatisierung einzubinden. Beispielsweise Telefonate proaktiv
+48:15
+starten zu lassen. Aber vor allem findest du in der Regel immer auch einen Prompt Guide und dieser Prompt Guide, der gibt einige gute Hinweise darauf,
+48:21
+wie den überhaupt ein perfekter Prompt auszusehen hat. beispielsweise und das ist eigentlich so eines der wichtigsten
+48:27
+Dinge, die man schon mal wissen sollte, dass die Prompts dementsprechend im Mark strukturiert werden. Den Main Prompt,
+48:34
+also das ist der Prompt, den wir hier reinschreiben, den habe ich dir für dieses Video, wie auch alle anderen hier schon mal vorbereitet. Den kopiere ich
+48:40
+mir jetzt einmal rüber. Du kannst im übrigen auch exakt diesen Prompt jetzt einfach nehmen, um damit vorzufahren und
+48:46
+wie gesagt einfach den Agent mal eins zu eins nachzubauen, so wie wir das hier machen. Hier geht's in erster Linie ja auch um den Lerneffekt. Falls du jetzt
+48:52
+einen anderen US Case umsetzen willst, kannst du aber auch immer gut Chat GBT nehmen, ja? Indem du einfach sagst
+48:58
+Beispiel und packst den Prompt rein, den ich dir hier mitgegeben habe, den du in der Excalid Draw Datei abrufen kannst und sagst z.B. Bitte schreibe mir einen
+49:05
+System prompt für Labs, indem du dich exakt an den Guidelines sowie an dem Beispiel orientierst. In meinem Beispiel
+49:13
+möchte ich einen Rezeptionisten für eine Kita bzw. ein Kita Unternehmen erstellen
+49:18
+und diese soll Sophia heißen. Ja, und dann kannst du natürlich auch den Link
+49:23
+zu den Best Practices noch mal an Chat GBT mitgeben. All das sind niemals die finalen Prompts, ja, weil das entsteht
+49:29
+dann eh im Doing und im Prozess, aber ist ein guter erster Aufschlag. mit dem du einfach arbeiten kannst. Da braucht
+49:36
+man nicht von Grund auf alles selbst tippen. Worum geht's hier? Wir geben einmal die Rolle vor. Also, du bist Lisa
+49:41
+die Telefonrezeptionistin der Heimsteinhausverwaltung Gmb in Frankfurt an mein Persönlichkeit freundlich, professionell hilfsbereit
+49:48
+den Sprachstil, paar grundlegend wichtige Regeln, die Unternehmensdaten, das Gesprächsende. Also beende das
+49:54
+Gespräch z.B. niemals von dir aus, frage immer, kann ich sonst noch etwas für Sie tun? Haben Sie sonst noch Fragen? und
+49:59
+die Gesprächsdokumentation. Das wird gleich noch wichtig, da wir all diese Gespräche ja auch dokumentieren wollen.
+50:04
+Und hier unten haben wir die First Message, also Heimstein Hausverwaltung. Mein Name ist Lisa, ich bin die digitale
+50:09
+Assistentin. Was kann ich für Sie tun? Und wie im Uscase ja bereits erläutert, wollen wir mit verschiedenen Subagents
+50:15
+für die einzelnen Kategorien arbeiten. Und das ist demnach so dieser Hauptprompt, deswegen auch Main Prompt,
+50:21
+der sich auf alle anderen Agenten überträgt und an die sich jeder Agent sozusagen halten wird. Das macht nämlich
+50:28
+demnach Sinn, hier diese ganzen zentralen Daten, die jeder dieser Unteragenten braucht, einmal zu
+50:33
+hinterlegen. Dann klickst du auf save und nun nutzen wir die Workflow Funktion. Die ist auch gar nicht mal so alt, ja, die ist relativ neu und zwar
+50:39
+war die lange Zeit auch bei vielen anderen Orchestration Lehren in der Beta Version und hier haben wir jetzt seit einiger Zeit wirklich final diese
+50:46
+Workflow Funktion ausgerollt und die macht gerade das Erstellen von komplexeren Agenten wie dieses Beispiel hier deutlich charmanter. Ja, wie
+50:53
+funktioniert das Ganze? Du kannst hier auf Start klicken und dann einen Subagenten hinzufügen. Diesem Subagenten
+51:00
+kannst du jetzt einen ganz eigenen Prompt geben. Dann würdest du sagen Override Prompt und hier kommt jetzt
+51:05
+unser Hauptprompt, den wir gerade hinzugefügt haben, rein. Oder du lässt den drin, weil wir wollen ihn ja, wie gesagt drin lassen und nur jetzt einen
+51:12
+weiteren Prompt, eine weitere Anleitung ergänzen. Diese kannst du auch wieder unserer gemeinsamen Datei nehmen. Und
+51:18
+wir brauchen als allererstes den Qualifikationsagenten. Dieser soll jetzt jeden Anruf
+51:23
+entgegennehmen, also die erste Anlaufstelle und dieser qualifiziert bzw. klassifiziert die Anfrage und zwar
+51:31
+ob es sich um ein technisches Problem handelt, ob es eine Abrechnungsfrage ist, ein Notfall oder eben eine
+51:36
+allgemeine Information. Das heißt, diesen Systemprompt, den kopierst du dir einmal und fügst den exakt so hier ein.
+51:43
+Die Stimme das LM und so weiter, das stellst du hier dann noch einmal ein. Wir lassen die Einstellung aber exakt
+51:48
+so, wie wir das vorgegeben haben. Du hast hier noch ein paar Funktionen, ja? Du kannst eine Knowledge Base, also eine
+51:53
+Wissensdatenbank, ein Wissensspeicher vorgeben über die Inherent Knowledge Base. Das bedeutet, die Knowledge Base
+51:59
+wird sich auf alle Subagenten dann auch verhren. Und genau das gleiche betrifft übrigens auch die Stimme des LM. Diese
+52:05
+Einstellungen verermen sich auf die Subagenten, die wir gleich erstellen wollen. Und genau das brauchen wir auch
+52:10
+an der Stelle. Also genau, das wollen wir so auch machen und werden wir gleich auch noch am Beispiel der Knowledge Base machen. Dem Agent kannst du jetzt hier
+52:16
+noch den Namen geben. Das ist der Qualifikationsagent und genau dann auf speichern und jetzt geht's in die
+52:23
+Subagenten, an die dann weitergeleitet wird im speziellen Fall. Dazu klickst du hier aufs Plus und dann auf Subagent.
+52:28
+Und nun siehst du auch hier schon dieses neue Modul und zwar Configure Condition. Das bedeutet, hier definieren wir jetzt,
+52:35
+wann soll denn eigentlich an diesen Subagenten weitergeleitet werden und auch weer. Das heißt, in welchen Fällen
+52:41
+soll vielleicht vom Subagenten wieder zum Hauptagenten zurückgeleitet werden? Zunächst einmal stellen wir wieder den
+52:47
+System Prompt ein. Den kannst du wieder der Datei hier entnehmen. Also hier haben wir den technischen Support. So
+52:52
+soll das später aussehen. Der kommt hier rein. Ich gehe darauf jetzt noch nicht im Detail ein. Dazu ähm dann später
+52:57
+mehr. Liest ihr die gerne in Ruhe durch, denn wir konfigurieren jetzt zunächst die Condition. Also, wir haben eine
+53:03
+Forward und eine Backward Condition. Forward bedeutet, wann leitet der qualifikationsagent zum technischen
+53:08
+Support? Den Namen sollten wir hier noch einmal kurz festlegen, also technischer Support. Und wann soll der weiterleiten?
+53:15
+Also forward. Transition Type ist LM condition. Das heißt, das LM entscheidet, wann weitergeleitet werden
+53:21
+soll. Dann gehen wir in Label. Das Label ist technisches Problem und die LM condition. Der Anruf hat ein technisches
+53:27
+Problem, einen Defekt oder eine Reparaturanfrage. Also, das gibt dem LM jetzt die Anweisung bzw. den Hinweis,
+53:33
+wann soll ähm denn weitergeleitet werden an den technischen Support? Und dann haben wir noch die Backwards Condition.
+53:39
+Hier nutzen wir wieder eine LM Condition. Das bedeutet, wann soll es zurückgehen? Vom technischen Support zum
+53:45
+Qualifikationsagenten. Das in dem Fall anderes Anliegen. Heißt technischer Support hat das technische Problem
+53:51
+gelöst. Aber der Anrufer sagt, ja, jetzt habe ich aber noch mal eine Frage zur Abrechnung und dann muss es natürlich wieder zurückgehen und deswegen sagen
+53:58
+wir hier anderes Anliegen und die Condition ist in dem Fall der Anruf hat ein neues Anliegen, das nicht technisch ist oder sich als Notfall herausstellt.
+54:05
+Und genau das gleiche machen wir jetzt im Wesentlichen einmal für alle vier Subagents, die wir haben wollen. Der nächste ist der allgemeine Fragenagent,
+54:13
+den System Prompt einmal kopieren, ne? Und wie du hier siehst, haben wir diverse allgemeine Informationen. Genau,
+54:18
+das ist der Sinn und Zweck. äh diese System Promps, also diese allgemeinen Information vorzugeben, das macht auch mehr Sinn, als das alles in der
+54:25
+Knowledge Base vorzugeben, weil gerade so einfache Sachen, ne, wie Öffnungszeiten, Ansprechpartner, Kündigung, Haustiere, whatever, ähm die
+54:32
+halt immer wieder und relativ schnell zu beantworten sind, es sind dann eben auch schneller für den Agent zu beantworten,
+54:37
+als wenn sie nur in der Knowledge Base drin stehen, die wir gleich auch noch hinzufügen werden. Dann konfigurieren wir wieder die Condition. Also forward
+54:45
+sind allgemeine Informationen und die Condition ist der Anruf hat eine allgemeine Frage zu Öffnungszeiten Ansprechparten Hausordnung Kündigung
+54:51
+oder sonstigen Themen. Dann wieder auf speichern und dann noch die Backward Condition. Das ist im Wesentlichen dann überall gleich, also anderes Anliegen
+54:58
+und der Anruf hat ein neues Anliegen, das eine andere Kategorie erfordert oder stellt sich als Notfall heraus. So, dann
+55:03
+kommen wir zu den Abrechnungsfragen. Hier unten findest du wieder den System Prompt, den einmal rüber kopieren,
+55:09
+wieder hier einfügen, alles andere bleibt gleich. Auf Save klicken und dann konfigurieren wir wieder die Condition.
+55:15
+Forward condition ist Abrechnungsfragen mit der Bedingung, der Anruf hat eine Frage zu Miete, Nebenkostenzahlung oder Abrechnung. Backwards wieder LM
+55:21
+condition einstellen und das ist genau das gleiche wie eben. Und damit kommen wir auch zum letzten Agent und zwar dem Notfall Agent. Und hier klicken wir
+55:29
+wieder auf speichern. Ja, das Label ist in dem Fall Notfall und die Condition der Anrufer meldet einen akuten Notfall wie Wasserrahrbruch, Gasgeruch,
+55:35
+Stromausfall oder eingeschlossene Person. Backwards brauchen wir logischerweise nicht, denn wenn ein Notfall besteht, ja, dann
+55:42
+wird der in der Regel dann nicht mehr vom Agent geklärt, sondern sollte eben weitergeleitet werden. Und deswegen
+55:47
+brauchen wir jetzt hier noch eine weitere Funktion und zwar Phone Number Transfer. Hier kannst du dann die Telefonnummer verbinden, an die
+55:54
+entsprechend weitergeleitet werden soll. Wie genau du Telefonnummern verbindest, zeige ich dir ganz am Ende noch mal. Und hier stellt man wieder die Condition ein
+56:00
+und das ist dann in dem Fall Notfall erkannt und die LM Condition ist, wenn Notfall erkannt wurde, leite an die
+56:07
+Notfalltelefonnummer weiter. So und damit steht dein Voice Agent Setup jetzt grundlegend in jedem Fall auch schon mal und das Schöne an dieser Workflow
+56:14
+Funktion ist jetzt eben, wenn dir irgendwas auffällt, also z.B., dass eine weitere Abrechnungsfrage dazu kam, ja,
+56:19
+oder eine allgemeine Frage zu den Kündigungsbedingungen, dann kannst du es halt wirklich einfach und strukturiert
+56:24
+hier ergänzen. Und ich möchte da wirklich noch mal hinweisen, auch wenn die Funktion auch zum Start dieses
+56:30
+Kurses hier, ja, wenn der Kurs hier online ist, noch nicht abschließend ausgereift ist, aber wenn man das vergleicht mit früher noch vor Monaten
+56:37
+bzw. ein zwei Jahren, als sie die ersten Agents schon gebaut haben und auch in jedem anderen Kurs wäre das alles hier
+56:42
+in diesem Prompt mit inkludiert worden und dann kannst du dir schon vorstellen, wie groß irgendwann dieser ganze Prompt
+56:48
+wird. Ähm nur um diese ganzen verschiedenen Use Casases eines Rezeptionisten abzudecken und da ist die
+56:53
+Workflow Funktion durchaus schon charmant ja und definitiv übersichtlicher gelöst. Was wir jetzt noch machen wollen, ist die Knowledge
+56:59
+Base hinzuzufügen. Also das ist dann der zentrale Wissensspeicher. So klickst du hier auf Add Document. Ich habe hierzu jetzt schon mal eine PDF erstellt. Das
+57:06
+ist eine sechsseitige einfache Form von einer Wissensdatenbank mit wiederkehrenden Fragen, FEQs und so
+57:12
+weiter, ne? Die die Agents auch beantworten können sollen. Die findest du auch in der Community, kannst du die
+57:17
+genauso auch runterladen. Kannst das Dokument hier hochladen, indem du auf Add Document klickst und dann hier auf Add File und die PDF-Datei ist
+57:24
+hochgeladen, dann auf Add File, dann siehst du hier noch die Configure Rack Funktion. Diese vektorisiert das Wissen,
+57:29
+dass du hochlädst automatisch. Also, wenn du jetzt eine PDF-Datei ähm hochlädst, dann wird die automatisch in Vektorstore umgewandelt. Das hat ähm
+57:37
+Elevenlaps hier tatsächlich schon automatisch gemacht bei der Datei, die wir jetzt hier gerade als PDF hochgeladen haben. Was von Vorteil ist
+57:43
+gerade bei größeren Dateien und tendenziell auch die Qualität des Agents erhöht. Viel mehr brauchst du hier
+57:49
+tatsächlich aber nicht machen. Also die Knowledge Base ist drin und du erst dich, wir hatten jetzt gerade überall die Inherent Knowledge Base aktiviert
+57:56
+und die ist auch in jedem Subagent entsprechend aktiviert. Das heißt, dieser Knowledge Base wird eben inherited, also vererbt auf jeden
+58:04
+Agenten. Theoretisch könnte man jetzt sagen, der technische Support, der hat vielleicht noch mal eine eigene Knowledge Base und lädt hier dann
+58:09
+dediziert noch mal ein eigenes Dokument hoch, aber hier in dem Beispiel macht es in jeden Fall Sinn mit dieser ja allgemeinen vererbenden Knowledge Base
+58:16
+zu arbeiten. So, damit stehen wir jetzt auch wirklich schon mal gut da. Jetzt müssen wir natürlich noch die ganzen Daten erfassen, die uns ein Anrufer
+58:22
+geben soll, damit wir auch jedes einzelne Telefonat sauber dokumentieren und alle Daten erfassen. Dazu gehen wir
+58:27
+hier in die Analysis Einstellung und dann auf Data Collection und dann auf Data Points. Also hier erfassen wir die
+58:33
+Datenpunkte. Das wird jetzt eine kleine Fleißarbeit werden, denn wir haben einige Datenpunkte. Wir wollen den Anrufernamen, die Anruferadresse, die
+58:40
+Telefonnummer, die Kategorie des Anliegen, die Dringlichkeit, ja, den Status, ob ein Ticket erforderlich ist,
+58:47
+ja oder nein und den nächsten Schritt. Das ist tatsächlich ganz interessant. Du kannst dir das alles hier kopieren. Wie
+58:53
+gesagt, stelle ich dir auch mit bereit. Wir machen das jetzt gerade noch mal direkt am Beispiel von Anrufer Name.
+58:58
+Also kopieren uns Anrufername, das ist der Identifier. Dann der Datentyp ist String, sowie bei fast allen. Es gibt
+59:04
+ein paar Ausnahmen, da komme ich gleich noch mal drauf. Die Description ist der vollständige Name des Anrufers und dann
+59:10
+klickst du auf Add Data Point. Das ist immer wichtig, weil sonst wird es entsprechend nicht gespeichert. Und das mache ich jetzt einmal für jeden
+59:16
+einzelnen Punkt.
+59:21
+Hier in diesem Beispiel Kategorie können wir noch mal kurz stehen bleiben. Hier gibt's nämlich eine Besonderheit. Zunächst noch mal zur Beschreibung ist
+59:27
+es sicherlich noch mal gut gewissen, also dieses Feld, also das was wir in die Beschreibung packen, das wird durch ein LM geschickt und das LM wird dann
+59:35
+entsprechend entscheiden, welche Werte ausgewählt werden, weil du hast ja ein riesiges chaotisches Transkript im
+59:41
+Wesentlichen durch dieses Telefonat und aus diesem riesen Transkript aus dem Gespräch muss dann das LMG erkennen mit
+59:49
+der Hilfe dieser Beschreibung hier. Ja, so in welche Kategorie fällt das anliegend technisch und dann erklären
+59:55
+wir das ein bisschen. Ja, wenn es um Reparaturen geht, Defekte Heizung, Wasser Abrechnung, wenn Miete geht und so weiter. Und das ist jetzt genau die
+1:00:02
+Stärke, ne, im Bereich AI Automation, dass wir jetzt eine KI nutzen können, um diese Entscheidung zu treffen. Allein
+1:00:07
+das wäre früher schon sehr, sehr schwer gewesen, weil du gar nicht hättest diese Bewertung vornehmen können. Ist Heizung
+1:00:14
+jetzt technisch, ja, oder zumindest hättest du ein riesen Regelwerk aufstellen müssen, was jetzt durch eine banale Description funktioniert. Das ist
+1:00:20
+wirklich noch mal wichtig zu betonen. Und dann haben wir die Inam Values. Das bedeutet jetzt im Wesentlichen, dass sich dann für einer dieser vier Werte
+1:00:28
+entschieden wird und das wird hilfreich sein in den Workflow Automation Plattformen wie Make, mit der wir gleich
+1:00:34
+arbeiten werden, um die Daten dann entsprechend auch kategorisch zu erhalten. Ja, also das LM wird dann
+1:00:40
+entsprechend zwischen einem dieser vier Werte hier auswählen.
+1:00:49
+Hier noch einmal kurz aufpassen. Bei Ticket erforderlich haben wir nämlich kein String, sondern einen bullischen Wert. Bullish bedeutet wahr oder falsch,
+1:00:55
+ne? Das heißt, in dem Fall kann das Ticket entweder nur ja, also wahr sein, erforderlich sein oder eben nicht. Also,
+1:01:02
+es wird hier entsprechend dann nach ja und nein kategorisiert.
+1:01:10
+So, damit sind alle Data Points drin. Kannst du noch mal hier alles anzeigen lassen, auch löschen, Data Points hinzufügen und noch mal mit der Liste
+1:01:17
+abgleichen. So, und diese ganzen Datenpunkte, die wir erfassen, die sollen natürlich gespeichert werden in der Datenbank oder wie in diesem Fall
+1:01:22
+jetzt eben in der einfachen Tabelle, ein Google Sheet. Das reicht für einfache Cases gerade für den Start auf jeden
+1:01:27
+Fall auch erstmal aus. Und hier stellst du dir einfach einen Google Sheet und hier fügst du einfach noch mal all die Datenpunkte als Spaltenname ein. So und
+1:01:35
+wie bekommen wir jetzt die ganzen Daten aus dem Telefonat? Hier in unser Google Sheet. Dafür nutzen wir Mac.com. Maccom
+1:01:41
+ist gerade eine sehr gute Einsteigerplattform, gerade für sehr einfache Workflows, die schnell erstellt
+1:01:47
+werden sollen, eine gute Wahl. Natürlich geht es auch nach dem genau gleichen Prinzip, dass ich die auch schon mit N8N
+1:01:52
+gezeigt habe. Und wie gesagt, hier einfach auf die Seite von Ma erstell einmal einen kostenlosen Account. Dann
+1:01:57
+erstellen wir wieder ein neues Szenario und wählen in dem Fall wieder geben dem Szenario Namen. Dann klickst du hier auf
+1:02:02
+das Plus und dann wählst du hier wieder Webhook aus und nimmst hier den Cass Webhook. Dann klickst du auf Create
+1:02:07
+Webhook. Den nennen wir jetzt einfach mal Heimstein Rezeptionist. Dann klickst du auf save und was du
+1:02:14
+jetzt siehst, dass du hier auch schon dieses Rädchen siehst. Das heißt, der Webhook wartet jetzt gerade auch schon darauf Daten zu empfangen. Geht
+1:02:21
+natürlich noch nicht. Machen wir es aber und dann klickst du hier mal auf Copy Address zu clipboard und gehst zurück in den 11Labs Agent. Hierfür gehst du in
+1:02:28
+die Security Einstellung und dann findest du hier den Post Call Webhook. Genau, den brauchen wir, weil wir
+1:02:33
+möchten die Daten ja erst nach Ende des Telefonats senden. In dem Fall klickst du auf Create Webhook und den nennen wir
+1:02:40
+z.B. mal EOC, also steht für End of Call Heimstein. Das passt schon. Dann fügst du hier die URL aus Make ein. So, dann
+1:02:46
+klickst du hier auf Create. Dann bekommst du hier noch den Webhook Secret. Den kannst du dir kopieren, einmal speichern. In unserem Szenario
+1:02:52
+brauchen wir den aber nicht. So, das ist also drin. Der Make Webhook, der wartet allerdings immer noch auf Daten. Und das
+1:02:59
+testen wir jetzt direkt einmal. Dafür klickst du auf Preview und kannst den Agent jetzt entweder anrufen, aber
+1:03:04
+gerade für Test ist die Chatfunktion sehr nützlich von 11 Labs. Kannst nämlich mit diesem Voice Agent jetzt
+1:03:10
+einfach auch chatten. Ich sage jetzt z.B. einfach mal meine Heizung ist kaputt. Klickst du auf senden und wenn
+1:03:15
+alles klappt, ja, super, der Agent antwortet auch. Das reicht jetzt auch schon. Dann klickst du direkt auf Endchat. Ja, das ist immer super
+1:03:20
+wichtig, weil ansonsten wird der Webhook nicht getriggert. Jetzt haben wir quasi das Telefonat beendet und jetzt sollten
+1:03:25
+wir auch in Make die Daten empfangen. Hier haben wir es ja successfully determinant. So, das ist schon mal gut,
+1:03:31
+weil wir schon mal eine Beispieldatenstruktur Jason Payload bekommen haben von Elevenlaps, mit dem wir gleich im Szenario weiterarbeiten
+1:03:37
+können. Deswegen klickst mal auf Save und dann wichtig immer nicht vergessen, den ganzen Workflow auch zu speichern.
+1:03:42
+hier unten einmal auf Save und dann ist es wichtig, weil wir jetzt direkt live gehen wollen auch für unsere finalen Test, dass der ganze Workflow einmal
+1:03:48
+live geschalten wird. Dazu gehst wieder zurück in deine Szenenarios und hier haben wir in dem Fall hier unten den
+1:03:53
+Demo Agent und den musst du hier jetzt einmal aktivieren und jetzt ist der Webhook sozusagen live und kann Daten
+1:04:00
+empfangen. So, jetzt kümmern wir uns um die Verbindung mit dem Google Sheet. Dazu gehst du hier wieder auf Google Sheet und dann auf Adro. Ja, dein Google
+1:04:07
+Account ist wahrscheinlich schon verknüpft. Ansonsten ist auch super einfach. Also kannst dich direkt über Gmail hier mit einloggen und dann wählst
+1:04:13
+du hier mal. Wir haben das Google Sheet ja bereits erstellt und hier oben aus der URL kannst du immer die ID zu deinem
+1:04:20
+Google Sheethmen. Die kopieren wir uns einmal. Hier tragen wir dann noch einmal den Cheetnamen ein. Das ist jetzt in dem Fall Tabellenblatt oder wir können das
+1:04:27
+auch noch mal umbenennen in Input beispielsweise. Und dann schreiben wir hier noch mal Input rein. So. Und dann Colum Range ABZ. Das reicht jetzt
+1:04:34
+vollkommen aus für unsere Tabelle. Also die Spalten ABZ werden jetzt hier angezeigt. Und jetzt müssen wir einmal das Datenmapping vornehmen. Das jetzt
+1:04:40
+eine kleine Fleißarbeit. Im Wesentlichen findest du hier die Benennung der Spalten, so wie wir es vorgenommen haben. Also A ist jetzt z.B. die ID. Das
+1:04:46
+heißt, in dem Fall haben wir hier die Conversation ID, die wir hier speichern wollen. B haben wir dann die Summary,
+1:04:52
+die ist ein bisschen versteckt, die findest du hier unten bei Analysis. Das ist die Transcript Summary. Als hier
+1:04:58
+haben wir dann den Anrufer Name. Die Punkte sind hier alle unter Analysis und unter Data Collection Results. Und hier
+1:05:04
+hast du jetzt den Anrufername. Jetzt ist wichtig nicht einfach den Anrufernamen reinzuziehen, sondern du musst das Ganze noch einmal aufklappen. Wir haben jetzt
+1:05:10
+keinen Wert, weil ich ja keinen Namen angegeben habe in dem kleinen Testchat, den wir gerade gemacht haben. Hier nimmst du dann bei jedem Punkt einfach
+1:05:17
+den Value. Also, das ist einfach wichtig zu beachen. Hier gehst du jeden Punkt durch, wie Anrufer Adresse im nächsten
+1:05:23
+Schritt und hier dann wieeder gesagt einmal aufklappen und dann Value einfügen.
+1:05:30
+So und dann jetzt einmal speichern und jetzt können wir alles testen. Gut, damit haben wir jetzt wirklich alles. Jetzt können wir wieder zurück in die
+1:05:36
+Levelabs gehen. So, also lass uns den Agenten gleich mal live testen. Das geht jetzt entweder über die Preview. Ja, ich habe dafür auch ein Szenario schon mal
+1:05:43
+vorbereitet. Also das macht definitiv immer Sinn. Gerade wenn du jetzt explizit z.B. die technische
+1:05:49
+Reparaturanfrage prüfen willst, ja, dass man hier ein Dokument durchgeht. Gerade auch mit der Chatfunktion würde das
+1:05:55
+gehen. Ich zeige jetzt im Rahmen dessen aber gleich, wie du eine Telefonnummer verbindest, denn der Agent soll ja dann auch live über eine Nummer angerufen
+1:06:01
+werden können. Dazu klickst du hier auf Phone Numbers, dann klickst du auf Import Numbers und in dem Fall nutzen
+1:06:06
+wir Twiilio. Ich habe schon Anleitungen, die findest du auch hier in diesen Videos z.B. und in anderen Kursen. Das
+1:06:13
+habe ich schon mehrfach gemacht, deswegen spare ich mir das jetzt und habe eine Nummer schon hinzugefügt. Das ist jetzt hier die Twiel Testnummer und
+1:06:19
+hierf bin ich jetzt in Heimstein Rezeptionisten. Wir rufen den Agent an. Du siehst, ich hab die Nummer jetzt hier mal eingefügt.
+1:06:25
+Heimsteinhausverwaltung. Mein Name ist Lisa. Ich bin die digitale Assistentin. Was kann ich für Sie tun?
+1:06:30
+Ja, hallo. Ich habe ein Problem mit meiner Heizung. Das ist ärgerlich. Damit ich Ihnen helfen kann, benötige ich ein paar
+1:06:36
+Informationen. Können Sie mir bitte Ihren Namen und Ihre Adresse nennen? Ja, mein Name ist Michael Bergmann. Ich
+1:06:42
+wohne in der Schillerstraße 42, Wohnung 3b. Vielen Dank, Herr Bergmann.
+1:06:47
+Schillerstrafe 42, Wohnung 3b. Was genau ist denn das Problem mit Ihrer Heizung?
+1:06:52
+Das Thermostat im Wohnzimmer reagiert nicht mehr. Ich kann die Temperatur nicht mehr einstellen. Es bleibt einfach
+1:06:57
+kalt. Das verstehe ich. Seit wann besteht dieses Problem denn schon? Seit gestern Abend. Es ist schon
+1:07:03
+ziemlich kalt in der Wohnung. So 16° vielleicht. Das ist natürlich unangenehm. Ist es denn ein Notfall? Also ist die Peizung
+1:07:10
+komplett ausgefallen und die Außentemperatur unter 5° Celsus oder kann es noch etwas warten?
+1:07:16
+Nee, es kann schon noch warten. Alles klar. Und wann wären Sie denn für einen Handwerkermin erreichbar?
+1:07:21
+Am besten vormittags zwischen 9r und 12 Uhr. Meine Nummer ist 01701567.
+1:07:29
+Ich habe ihre Daten aufgenommen. Ich leise das Anliegen als technisches Problem an die zuständige Abteilung
+1:07:35
+weiter. Sie werden sich dann wegen eines Termins mit Ihnen in Verbindung setzen. Kann ich sonst noch etwas für Sie tun?
+1:07:41
+Nein, das war alles. Danke. Dann wünsche ich Ihnen noch einen schönen Tag. Auf Wiederhören.
+1:07:46
+Alles klar. Hat auch aufgelegt. Jetzt springen wir mal wieder ins Cheat. Und jetzt sollten hier die Daten auch gleich
+1:07:52
+eingehen. Das Make Szenario ist ja live. Leider sieht man das jetzt hier nicht auf den ersten Blick. Wir werden es dann
+1:07:58
+erst sehen und da sind die Daten auch schon ja, dass die Daten hier entsprechend eingegangen sind. Wir haben
+1:08:04
+hier auch mal reingeschrieben, wie das Datenformat aussehen sollte oder welche Informationen wir jetzt hier erwarten.
+1:08:09
+Das würde ich jetzt dann einmal gegenprüfen. Also sieht doch auf dem ersten Blick definitiv schon sehr gut
+1:08:16
+aus. Ja, also passt, damit können wir arbeiten. Es gab definitiv noch ein, zwei kleine Hindernisse, die ich
+1:08:21
+festgestellt habe. Z.B. hätte sie hier zunächst noch mal nach dem Problem fragen sollen und erst dann die Adresse
+1:08:28
+erfassen. Das hat sie jetzt ein bisschen vertauscht, aber das ist auch ganz normal, weil das ist der größte Teil einer solchen AI Automation, eines
+1:08:35
+solchen Workflows. Ja, weil den initialen Workflow so wie wir jetzt, den hast du relativ schnell sitzen. Also,
+1:08:40
+wir haben den jetzt nach kurzer Zeit hier stehen haben. Damit kann man jetzt tatsächlich schon live gehen. Also an der Stelle herzlichen Glückwunsch, dein
+1:08:47
+Agent und der Use Case ist hiermit wirklich schon mal fertig. Also, wir haben jetzt einen Inbound AI Voice Agent
+1:08:53
+Rezeptionisten und der größte Teil gerade auch in solchen Voice Agent Projekten auch bei uns seit jeher ist
+1:08:59
+wirklich immer die Optimierung und das Testing, ne? Das heißt, der erste Entwurf, den hast du jetzt und jetzt
+1:09:04
+geht's dann in die Testphase. Jetzt würdest du noch mal einige Szenarien durchtelefonieren, dann schauen, ob du
+1:09:09
+hier die einzelnen Promps noch mal etwas verbesserst und so weiter und dann hast du irgendwann eben den finalen Voice
+1:09:15
+Agent auch wirklich stehen. Und herzlichen Glückwunsch, das war US Case 1, damit kommen wir in Usecase 2 und
+Use Case 2
+1:09:21
+damit springen wir auch direkt in Use Case Nummer 2. Worum geht es hier? Wir schreiben jetzt hyperpersonalisierte
+1:09:28
+Outbound E-Mail Kampagnen, aber nicht selbst, sondern über einen autonomen AI Workflow, der auf Basis einer
+1:09:34
+Brancheneingabe, also z.B. Maschinenbauunternehmen, Zahnärzte und so weiter selbständig hochwertige B2B
+1:09:41
+Leads aus dem Internet recherchiert, diese scraped, anreichert, also enriched
+1:09:46
+spricht die Daten dieser Leads, validiert, sprich Mailadressen, Telefonnummern und auf Basis dessen
+1:09:52
+personalisierte E-Mailkampagnen erstellt. Der Prozess von der Recherche bis zum qualifizierten Lied, also auch
+1:09:59
+die Erstellung, das Schreiben der Mail, all das läuft voll automatisch. Ja, was
+1:10:04
+ist der Nutzen davon? Die E-Mail Automation ist ideal für alle B2B Branchen mit einem geringeren
+1:10:10
+Kundenwert. Beispielsweise zum Vertrieb physischer Produkte, ne, also wo es sich gar nicht lohnt Leads anzurufen und z.B.
+1:10:18
+für einen Onlineshop. Natürlich kannst du das aber auch als Agenturbsiness nutzen. Ja, wenn du einfach autonom B2B
+1:10:24
+Kunden akquirieren willst für kostenlose Erstgespräche. All das ist denkbar mit diesem Workflow und vielleicht hast du
+1:10:31
+schon mal solche Call E-Mails bei dir ins eigene E-Mail Postfach bekommen. Vielleicht sogar gefragt, ja, wie machen
+1:10:37
+die das denn und viele davon tatsächlich händisch mit Praktikanten und wir machen das jetzt aber eben wie gesagt voll
+1:10:43
+autonom. Die Automation sorgt für qualifizierte Leads bzw. Sekunden ohne
+1:10:48
+Zeitinvest mit marginalen Kosten. Was lernst du hier? Du lernst, wie du autonom Kontaktdaten aus dem Internet
+1:10:55
+scrapst und diese anreicherst. Du lernst mit der Instantly API umzugehen. Das zeige ich dir gleich auch noch mal, den
+1:11:00
+kompletten Workflow. Wir testen den, bevor wir den umsetzen. Die personalisierten E-Mails mit Instantly
+1:11:05
+über Open AI automatisiert schreiben zu lassen bzw. über einen AI Workflow. agentische Workflows. Ein Agent
+1:11:12
+entscheidet selbst, wie er scrap und entsprechend die Leads auswählt. Und wir gehen jetzt aber alles, wie gesagt,
+1:11:17
+Schritt für Schritt zusammen durch, so dass du selbst ohne technisches Vorwissen hier perfekt mitkommst. Zunächst einmal testen wir den Workflow
+1:11:24
+einmal gemeinsam, damit du auch wirklich siehst, dass das funktioniert und wie das funktioniert. Also, wir haben zunächst alles basiert hier auf diesem
+1:11:30
+NNN Workflow und alles basiert ja immer mit einem Trigger. Ja, der Trigger ist jetzt in unserem Case ein Formular.
+1:11:36
+Dieses Formular erstellen wir über einen Webhook. Also hier kopiere ich mir jetzt einfach diesen Link habe ich hier auch schon mal geöffnet, aber damit du
+1:11:42
+siehst, dass es hier auch wirklich die Seite ist, habe ich dir noch mal reinkopiert und hier kann ich jetzt Branche, Region und so weiter angeben
+1:11:48
+und das ist halt auch das charmante, dass es die NateN relativ einfach macht, wenn du weißt, wie so gebrandete
+1:11:54
+Formulare zu erstellen, was gerade besonders charmant ist, wenn du vielleicht eine Agentur bist und gebrandete Formulare rausgeben willst an
+1:12:01
+deine Kunden, ja, wenn du solche Workflows hier z.B. weiter verkaufst. Und das werde ich dir zeigen, wie das
+1:12:06
+funktioniert. Das heißt, da werden die Leads eingetragen und wenn die Leads eingetragen werden, dann werden die hier
+1:12:11
+empfangen über diesen Webbook bzw. die Leads werden nicht eingetragen, sondern der Nutzer trägt hier ein, welche Branche will er haben und wie wie viele
+1:12:18
+Leads will er haben. Ja, dann haben wir hier die Gard Funktion, die kennen viele gar nicht. Ja, was macht diese Gard Funktion? Ganz einfach gesagt, der Name
+1:12:24
+sagt mir wesentlich auch schon. Die prüft, ob hier kompletter Schwachsen eingetragen wird. Ich mache das mal ganz konkret am Beispiel. Wenn ich jetzt hier
+1:12:30
+einfach irgendwas eintippe, dann sollten natürlich nicht immer die ganzen KI Credits, ja, die API Credits verbraten
+1:12:36
+werden. Und jetzt siehst du auch hier, sorry, deine Anfrage entspricht nicht unseren Sicherheitsrichtlinien oder es
+1:12:43
+ist keine valide Branche und deswegen hat der Workflow hier nicht funktioniert. Das liegt an den Gartrails. Also das werde ich dir
+1:12:49
+zeigen, wie du das einrichtest. Dann scrapen wir diese Leads über die Google Suche. Das heißt, im Wesentlichen wird der Workflow in die Google Suche gehen,
+1:12:55
+nach dem Branchen suchen auf Websites gehen, die Kontaktdaten dort erstmal finden. Dann haben wir einen Filter, der
+1:13:01
+einfach falsche, fehlerhafte Seiten wie LinkedIn oder Facebookseiten rausfiltert. Und jetzt kommt's zum
+1:13:07
+Wesentlichen. Das ist eine Note, die auch sehr viele in Net nicht kennen. Und zwar gibt es den direkten Information
+1:13:12
+Extractor. Dieser extrahiert jetzt all die Informationen aus den ganzen Daten, die wir von den Websites bekommen. Dann,
+1:13:17
+ich würde sagen, wir können das ja parallel jetzt auch wirklich erstmal schon mal an der richtigen Branche machen, dann siehst du gleich, wie das funktioniert. Also nehmen wir uns jetzt
+1:13:23
+mal Zahnärzte aus Ulm Stück. Ich klicke jetzt hier mal auf erneut Versuchen. Es hat jetzt auch geklappt, also lead
+1:13:29
+Scraping gestartet. So, in den Execution sieht man nun auch, dass der Workflow jetzt anläuft und hier entsprechend
+1:13:35
+durchgeht. Dann haben wir hier einen Google Sheet. Ich lösche das jetzt noch mal. Das war von meinem Test von vorhin. Ja, aber jetzt hier kommen auch schon
+1:13:41
+neue Leads rein. Das heißt, wir sehen ja, der Workflow funktioniert. Genauso soll das aussehen. Also neue Leads kommen jetzt hier am laufenden Band
+1:13:48
+rein. Warum kommen diese Lieds hier rein? Weil über diese ganzen Leeds, die jetzt hier gerade über die Google Suche
+1:13:54
+aus dem Internet gezogen werden, drüber geloopt wird mit der Hilfe auch von Gemini, wenn die Informationen extrahiert und dann in das Google Sheet
+1:14:01
+eingetragen. Da wir jetzt nur zehn Stück haben, sollten wir die gleich auch schon erreicht haben. Deswegen zeige ich dir jetzt schon mal den nächsten Schritt,
+1:14:06
+denn für das Versenden der E-Mails arbeiten wir hier mit Instantly. Ist ein Tool, was genau darauf spezialisiert
+1:14:11
+ist, also solche automatisierten E-Mail Kampagnen zu erstellen und ein paar charmante Funktionen hat, die du z.B.
+1:14:17
+nicht hast, wenn du jetzt einfach dein Gmail Postfach oder so nutzt, das solltest du auch nicht tun, ja? Weil du hier natürlich relativ schnell als als
+1:14:23
+Spam oder dergleichen geflegt werden kannst, auch wenn du hier ganz normale Kunden, E-Mail, Newsletter und so weiter machst, ja, ist das einfach von Vorteil
+1:14:30
+Instantly zu arbeiten. Und hier im letzten Schritt, wenn wir jetzt unseren Workflow springen, dann haben wir hier einen Formular. Ja, das heißt
+1:14:36
+theoretisch könnte man die ganzen Leads, die in das Google Sheet eingehen, könnte man automatisiert in Instantly anlegen
+1:14:41
+lassen. Das mache ich jetzt aber ganz bewusst nicht, ja? Weil in der Praxis willst du das vielleicht noch einmal gegenprüfen, willst du diese Leads
+1:14:48
+wirklich in der Kampagne haben, soll das wirklich so starten? Deswegen arbeiten wir hier jetzt wieder mit einem weiteren Trigger, mit einem Form. Das habe ich
+1:14:53
+mir jetzt hier auch schon mal geöffnet. Im Form kann ich jetzt einfach einen Namen geben. Ich nenne dich Kampagne. So heißt dann die sogenannte Kampagne
+1:14:59
+Instantly Lee, die heißt jetzt Demo und die Branche ist Zahnärzte. Die Stadt war Ulm. Dann schicke ich das ab und nun
+1:15:04
+sollten Instantly, wenn ich jetzt hier refreshe, die Kampagne angelegt werden. Da siehst du es auch schon. Das ist
+1:15:10
+jetzt die Demokampagne und hier im Prozess, ja, das ist das erste, was passiert ist. Also hier in der Action
+1:15:15
+Note wird die Kampagne angelegt. Dann zieht sich der Workflow aus dem Google Sheet die ganzen Zeilen raus, prüft hier
+1:15:21
+noch mal, hat der Lied wirklich eine richtige E-Mailadresse? Und hier wird jetzt die hyperpersonalisierte E-Mail
+1:15:26
+erstellt mit einem langem System prompt. Das werde ich dir gleich alles zeigen. Und im letzten Schritt wird dann die
+1:15:31
+Kampagne erstellt bzw. die Leads werden zu der Kampagne hinzugefügt. Wenn ich jetzt hier instantly bin und dann auf Leads gehe, dann sehen wir jetzt auch
+1:15:38
+hier, okay, hier werden jetzt gerade die ganzen Leads auch bereits hinzugefügt. Die Kontakte werden angelegt und hier
+1:15:43
+hinten wird jetzt auch schon die Custom Message, also das personalisierte Anschreiben generiert. Hier sehen wir es
+1:15:49
+auch schon als Zahnarztpraxis in Ulm kennt ihr das sicher. Patienten rufen an, um Termine zu vereinbaren, aber während der Behandlung geht niemand
+1:15:55
+dran. Das wäre jetzt so Voice Agent, ja, Pitch E-Mail, die man hier an diese Zahnarztpraxis automatisiert über den Workflow versenden würde und dann
+1:16:01
+brauche ich im Instant Le Wesentlichen einfach nur noch die Kampagne starten. Das zeige ich dir aber gleich alles. Das heißt, hier im Schnelldurchlauf hast du
+1:16:07
+gesehen, wie der Workflow funktioniert. Hier noch mal die einzelnen Schritte für dich zusammengefasst und damit gehen wir jetzt in die Umsetzung und setzen all
+1:16:13
+das eins zu eins gemeinsam um. So, wir starten mit dem grundlegenden Setup in Nadn. Dafür erstellen Nadn Account. Das
+1:16:20
+sollte an diesem Punkt bereits passiert sein. Falls nicht und falls du ja einfach mitmachen willst, dann erstellst du dir einfach hier einen kostenlosen
+1:16:26
+Cloud Account. Das reicht erstmal voll und ganz aus. N hat den großen Vorteil, dass du dies lokal horsen kannst. Dazu
+1:16:31
+habe ich einen ganz eigenen Kurs auch schon mal veröffentlicht. Den habe ich dir hier auch noch mal mit verlinkt bzw. den kannst du dir im Kurs dann noch mal
+1:16:37
+anschauen, wenn du nn selbst hausen willst. Das heißt, das setze ich jetzt hier schon mal voraus. Das heißt, du befindest dich jetzt in NN und dann
+1:16:43
+gehst du auf Create Workflow. Das heißt, wir haben jetzt hier schon mal neuen Workflow angelegt. Das erste, was du machst, du erstellst jetzt einmal die
+1:16:49
+grundlegenden Accounts, die du brauchst für diesen Workflow. Das ist zum einen surper.de dies nutzen wir für die Google
+1:16:55
+API Anfrag. Hat nämlich den Vorteil, dass du hier 2500 free Querries, also
+1:17:00
+free Suchanfragen erhältst und dies deutlich einfacher zu setupen ist, als wenn du es direkt über die Google Cloud
+1:17:06
+API machst. Auch das geht, aber wir wollen es ja nicht unnötig kompliziert machen. Deswegen klickst du hier auf Signup und erstellst du einmal einen
+1:17:13
+Account. So, Account ist angelegt. Dann klickst du hier auf API Keys und dann auf Create New Key. Diesem Key kannst du
+1:17:19
+Namen geben, z.B. Nen Key kopierst du dir jetzt einmal und den füge ich jetzt
+1:17:24
+hier in unserem neuen Workflow schon mal als Note hinzu. Den werden wir nämlich gleich wieder brauchen. Als nächstes
+1:17:30
+brauchst du Instant Le, das zeige ich dir auch noch mal kurz. Dazu klickst du einfach auf get started. Äh Links findest du wie gesagt alle im Dokument
+1:17:36
+verlinkt und dann stellst du dir hier neuen Account. Ich nenne den jetzt einfach mal Demo Everlast AI. jetzt
+1:17:42
+beitreten. So, das kannst du einfach überspringen, dann bekommst du eine E-Mail. So, das sieht dann so aus. Hier mal drauf klicken und damit ist dein
+1:17:47
+Account dann auch schon erstellt. Die Tool hier kannst du überspringen. Klickst dann hier auf deinen Account, auf Einstellungen, dann auf Integrationen und hier auf API Key. Und
+1:17:55
+hier kannst du jetzt auch deinen API Key erstellen. Den nennst du auch wieder NNN und sagst einfach Add all. Also, du
+1:18:00
+gibst alle Rechte über die API frei. Schließlich hast nur du Zugriff auf die API und willst es dir hier auch wieder
+1:18:06
+nicht unnötig schwer machen. Klickst auf okay. Und diesen Key speichern wir uns jetzt hier auch schon einmal kurz ab.
+1:18:12
+So, da steht schon mal. Jetzt fangen wir an mit unserem Input, also dem Formular, was du gerade eben schon gesehen hast.
+1:18:17
+Und dazu fügen wir jetzt wieder. Das kennst du an diesem Punkt wahrscheinlich auch schon, aber wir machen das trotzdem noch mal gemeinsam. Also du erstellst
+1:18:23
+dir einen Webhook und als Respond nimmst du using respond to Webhook Note und den
+1:18:29
+P machst du wieder ein bisschen schöner. Also das heißt URL nennen wir Leadscraping. Du kannst den Webhook direkt auf Production URL umschalten.
+1:18:36
+Dann kannst du das Ganze schon mal kurz speichern, nicht vergessen. Und jetzt generieren wir die Website, also das
+1:18:41
+Formular, was du eben gesehen hast. Dafür nutzen wir die Code Note und nutzen Code in JavaScript. So und
+1:18:47
+übrigens, ich zeig dir noch mal kurz diese Production Duell, die du gerade erstellt hast. Wenn du die jetzt einmal in Google öffnest oder in der als URL
+1:18:53
+öffnest, dann wirst du diese Fehlermeldung bekommen. Das heißt, die funktioniert noch nicht. Und das liegt eben genau daran, weil der Workflow
+1:18:59
+einerseits noch nicht live geschalten ist, der steht noch auf inaktiv und zweitens, weil wir noch kein Respondhook
+1:19:05
+Note haben. Das werden wir jetzt gleich machen. Zunächst einmal generieren wir jetzt aber die Website. Den HTML Code
+1:19:11
+findest du auch in den Ressourcen dieses Kurses und kannst den eins zu eins für dich kopieren. Also wir bauen im
+1:19:16
+Wesentlichen einfach einmal die ganze selbstgebrandete HTML Website, was eben den Vorteil hat, dass du nicht auf die
+1:19:22
+Standard NN Formulare, die halt immer sehr ja langweilig und standardmäßig aussehen, zurückgreifen musst und bauen
+1:19:28
+somit das eigene Formular und geben die Daten dann hier einmal als Variable wieder zurück in den Workflow. Und dann
+1:19:34
+im letzten Schritt, wie gesagt, brauchen wir noch die respond to Webhook. Hier sagen wir jetzt respond with Text und
+1:19:41
+die Variable, die zurückgegeben werden soll bzw. der Respond body, das ist jon.html HTML Content und jetzt
+1:19:48
+erinnerst du dich, ähm das ist nämlich genau die Variable, die wir hier unten im Code Node definiert haben. Dann ist
+1:19:55
+jetzt noch wichtig hier Respond Headers einzugeben. Hier steht es auch noch mal extra als Hinweisseitens NN, also um
+1:20:02
+unerwartetes Verhalten zu vermeiden, solltest du einen Content Typ definieren. Ähm das bedeutet hier gibst
+1:20:07
+du jetzt einfach einen Content Type, damit der Browser dann eben auch weiß, dass es sich hierbei um eine Website
+1:20:13
+handelt, die generiert werden soll. Und als Value, das habe ich dir hier auch eingefügt, Text HTML. Und übrigens
+1:20:18
+gibt's auch bei all diesen Notes, das wird sonst auch völlig den Rahmen hier sprengen, echt gute Documentations von Naden, indem du hier oben einfach auf
+1:20:25
+Docs klickst, bekommst du jetzt eine ausführliche Documentation zu der Respondne und eine Anleitung von NN
+1:20:32
+direkt, die das hier z.B. auch noch mal erklärt. Also respond with text send response body, das haben wir gemacht und
+1:20:38
+das nimmt dann bei default Text HTML, das haben wir reingepackt und was jetzt auffällt, wir haben jetzt hier ja noch
+1:20:45
+den Charset UTF8 Parameter definiert und hierbei lohnt es sich auch genau dafür
+1:20:50
+wiederum auch KI einzusetzen, also während des Boons zu lernen. Ja, und so könntest du jetzt beispielsweise in Chat
+1:20:55
+GBT gehen und machst dir wirklich ein Chat auf, kopierst die Documentation von N8N rein, den Parameter und sagst, okay,
+1:21:01
+warum wurde jetzt hier noch mal Charset UTF8 gesetzt? Was hat's damit auf sich? Und dann erhältst du eben die
+1:21:06
+detaillierte Erklärung. Ja, und dann lässt du dir das Ganze im parallel von ChatGBT erklären und baust du auch immer mehr und mehr Hintergrundverständnis
+1:21:13
+auf. Damit steht jetzt in unser Workflow in jedem Fall schon mal. Jetzt können wir den noch mal live schalten,
+1:21:18
+speichern und jetzt sollte die Production URL, also das ist wichtig, erst live schalten, nur dann funktioniert die Production URL und
+1:21:24
+diese Production URL, die sollte jetzt auch ähm, wenn ich die jetzt noch mal, das die Seite, die ich gerade schon geöffnet habe, wenn ich das jetzt noch
+1:21:29
+mal neu lade, ja, dann haben wir hier jetzt auch entsprechendes Formular, welches wir verwenden können. So, also wir haben jetzt hier schon mal den
+1:21:35
+Webhook, wir haben die HTML Website, die generiert wird, wir haben die Antwort, die dann zurückgeschickt wird an unseren
+1:21:40
+Webhook und nun brauchen wir den nächsten Webhook, der diese Daten jetzt letztlich auch empfängt. Dazu fügst du wieder eine Webhook Nord hinzu. Und
+1:21:47
+jetzt wichtig, diesmal nutzen wir die Post Request. Du kannst hier schon mal wieder umschalten auf Production URL und
+1:21:53
+respond ist hier wieder Respondhook. So und das ist jetzt super wichtig. Du nimmst jetzt die Production URL und dann
+1:22:00
+gehst du wieder in die Code von vorhin. Hier musst du nämlich diese Webhook URL nun einfühlen. Ja, da haben wir nämlich
+1:22:06
+einen Platzhalter drin im Code. Den kannst du einmal suchen über Webhook. Und hier fügst du jetzt genau diese
+1:22:12
+Production URL, die ich mir gerade kopiert habe, ein. So, dann wieder einmal speichern und die Daten, die jetzt im Forms abgeschickt werden, die
+1:22:18
+kommen jetzt hier unten im Webhook einmal an. Was nun noch einmal wichtig ist, damit alles folgende auch funktioniert, den Webhook, der heißt
+1:22:24
+standardmäßig Webhook 1. Genau den Namen zem, den ich jetzt hier reingeschrieben habe, also Webhook in Klammern Receive
+1:22:30
+Form Data, denn auf diesen Namen werden wir uns im folgenden Workflow auch mit den ganzen Vorlagen, die du von mir bekommst, immer wieder referenzieren.
+1:22:37
+Das heißt, wenn du hier eins zu eins mitbaust, ist es wichtig, dass du den Namen einmal eins zu eins so mit reinkopierst. Was jetzt wichtig ist, wir
+1:22:42
+werden den Webhook jetzt einmal testen, ob der schon funktioniert. Das solltest du auch laufend im Prozess machen. Das machen viele falsch, die erstmal alles
+1:22:48
+fertig bauen und dann testen, sondern teste immer jeden einzelnen Schritt und deswegen stellen wir jetzt hier noch mal um auf die Test URL. Dabei ist dann
+1:22:55
+wichtig, dass du hier im Codeen noch einmal umschaltest. Ich habe das jetzt hier gerade schon mal hinzugefügt. Also einfach hinter Webhook- Test und dann
+1:23:03
+auf Save. Und jetzt kannst du das Formular dann noch mal öffnen. Wichtig hier noch einmal neu laden, damit die
+1:23:08
+Änderung auch übernommen wird. Dann testen wir das jetzt einmal. Dafür fügst du ganz simpel einen Respondhookne
+1:23:13
+hinzu, einfach damit es hier keine Fehlermeldung gibt. Und dann kannst du hier mal auf listen for Test Event
+1:23:19
+klicken. Und jetzt gehen wir hier einmal Testdaten ein, also nehmen wir mal wieder unsere Zahnärzte Ulm auf
+1:23:24
+Recherche starten und dann sind die Daten hier jetzt auch angekommen. Hier steht's auch zahärzte Ulm. dann jetzt
+1:23:29
+direkt einmal diese Daten pinnen. Dann können wir nämlich laufend im Workflow mit genau diesen Daten weiterarbeiten.
+1:23:35
+Und jetzt einfach, damit du es nicht vergisst, am besten hier im Code direkt wieder das Minus Test rausnehmen und
+1:23:41
+einmal speichern und dann können wir hier weitermachen. So und jetzt fügen wir unsere erste Aktion. Das ist jetzt eine Logic Note, also eine Logik. Du
+1:23:48
+erinnerst dich an Anfang des Kurses, die ist auch relativ neu. Das sind die Gart Trails. Also hier setzen wir jetzt check
+1:23:54
+test for violations. Also wir prüfen, ob im Text im fehlerhafte falsche Worte
+1:23:59
+enthalten sind. Und genau den nach checkt for violations und dann nehmen wir den Text to check. Das ist in dem
+1:24:06
+Fall einmal die Industrye. Das kannst du dann einfach hier aus den Demodaten reinziehen und einmal die Location. Ja,
+1:24:14
+also die zwei Sachen wollen wir abprüfen. Auch das kannst du hier einmal reinziehen und dann schön anordnen. So,
+1:24:19
+nun fügen wir die Properties hinzu, also welche Kriterien wir letztendlich prüfen. Hier nehmen wir die Custom
+1:24:25
+Properties, also wir definieren diese selbst. Hier kannst du schon mal drei Stück hinzufügen, einfach um hier mal die ganze Bandbreite davon zu
+1:24:31
+demonstrieren. Das erste, was wir machen, ist ein wirklich harter Filter, also alles illegale, unethische. Der
+1:24:37
+Threshold, den stellen wir jetzt auf 0,1. Was bedeutet das? Auch hier findest du wieder die Documentation zu dieser
+1:24:43
+Gartway Note und hier steht's auch ziemlich gut beschrieben drin. Also zunächst einmal basiert das Ganze eben
+1:24:48
+auch auf einer LM Prüfung. Das heißt, hier nutzen wir jetzt wirklich auch wieder KI, um diesen Sicherheitscheck zu
+1:24:54
+machen über ein LM. Das machen wir gleich noch, das habe ich jetzt noch nicht hinzugefügt. Und hier stehen jetzt auch die einzelnen Parameter noch mal
+1:25:01
+erklärt. Hier haben wir den Threshold, also ein Wert zwischen 0,0 und 1. Bedeutet, wie streng soll jetzt hier
+1:25:08
+ausgefiltert werden? und 0,1, also 0 ist das härteste was möglich ist. Und 0,1
+1:25:14
+ist demnach schon ein sehr sehr harter Filter, den wir jetzt hier reinhauen. Das heißt, das LM wird sehr streng
+1:25:19
+bewerten, ob h etwas illegales oder unethisches drin steht. Der Prompt dafür, also der Prompt für dieses LM ist
+1:25:25
+Block Request related to Weapons, Trucks, Adult Content etc. Die zweite Property soll Nonsense rausfiltern. Den
+1:25:32
+Threshold, den setzen wir hier auf 0,5. Das ist im Endeffekt das, was ich vorhin im Testlauf gemacht habe, also wenn man
+1:25:38
+einfach wild irgendwas reintippt in die Tastatur und das ist der Prompt. Also, blockier alle Prompt Injection Attacken.
+1:25:44
+Das ist eben auch ganz wichtig, gerade wenn du sowas öffentlich teilst oder mit einem größeren Team teilst, ja, damit man dich halt nicht so leicht prompt
+1:25:51
+injecten kann. Also dafür sind diese Gartrails wirklich eine echt hilfreiche Note. Und als letztes, das ist jetzt auch das lockerste, also der Business
+1:25:58
+Fit, wie gut passt das wirklich, ne? das beispielsweise sowas wie als Zielgruppe Leute, die Luft atmen, ja, sowas hier
+1:26:04
+einfach rausgefiltert wird, also wenn die Nische einfach zu schwammig definiert ist sass es kaum möglich ist
+1:26:09
+hier eine vernünftige Google Recherche durchzuführen. So, die Richtlinien stehen und jetzt brauchen wir natürlich noch das LM, das kannst du direkt hier
+1:26:16
+unten über Chatmodel hinzufügen, dann kommst du direkt rein. Und dann nehmen wir jetzt beispielsweise Open AI. Das
+1:26:21
+haben wir im Rahmen des Tests von Webhooks schon schon eingerichtet. Das habe ich dir schon gezeigt. Und hier reicht das GBT 4.1 Modell. Mehr brauchst
+1:26:29
+du gar nicht machen. Und jetzt siehst du, haben sich hier zwei Wege abgetrennt. Also einmal wenn die
+1:26:34
+Informationen durchgehen, pass. Das führt dann zu der respond to WebcneNote und wir können aber auch etwas
+1:26:39
+definieren, wenn die Information durch die Gart Trails nicht durchgehen. Und hier senden wir jetzt wieder einen
+1:26:45
+respond to Webhook. Hier können wir einen Custom Jason Body hinzufügen. Das ist dann die Antwort, die der User
+1:26:51
+bekommt, der entsprechend hier die Anfragen reinspamt, ja, oder eben entsprechend nicht den Richtlinien
+1:26:56
+entspricht. Und dem sagen wir einfach: "Hey, sorry, deine Anfrage entspricht nicht unseren Sicherheitsrichtlinien oder ist keine valide Branche, ne? Und
+1:27:03
+das würde dann eben auch ein Formular angezeigt werden." Das gleiche machen wir jetzt auch noch mal bei dem erfolgreichen Webhook. Da können wir dem
+1:27:09
+User nämlich auch noch die Information geben, wieder Jason auswählen und ähm genau sagen ihm im Status ist ähm
+1:27:15
+started und das war eben erfolgreich lead scraping gestartet und das können wir jetzt beides auch gleich einmal testen. Hier wieder einmal speichern,
+1:27:22
+dann das Formular wichtig dran denken noch mal neu zu lernen. Jetzt können wir hier noch mal Nonsense eingeben und
+1:27:28
+jetzt sollte entsprechend die neue Gartrail, die wir definiert haben, greifen, ne? Und da steht's auch, sorry, deine Anfrage entspricht nicht unseren
+1:27:33
+Sicherheitsrichtlinien. Das passt schon mal. Und dann gehen wir jetzt noch mal was vernünftiges ein, sagen wir jetzt mal Maschinenbau München. Und jetzt
+1:27:40
+sollte auch die Success kommen. Genau. Leadscraping gestartet. Und das alles siehst du übrigens auch immer in den Executions. Die Guardrails haben hier
+1:27:46
+entsprechend ja gefeuert und die Anfrage durchgeleitet. Das war jetzt die letzte und die davor die Execution, das war die
+1:27:54
+genau, wo die Guards gesagt haben, nee, das passt nicht, weil hier auf Basis von Nonsens dementsprechend auch der Wert
+1:28:00
+False zurückgeliefert wurde und demnach die Anfrage hier in Faed weitergeleitet
+1:28:06
+wurde. So, machen wir weiter. Jetzt geht's zur Google Abfrage mit Serper. Hier oben geht's weiter. Ja, Serper hat
+1:28:12
+kein eigenes Modul. Das wäre immer das erste, was man prüft, aber ähm hat es eben nicht. Deswegen brauchen wir jetzt eine eigene HTTP Request. Und das ist
+1:28:18
+genau das, was wir in diesem Kurs gelernt haben, ja? Das ist dir einfach viel mehr Möglichkeiten eröffnet, wenn du weißt, wie du selbst mit solchen APIs
+1:28:25
+umgehen kannst. Wir brauchen in dem Fall die Post request, weil wir Daten senden und die URL, also Ser du erstellt, gehst
+1:28:32
+du einfach in Playground rein und hier findest du auch die URL vorgegeben. Das ist genau die, die wir brauchen. Die
+1:28:38
+kannst du dir jetzt einmal kopieren und hier einfügen. Kannst du die HTTB Request jetzt auch noch Serper nennen,
+1:28:44
+dann hast du es immer ordentlicher im Workflow und machst es die leichter später die Nord zu referenzieren. Dann
+1:28:49
+brauchen wir wieder die Authentication, sodass du eben auf deinen Server Account, den du bereits erstellt hast, auch zugreifen kannst. Und wenn du jetzt
+1:28:55
+nicht weißt, welchen Off Type du hier brauchst, das steht immer in der API Documentation auch dabei. Hier hast du
+1:29:01
+beispielsweise Headers stehen. Das heißt, wir brauchen hier den Header Off Type. Dann klickst du auf New
+1:29:07
+Credential. Das kann man auch benennen. Dann hältst du dein NN ein bisschen ordentlich her. Ja, das nenne ich jetzt
+1:29:12
+z.B. einfach mal Demo AI Automation Kurs, ja, damit ich später noch weiß, dass es für dieses Video hier erstellt
+1:29:17
+wurde. Und dann ähm bekommst du hier auch den Namen, das ist demnach X-I Key.
+1:29:24
+Den kopierst du dir exakt so hier rüber in den Namen und dann eben den Value. Du kannst schon mal speichern, den haben
+1:29:30
+wir uns ja vorhin, du ähst dich schon als Notiz hier reingesetzt. Das heißt, das kopiere ich mir jetzt einmal, gehe
+1:29:36
+auf wieder bearbeiten und füge den Value hier ein und klicke auf speichern. So, dann definieren wir noch den Body. Also
+1:29:42
+den Payload, den wir der APIfrage mitgeben. Hier nutzen wir jetzt wirklich mal komplett using Jason, also schicken
+1:29:49
+ganzen Jason Budy mit und grundsätzlich findest du dann immer in der Documentation auch, was für Parameter kannst du mitsenden. Also hier siehst du
+1:29:55
+auch, wie das entsprechend aussehen soll und dass du eben hier die Branche über den Q Parameter mitsendest, dann kannst
+1:30:02
+du die Sprache, die Location und so weiter noch mitsenden. Ich habe dir das jetzt hier auch schon mal zum Copypasen
+1:30:08
+vorgegeben. Die Daten, die wir jetzt an der Stelle mitsenden, das kannst du einfach hier reinkopieren. Wir machen jetzt nämlich hier das folgende, dass
+1:30:15
+wir hier in die Anfrage genau die Daten aus dem Formular, also du siehst es hier, ne, die Industry und die Location
+1:30:23
+mitsenden in die Google Suchanfrage, also in die Query. Und was wir auch machen können, ist den Namparameter dazu
+1:30:29
+zu setzen und der ist letztendlich das Limit, was wir vorgegeben haben. So, wie viele Leads wollen wir haben? Und dann
+1:30:35
+sagen wir letztendlich nur noch GL und HL. Das siehst du hier noch mal. Das steht eben für das Land, in dem wir
+1:30:41
+suchen und die Sprache, in der wir suchen. So, und wenn wir jetzt alles richtig gemacht haben, dann können wir
+1:30:46
+einmal executen und dann sollten wir jetzt hier die Trefferliste über die Google Anfrage von Server auch bekommen.
+1:30:53
+Und ja, das sieht gut aus. Also jetzt haben wir hier zehn Google Ergebnisse bekommen, mit denen wir gleich weiterarbeiten werden. Was du jetzt hier
+1:30:58
+im Output siehst, ist, dass diese ganzen Daten in einem einzigen Block zurückgegeben werden. Damit lässt sich
+1:31:04
+dann natürlich schwer weiterarbeiten und deswegen brauchen wir jetzt die Split Note. Das ist demnach eine Data
+1:31:09
+Transformation Note. Und hier kommen jetzt die Felder rein, die wir splitten wollen. Das ist in dem Fall all,
+1:31:15
+deswegen nehmen wir einfach hier das Organic und fügen das hier ein und einmal auf Execute. Und jetzt siehst du
+1:31:20
+hier bekommen wir auch die einzelnen Felder separat raus mit den einzelnen Einheiten. Dann wollen wir nur noch,
+1:31:26
+auch wenn die Ergebnisse in dem Fall schon sehr gut aussehen, ein Sicherheitsfilter einbauen über eine
+1:31:31
+Blacklist, weil es immer gut sein kann, dass auch irgendwelche Instagram Profile, LinkedIn Profile mit gescrap werden, die wir natürlich nicht haben
+1:31:38
+wollen. Dafür habe ich dir hier schon mal den Code für den Filter hinterlegt und der filtert im Wesentlichen diese
+1:31:43
+ganzen Seiten wie Yel, LinkedIn, Facebook, Instagram und so weiter raus und blacklistet die dann einmal und das
+1:31:49
+können wir jetzt auch einmal executen und genau was jetzt Sinn macht, die dann vielleicht noch einmal zu pinnen. So,
+1:31:54
+damit geht's jetzt hier einmal weiter in der Datei mit dem Loop. Wofür brauchen wir den Loop bzw. Also jetzt kommt
+1:32:01
+eigentlich das wichtigste und zwar der Information Extractor. Und der Loop passt do so, da brauchen wir nichts
+1:32:06
+weiter einstellen. Und jetzt nehmen wir den Information Extractor. Den kennen viele nicht, ja? Den können wir sogarem
+1:32:12
+System prompt geben. Also hier kurz vielleicht auch in die Notes einmal reinschauen und diesem Information Extractor. Auch hier findest du wieder
+1:32:18
+die Docs, die sind ein bisschen dürftig, ehrlicherweise. Ähm tatsächlich das impliziert auch schon der Name System
+1:32:23
+prom Template steckt dahinter auch wieder ein LM, welches wir nutzen, welches die Information letztlich ja
+1:32:30
+extrahiert und findet. Und diesen System Prompt, den findest du auch hier. Wir machen das ziemlich simpel. Und zwar
+1:32:36
+sagen wir h die Informationen, die sind ja wahrscheinlich im Impressum oder auf einer Kontaktseite zu finden, so wie die
+1:32:42
+meisten Websites sie haben, denn wir haben ja hier kannst du auch dann immer hier in die gepinnten Informationen schauen, deswegen pinnen wir die, siehst
+1:32:48
+du, dass wir immer die URL in diesem Format bekommen und wir sagen dem Extractor im Endeffekt, also hängen einfach Subpages wie/impressum und
+1:32:56
+Kontakt an die Seite dran und nimm dafür eben die Link URL und extrahiere dann
+1:33:01
+von dort die Information, welche genau das definieren wir jetzt hier unter Attribute und das ist jetzt einmal eine
+1:33:07
+kleine Fleißarbeit. Wir wollen erstmal einmal die Company Mail. Die Description gibt dann noch mal einen Hinweis darauf,
+1:33:13
+wie das LM die Information am besten findet. Also die Haupt-Mailadresse von der Website oder bzw. was wir haben
+1:33:18
+wollen, die ist typischerweise in der Subpage/Ipresso. Dann haben wir den Entscheider, also den
+1:33:24
+Company CEO, der Geschäftsführer oder Verantwortliche für die Inhalte der Website. Dann extren wir die Telefonnummer, also Company Phone. Dann
+1:33:31
+haben wir die Street, also die Straße. Dann haben wir die Street Nummer. Also die Hausnummer, Company Zip, also die
+1:33:38
+Postleitzahl, Company City, also die Stadt, Company Country, also das Land
+1:33:43
+und wir haben es auch gleich. Company Name, also der Name der Firma und that's
+1:33:49
+it. So, das können wir jetzt auch einmal testweise durchlaufen lassen. Das wird jetzt nicht gehen, weil der Information
+1:33:54
+Extractor braucht hier, kannst es hier direkt hinzufügen oder auch wenn du schon schon raus bist aus dem Workflow,
+1:33:59
+ein Model, also ein Chatmodel. Hier nutzen wir jetzt mal Gemini und lassen das auch mal auch hier auf dem Flash
+1:34:05
+Model und so. Dann testen wir das jetzt noch mal. Wenn es lädt ist immer schon
+1:34:11
+ein gutes Zeichen. Ihr sieht jetzt auch, dass die ganzen Items gerade durcheriert werden. Also, wir sind jetzt gerade bei
+1:34:16
+vier von vier, Fün von F, sechs von sechs und der Loop, ja, geht jetzt einmal alle zehn Items durch und h haben
+1:34:23
+die Antwort. Das sieht jetzt auch schon mal sehr gut aus. Gut, damit sind wir jetzt hier am nächsten Punkt in unserem
+1:34:29
+Workflow und damit kurz vor dem Ende hier von diesem Workflow und was machen wir jetzt? Und zwar die Telefonnummern
+1:34:36
+einmal in ein einheitliches Format bringen. Dazu nutzen wir wieder die Code Das siehst nämlich auch hier jetzt bei
+1:34:41
+den letzten Items, dass wir hier verschiedene Nummernformate noch haben. Z.B. hier steht jetzt + 49. Hier haben
+1:34:47
+wir dann jegliche Arten von Nummern und das führt dazu, dass die im Google Sheet dann auch teils als Formel erkannt
+1:34:53
+werden, gerade wenn hier ein Plus steht. Und genau das macht jetzt dieses ähm kurze Codemul, indem es einfach die
+1:34:59
+ganzen Telefonnummern von uns in einheitliches Format einmal formatiert. Also das einfach hier einfügen und das
+1:35:05
+können wir jetzt einmal executen und genau jetzt hat es die Telefonnummer eben auch in dieses clean gebracht. So
+1:35:12
+und dann müssen wir jetzt diese Leads auch nur noch speichern im Google Sheet. Das sollte an dem Punkt ja bereits klar sein. Wir sagen append or update row in
+1:35:19
+Sheet. Ich habe das schon mal angelegt. Das sind jetzt im Wesentlichen einfach genau die Felder, die wir im Information Extractor definiert haben. Das sind die
+1:35:27
+Spaltennamen entsprechend. Dann kannst du dir hier wieder die ID einmal rüber kopieren von dem Sheet und sagst du hier
+1:35:32
+wieder bei ID. füge ich die ID einmal ein und dann sollte jetzt hier die Liste auch schon erkannt werden. Also ist
+1:35:38
+ähnlich zu Make. Ich finde sogar noch bisschen einfacher, ein bisschen charmanter gemacht als bei Make. Und
+1:35:43
+jetzt merke ich gerade das Update, das brauchen wir jetzt hier gar nicht, deswegen will er hier das das Match haben. Theoretisch könnte man die E-Mail
+1:35:50
+oder whatever nehmen, aber es ist im Wesentlichen unnötig. Wir wollen ja nur neue Zeilen hinzufügen, deswegen ändern wir das noch mal auf Pendrow. Und hier
+1:35:56
+sieht man wieder, wieso es so sinnvoll ist, jeden Schritt immer einmal zu testen, weil wir jetzt die Namen von hier direkt ähm reinmappen können. Ja,
+1:36:04
+das heißt ähm hier nimmst du ja einfach die Company Name und dann einmal jeden Punkt durchgehen. Jetzt habe ich es auch
+1:36:09
+genau einmal falsch gemacht. Hier bei Phone haben wir extra das Modul bzw. die den Output hier hinzugefügt, ne? Also
+1:36:15
+das ist die clean Version der Vornummer. Das noch einmal beachten, alles andere dann von hier oben nehmen. Und hier die
+1:36:21
+URL, die ist natürlich hier nicht dabei, die hatten wir vorher schon. Dann nehmen wir einfach das Loopmodul und nehmen
+1:36:27
+hier die URL einmal raus. Ja, und dann testen wir das doch auch direkt noch einmal. Da sollten auch die Daten jetzt
+1:36:33
+gleich reinkommen, wenn hier alles klappt. Hier sind die Daten auch entsprechend angekommen. Perfekt. Und
+1:36:38
+genau, dann können wir jetzt hier noch einmal zurückgehen und jetzt den Loop wichtig hier dann noch einmal verbinden,
+1:36:44
+dass dann noch alle zehn Items durchgelopt werden. So und dann einmal speichern nicht vergessen. Und jetzt
+1:36:49
+kannst du schon mal groß auf die Schulter klopfen. Wir haben das Wichtigste von diesem Workflow, das ganze Lead Scraping und das Lead
+1:36:55
+Enrichment. Das haben wir jetzt schon geschafft und jetzt müssen wir nur noch den letzten Schritt hier meistern. Also
+1:37:00
+das alles haben wir jetzt schon und jetzt geht's im Wesentlichen nur noch darum, den Instantly Prozess aufzubauen.
+1:37:06
+Das heißt, die ganzen Kontakte, die wir hier hier bekommen, dann auch in unserer E-Mailkampagne anzulegen und eine
+1:37:11
+personalisierte E-Mail zu schreiben. So und dann können wir jetzt noch mal genau nach dem Prinzip, also wirklich Schritt für Schritt immer diesen ganzen Workflow
+1:37:18
+einmal testen. hier noch mal drauf achten, dass der Workflow auch wirklich aktiv ist, dass die URLs alle auf
+1:37:23
+Production umgeschalten sind und dann das Formular noch mal öffnen und lass uns do einfach hier mal wieder die
+1:37:28
+Zahnärzte aus Ulnehmen. Recherche starten hier, das lösche ich noch mal raus und das sollten wir jetzt auch in
+1:37:34
+den Executions mitverfolgen können. Genau, da kommt's auch schon rein. Oder eben im Google Sheet können wir jetzt hier uns zurücklehnen, ja, während unser
+1:37:41
+AI Workflow, unsere AI Automation die Leads zieht. Und das sieht auch schon sehr gut aus, aber wie gesagt, der
+1:37:47
+vollständigkeitshalber lassen wir es jetzt einmal über alle zehn Items drüber laufen, damit wir diese jetzt auch im
+1:37:52
+nächsten Schritt gleich nutzen können, um den Workflow dann noch direkt im Prozess mit allen zehn Leads fertig
+1:37:58
+stellen. Gut, das sind zehn Stück. Schauen wir
+1:38:04
+noch mal ganz kurz rein. Jetzt sollte auch jeden Moment der Workflow hier abgeschlossen sein. Succeed, perfekt.
+1:38:10
+Läuft alles. So und das startet eben mit einem Formular. Theoretisch könnte man natürlich auch die Information direkt
+1:38:16
+hier aus dem Loop direkt übertragen, automatisiert in Instantly. Aber wie gesagt, weil es jetzt in der Praxis
+1:38:22
+teils besser ist, das einfach noch mal über einen separaten Workflow zu machen, machen wir das jetzt hier und auch zu
+1:38:28
+Demonstrationswecken noch mal über einen extra Formular. Hier haben wir wie gesagt neuen Trigger, also Onne Natend
+1:38:33
+Form Event. Titel ist create instantly Campaign und dann definieren wir noch die Formular Felder. Das ist der
+1:38:40
+Kampagname, also wie soll die Kampagne heißen in Instantly? Dann brauchen wir natürlich die Branche und die Stadt. Das
+1:38:48
+passt auch schon. Dann gehen wir in den nächsten Step und Instantly hat tatsächlich eine direkte Action Notote.
+1:38:54
+Die musst du einmal installieren. Ich habe das hier schon, aber wenn du es nicht hast, dann hast du hier wirst du hier ein Button haben, über den du
+1:38:59
+instantly einmal installieren kannst und dann kannst du eben direkt hier auf 31 verschiedene API Aktionen von Instantly
+1:39:06
+zugreifen. So, hier brauchen wir dann jetzt create campaign. Wir wollen zunächst eine Kampagne erstellen. So,
+1:39:11
+und jetzt zeige ich dir noch mal, wie du einen neuen Account connect. Das ist auch sehr straight forward. nennen das
+1:39:16
+jetzt mal wieder hier AI Automation Megaakurs. Wir machen das noch mal zusammen. Also instantly API Key, ja,
+1:39:22
+haben wir bereits am Anfang erstellt und kopiert. Das heißt, den können wir einfach hier aus der Notiz entnehmen und
+1:39:28
+dann hier noch mal auf bearbeiten und den API Key einfach hinterlegen. Save
+1:39:34
+und Connection tested successfully. Also, das hat schon geklappt. Den Campaign Name, den nehmen wir dann aus
+1:39:39
+dem Formular Input. Also, den kann der Nutzer dann eben festlegen. Ich habe das hier schon mal eingefügt, damit wir es jetzt nicht testen müssen. Du kannst
+1:39:45
+natürlich einmal testen und dann einfach hier reinziehen, so wie du es kennst. Den Rest kannst du hier einfach erstmal so so lassen, aber lass uns das einfach
+1:39:51
+noch mal testen. Ich zeig dir das jetzt auch noch mal, damit wir auch Daten jetzt drin haben. Also nimm dir einfach die Testurl Server brauchen wir nicht
+1:39:56
+mehr, deswegen ersetze ich das jetzt einfach einmal. Können wir einmal hier testen, einfach auf Execute Workflow. Dann den Kampagnamen, den nenne ich
+1:40:03
+jetzt noch mal hier. Demo Zahnärzte. Branche sind Zahnärzte und Stadt ist Ulm. Submit kam die Daten auch schon an.
+1:40:10
+Die können wir uns jetzt hier direkt auch noch mal pinnen, damit wir damit weitermachen können. Und wenn wir jetzt hier noch mal in den Instantly Note
+1:40:15
+reingehen, dann siehst du das jetzt hier auch. Also das ist eben genau der Campaign Name, den wir hier genommen haben, sowie einfach ähm die Zeit, also
+1:40:22
+no, also wann der Formular Input empfangen wurde. So, im nächsten Schritt nehmen wir uns jetzt die ganzen Leads, die wir hier im Sheet eingetragen haben.
+1:40:29
+Das heißt, wir brauchen hier das Sheedsmodul und hier brauchen wir jetzt
+1:40:35
+Get Rows in Sheets und hier kannst du dir wieder die ID nehmen und der Liste auswählen, Tabellenblatt 1. So, es gibt
+1:40:41
+uns jetzt hier einfach alle zurück, also kein Filter. Theoretisch hier könnte man jetzt auch noch ein Filter einbauen, das z.B. nur die Branche, die in dem
+1:40:48
+Formular eingetragen wurde, aus dem Sheet genommen wurde, wenn du irgendwann ein großes Sheed hast beispielsweise für
+1:40:53
+verschiedene Zielgruppen, verschiedene Kampagnen, aber wir lassen es wie gesagt einfach mal simpel und genau dann teste
+1:40:59
+ich das jetzt noch mal auf Execute Step. Hier haben wir jetzt auch die ganzen Daten aus der Tabelle. Passt, die am besten direkt einmal anpinnen. Gut, und
+1:41:06
+was wir jetzt noch machen, wir bauen jetzt hier noch so eine kleine Ifne ein, wofür ist die da? die filtert jetzt noch mal einfach zur Sicherheit, dass unser
+1:41:12
+Information Extractor, falls der keine E-Mail bekommen hat, soll der Lead letztlich auch nicht in der Kampagne
+1:41:18
+hochgeladen werden. Dazu kannst du einfach das E-Mailmodul hier reinkopieren und dann sagen, ist ist not
+1:41:24
+empty. Also alle E-Mailfelder, die nicht leer sind, die dürfen weiter im Prozess, weil wir natürlich keine Leads ohne
+1:41:30
+E-Mailadresse haben wollen. Ja, in unserem Prozess. Natürlich sind das alle zehn, weil wir haben jetzt bei allen die E-Mail. So, jetzt kommt noch mal AI ins
+1:41:37
+Spiel. Und zwar schreiben wir jetzt die personalisierte Nachricht. Dafür nehmen wir uns den Basic LM Chain Note. Das ist
+1:41:43
+eben eine flexible Möglichkeit ein LM in dein Workflow einzubauen, ohne dass du
+1:41:49
+es jetzt spezifisch dich auf ein Modell festlegen musst. Hier sagen wir jetzt Define Below. So, den System Prompt, das
+1:41:54
+wird dir hier auch schon vorgegeben, den fügst du hier unten hinzu. Diesen System Prompt, den habe ich dir hier auch mit
+1:42:00
+vorgegeben. Ja, das natürlich etwas, das laufend verbessert und iteriert werden sollte und was natürlich einer der wertvollsten Skills überhaupt ist, ja,
+1:42:06
+also zu wissen, wie man überhaupt gute E-Mails schreibt, auf die dann auch viele Leute reagieren, sich Termine
+1:42:11
+buchen, Sachen buchen und so weiter. Und das haben wir auch bei Everlast jetzt seit über 5 Jahren aufgebaut. Also, wir
+1:42:16
+haben Millionen solcher called Messages, sei es auch Social Media oder Mail. Das
+1:42:22
+ist wirklich keine Übertreibung. Ich habe die ganzen Zahlen in Excelta Tabellen vorliegen ähm verschickt und wissen daher ganz genau, ne, wie man
+1:42:27
+solche E-Mails schreibt. Aber das ist jetzt für dich einfach mal so ein erster Aufschlag, der dir zeigt, wie so eine Hyperpersonalisierung grundlegend
+1:42:34
+funktioniert. Und in die Details muss man natürlich im Einzelfall damit reingehen. Melde dich da sehr gerne, wenn du da Hilfe oder Input haben
+1:42:40
+möchtest. Und genau, dann s dann gehen wir noch die User Message vor, die findest du auch hier. Also das ist quasi
+1:42:47
+die Prompt Anfrage, also wie wenn du chatbt prompt schreibst und das ist letztlich der Systemprompt, wie gesagt,
+1:42:52
+der dahinter steckt. Und jetzt brauchen wir noch einen Modell. Hier nutzen wir jetzt tatsächlich mal Open Router und
+1:42:59
+hier bei Open Router haben wir nämlich den Vorteil, dass wir sämtliche Modelle nutzen können. Und Sonet 4.5 ist z.B.
+1:43:06
+extrem stark, was das Schreiben von Texten angeht. Deswegen super Modell für diesen Usecase. Und tatsächlich hat
+1:43:12
+Instantly auch schon vor ja einiger Zeit diese Funktion hinzugefügt. Also du könntest das hier theoretisch auch
+1:43:19
+direkt über Instantly machen, aber das ist natürlich teurer. Ja, weil Instantly will natürlich eine Marge dann darauf
+1:43:24
+haben und da wir jetzt hier im NAN Workflow drin sind, macht's natürlich Sinn, dass wir diesen Schritt einfach
+1:43:29
+selbst machen. So, dann lass uns das auch mal testen. Also, execute Step und ja, sieht do gut aus. Hier im Output
+1:43:36
+siehst du jetzt die fertigen E-Mails. Also, ich gehe noch mal in die Ansicht, dann siehst du es wahrscheinlich besser. Also als Zahnarztpraxis in Ulm kennt ihr
+1:43:42
+das sicher. Patienten rufen an, um Termine zu vereinbaren und und. Also das ist genau die Personalisierung, die das System nun hier eingebaut hat, ne? Und
+1:43:49
+das ist genau das ähm, ne, z.B. hier haben wir jetzt die zahnärzliche Tagesklinik. Das heißt, er hat vor allem die die Branchenbeschreibung mit
+1:43:55
+reingenommen und das ist genau das, was man halt, wie gesagt, noch viel viel detaillierter verfeinern kann mit äh mit persönlicher Ansprache, Name, CEOs und
+1:44:02
+und das ist dann eher wirklich nur eine Sache des Prompts und reicht jetzt für diese Zwecke voll und ganz aus. Also, da
+1:44:08
+kannst du dich dann letztlich wie gesagt auslehen. Und jetzt im nächsten Schritt müssen wir die Leads nur noch in unsere Kampagne hochladen. Und dann müssen wir
+1:44:15
+jetzt im Endeffekt nur noch die Leads, die wir uns hier jetzt noch mal geholt haben und die Kampagne haben wir auch erstellt, hier im letzten Schritt
+1:44:21
+hinzufügen und demnach sagen wir hier add lead to campaign und hier kannst du jetzt sagen from list oder eben bei ID.
+1:44:28
+Das macht auch Sinn, weil die ID haben wir hier, weil wir die Kampagne gerade angelegt haben. Das heißt, das einfach einmal reinziehen und genau diese Felder
+1:44:35
+hier sind bereits von Instantly vorgegeben, weil wir logischerweise eine E-Mail immer brauchen. Ansonsten wird schwer. Dann wie gesagt, das ist einfach
+1:44:42
+Instant Liebe Bezeichnung. Wir Zweckentfremden die ein bisschen. Wir machen als First Name den Namen des CEOs
+1:44:47
+rein und als Last Name nehmen wir den Company Name rein. Auch hier kannst du natürlich deine eigene Logik so wie es
+1:44:54
+für dich am besten ist nutzen und dann hier oben den Text vom LM in die Personalization. Wir wollen die anderen
+1:44:59
+Felder auch noch mit anlegen, deswegen sagen wir jetzt hier noch custom Feiels und brauchen noch die Telefonnummer.
+1:45:04
+Also die einmal rein. Genau. Und tatsächlich ähm gehen wir einfach mal der Reihe nach durch. Also, wir können
+1:45:10
+all die Felder noch mal in instantly mit einfügen. Das dient jetzt auch dazu einfach zu zeigen, dass das entsprechend
+1:45:15
+geht. Du kannst natürlich auch hier wieder entscheiden, ja, brauchst du überhaupt Straßenname und so weiter auch in Instantly, also ist dir das wichtig,
+1:45:22
+das dort drin zu haben, aber grundsätzlich gilt, ne, je schneller die Taten dann für dich auch verfügbar sind, desto einfacher machst du es dir für
+1:45:28
+weitere Workflow Automations angenommen. Du möchtest in Zukunft dann wirklich über instantly z.B. noch mal
+1:45:33
+personalisierte Kampagne machen, dann hast du zumindest die Daten halt alle schon mal drin und brauchst sie dir dann nicht wieder aus Google Sheets oder so
+1:45:39
+über einen Workaround holen und tatsächlich kannst du hier auch noch mal die Custom Message, die wir oben haben
+1:45:45
+schreiben lassen, auch noch mal ins extra Feld anlegen. So, dann können wir das jetzt noch mal testen und wenn alles passt, dann werden jetzt hier ja die
+1:45:52
+ganzen Daten, zehn Items wurden jetzt hier in Instantly angelegt. Perfekt. Damit haben wir alles und damit steht
+1:45:58
+jetzt auch wirklich alles. Also perfekt. Ja, jetzt gibt's noch einen letzten Schritt und zwar die Kampagne in
+1:46:04
+Instantly selbst einmal noch einzurichten. So, L einfach die Seite mal neu laden. Jetzt sollten die Kampagnen, die wir gerade erstellt
+1:46:10
+haben, genau Demo Zahnärzte, das ist genau die, die wir gerade angelegt haben. Hier sollten jetzt auch die ganzen Leads drin sein, richtig, also
+1:46:16
+das passt. Hier hast du die ganzen Kontakte drin, die Personalisierung und die Kasse Message noch mal perfekt. Und
+1:46:22
+hier kannst du jetzt die Sequenzen erstellen, also E-Mail Sequenzen. Das wäre jetzt in dem Fall erstmal die erste Mail. sagen wir jetzt hier einfach
+1:46:27
+erstmal hallo. Hier für den Betreff oder hier unten für den Text kannst du mit einem Klick direkt die Variablen
+1:46:33
+einfügen. Wir in unserem Fall haben ja jetzt als First Name jetzt den Vollnamen, also den CO Namen reingepackt, ne? Das sollte man an der
+1:46:40
+Stelle dann natürlich noch mal beachten und dann packen wir jetzt letztendlich einfach als Variable die Kasse Message rein und damit wird die personalisierte
+1:46:47
+E-Mail, die wir über unseren NNN Workflow haben, schreiben lassen, hier eingefügt. Okay. Und dann machen wir
+1:46:53
+noch mal einen Betreff persönliche Anfrage an den CEO. Okay. Und auf
+1:46:58
+Vorschau kannst du i auch noch mal anzeigen lassen, wie das aussieht. Hier muss man einmal ein Lied auswählen, z.B. hier diesen Lied. Ja, und so sieht dann
+1:47:05
+letztlich auch die fertige E-Mail raus, die verschickt wird. Du kannst ja auch selber noch mal eine Test E-Mail senden lassen und damit haben wir im
+1:47:11
+Wesentlichen alles. Also, damit hast du jetzt wirklich eine hyper personalisierte AI E-Mail Automation. Ja, und im letzten Schritt einfach nur
+1:47:17
+noch die Kampagne live schalten und damit hast du alles und wie gesagt wie der ganze Workflow, wenn du den noch mal
+1:47:22
+sehen willst, spul einfach noch mal zurück. Das hatte ich ja ganz am Anfang gezeigt von dem US Case und damit sind wir hier aber wie gesagt auch wirklich
+1:47:29
+fertig. Also darfst du dir jetzt wirklich einmal auf die Schulter klopfen. Du weißt jetzt wie du hyperpersonalisierte Outbound
+1:47:35
+E-Mailkampagne stellst. So und damit machen wir auch nahtlos weiter mit unserem US Case Nummer 3 und das wird
+Use Case 3
+1:47:40
+wirklich eine richtig starke Sache. Ich bin mir nämlich sicher, dass du das so noch nicht gesehen hast, aber es ist wirklich super super nützlich und ja
+1:47:48
+echt was eine spannende Sache fürs Marketing. Also worum geht es hier? Das heißt Lead Qualification eigentlich ist es ist es noch viel mehr als das. Es
+1:47:54
+geht um einen intelligenten Conversational AI Chatbot, der auf der Danke von Freebe Downloads installiert
+1:48:01
+ist und durch natürliche Unterhaltung Leads qualifiziert. Er kann aber nicht nur Leads qualifizieren, sondern ist
+1:48:07
+eine Art freebe bereits, weil Leads, also Interessenten mit diesem Bot zu dem
+1:48:12
+Freebe, also deinem Freebe chatten können. Ja, also wenn du jetzt ein kostenlosen Report beispielsweise anbietest, um Adressen einzusammeln,
+1:48:18
+warum einen langweiligen Report im KI Zeitalter anbieten und keinen Chatbot, mit dem die Leads schreiben können zu
+1:48:25
+diesem Report. Ja, der Bot kann also auch Fragen beantworten zu diesem Report und gleichzeitig hat er aber den Auftrag, die Leads für Termine zu
+1:48:31
+qualifizieren. Das heißt, im Hintergrund sorgt er sogar für Umsatz. Der AI Chat schafft dadurch einen echten USP im
+1:48:38
+Marketing, da es eben niemand macht, durch eine andere und sympathischere Form der Leadgenerierung. Gleichzeitig
+1:48:45
+qualifiziert er potenzielle Kunden besser, spart wertvolle Zeit im Vertrieb und steigert auch die Erscheinungsquoten
+1:48:50
+in Gesprächen. Was lernst du hier? Du lernst Informationen mit Chatbots zu extrahieren. Du lernst aber auch noch
+1:48:56
+viel mehr als das, ja, das Speichern von Daten in Superbase, grundsätzlich das Arbeiten mit Vektordatenbanken in
+1:49:02
+Superbase, was super nützlich ist für jegliche AI Automations, die du so baust und ja, wie du eine Knowledge Base in
+1:49:08
+Superbase anlegst, aber noch viel mehr als das. Wie immer findest du hier alle Ressourcen. Wir spielen das tatsächlich
+1:49:14
+komplett noch mal gemeinsam durch. Ich zeig dir noch mal alles und dann bauen wir wieder Schritt für Schritt alles zusammen, sodass du wirklich mit diesem
+1:49:20
+Uscase rausgehen kannst und den auch wirklich nutzen kannst. Also als allererstes laden wir unsere Knowledge Base hoch. Ähm, ich klicke hier einfach
+1:49:26
+auf Execute und hier kann ich jetzt eine PDF-Datei hochladen. Das heißt, wir lassen auch unseren Bot, unseren Vecttor
+1:49:32
+Store vor allem automatisiert erstellen. Das machen wir ein Beispiel von unserer AI Voice Agent Trendanalyse. Die haben
+1:49:38
+wir schon Ende 2024 hochgeladen und die findet man auch bei uns auf der Website,
+1:49:43
+kann man sich dort downloaden. eigentlich eher was älteres. Deswegen machen wir das an diesem Beispiel, denn schon damals haben wir eben ja vorher
+1:49:49
+gesehen, wie stark die Nachfrage nach Voice Agents einfach steigen wird und natürlich ist es jetzt einfach ein riesen Textblock, der hier drin steht
+1:49:55
+und das macht's natürlich für Leads uncharmant und viel besser wäre es doch einen Chatbot zu haben. Und diese
+1:50:01
+PDF-Datei, die laden wir also hier hoch und auf Basis dessen nutzen wir ein Misstral Modell. Mistral ist ja ein
+1:50:07
+Kunternehmen, das in Frankreich sitzt und dieses extra hier den Text aus der PDF und speichert den dann in einem oder
+1:50:14
+sendet den dann besser gesagt an einen Superbased Vector Store. Das ist auch relativ neu, je nachdem wann du das Video hier siehst, aber äh ist echt eine
+1:50:21
+super Funktion, ja, weil du direkt über Superbase eben ja Vektordatenbanken anlehn kannst. Dann haben wir den
+1:50:26
+Chatbot und nutzen dafür ein AI Agent Modul. Das heißt, der Chatbot, der bekommt hier den Vectorstore, den wir
+1:50:33
+hier anlegen, also unsere PDF als Knowledge Base und kann demnach nach dem Wissen suchen und speichert gleichzeitig
+1:50:41
+auch alle Chats in einer Datenbank oder hier jetzt in dem Fall in einer Tabelle, damit wir es wieder nicht unnötig
+1:50:46
+komplex machen. Für den Start reicht es absolut aus, ja, vor allem, weil jetzt hier nicht tausende Leads wahrscheinlich durchgejagt werden. Und das coole dabei
+1:50:53
+wird sein, dass du pro Lead nur eine Zeile hast und der Leadscore hier laufend geupdatet wird. Das heißt, je
+1:50:59
+mehr ein Lied mit dem Bot schreibt, desto besser wird der Leadscore dann werden. Und hier haben wir dann quasi
+1:51:04
+die Demopage. Das zeige ich dir jetzt auch noch mal. Ja, das geht ein bisschen in Richtung des Formulars, was wir gemacht haben, nur dass wir hier
+1:51:10
+wirklich eine ganze Website mit Chatbot generieren lassen. Ich habe die hier auch schon mal geöffnet. So sieht das aus. Also, das wäre so eine Dankeseite.
+1:51:16
+Wenn der Report gedownloadet wurde, kommen die Leads auf diese Seite. Könnten sich hier direkt eine Termin buchen oder hier unten rechts eben auf
+1:51:22
+die Sprechblase klicken. Das machen wir jetzt einfach mal und ich klicke jetzt hier mal drauf. Also, hey, wie kann ich dir behilflich sein? zeig ich einfach
+1:51:28
+mal ganz einfach erstmal, worum geht es in dem Report? Der Bot antwortet und hat
+1:51:33
+letztlich das Wissen und er soll vor allem jetzt auch Leads qualifizieren, also stellt immer Rückfragen. Was interessiert dich denn besonders? Ja,
+1:51:39
+ich möchte Kosten sparen. Es ging auch echt schnell. In welchem Bereich möchtest du Kosten sparen? Rezeption.
+1:51:46
+Super. Eine Rezeption ist ein klassisches Einsatzfeld. Darf ich fragen, in welchem Unternehmen du planst, wie groß ist euer Unternehmen?
+1:51:52
+10 Millionen. Jahresumsatz Maschinenbau. Wie sieht das aktuelle Anrufvolumen aus? 100 pro Tag 10 Leute. Gut, es geht jetzt
+1:52:00
+in erste Linie darum, also du siehst einfach, wie gut der Chatbot funktioniert. Also, er bleibt hartnäckig
+1:52:05
+dran und wird laufend Lead qualifizieren. Die Daten, wie du hier siehst, werden auch laufend eingetragen
+1:52:11
+in die Tabelle und entsprechend auch laufend aktualisiert. Und jetzt fragt er
+1:52:16
+sogar nach dem Namen Leonard. Ja, und am Ende das Ziel bestimmst du führt dann zu
+1:52:22
+einem Produkt, zu einem Termin und so weiter. Das habe ich jetzt hier nicht klar bestimmt, deswegen würde jetzt unendlich so weiterschreiben, aber du
+1:52:27
+siehst in jedem Fall mal, wie der Prozess abläuft und damit würde ich sagen, gehen wir jetzt auch wirklich eins zu eins in die Umsetzung und ich
+1:52:34
+werde dir zeigen, wie du das Ganze exakt für dich nachbauen kannst. Also, wir nutzen wieder Nend, du erstellst dir einen neuen Workflow. Das erste, was wir
+1:52:40
+machen, wir erstellen jetzt unseren Mistral Account. Das ist ein bisschen versteckt bei MRAL. Also indem du die
+1:52:46
+Website öffnest, dann findest du hier irgendwo den Link zum AI Studio. Da müssen wir rein. Das vergleichbar mit
+1:52:51
+dem Open AI Playground. Ich habe jetzt hier schon Account erstellt, das dann sehr straight forward und hier klickst du wieder auf API Schlüssel und musst
+1:52:57
+dann hier einen Plan auswählen. Kannst aber kostenlos experimentieren, also kannst hier kostenlos starten. Auch wenn
+1:53:03
+du hier einmal deine Telefonnummer und so weiter verifizieren musst, aber genau bekommst den ersten API Key kostenlos.
+1:53:09
+Account ist erstellt. Dann noch mal hier reingehen und dann auf neuen Schlüssel erstellen. Den können wir wieder NateN nennen. Wir brauchen hier kein
+1:53:14
+Ablaufdatum. Schlüssel kopieren und dann nimmst du dir hier die Mistral Note und
+1:53:20
+da können wir auch schon mal die richtige nehmen, also extract Text und dann fügst du hier den Account hinzu,
+1:53:25
+New Credit und hier dann einmal den API Key einfügen. Gut, dann können wir un schon mal den Superbase Account
+1:53:31
+erstellen. Superbase ist grundsätzlich ein extrem nützliches Tool, dass du sehr schnell brauchst, gerade wenn Workflows
+1:53:36
+eben größer werden, skalierbar sein sollen. Ja, und damit kannst du eigent alles mögliche machen. sogar ganze SAS
+1:53:41
+Business am Ende im Backend aufbauen und genau über die Signup Page erstellen wir
+1:53:46
+uns jetzt wirklich mal zusammen noch mal neuen Account, dann einmal E-Mail bestätigen. Ich nenne jetzt einfach mal Demo GmbH. Der Freepan reicht hier
+1:53:52
+absolut aus. Great Organization. Du kannst hier übrigens auch Serverregionen auf EU, also Frankfurt stellen. Das
+1:53:59
+läuft im Backend letztlich über AWS, also auch Superbase ist im wesentlichen AWS Rapper, aber macht ihr das Leben
+1:54:06
+dahingehend einfach einfach leichter. Ich lasse das jetzt hier einfach mal auf Europe, Create New Project Passwort eingeben, dann auf Create New Project,
+1:54:13
+dann öffnet sich diese Seite und was du direkt mal machen kannst, ist dir die Project URL schon mal zu kopieren.
+1:54:18
+Packen wir die hier einfach mal als Note rein in unseren Nate and Workflow. Dann findest du hier unten links noch die
+1:54:24
+Project Settings und jetzt noch mal verschiedene ja Arten, wie du mit ähm Superbase interagieren kannst. Was wir
+1:54:29
+immer wieder brauchen werden, ist die Data API. Das heißt, ähm, die können wir uns auch noch einmal rauskopieren und
+1:54:35
+dann findest du hier noch die API Keys. Hier ist jetzt wichtig, du hast jetzt hier zwei Tabs und hier hast du noch Legacy En annon und hier hast du zwei
+1:54:42
+Arten von Keys. Was wir jetzt nehmen wollen, ist der Service Roll Key hier vorsichtig sein, weil damit kannst du wirklich jegliche
+1:54:47
+Sicherheitseinstellungen umgehen und hast wirklich Zugriff auf komplett alles. In unserem Fall ist es
+1:54:52
+jetzt vollkommen in Ordnung für den Workflow und da letztlich auch niemand anders hier Zugriff haben wird und demnach den kopiere ich mir jetzt auch
+1:54:59
+einmal raus. So und was wir jetzt immer wieder brauchen, ist den SQL Editor, den Table Editor und Database. Hier werden
+1:55:05
+wir uns jetzt noch mal kurz drin aufhalten. Das erste, was wir jetzt machen, ist ein SQL Script hier
+1:55:10
+hinzuzufügen. Das findest du auch hier. Und dieses aktiviert zunächst PG Vector, also die Vektorfunktion von Postgreas in
+1:55:18
+Superbase und erlaubt uns überhaupt grundsätzlich in Beddings empfangen zu können in unserer Datenbank und Daten
+1:55:24
+somit vektorisiert überhaupt speichern zu können. Erstellt dann danach alles weitere, was wir brauchen, also die
+1:55:30
+Tabellen und fühl dich wirklich frei das hier wirklich einfach eins zu eins so zu
+1:55:35
+kopieren. Aber natürlich, wenn du das ganze tiefer verstehen und lernen willst, aber auch KI, ja, so wie wir es schon hatten, diesbezüglich einfach zu
+1:55:41
+konsultieren und tiefer zu verstehen, was genau hier passiert. Dann klickst du einmal hier auf run. Das dauert dann ein
+1:55:47
+bisschen und hier steht jetzt success. Also, das hat funktioniert, passt soweit. Und dann kannst du einmal hier
+1:55:52
+in den Table Editor und dann findest du jetzt hier auch die Documents Tabelle, die wir hier ja erstellt haben über das
+1:55:59
+Script und das dient letztlich also einfach nur noch kurz der Prüfung und dann kannst du hier noch mal in Database
+1:56:05
+schauen und sehen, wie die Struktur aussieht. Auch das relativ simpel. Und jetzt im nächsten Schritt fügen wir die
+1:56:10
+Vektoren hinzu und dann sieht das hier auch noch mal ein bisschen spannender aus. So, jetzt können wir Superbase schon mal hinzufügen in unseren
+1:56:16
+Workflow. Das ist auch ganz cool. Also, du hast die Superbase Vectorstore Funktion auch direkt integriert in NN
+1:56:21
+und wir brauchen jetzt Add document to Vector Store. Zeig dir jetzt noch mal, wie du neue Creditentials hinzufügst.
+1:56:27
+Also hier auf New Credential und hier kommen jetzt die Infos rein, die wir uns gerade eben gespeichert haben. Also
+1:56:33
+einmal diese URL hier und dann einmal der API Key. Genau. Dann auf save und
+1:56:39
+dann hast du hier auch schon Connection successfully tested. Hier immer noch mal deine Sidentials benennen. So, dann
+1:56:46
+kommen wir jetzt hierzu, also dass wir die Möglichkeit haben überhaupt unsere Daten hochzuladen. Dazu fügen wir jetzt noch mal eine neue Trigger Note hinzu.
+1:56:52
+Das ist wieder die Form Note und ja, on New Form Event. Der Titel ist ähm Upload Knowledge Base. So, hier fügst du noch
+1:56:59
+dein Feld hinzu, also neues Dokument. Der Typ ist in dem Fall File und wir
+1:57:04
+wollen nur PDF-Dateien akzeptieren. Und das ist auch ein Pflichtfeld und damit steht das Formular. Dann können wir uns
+1:57:10
+noch mal den Mystal OCR Step anschauen. Das passt auch alles soweit. Also das Modell ist Mystal OCR latest. Das passt.
+1:57:17
+Das kannst du alles genauso lassen. Das einzige, was du hier machen kannst, ist das Feld umzubennen in New File. Das im
+1:57:23
+Prinzip, wie die Datei dann noch heißt, die reinkommt. Das können wir jetzt direkt auch einmal testen. Also einfach hier auf Execute Workflow, dann kannst
+1:57:28
+du hier die Datei hochladen. Ich nehme dafür jetzt wie gesagt einfach hier unseren Trendanalysereort. Da kannst du
+1:57:34
+aber einfach deine Datei nehmen, die du letztlich auch nutzen willst. Jetzt siehst du hier, dass es auch schon
+1:57:39
+geklappt hat. Also die Datei ist angekommen und wurde von Mistral OC ins
+1:57:45
+Mark Format konvertiert. So, das können wir jetzt im nächsten Schritt verbinden. Am besten die Daten noch mal PIN, damit
+1:57:50
+wir das jetzt nicht immer wieder testen müssen. Dann hier die Documents Tabelle auswählen, die wir angelegt haben. Und hier einmal Query Name Match Documents.
+1:57:58
+Das passt auch soweit. Dann brauchen wir jetzt noch ein Embeding Modell und übrigens diese ganzen Hintergrundinfos.
+1:58:03
+Dazu haben wir bereits einen sehr ausführlichen Kurs. Ähm hier im Chatbootkurs bin ich sehr tief
+1:58:08
+reingegangen, wie Embeddtings funktionieren, wie das ganze Thema Vektordatenbanken Vektorisieren von
+1:58:14
+Daten grundlegend funktioniert. Also, wenn du das Gefühl hast, du willst hier noch mal ein bisschen Backgroundwissen aufbauen, fühl dich frei. Dieser Kurs
+1:58:21
+steht dir vollständig zur Verfügung. Gerne einfach einmal anschauen und genau deswegen wählen wir jetzt hier direkt das Beddingsmodell. Dann nehmen wir
+1:58:27
+einfach das von Open AI. Das kann einfach genau das hier bleiben. Und dann einmal hier den Default Dataader
+1:58:32
+hinzufügen. Diesen Data Loader, den muss jetzt noch einmal konfigurieren und diesen Data Loader, der bestimmt jetzt
+1:58:37
+im Wesentlichen, welche Daten wie überhaupt embeddet werden, also in unserer Vektordatenbank gespeichert
+1:58:43
+werden. Und grundsätzlich wäre jetzt der erste Gedanke hier den Markdown Text zu nehmen. Wieso Markdown? Also wieso
+1:58:48
+nutzen wir überhaupt Mistral OCR? Weil es deutlich besser funktioniert und deutlich einfacher ist, Markun
+1:58:54
+formatierte Texte in Vektoren umzuwandeln und dass die Qualität der Vektordatenbank drastisch erhöht. Das
+1:59:01
+machen auch sehr viele Unternehmen da draußen falsch, die einfach ihre PDF-Dateien versuchen als Knowledge Base zu verwenden. Das funktioniert natürlich
+1:59:07
+nicht. Wenn wir das aber so machen, dann hast du nur die erste Page. Wie du hier siehst, haben wir aber mehrere Pages.
+1:59:12
+Also, wir haben ja hier 23 Pages. Wir wollen natürlich alle haben und dafür habe ich dir hier so eine JavaScript
+1:59:18
+Formel im Wesentlichen reingeschrieben. Die kannst du einfach exakt so für dich nehmen und die sorgt dem dafür, dass wir
+1:59:24
+hier alle Seiten zusammenmappen und alle Seiten entsprechend auch reingeladen werden. Hier kannst du noch das Text
+1:59:29
+Splitting bestimmen. Das kannst du meistens einfach erstmal auf Simple lassen. Das ist so ein bisschen auch Trial and Error dann in der Praxis, wo
+1:59:35
+du einfach schauen musst, macht es Sinn, das hier noch mal zu customizen hier über den Textsplitter und hier können wir z.B. den Recursive Textplitter
+1:59:42
+nehmen und sagen 2000 Zeichen pro Chunk und 200 Zeichen sollen überlappend sein.
+1:59:47
+In der Praxis, wie gesagt, hängt das von vielen Faktoren ab, wie der Größe deiner PDF-Dateien und ja, ist letztendlich je
+1:59:53
+nachdem, was du vorst, so ein bisschen Trial and Arrow, aber in den meisten Fällen reicht auch einfach erstmal die simple Einstellung. Genau und damit
+2:00:00
+haben wir zum Kern auch schon diesen ersten Workflow hier komplett fertig. Wir können jetzt noch mal testen. Die
+2:00:06
+PDF haben wir schon hochgeladen. Mil haben wir schon ausgeführt. Das heißt, wir brauchen eigentlich nur noch Superbase hier ausführen. Das sieht doch
+2:00:12
+gut aus. Habe ich alles grün und dann können wir jetzt auch mal reinschauen in Superbase und zwar in die Tabelle. Und
+2:00:18
+hier siehst du jetzt auch, das ist auch ganz interessant die ganzen Chunks, die jetzt erstellt wurden. Einmal mit dem
+2:00:23
+Text, also was genau enthält diese einzelne Chunk? Metadaten sowie den Vektor selbst, also Vektor ist ja ein
+2:00:30
+Zahlenwert und die ID der einzelnen Chunks. So und dann können wir jetzt auch schon das Herzstück dieser
+2:00:35
+Automation bauen, also unseren tatsächlichen Chatbot. Dafür fügen wir jetzt natürlich als allererstes erstmal
+2:00:41
+einen Chat Trigger hinzu. Make publicly available, weil du ja öffentlich darauf zugreifen möchtest. und Mode ist im Bedd
+2:00:47
+Chat, weil wir den Bot ja in unsere HTML Website einbettetten werden. Dann nehmen wir uns im nächsten Schritt einen AI
+2:00:54
+Agent und hier haben wir automatisch schon den Chat Trigger connected und den Chat Input. Das passt auch soweit. Das
+2:01:00
+was wir noch brauchen ist die System Message, also der Systemprompt wieder für unseren KI Agenten. Den findest du
+2:01:06
+auch hier. Der ist auch das ganze Herzstück von dem ganzen Workflow. Der ist ziemlich lang, damit du eben auch dieses charmante flüssige Chaterlebnis
+2:01:13
+hast, so wie wir das vorhin noch in der Demo gesehen haben. Aber auch hier fühl dich frei, ja, das natürlich entsprechend für dich anzupassen, wenn
+2:01:19
+du es den nicht nur zu Demozwecken, sondern wirklich auch live nutzen willst. Dann brauchen wir natürlich jetzt noch das Chatmodel. Dann nehmen wir jetzt einfach wieder GBT 4.1, da
+2:01:26
+brauchen wir nicht tiefer eingehen. Memory, das ist natürlich wichtig, da nutzen wir jetzt 50, also 50 Nachrichten
+2:01:31
+hin und her. Soll sich der Chatbot merken können, ansonsten ist ein bisschen ungünstig, wenn er alles wieder vergisst. Im übrigen, wenn das hier
+2:01:37
+tiefer gehen soll und da deutlich komplexere Chats stattfinden sollen, eignet sich auch Superbase dafür
+2:01:43
+perfekt. Also theoretisch könntest du hier jeden Chat auch mit speichern, die Chat IDs und damit auch einen ja sehr
+2:01:49
+tiefes langes Gedächtnis aufbauen. Das wäre jetzt natürlich für unseren einfachen Chatboard hier ein absoluter Overkill. Dann gehen wir unserem Agent
+2:01:55
+jetzt noch die zwei Tools, die ihr braucht. Das ist einmal Superbase Vector Store und hier einmal die richtigen
+2:02:00
+Zugangsdaten natürlich auswählen. Operation Mode Retrieve documents, das passt. Dann fügst du noch eine Description zu, damit der Agent auch
+2:02:07
+genau weiß, wofür dieses Tool hier gedacht ist. Da kannst du einfach diese hier von mir kopieren. Dann natürlich die richtige Tabelle. Documents einmal
+2:02:13
+auswählen, Limit bleibt auf vier und dann passt es auch schon. Hier noch das Embedding hinzufügen. Dabei ist wichtig immer exakt das gleiche Bedding zu
+2:02:19
+nehmen, wie hier. Das war das Open AI. Ansonsten schmeißt es nämlich Fehlermeldung raus und genau deswegen
+2:02:25
+weiß ich hier noch mal darauf hin. Also hier einfach genau das gleiche Bedding noch mal nehmen. Genau das war's auch schon und dann brauchen wir noch das Sheed Tool, denn wir wollen ja, dass
+2:02:31
+jeder Chat im Google Sheet noch gespeichert wird. Die Operation ist in dem Fall nicht Get Rows, sondern Append
+2:02:37
+or Update Row. Und hier nehmen wir wieder die Sheets ID, wählen die Tabelle aus. So müssen wir einmal die Spalte
+2:02:42
+eingeben, die gematcht werden soll. Das ist die Session ID. Also die Zeile mit der gleichen Session ID soll
+2:02:49
+entsprechend immer weiter geupdatet werden und nicht immer neue Zeilen hinzugefügt werden. Die Expression, die bekommst du aus der Chatnote vom Anfang.
+2:02:56
+Ich habe die jetzt hier schon mal eingefügt. Und hier gibt's jetzt eine ganz coole Funktion, die können wir nutzen. Und zwar lassen wir den Agent
+2:03:01
+selbst entscheiden, was er in die einzelnen Spalten einfügen soll und deswegen hier einfach einmal alles
+2:03:06
+durchklicken. Das Modul benennst du noch einmal um in Safe Lead, damit der Agent das auch wirklich korrekt erkennt. Das
+2:03:13
+ist im System Prompt entsprechend definiert. So, ich würde sagen, dann können wir das Ganze ja jetzt auch mal komplett einmal durchtesten. Wir haben
+2:03:18
+ja unsere Trendanalyse, also testen wir das einfach mal und schreib jetzt einfach mal hallo. Und jetzt sollte der
+2:03:24
+Agent auch erstmal mit der First Message, die wir im System prom definiert haben, antworten. Hi, schön, dass du hier bist. Hast du schon einen
+2:03:30
+Blick in den Report geworfen? Und dann können wir jetzt noch mal gucken, z.B. hier geht's ja ums Marktwachstum 2030. Deswegen würde ich jetzt einfach mal
+2:03:35
+fragen oder ich frage erstmal, von wem ist der Report überhaupt? Und jetzt sollte er logischerweise Superbase nutzen als Vector Store. Perfekt. Das
+2:03:42
+hat auch geklappt. Und hier sieht man jetzt auch, was er abgerufen hat. Und genau, der Report stand von Everlast Consulting. Perfekt. Wie sieht denn das
+2:03:48
+Marktwachstum von Voice Agents bis 2030 überhaupt aus? lohnt sich das überhaupt jetzt schon einzusteigen? Und da sieht
+2:03:55
+man jetzt auch wieder, was das charmante ist, was wir genau haben wollen, dass der Bot halt auch immer Rückfragen stellt, ne? Hey, interessant, nutzt du
+2:04:01
+denn aktuell schon Sprachtechnologie in deinem Unternehmen? Also, damit wir auch wirklich in diese Lead Qualification hier mit reinkommen. Und ich will auch
+2:04:06
+noch mal betonen, natürlich gibt's natürlich solche Chatbot Plattformen, die das alles für dich irgendwie im Hintergrund machen, aber es ist immer
+2:04:12
+besser, diese Fundamentalskills, die du jetzt hier gelernt hast, selbst zu beherrschen, weil dadurch bist du immer frei und unabhängig. Also, wenn du
+2:04:18
+jegliche Idee, die du hast, kannst du umsetzen, wenn du irgendwelche Chatboot Tools nutzt, dann ähm ist es erstens deutlich teurer, weil die alle ja eine
+2:04:24
+Marge auf das berechnen, was du hier nahezu for free mit Open Source Tools machst. Und zweitens bist du enorm
+2:04:29
+eingeschränkt, wenn du jetzt noch mal irgendwelche weiteren neuen Ideen hast, ne? wie beispielsweise jetzt diese Custom, die wir jetzt noch mal erstellen
+2:04:36
+werden. Genau. Also, damit können wir jetzt noch unseren Chatbot erstellen. Das ist im Wesentlichen das gleiche Prinzip, wie wir es hier schon gemacht
+2:04:42
+haben. Nur, dass wir jetzt hier wie gesagt einen Chatbot wirklich auf eine Website selbst inbennen. Dafür brauchen wir zunächst also wieder den Webhook.
+2:04:49
+Hier kannst du dann noch deinen Path anhängen. Ich nenne den jetzt einfach mal Chatbotseite. Respond ist wieder Respond to Webhooke. Dann kannst du dir
+2:04:55
+schon mal die Production UL, damit wir es gleich auch testen können, kopieren. Dann wichtig speichern und die wird auch
+2:05:00
+nur funktionieren, wenn du den Workflow live schaltest. Also hier schon mal aktivieren. Kann ich jetzt schon mal die URL öffnen. Das funktioniert jetzt
+2:05:07
+logischerweise noch nicht, weil wir noch nicht die Respond to App Note haben. Das heißt, hier fügen wir jetzt einmal die Code Note so wie gehabt hinzu. Das
+2:05:14
+kannst du dir jetzt entweder selber erstellen oder du nutzt aus unseren Ressourcen genau dieses Beispiel. Das Prinzip ist wieder genau das gleiche wie
+2:05:22
+im Workflow bzw. US Case 2. Genau. Was jetzt hier noch super wichtig ist,
+2:05:27
+dieser Code referenziert natürlich diesen Chat hier und deswegen musst du dir hier einmal die Chat URL aus deinem
+2:05:33
+Workflow, den du erstellt hast, nehmen und dann hier einmal nach Webhook oder Chat Widget Config suchen und diese URL
+2:05:41
+hier ersetzt du dann einmal gegen deine eigene URL. Das war's auch schon. Dann
+2:05:46
+brauchen wir jetzt noch wie immer Respond to Webhook mit Text, also genauso wie vorhin und auch wieder mit
+2:05:52
+Response headers, also Content Type, ist das gleiche wie vorhin und als Buddy auch wieder den HTML Content aus dem
+2:05:59
+Code und dann können wir das noch mal speichern und nun sollten wir auch, wenn wir jetzt diese Seite hier noch mal neu
+2:06:05
+laden, den Chatbot sehen. Perfekt, die Seite lädt und hier unten rechts haben wir den Chatbot und damit können wir
+2:06:11
+jetzt auch noch mal fragen, wie kann ich einen Termin buchen? Okay, Termin kann ich nicht buchen. Okay, dann fass wir
+2:06:16
+noch mal zusammen, worum es in dem Report geht. So, damit du jetzt auch noch mal siehst, dass er wirklich auf dem Vector Store auch zugreift hier. der
+2:06:23
+AI Voice Agent Report darauf wird zugegriffen. Das sehen wir jetzt auch noch mal hier in den Executions kannst
+2:06:29
+du das noch mal nachschauen, aber das ist im Wesentlichen genau das, was wir jetzt gerade ausgeführt haben. Und ja, damit haben wir auch diesen US Case 3
+2:06:36
+nun erfolgreich abgeschlossen und du weißt nun, wie du im Rahmen von AI Automations eigene Chatbots baust, die
+2:06:43
+Leads qualifizieren. So und damit kommen wir in Use Case Nummer 4 und zwar automatisierte Angebotserstellung. Ja,
+Use Case 4
+2:06:50
+einer der spannendsten Use Casases aus meiner Perspektive, da wir sehr viele Kunden haben, die automatisierte
+2:06:56
+Angebote erstellen. Natürlich ist das hier einfacher Workflow, den man auch als Anfänger gut umgesetzt bekommt, der
+2:07:02
+aber tatsächlich in Production für viele Unternehmen auch schon ausreichend ist und den sieht man halt nicht so häufig
+2:07:07
+in Shows oder in Kursen wie diesen, weil es eben langweilig ist, aber genau das sind die Use Cases, die am Ende den
+2:07:13
+Unterschied machen und die ja auch wirklich am besten funktionieren, um sie zu verkaufen. Also, worum geht es hier? Angebote werden automatisch erstellt und
+2:07:19
+an Kunden versendet. Viele komplexe Inputdaten, am Beispiel eines Solar bzw. PV-Unternehmens machen wir hier, werden
+2:07:26
+in Form, also in einem Formular abgefragt und direkt während der Eingabe berechnet. Die automatische
+2:07:32
+Angebotserstellung spart hunderte Stunden menschliche Arbeitszeit, also unterschätzt niemals, wie viel Zeit
+2:07:37
+mittelständische Unternehmen mit der Angebotserstellung verschwenden. Teilweise liegen Angebote wochenlang rum
+2:07:42
+und werden nicht versendet, weil die Leute nicht hinterherkommen. Das setzt dann natürlich gleichzeitig auch Ressourcen für wertstiftendere
+2:07:48
+Tätigkeiten frei. Gleichzeitig erhöht sie natürlich sofort den Umsatz, die Automation, da Kunden schneller und 247
+2:07:55
+Angebote erhalten können. Also auch perfekt, wenn man eben rund um die Uhr die Möglichkeit anbieten will. Angote zu
+2:08:01
+versenden. Also PV Solar ist hier ein Beispiel. Wir haben diverse Kunden aus zahlreichen Branchen wie Arbeitssicherheit, Arbeitsschutz und so
+2:08:07
+weiter, bei denen wir genausowas über die Website implementiert haben. Ja, was lernst du hier? Wie du Custom Forms
+2:08:14
+erstellst, anknüpfen an dem, was du bereits gelernt hast, wie du PDFs in NN generieren kannst. Das wird sehr
+2:08:19
+spannend sein, vor allem wie du auch mit den NAN Tables richtig arbeitest und wie du hochwertige Texte mit den Tropic
+2:08:25
+generierst und natürlich diese ganzen spannenden kleinen Details, die man dann erst in der Praxis eben bekommt. Und
+2:08:31
+schauen wir uns den Workflow deswegen noch mal kurz in der Praxis an. Was machen wir hier? Als erstes erstellen wir wieder einen Formular. Dieses
+2:08:37
+Formular sieht dann so aus. Das wird hier generiert in der Codenote. Und lass uns das auch zusammen mal anschauen.
+2:08:43
+Also hier kann jetzt der User bzw. der potenzielle Kunde seinen Stromverbrauch einstellen. Stellen wir das mal auf 4000
+2:08:49
+und bekommt dann hier auch dynamisch ausgerechnet, wie viel er potenziell dabei dann sparen würde. Hier gibt's
+2:08:55
+noch Zusatzmöglichkeiten, die ausgewählt werden können. Ich nehme jetzt hier mal beides. Konfiguration starten. Hier kann
+2:09:00
+dann die Dachfläche angegeben werden. Theoretisch wäre das sogar auch über die Adresse über API Anfragen über Google
+2:09:07
+Google Earth möglich, das für den Kunden auszurechnen, falls ihr das nicht weißt. Aber in dem Fall machen wir es noch mal
+2:09:12
+einfach. Hier steht dann, wie viel Module ist in etwa brauch auf Basis der Quadratmeteranzahl? Dann gehen wir auf
+2:09:17
+Angebot berechnen. Und wo kommt das jetzt her? Dafür nutzen wir die Data Table in Nadn. Das heißt, hier haben wir
+2:09:23
+unsere Angebote gespeichert und das wird dann zurückgesendet. Ähm, also jetzt ich mache das wirklich auch mal. Ich gebe
+2:09:28
+jetzt mal meinen Namen hier ein mit einer Demo E-Mailadresse. Jetzt Angebot erhalten, komme ich das Pop-up ist erfolgreich, also hat scheinbar
+2:09:35
+funktioniert. Dann passieren jetzt hier ein paar Schritte. Es werden noch mal die Artikel geladen. Das sorgt dafür, dass keine Prompt injected werden
+2:09:41
+können, weil hier noch mal explizit geprüft wird, sind die Artikel wirklich vorhanden an unserer Tabelle, weil sonst
+2:09:47
+theoretisch pfiffige Leute natürlich Angebote injecten könnten und dann offizielle Angebote bekommen, die aber eigentlich gar nicht zu den
+2:09:53
+Angebotsportfolio passen oder falsche Preise oder sowas. Also sowas immer mitbedenken. Dann lassen wir jetzt hier noch mal einen individuellen Text
+2:09:59
+formulieren, dass der Kunde auch noch mal dynamischen einen spezifischen individuellen Text bekommt. Dann generieren wir hier die PDF. Das wird
+2:10:05
+noch mal ganz interessant sein mit PDF Shiff. Das ist ein kostenloser Service für den Umfang. Und dann, ich gehe jetzt
+2:10:10
+mal in meine Mails, kam hier, du siehst vor 0 Minuten das Angebot auch rein. Hallo Leonard, vielen Dank für deine Konfiguration bei Everlast Solar anbei
+2:10:17
+erhältst du das Angebot. Das Angebot sieht dann so aus, exakt mit den Preisen, die berechnet wurden, mit der Gesamtinvestition. Das ist auch voll
+2:10:24
+customizable, ne? Also hier kann man es genauso darstellen, wie man haben möchte. Mit allen kleinen Details, auf
+2:10:30
+die man gerne in seinem Briefpapier achten möchte. Ist alles möglich. Und dann werden im letzten Schritt die Daten
+2:10:35
+dann noch gespeichert in der Cloud Ablage. In dem Fall in einer Google Drive Ablage wurde das Dokument entsprechend noch mal hochgeladen. Also
+2:10:42
+das ist der Workflow. Deswegen lass uns in die Umsetzung gehen und step für Step diesen Workflow umsetzen. Das erste, was
+2:10:47
+wir machen, ist die Data Tables anzulegen in NN. ist eine super nützliche Funktion, weil du somit die Geschwindigkeit von Workflows dramatisch
+2:10:54
+erhöhst, wenn es gerade um einfache Datenabfragen aus Tabellen geht und du dir somit Google Sheets oder Superbase
+2:11:00
+oder andere Tools, die hier ein völliger Overkill wären, komplett sparen kannst und direkt über NA Tabellen erstellen
+2:11:05
+kannst. Dazu gehst du einfach auf Create Table. Ich nenne die jetzt einfach mal Product Solar. Du kannst die Tabelle
+2:11:11
+manuell anlegen, also jedes Produkt manuell oder das macht natürlich Sinn, wenn du jetzt ein paar tausend od 10tausende Produkte äh theoretisch hast.
+2:11:17
+Gut, das wird wahrscheinlich ein bisschen zu viel sein, aber sagen wir, du hast ein paar Dutz und ein paar hundert, dann kannst du die auch einfach als CSV Datei hochladen. Dann haben wir
+2:11:24
+die Tabelle, kannst du hier eben eigene Spalten hinzufügen. Ich habe dir hier schon mal vorbereitet. Also mach dir hier kurz Gedanken, welche Spalten du
+2:11:30
+haben willst für das reine Lernen. Übernimm das gerne exakt so, wie wir das hier vorgeben. Und zwar haben wir hier
+2:11:36
+im Wesentlichen nur Strings bis auf den Preis und die Power. Das sind dann numerische Werte und genau fangen wir
+2:11:42
+mal an mit dem Product Code. Gehst du auf Addcum und hier kannst du jetzt im Wesentlichen dann die Information, also
+2:11:48
+das sind die Produkte hier eins nach dem anderen hinzufügen. Das ist dann einfach eine ja kleine Fleißarbeit. Deswegen
+2:11:54
+habe ich dafür jetzt auch noch mal die CSV Datei vorbereitet. Das heißt, ich lösche das jetzt hier noch mal und mache das jetzt über die CSV. Genau, CSV ist
+2:12:01
+hochgeladen. Dann gehst du auf Create. Hier wurde das entsprechend jetzt auch schon richtig eingefügt. Damit haben wir die Tabelle jetzt auch erstellt. Okay,
+2:12:07
+dann erstellen wir einen neuen Workflow. Wir beginnen wieder mit dem Webhook
+2:12:12
+Prinzip, das du bereits kennst, was eben einfach eine sehr schöne Variante ist über den Webhook und Respondhook Ansatz
+2:12:19
+eben Custom Formulare zu erstellen und nicht die Standard NNN Formulare zu verwenden. Ich nenne es jetzt einfach
+2:12:25
+mal Solarangebot und das heißt, wir brauchen wieder Respond to Webhook notee. Können es wieder auf Production
+2:12:31
+URL direkt umschalten. Im nächsten Schritt nehmen wir jetzt die Data Table, die wir gerade erstellt haben. Get row.
+2:12:37
+Hier kannst du die Liste auswählen. Das war jetzt ähm bei uns Products Solar, die wir gerade eben erstellt haben. Und
+2:12:42
+dann sagst du hier return all. Also, weil wir jetzt eh nur 10 Items drin haben, können alle zurückgegeben werden.
+2:12:47
+Wenn du jetzt ein paar hundert hast, dann macht's vielleicht Sinn, die zu limitieren. Dann geht's weiter wieder mit der Code Code in JavaScript. Und was
+2:12:54
+wir hier jetzt machen, ich habe dir den jetzt hier noch mal eingefügt, dass du den einfach kopieren kannst. Und im Wesentlichen macht dieser Code nichts
+2:13:01
+anderes als dass wir die ganzen Produkte als ein Objekt bekommen. Und der macht uns das eben bisschen schöner, indem er
+2:13:08
+die einzelnen Produkte eben in einzelne Objekte aufsplittet. Genau, was wir jetzt machen, das ist jetzt das coole,
+2:13:13
+wir nutzen jetzt die Set Note und fügen damit jetzt alles zusammen. Hier nutzen wir das Manual Mapping. Können jetzt
+2:13:20
+hier ein Feld hinzufügen. Das nennen wir jetzt einfach mal My HTML. Und da kommt jetzt der gesamte Website Code rein. Den
+2:13:26
+kannst du dir hier auch noch mal komplett anschauen und natürlich anpassen, wenn du das möchtest. Und wie gesagt, die Vorlage hast du von uns,
+2:13:31
+kannst du erstmal genauso übernehmen. Eine Kleinigkeit werden wir gleich wieder anpassen müssen mit dem Webhook. Das kennst du wahrscheinlich jetzt an
+2:13:37
+der Stelle schon. Genau. Und was der Code im Wesentlichen macht, der generiert die HTML Website und injectet
+2:13:43
+hier eben die Jason Objekte. Also die Produkte werden hier dynamisch eingefügt, die wir vorher hier über das
+2:13:50
+Script eben entsprechend generiert haben, also aufgeteilt haben. Und genau, dann brauchen wir jetzt noch den
+2:13:56
+Respondhook wieder. Nutzen hier jetzt wieder den Text. Das ist an der Stelle jetzt die HTML Website, also jon.myhtml
+2:14:04
+und fügen wieder den Header hinzu, also Content Type und entsprechend Text HTML.
+2:14:09
+Dann können wir das jetzt auch schon mal speichern, schon mal aktivieren und einmal testen wieder auf die Production URL Solarangebot. Ja, ich öffne die URL
+2:14:17
+jetzt hier einmal und du siehst die Website ist jetzt auch abrufbar direkt über NN und genau konfiguriert schon mal
+2:14:22
+grundlegend die Angebote. Wir können jetzt hier auch weitergehen. Theoretisch, ne, kann ich jetzt hier auch schon meinen Namen wieder eintragen. Wenn ich jetzt hier auf
+2:14:29
+Angebot erhalten klicke, dann passiert das, was wir jetzt aufbauen und zwar, dass der Webhook hier, der in dem Code,
+2:14:35
+den wir gerade eben eingefügt haben, hinterlegt ist, aufgerufen wird und damit der nächste Workflow, also die Angebotserstellung getriggert wird. Das
+2:14:42
+heißt, hier fügen wir jetzt die nächste Note hinzu. Das ist wieder die Webbook Note. So, was jetzt hier wichtig ist, hier brauchen wir jetzt wieder die Post
+2:14:48
+request, weil wir entsprechend Daten versenden. Und den Pf nen ich jetzt einfach mal Solarangebot Submission. Wir
+2:14:55
+brauchen wieder Respondhook und können uns jetzt direkt die Production URL kopieren, was jetzt wichtig ist zu
+2:15:01
+beachten. Du hast jetzt hier zwei Webhooks in einem Workflow und dieser Webhook heißt eben Webhook 1 und wird in
+2:15:07
+allen fortfolgenden Notes automatisch referenziert. Also das immer beachten, dass du dann für alles, was wir gleich
+2:15:13
+weitermachen, auch immer den richtigen Webbook mit auswählst. Jetzt gehen wir hier noch mal rein, wie gerade eben schon angedeutet, suchen noch mal den
+2:15:20
+Webhook, die Webhook URL und den Platzhalter dann entsprechend einmal austauschen mit der neuen URL. Dann
+2:15:27
+haben wir auch speichern. Dann fügen wir jetzt auch schon direkt mal den Respond to Webhook ein und sagen hier Jason,
+2:15:33
+hier kannst du einfach diesen Codechnipsel nehmen. Was wir hierbei jetzt machen, ist dem Workflow eben
+2:15:39
+entsprechend die Meldung zurückzusenden. Okay, es hat geklappt und im Frontend dann auch die Message anzeigen zu
+2:15:44
+können, damit auch der User dann letztlich weiß, das funktioniert hat. Ähm, das können wir jetzt auch direkt noch mal noch mal testen. Also, ich bin
+2:15:50
+jetzt immer noch hier auf der Website, ich habe die Daten ja noch drin von gerade. Jetzt sage ich jetzt Angebot erhalten und bekomme jetzt hier auch
+2:15:56
+entsprechend die Meldung, dass alles geklappt hat. Genau. Was jetzt super wichtig ist, da wir mit JavaScript und HTML arbeiten, kann das vom User
+2:16:03
+letztlich manipuliert werden. Das heißt, Prompts oder Code kann injected werden. Das wollen wir natürlich vermeiden
+2:16:08
+gerade bei solch kritischen Workfrows wie Angebote erstellen, weshalb wir hier jetzt eine oder noch mal die Data Table
+2:16:14
+abfragen. Im Wesentlichen ist es genau das gleiche, was wir eben schon hatten. Wieder die Product Solar Tabelle auswählen, return all. Und das kannst du
+2:16:21
+jetzt noch mal umbenennen, z.B. in Artikelladen, ja, damit du auch hier den Unterschied direkt im Workflow siehst. Und im nächsten Schritt wählen wir jetzt
+2:16:28
+die LM chain, also nutzen wieder einen LM, was wir jetzt hier im Wesentlichen machen. Du kannst ja das auch hier noch
+2:16:34
+mal rüber kopieren, dass wir den Kunden einfach noch mal so ein bisschen triggern wollen, indem wir die Daten aus
+2:16:39
+dem bisherigen Workflow nehmen und die Mail, die der Kunde und das Angebot letztendlich noch mal ein bisschen
+2:16:45
+individualisieren, indem wir halt die Ersparnis noch mal mehr positiv hervorheben und genau einfach noch mal
+2:16:51
+in etwa drei Sätzen darauf eingehen, was der Kunde sprechend bestellt hat bzw. angefragt hat. Als Model nutze ich
+2:16:58
+wieder Open Router und hier nutzen wir ein Clode Son Modell, da diese eben
+2:17:03
+genau ziemlich gut im Schreiben von menschlichen Texten sind. Dann brauchen wir jetzt eine Code, das ist jetzt tatsächlich auch noch mal ziemlich
+2:17:09
+interessant. Du findest die Code auch noch mal hier. Gehen wir aber noch mal ganz kurz darauf ein und zwar was machen wir hier? Wir holen uns jetzt nämlich
+2:17:15
+noch mal die Daten aus dem Workflow und berechnen hier jetzt letztlich noch mal die Preise, dass die wirklich auch
+2:17:22
+korrekt sind, also mit den Informationen aus dem Dataable, die wir im Workflow drin haben. Was hier noch wichtig ist,
+2:17:28
+dass dieser Account natürlich immer auf die Notenamen referenziert. Hier steht z.B. der Noten Artikel LAN 1 und da
+2:17:34
+fällt mir jetzt gerade auch auf, ich hatte den gerade hier Artikel LAN genannt. Das heißt, den würde ich jetzt wieder umbenennen an Artikel LAN 1. Das
+2:17:41
+heißt, wenn du hier was umbenennst oder auch das hier umbenennst, dann musst du das einmal hier jeweils im Code anpassen. B jetzt hier noch mal ein HTML
+2:17:49
+im DNA4 Format, welches dann im nächsten Schritt in der PDF umgewandelt wird. Und
+2:17:54
+hier kannst du wie gesagt wirklich auch alles dann entsprechend branden, also das gesamte Design so wie es halt sein soll anpassen. Das heißt, machen hier
+2:18:00
+wie gesagt noch mal die Berechnung und bringen die HTML dann schon mal ins passende Format so wie wir sie gleich
+2:18:06
+brauchen. Genau. Nun im nächsten Schritt werden wir die PDF generieren. Dazu nutzen wir den Service PDF Shift. Ähm ist tatsächlich ganz cool. Ist auch ein
+2:18:12
+französisches Unternehmen, also für alle denen es halt wichtig ist, dass die Daten in der EU bleiben und ist auch für
+2:18:18
+unsere Zwecke eben free. Du hast hier nämlich 50 Free Credits, die berechnen sich nicht nach versendeten Angeboten,
+2:18:24
+sondern nach Größe der PDF. Und gerade für so kleine Use Casases wie jetzt in
+2:18:30
+unserer Demo, reicht es vollkommen aus. Es gibt natürlich auch weitere Services wie Papetier, Open Source Services, die du selbst hosten kannst, wenn du das
+2:18:36
+wirklich hochskalieren willst. Ja, was natürlich dann bei großen Unternehmen auch schnell der Fall wird, aber wie gesagt, für unsere Zwecke jetzt absolut
+2:18:43
+ausreichend. Deswegen erstelle ich mir jetzt hier noch mal ein Demo Account. Genau, bin jetzt hier eingeloggt an der Stelle. Ist auch super simpel. Klickst hier einfach auf API Key, das sollte
+2:18:49
+jetzt an der Stelle eh bereits bekannt sein und hast dann hier den Token, kannst du dem Key dann noch einen Namen
+2:18:55
+geben, den nenne ich jetzt Nen. Und genau kannst du den Token dann schon mal kopieren. Dann geht's zurück in Neden.
+2:19:01
+Genau. So verbinden wir jetzt PDF Shift. PDF Shift hat tatsächlich keinen Note in Netnend, deswegen nutzen wir jetzt hier
+2:19:07
+wieder die http Request und wie gewohnt, wir machen jetzt zunächst die Authentication, denn den Key haben wir
+2:19:13
+uns ja gerade eben kopiert, also wieder auf generic Credential Type und dann auf Header off und create new Key und hier
+2:19:19
+den Key. Okay, ich habe ihn doch nicht mehr in der Zwischenablage. Dann noch mal kurz zurückgehen, hier noch mal reinkopieren und dann wie gesagt immer
+2:19:26
+benennen, ja, dass du dein NN immer auch ordentlich hältst, also PDF Shift Automation Megaakurs und Name, wenn du
+2:19:32
+hier noch mal schauen willst. Wie gesagt, wir brauchen jetzt eh die Documentation, dann kannst du hier auf Authentication gehen und hier siehst du
+2:19:38
+es dann auch noch mal. X API Key ist entsprechend der Name. Dann auf save. So, dann brauchen wir die URL. Hier
+2:19:43
+kannst du auch die Documentation nutzen, Convert to PDF und dir hier die URL
+2:19:49
+entnehmen. Also das ist dann eben auch immer die klassische Vorgehensweise, wenn du selbst deine Automations baust. Und dann genau müssen wir noch den Body
+2:19:56
+mitsenden. Und hierfür brauchen wir die Source. Genau. Der Wert ist im Wesentlichen das, was wir hier in diesem
+2:20:02
+Note hier unten zurückgegeben haben, also Jason HTML. Also das einmal hier
+2:20:08
+einfügen, dann klickst du noch mal auf Options und dann brauchen wir noch die Response, das Response Format, das ist
+2:20:13
+File und das bleibt auf Data. Und was wir jetzt noch machen, das ist ganz cool zum Testen. Und zwar hast du hier noch
+2:20:20
+den Sandbox Parameter und den setzen wir jetzt auf True. Das ist das Logo, was du vorhin im Test auch gesehen hast, also
+2:20:26
+das Logo von PDF-Shift und sorgt dafür, dass die Tests kostenlos bleiben. Also,
+2:20:31
+wenn du den Parameter drin hast, dann kannst du eben kostenlos das ganze testen. Ist eben gerade fürs Testen
+2:20:36
+ideal. Sobald der Workflow live geht, würdest du das dann entsprechend auf fault setzen. So, und damit haben wir das Gröbste sogar schon geschafft. Jetzt
+2:20:42
+müssen wir nur noch die E-Mail versenden und das Angebot speichern. Ähm, lass uns das wirklich auch noch mal zusammen machen. Also, dafür nutzen wir Gmail.
+2:20:48
+Funktioniert natürlich genauso auch mit Outlook und und natürlich du musst dein Google Account hier einmal connecten.
+2:20:53
+Dazu haben wir aber auch schon einige Videos gemacht und findest du auch zahlreiche zu diesen einfachen
+2:20:58
+Connections oder Basis Connections, sage ich mal, auf YouTube. Deswegen sparen wir uns das hier. Genau, was wir hier
+2:21:04
+machen. Das ist auch noch mal ganz ganz cool. Also, du kannst jetzt hier einen eigenen HTML Code als E-Mail versenden,
+2:21:10
+dann sieht das nämlich auch noch mal ein bisschen schöner aus, ne? so wie wir das hier gerade eben auch hatten und kannst du im Wesentlichen auch komplett selbst
+2:21:16
+justieren. Fürs Beispiel habe ich dir den Code hier auch einfach wieder eingefügt. Also den einmal kopieren und
+2:21:22
+hier als Message mit einfügen. Was jetzt noch wichtig ist, wir wollen natürlich noch den Anhang mitsenden, deswegen klickst du H auf attachments, Add
+2:21:28
+attachment und hier steht Data und das ist genau der Name des Fails, dass wir vorhin den PDF-Siff definiert haben. Das
+2:21:33
+heißt, die ja PDFile wird hier einfach übernommen. Dann müssen wir natürlich noch sagen, an wen soll die E-Mail versendet werden. Dazu nehmen wir uns
+2:21:40
+einfach die Variable aus dem Webhook. Deswegen hier noch mal auf den Nachmachten, ne? Webhook 1. Wenn du den
+2:21:45
+Workflow einmal durchtest, sollte an diesem Punkt auch klar sein. Dann ziehst du das hier einfach wie gehabt rein. Ich
+2:21:50
+habe das jetzt hier, damit wir nicht alles testen müssen, einfach schon mal vordefiniert. Genau. Betreffzeile natürlich noch reinsetzen. Dein Angebot
+2:21:56
+von Everlast Solar an der Stelle. Und yes, was wir jetzt parallel noch einmal
+2:22:02
+machen, ist, dass das Angebot hochgeladen wird in Google Drive. Funktioniert natürlich auch hier, wie
+2:22:07
+gesagt, genauso gut auch mit OneDrive oder SharePoint oder whatever. Und genau Upload File, das passt tatsächlich
+2:22:14
+schon. Also Input Data Field Name ist Data. Hier setze ich mir jetzt noch eine Expression rein. Das sind halt diese
+2:22:20
+diese Spielereien, wo du dich einfach ein bisschen reinören kannst, ne? Dass das Angebot dann eben noch ein Timestamp
+2:22:26
+mit dazu bekommt und genau, dann erstellt du einfach ein Drive Folder. Drive habe ich an der Stelle auch schon
+2:22:32
+connected. Den Ordner hast du gerade schon gesehen. Auch jeder Google Drive Folder hat eine ID. Das heißt, hier
+2:22:37
+kannst du dir einfach dann die Folder ID kopieren und genau das wär's dann im
+2:22:42
+Wesentlichen auch schon. Was du jetzt natürlich noch machen kannst, z.B. am Ende einen Slagne hinzuzufügen, dass du
+2:22:48
+z.B. in einem Slag Channel dann immer noch benachrichtigt wirst, ja, dass ein Angebot versendet wurde zur Transparenz.
+2:22:54
+Da haben wir aber auch schon mal ein paar Videos zu gemacht, wie du Slag über Nadn connectest. Deswegen spare ich mir
+2:22:59
+das jetzt hier an der Stelle. Deswegen speichern wir alles mal. Das sieht demnach sehr, sehr gut aus und ich würde sagen, wir testen das jetzt noch mal.
+2:23:06
+Ich setze den Wert jetzt mal hier irgendwie auf 8000, dann sehen wir auch, dass es wirklich das neue Angebot ist.
+2:23:11
+Das setzen wir mal auf 100 km. Genau. Haben wir 19300 €. Das merken wir uns
+2:23:16
+einmal kurz. Angebot berechnen. Es hat schon mal geklappt. So, da kam jetzt auch ein neues Angebot rein. Schauen wir
+2:23:22
+mal kurz rein. Das sieht richtig aus, ne? 19300 € und die Module wurden entsprechend berechnet. Und hier wurd
+2:23:28
+die PDF entsprechend auch noch mal in Google Drive gespeichert. Alright, damit steht auch US Case 4. Ja, du hast jetzt
+2:23:34
+wirklich ein umfassendes technisches Verständnis und kannst damit jetzt wirklich jegliche AI Automations umsetzen von AI Voice Agents über
+2:23:42
+hyperpersonalisierte E-Mailkampagnen bis hin zu Lead Qualification Chatbots, die
+2:23:48
+dynamische Freebies analysieren können und Fragen beantworten können bis hin zu Angebotserstellungen.
+2:23:54
+So und damit sage ich an der Stelle jetzt erstmal schon mal herzlichen Glückwunsch an dich und damit kommen wir jetzt in den letzten Teil des Videos.
+Weitere Insights & Tipps
+2:24:01
+Okay, du hast jetzt eine Menge gelernt und weißt nun, was AI Automations eigentlich sind und warum sie so
+2:24:06
+relevant sind, wie jedes Unternehmen funktioniert und wie du dieses Konzept auf AI Automations übertragen kannst,
+2:24:12
+welche vier Arten von AI Automations am relevantesten sind, welche Tools es gibt und wie du sie in sieben Kategorien
+2:24:19
+einordnen kannst, warum das Verständnis von APIs essentiell ist und wie du sie verwendest, was die 80% der
+2:24:25
+strategischen Skills sind, die 99% übersehen und wie du vier ganz konkrete Praxis descases baust von Voice Agents
+2:24:32
+über Chatbots bis hin zu den langweiligen, aber wertvollen Workflow Automations. Und wenn du nun das Gefühl
+2:24:38
+hast, alle diese Punkte jetzt noch nicht zu 100% verstanden zu haben, dann seid ihr bitte nicht zu schade, noch mal
+2:24:44
+zurückzuspulen. Es ist wirklich wichtig, diese Materie tief zu durchdringen und nicht an der Oberfläche zu bleiben, um
+2:24:50
+im nächsten und wahrscheinlich wichtigsten Teil dieses Kurses konkret davon zu profitieren. Denn die große
+2:24:55
+noch offene Frage ist, wie ganz konkret kannst du jetzt mit all dem Wissen und Fähigkeiten Geld verdienen? Denn sein
+2:25:02
+wir mal ehrlich, all dieses Wissen bringt dir nichts, wenn du nicht weißt, wie du es monetarisierst. Mal unabhängig
+2:25:08
+davon, was du mit dem Geld vorhast. Mehr Zeit für die Familie, ein schickes Auto, teure Urlaube oder Spenden an Projekte,
+2:25:14
+die dir wichtig sind. Geld verdienen bedeutet anderen Menschen zu dienen, also einen positiven Impact zu schaffen.
+2:25:21
+Je größer dein Impact, desto höher dein Verdienst. Und gerade weil AI Automation ein so wertvoller für die anderen da
+2:25:28
+draußen fast schon magischer Skill ist, ist es deine Pflicht ihn sinnvoll und gezielt einzusetzen. Demnach richtet
+2:25:35
+sich das nachfolgen jetzt speziell an dich. Wenn du gerade noch am Anfang stehst, angestellt bist oder eine
+2:25:40
+Selbständigkeit hast und diese Chance nutzen willst. Wenn du bereits Unternehmer oder Geschäftsführer bist, hast du an diesem Punkt bereits alles,
+2:25:47
+was du brauchst. Komm jetzt ins Handeln oder lass dir von meinem Team bei der Umsetzung helfen und bewirb dich direkt
+2:25:53
+unter kibberatung.de auf ein kostenfreies Analysegespräch. Für alle anderen lasst dir nun sagen, was
+2:25:59
+wirklich funktioniert und was nicht basierend auf über 1800 Kunden, die ich die letzten Jahre beraten habe und hohen
+2:26:05
+siebenstelligen Jahresumsetzen alleine mit meiner KI Agentur Everlast AI. Erstens, vergiss passives Einkommen,
+2:26:12
+also ohne viel zu tun, mit AI ordentlich Vermögen aufzubauen. Es gibt so viele Leute da draußen, die dir erzählen
+2:26:19
+wollen, du musst nur ChatBT nach einem Prompt für ein Chatboard oder Voice Agent fragen und diesen dann für 1000 €
+2:26:26
+verhöern Notion Templates mit fancy KI Workflows kopieren oder Kinderbücher mit
+2:26:31
+AI auf Amazon rausbam, um im Schlaf Geld zu verdienen. Glaub mir, wenn du sowas hörst, dann bist du selbst das Produkt.
+2:26:38
+Ich kenne so viele Multimillionäre, sogar einige Milliardäre und niemand von denen denkt auch nur im Ansatz darüber
+2:26:45
+nach im Schlafgeld zu verdienen. Fakt ist also, du brauchst ein Geschäftsmodell, mit dem du aktiv
+2:26:51
+arbeiten und einen so großen Impact für andere Menschen oder Unternehmen schaffen kannst, dass sie es lieben, dir
+2:26:57
+dafür Geld zu überweisen. Und das beste Geschäftsmodell dafür ist ein Service Business, kein Produktbsiness. Der
+2:27:03
+fundamentale Unterschied ist bei einem Produktbsiness musst du erst das Produkt bauen, dann Marketing machen, dann
+2:27:09
+hoffen, dass es jemand kauft und das ganze dauert Monate, ohne dass du auch nur einen einzigen Euro verdienst. Bei
+2:27:14
+einem Service, also Dienstleistungsunternehmen hingegen, verkaufst du deine Skills und
+2:27:20
+deine Zeit. Du machst ein paar kostenlose oder sogar günstige Projekte, um Case Studies zu bekommen. Nutzt diese
+2:27:26
+Fallstudien dann, um die ersten bezahlten Projekte zu verkaufen. Lieferst Ergebnisse, verdienst Geld,
+2:27:32
+reinvestierst dieses Geld in mehr Skills wie Sales, Marketing und Lead Generation und skalierst dann und all das passiert
+2:27:38
+in ein bis zwei Monaten statt vier bis 6 Monaten. Das Geniale daran ist, du lernst während du verdienst. spricht,
+2:27:45
+deine Kunden bezahlen dich dafür, dass du noch besser wirst in dem, was sich ja ohnehin schon interessiert sonst wärst
+2:27:51
+du nicht hier. Jedes Produkt macht dich besser und bringt dir gleichzeitig Geld und sobald du ein funktionierendes
+2:27:56
+Dienstleistungsgeschäft hast, dann kannst du das später produkisieren und vielleicht sogar passive Einkommenströme
+2:28:02
+aufbauen, aber eben nicht vorher. Im Rahmen unserer zahlreichen Serviceprjekte sind so beispielsweise
+2:28:08
+mittlerweile einige vertikale AI Software Lösungen entstanden, die wir im Hintergrund vertreiben, teilweise
+2:28:14
+komplett ohne Konkurrenz. Das konkrete Geschäftsmodell lautet also: "Bau eine AI Automation Agentur oder werde
+2:28:20
+Freelance AI Automations Manager." Das ist auch kein neues, verrücktes Modell.
+2:28:25
+Agenturen gibt es seit den 20er Jahren. Die erste PR Agentur gründete Edward Ben Neffe von Sigmund Freud übrigens bereits
+2:28:32
+1919. Und das Konzept ist immer gleich. Du bietest spezialisierte Services an
+2:28:37
+für Kunden, die diese Fähigkeiten selbst nicht haben. Der einzige Unterschied heute ist, dass AI Automation einer der
+2:28:43
+wertvollsten Services überhaupt geworden ist, da er letztlich alle anderen obsolet macht. Doch warum funktioniert
+2:28:50
+das jetzt gerade so gut und warum ist es das beste Service Business von allem? Erstens, du musst das Rad nicht neu
+2:28:56
+erfinden. Es gibt klare Prozesse, bewerte Methoden und Leute wie mich, die dir zeigen, wie es geht und du kannst
+2:29:02
+von den Erfahrungen anderer lernen und musst nicht komplett bei null anfangen. Zweitens, durch No Code Tools wie Make,
+2:29:08
+NN oder SP kannst du hochwertige Automationen bauen, ohne programmieren zu können, was früher Software
+2:29:14
+Engineering war und 100.000 1000 € Jahresgehalt gekostet hat, kannst du jetzt mit Drag and Drop in wenigen
+2:29:19
+Stunden wie heute gelernt umsetzen. Drittens, im Gegensatz zu Social Media Marketing, wo du jeden Monat neue Post
+2:29:25
+machen musst oder im Webdesign, wo nach dem Launcher dann kaum noch Umsatz kommt, ja, muss wieder das nächste Projekt gewinnen, baust du AI Automation
+2:29:32
+Systeme, die weiterlaufen, auch wenn du nicht daran arbeitest. Das heißt, deine Kunden bleiben länger, zahlen mehr und
+2:29:38
+du hast stabilere Einnahmen. Viertens, die Margen sind unverschämt gut. 70%
+2:29:44
+plus Gewinnmarche sind völlig normal, weil deine Kosten hauptsächlich deine Zeit sind und vielleicht ein paar Euro
+2:29:50
+für Tools im Monat. Fünftens, sobald du eine Automation für Kunde A gebaut hast, kannst du 80% davon kopieren und für
+2:29:56
+Kunde B, C und D wieder verwenden. Das heißt, du musst nicht jedes Mal bei null anfangen, sondern kannst auf deinen
+2:30:02
+Templates aufbauen. Das ist ein massiver Hebel, der dir erlaubt mit der gleichen Zeit immer mehr Umsatz zu machen und für
+2:30:08
+deine Kunden ist es auch von Vorteil, weil sie noch schneller zum Ergebnis kommen. Sechstens, und das ist der für mich wichtigste Punkt, die
+2:30:14
+Einstiegshürde ist viel höher als bei jedem anderen Modell da draußen. Während jeder 16-jährige, der im Kinderzimmer
+2:30:20
+ein paar TikTok Videos gesehen hat, meint, eine Social Mediaagentur betreiben zu können, ist AI viel
+2:30:25
+komplexer. Und allein, dass du an diesem Punkt in diesem Kurs bist, hebt dich bereits von 99% der Menschen ab, die
+2:30:31
+nicht mal bereit sind, innerhalb von ein bis zwei Stunden dieses absolut fundamentale Skillset aufzubauen.
+2:30:37
+Schweige denn wöchentlich am Ball zu bleiben und zu schauen, welche relevanten Updates es gibt. Für dich
+2:30:42
+bedeutet es ein Blue Ocean, indem du jetzt noch zu einem der wenigen Wale werden kannst, während sich alle anderen
+2:30:49
+da draußen im Red Ocean der alten Internetagenturmell zerfleischen. Konkret hast du nun drei klare Wege, je
+2:30:55
+nachdem, wo du jetzt gerade stehst. Wenn du deine AI Automation Agentur von null aufbauen willst, ist das allererste, was
+2:31:01
+du jetzt brauchst, eine klare Positionierung. Also, welche Automations verkaufst du an welche Branche? Und das
+2:31:07
+ist wirklich das Wichtigste von allen, denn wenn du diese Entscheidung richtig triffst, passiert alles andere, sprich
+2:31:13
+Kundengewinnung, Marketing und Sales fast wie von selbst mit enormer Leichtigkeit. Wir haben mittlerweile
+2:31:19
+ganze Liste, die wir unseren Agenturpartnern zur Verfügung stellen an validierten Positionierungen, die
+2:31:25
+nachweislich funktionieren sowie hunderten weiteren Positionierungen, die aktuell noch niemand besetzt hat. Aber
+2:31:30
+eine enorme Nachfrage besteht, ich gehe sogar soweit zu sagen, dass es keinen Businessguru aus der alten Welt da
+2:31:36
+draußen gibt, der so gut weiß, wie wir was gerade bei wem wirklich gefragt ist, weil wir eben die einzigen sind, die
+2:31:42
+täglich mit dutzenden, wenig 100 Mittelständern und Konzernen sprechen und selbst den ganzen Tag KI Projekte
+2:31:48
+umsetzen. Wenn du bereits eine Agentur hast und Bestandskunden, dann denke jetzt darüber nach, deine Services mit
+2:31:54
+AI zu mentieren oder dich komplett in eine AI Agentur zu verwandeln. Im Wesentlichen greifen hier die gleichen
+2:32:00
+Prinzipien. Du musst wissen, welche Lösungen funktionieren und nachgefragt sind. Vor allem brauchst du aber einen
+2:32:05
+starken rechtlichen Background, nicht abzusichern mit DSGVO, also Datenschutz und brauchst Sales und Marketing Skills,
+2:32:12
+um deine Kunden nicht zu verwirren und die Transition elegant zu gestalten. Die Fähigkeit Prozesse zu automatisieren
+2:32:18
+reicht hier alleine nicht. Du brauchst Reichweite und funktionierende Skripte, die nachweislich funktionieren, sowie
+2:32:25
+eben die Sicherheit, dass deine Systeme technisch auch wirklich funktionieren. Wenn du Angestellter bist und es auch
+2:32:30
+bleiben möchtest, positionierst du dich intern als der AI Automation Experte. Also baust erste kleine Automationen für
+2:32:37
+dein Team, zeigst messbare Ergebnisse wie 10 gesparte Stunden pro Woche oder 20% weniger Fehler in deringabe und
+2:32:43
+machst dich damit unverzichtbar sodass du entweder befördert wirst mit deutlich höherem Gehalt oder dir die Türen zu
+2:32:50
+viel besseren Jobs aufgehen, weil du jetzt Skills hast, die Händeringen gesucht werden. Und falls dein aktuelle
+2:32:55
+Arbeitgeber das nicht wertschätzt, ja, dann bewibt dich einfach woanders. Wir haben sehr viele Kunden, die gerade nach genau solchen Leuten suchen, die AI
+2:33:02
+Automations verstehen und für die Materie wirklich auch brennen. Unter Aiautomationsmanager.de
+2:33:08
+kannst du dich übrigens auf die Warteliste zu unserem Zertifikatshrgang eintragen. Wir starten hier viermal jährlich mit einer kleinen Gruppe an
+2:33:14
+Menschen, die wir individuell ausbilden. Und bevor du jetzt loslegst und dich bei uns meldest oder direkt in die Umsetzung
+2:33:21
+der Punkte aus diesem Video gehst, möchte ich dir noch mal ganz bewusst danke sagen, dass du es bis hierhin durchgehalten hast, zeigt mir vor allem
+2:33:27
+eines und zwar du gehörst nicht zur breiten Masse, sondern zu den wenigen Menschen, die wirklich verstanden haben,
+2:33:32
+dass KI kein kurzlebiger Hype ist, sondern eine der größten Chancen unserer Zeit, dass es keine andere Wahl gibt,
+2:33:39
+als jetzt in die Umsetzung zu kommen. Du bist jemand, der ernsthaft an seiner Zukunft arbeitet, Verantwortung
+2:33:44
+übernimmt und ins Handeln kommt. Genau diese Einstellung hebt dich von 99% der Menschen da draußen ab. Und ganz
+2:33:50
+wichtig, wenn dir dieses Video jetzt geholfen hat und du wirklich alles aus den Entwicklungen herausholen und immer
+2:33:55
+auf dem aktuellen Stand bleiben willst, dann tu dir selbst den Gefallen. Abonniere diesen Kanal hier. Hier bei Everlast AI findest du bereits jetzt
+2:34:01
+dutzende, wahrscheinlich sogar Hunderte Stunden an kostenlosen, tiefgehendem Praxiswissen rund um KI, Automatisierung
+2:34:08
+und allem, was die Zukunft sonst noch für uns bereithält. Wissen für das andere, teure Coachingsverkauft. Jedes
+2:34:14
+einzelne Video hier bringt dich einen großen Schritt weiter auf deinem Weg. Schau dir also unbedingt auch die anderen Videos hier auf dem Kanal an,
+2:34:20
+denn je mehr du hier lernst, desto schneller und erfolgreicher wirst du in diesem rasant wachsenden Fels sein. Ich
+2:34:26
+freue mich riesig, dich im nächsten Video wiederzusehen. Bis dahin bleib am Ball, bleib neugierig und mach was
+2:34:31
+daraus. Dann Leo.

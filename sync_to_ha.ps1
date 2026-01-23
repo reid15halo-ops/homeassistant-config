@@ -33,6 +33,7 @@ Write-Host "Deploying files..." -ForegroundColor Cyan
 $filesToDeploy = @(
     "configuration.yaml",
     "automations.yaml",
+    "automations_ai.yaml",
     "scripts.yaml",
     "input_boolean.yaml",
     "scenes.yaml"

@@ -9,8 +9,8 @@ ambient_feuerlicht_warm_flicker:
   sequence:
     - target:
         entity_id:
-          - light.computer_licht
-          - light.buffet_licht
+          - light.wohnzimmer_computer_licht
+          - light.wohnzimmer_buffet_licht
       data:
         init_states: 30,55,62
         backgrounds:
@@ -45,7 +45,7 @@ ambient_velvet_rainbow:
             state: "Velvet Rainbow"
         sequence:
           - target:
-              entity_id: light.computer_licht
+              entity_id: light.wohnzimmer_computer_licht
             data:
               hs_color:
                 - "{{ hue }}"
@@ -63,12 +63,12 @@ ventilator_wintermodus_low:
   sequence:
     - action: fan.decrease_speed
       target:
-        entity_id: fan.deckenventilator_schlafen
+        entity_id: fan.schlafzimmer_schlafzimmer_deckenventilator_u_licht
       data:
         percentage_step: 9
     - action: fan.turn_off
       target:
-        entity_id: fan.deckenventilator_schlafen
+        entity_id: fan.schlafzimmer_schlafzimmer_deckenventilator_u_licht
 
 notify_all:
   alias: Notify All Devices
@@ -95,7 +95,7 @@ lights_bedtime:
     - action: script.all_lights_off
     - action: light.turn_on
       target:
-        entity_id: light.bett_licht
+        entity_id: light.schlafzimmer_bett_licht
       data:
         brightness_pct: "{{ states('input_number.night_mode_brightness')|int(15) }}"
         color_temp_kelvin: 2700
@@ -108,22 +108,22 @@ all_lights_off:
     - action: light.turn_off
       target:
         entity_id:
-          - light.bad
-          - light.bad_2
-          - light.buffet_licht
-          - light.buffet_lichtstreifen
-          - light.bett_licht
-          - light.bett_licht_2
-          - light.computer_licht
-          - light.kleiderschrank_2
-          - light.kuche_birne_1
-          - light.kuche_birne_2_2
-          - light.kuche_streifen
-          - light.kuche_blind_hintergrundbeleuchtung
-          - light.rollladen_computer_hintergrundbeleuchtung
-          - light.yoga_blind_hintergrundbeleuchtung
-          - light.schlafen_blind_hintergrundbeleuchtung
-          - light.deckenventilator_wohnzimmer
+          - light.badezimmer_bad
+          - light.schlafzimmer_badezimmer_lichtstreifen
+          - light.wohnzimmer_buffet_licht
+          - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
+          - light.schlafzimmer_bett_licht
+          - light.schlafzimmer_schlafzimmer_bett_lichtstreifen
+          - light.wohnzimmer_computer_licht
+          - light.schlafzimmer_schlafzimmer_kleiderschrank_lichtstreifen
+          - light.kuche_kueche_deckenlicht_1
+          - light.kuche_kueche_deckenlicht_2
+          - light.kuche_kueche_lichtstreifen
+          - light.kuche_kueche_rollladen_hintergrundbeleuchtung
+          - light.wohnzimmer_wohnzimmer_rollladen_hintergrundbeleuchtung
+          - light.kiffzimmer_kiffzimmer_rollladen_hintergrundbeleuchtung
+          - light.schlafzimmer_schlafzimmer_rollladen_hintergrundbeleuchtung
+          - light.wohnzimmer_wohnzimmer_deckenventilator_u_licht
       continue_on_error: true
 
 all_covers_open:
@@ -136,19 +136,19 @@ all_covers_open:
   sequence:
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.wohnzimmer_rollladen
+        cover_entity: cover.wohnzimmer_wohnzimmer_rollladen_vorhang
         tracker_entity: input_boolean.blind_wohnzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.kuche_rollladen
+        cover_entity: cover.kuche_kueche_rollladen_vorhang
         tracker_entity: input_boolean.blind_kuche_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.kiffzimmer_rollladen
+        cover_entity: cover.kiffzimmer_kiffzimmer_rollladen_vorhang
         tracker_entity: input_boolean.blind_kiffzimmer_last_opened
     - action: script.safe_open_blind
       data:
-        cover_entity: cover.schlafzimmer_rollladen
+        cover_entity: cover.schlafzimmer_schlafzimmer_rollladen_vorhang
         tracker_entity: input_boolean.blind_schlafzimmer_last_opened
 
 all_covers_close:
@@ -157,19 +157,19 @@ all_covers_close:
   sequence:
     - action: script.safe_close_blind
       data:
-        cover_entity: cover.wohnzimmer_rollladen
+        cover_entity: cover.wohnzimmer_wohnzimmer_rollladen_vorhang
         tracker_entity: input_boolean.blind_wohnzimmer_last_opened
     - action: script.safe_close_blind
       data:
-        cover_entity: cover.kuche_rollladen
+        cover_entity: cover.kuche_kueche_rollladen_vorhang
         tracker_entity: input_boolean.blind_kuche_last_opened
     - action: script.safe_close_blind
       data:
-        cover_entity: cover.kiffzimmer_rollladen
+        cover_entity: cover.kiffzimmer_kiffzimmer_rollladen_vorhang
         tracker_entity: input_boolean.blind_kiffzimmer_last_opened
     - action: script.safe_close_blind
       data:
-        cover_entity: cover.schlafzimmer_rollladen
+        cover_entity: cover.schlafzimmer_schlafzimmer_rollladen_vorhang
         tracker_entity: input_boolean.blind_schlafzimmer_last_opened
 
 light_toggle_with_brightness:
@@ -231,7 +231,7 @@ safe_open_blind:
                 # Special handling for inverted Schlafen blind
                 - conditions:
                     - condition: template
-                      value_template: "{{ cover_entity == 'cover.schlafzimmer_rollladen' }}"
+                      value_template: "{{ cover_entity == 'cover.schlafzimmer_schlafzimmer_rollladen_vorhang' }}"
                   sequence:
                     - action: cover.close_cover # Inverted!
                       target:
@@ -267,7 +267,7 @@ safe_close_blind:
         # Special handling for inverted Schlafen blind
         - conditions:
             - condition: template
-              value_template: "{{ cover_entity == 'cover.schlafzimmer_rollladen' }}"
+              value_template: "{{ cover_entity == 'cover.schlafzimmer_schlafzimmer_rollladen_vorhang' }}"
           sequence:
             - action: cover.open_cover # Inverted!
               target:
@@ -293,8 +293,8 @@ heating_comfort_now:
     - action: climate.set_temperature
       target:
         entity_id:
-          - climate.thermostat_bad
-          - climate.thermostat_computer
+          - climate.badezimmer_thermostat_bad
+          - climate.wohnzimmer_thermostat_computer
       data:
         temperature: "{{ 23 if now().month in [11, 12, 1, 2] else 22 }}"
 
@@ -305,7 +305,7 @@ fan_winter_heat_now:
   sequence:
     - action: fan.turn_on
       target:
-        entity_id: fan.deckenventilator_wohnzimmer
+        entity_id: fan.wohnzimmer_wohnzimmer_deckenventilator_u_licht
       data:
         percentage: 33 # Low speed to avoid draft
         direction: "reverse" # Updraft to mix warm air at ceiling
@@ -316,15 +316,15 @@ living_room_lights_on_blind_close:
     - action: light.turn_on
       target:
         entity_id:
-          - light.buffet_licht
-          - light.buffet_lichtstreifen
-          - light.rollladen_computer_hintergrundbeleuchtung
+          - light.wohnzimmer_buffet_licht
+          - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
+          - light.wohnzimmer_wohnzimmer_rollladen_hintergrundbeleuchtung
       data:
         color_temp_kelvin: 2700
         brightness_pct: 80
     - action: light.turn_on
       target:
-        entity_id: light.deckenventilator_wohnzimmer
+        entity_id: light.wohnzimmer_wohnzimmer_deckenventilator_u_licht
       data:
         brightness_pct: 50
         color_temp_kelvin: 2700

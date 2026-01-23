@@ -20,7 +20,9 @@ homeassistant:
 mobile_app:
 
 # Standard includes
-automation: !include automations.yaml
+automation:
+  - !include automations.yaml
+  - !include automations_ai.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 input_boolean: !include input_boolean.yaml
@@ -102,6 +104,28 @@ http:
   use_x_forwarded_for: true
   trusted_proxies:
     - 0.0.0.0/0
+
+# ============================================================================
+# REST COMMANDS - Connection to n8n (AI Brain)
+# ============================================================================
+rest_command:
+  n8n_grow_bot_check:
+    url: "http://192.168.178.70:5678/webhook/grow-bot-check"
+    method: POST
+    payload: '{"temperature": {{ temperature }}, "humidity": {{ humidity }}, "stage": "{{ stage }}", "timestamp": "{{ timestamp }}"}'
+    content_type: "application/json"
+
+  n8n_cleaning_report:
+    url: "http://192.168.178.70:5678/webhook/cleaning-report"
+    method: POST
+    payload: '{"start_time": "{{ start_time }}", "end_time": "{{ end_time }}", "hourly_rate": {{ hourly_rate }}}'
+    content_type: "application/json"
+
+  n8n_voice_notify:
+    url: "http://192.168.178.70:5678/webhook/voice-notify"
+    method: POST
+    payload: '{"message": "{{ message }}", "voice_id": "{{ voice_id }}"}'
+    content_type: "application/json"
 
 # ============================================================================
 # INPUT NUMBER - Rollläden & Heizung
@@ -284,10 +308,10 @@ template:
       - name: "Jemand Zuhause"
         unique_id: jemand_zuhause
         state: >
-          {{ is_state('binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1', 'on') or
-             is_state('binary_sensor.motion_sensor_kuche_bewegung', 'on') or
-             is_state('binary_sensor.motion_sensor_bad_bewegung', 'on') or
-             is_state('binary_sensor.motion_sensor_schlafen_bewegung', 'on') }}
+          {{ is_state('binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1', 'on') or
+             is_state('binary_sensor.kuche_motion_sensor_kueche_bewegung', 'on') or
+             is_state('binary_sensor.badezimmer_badezimmer_motion_sensor_bad_bewegung', 'on') or
+             is_state('binary_sensor.wohnzimmer_motion_sensor_schlafen_bewegung', 'on') }}
         icon: >
           {% if is_state('binary_sensor.jemand_zuhause', 'on') %}
             mdi:home-account
@@ -311,7 +335,7 @@ template:
         delay_off: "00:01:00" # 1 min buffer
         state: >
           {{ 
-             is_state('binary_sensor.presence_sensor_fp2_f9cf_presence_sensor_1', 'on')
+             is_state('binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1', 'on')
              # or is_state('media_player.living_room_tv', 'playing') # Uncomment when TV is integrated
           }}
         icon: mdi:account-eye
@@ -321,9 +345,9 @@ template:
         delay_off: "00:01:30" # 90s buffer for cooking
         state: >
           {{ 
-             is_state('binary_sensor.motion_sensor_kuche_bewegung', 'on')
-             or is_state('binary_sensor.human_presence_detector_3_bewegung', 'on')
-             or is_state('binary_sensor.kuche_presence_sensor', 'on')
+             is_state('binary_sensor.kuche_motion_sensor_kueche_bewegung', 'on')
+             or is_state('binary_sensor.kuche_kueche_presence_sensor_bewegung', 'on')
+             or is_state('binary_sensor.kuche_kueche_presence_sensor_bewegung', 'on')
           }}
         icon: mdi:chef-hat
 
@@ -332,9 +356,9 @@ template:
         delay_off: "00:02:00" # 2 min buffer (showering/brushing teeth)
         state: >
           {{ 
-             is_state('binary_sensor.motion_sensor_bad_bewegung', 'on')
-             or is_state('binary_sensor.badezimmer_motion_sensor', 'on')
-             or is_state('binary_sensor.presence_bad_bewegung', 'on')
+             is_state('binary_sensor.badezimmer_badezimmer_motion_sensor_bad_bewegung', 'on')
+             or is_state('binary_sensor.badezimmer_badezimmer_motion_sensor', 'on')
+             or is_state('binary_sensor.badezimmer_badezimmer_presence_sensor_bewegung', 'on')
           }}
         icon: mdi:shower
 
@@ -343,8 +367,8 @@ template:
         delay_off: "00:00:30" # Short buffer
         state: >
           {{ 
-             is_state('binary_sensor.motion_sensor_schlafen_bewegung', 'on')
-             or is_state('binary_sensor.human_presence_detector_schlaf_bewegung', 'on')
+             is_state('binary_sensor.wohnzimmer_motion_sensor_schlafen_bewegung', 'on')
+             or is_state('binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung', 'on')
           }}
         icon: mdi:bed
 
@@ -353,7 +377,7 @@ template:
         delay_off: "00:01:00" # 1 min buffer
         state: >
           {{ 
-             is_state('binary_sensor.kiffzimmer_motion_sensor', 'on')
+             is_state('binary_sensor.kiffzimmer_kiffzimmer_motion_sensor', 'on')
           }}
         icon: mdi:cannabis
 
