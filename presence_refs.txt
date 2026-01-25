@@ -1,3 +1,0 @@
-﻿binary_sensor.badezimmer_badezimmer_presence_sensor_bewegung
-binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
-binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp

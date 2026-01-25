@@ -15,6 +15,9 @@ homeassistant:
   packages:
     plant_growing: !include packages/plant_growing.yaml
     system_health: !include packages/system_health.yaml
+    ai_generated: !include packages/ai_generated.yaml
+    jarvis_agent: !include packages/jarvis_agent.yaml
+    tp_link_fixes: !include packages/tp_link_fixes.yaml
 
 # Mobile App - Required for Companion App functionality
 mobile_app:
@@ -108,21 +111,32 @@ http:
 # ============================================================================
 rest_command:
   n8n_grow_bot_check:
-    url: "http://192.168.178.70:5678/webhook/grow-bot-check"
+    url: "http://192.168.178.49:5678/webhook/grow-bot-check"
     method: POST
     payload: '{"temperature": {{ temperature }}, "humidity": {{ humidity }}, "stage": "{{ stage }}", "timestamp": "{{ timestamp }}"}'
     content_type: "application/json"
 
   n8n_cleaning_report:
-    url: "http://192.168.178.70:5678/webhook/cleaning-report"
+    url: "http://192.168.178.49:5678/webhook/cleaning-report"
     method: POST
     payload: '{"start_time": "{{ start_time }}", "end_time": "{{ end_time }}", "hourly_rate": {{ hourly_rate }}}'
     content_type: "application/json"
 
   n8n_voice_notify:
-    url: "http://192.168.178.70:5678/webhook/voice-notify"
+    url: "http://192.168.178.49:5678/webhook/voice-notify"
     method: POST
     payload: '{"message": "{{ message }}", "voice_id": "{{ voice_id }}"}'
+    content_type: "application/json"
+
+  n8n_morning_briefing:
+    url: "http://192.168.178.49:5678/webhook/morning-briefing"
+    method: POST
+    content_type: "application/json"
+
+  n8n_cinema_mode:
+    url: "http://192.168.178.49:5678/webhook/cinema-mode"
+    method: POST
+    payload: '{"mode": "on", "timestamp": "{{ now().isoformat() }}"}'
     content_type: "application/json"
 
 # ============================================================================

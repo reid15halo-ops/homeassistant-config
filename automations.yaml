@@ -278,7 +278,7 @@
       after: "22:00"
       before: 08:00
     - condition: state
-      entity_id: binary_sensor.wohnzimmer_presence_sensor
+      entity_id: binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
       state: "off"
     - condition: state
       entity_id: binary_sensor.kuche_kueche_motion_sensor
@@ -298,13 +298,11 @@
     - platform: state
       entity_id:
         - binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
-        - binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_2
       to: "on"
       id: occupied
     - platform: state
       entity_id:
         - binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
-        - binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_2
       to: "off"
       for: 00:01:00
       id: vacant
@@ -326,14 +324,9 @@
             - condition: numeric_state
               entity_id: sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_light_sensor_light_level
               below: 30
-            - condition: or
-              conditions:
-                - condition: state
-                  entity_id: binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
-                  state: "on"
-                - condition: state
-                  entity_id: binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_2
-                  state: "on"
+            - condition: state
+              entity_id: binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
+              state: "on"
           sequence:
             - action: light.turn_on
               target:
@@ -355,9 +348,6 @@
             - condition: state
               entity_id: binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
               state: "off"
-            - condition: state
-              entity_id: binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_2
-              state: "off"
           sequence:
             - action: light.turn_off
               target:
@@ -369,16 +359,17 @@
   mode: restart
 
 - id: light_kuche_smart_presence
-  alias: KÃƒÆ’Ã‚Â¼che - Smartes Licht (True Presence)
+  alias: Küche - Smartes Licht (True Presence)
   description: Controls kitchen lights based on True Presence and Adaptive Lighting
   trigger:
     - platform: state
-      entity_id: binary_sensor.kuche_presence_sensor
+      entity_id: binary_sensor.kuche_kueche_motion_sensor
       to: "on"
       id: occupied
     - platform: state
-      entity_id: binary_sensor.kuche_presence_sensor
+      entity_id: binary_sensor.kuche_kueche_motion_sensor
       to: "off"
+      for: "00:01:30"
       id: vacant
     - platform: time_pattern
       minutes: "/5"
@@ -388,7 +379,7 @@
         # Case 1: Occupied AND Dark -> Turn ON
         - conditions:
             - condition: state
-              entity_id: binary_sensor.kuche_presence_sensor
+              entity_id: binary_sensor.kuche_kueche_motion_sensor
               state: "on"
             - condition: or
               conditions:
@@ -414,7 +405,7 @@
         # Case 2: Vacant -> Turn OFF
         - conditions:
             - condition: state
-              entity_id: binary_sensor.kuche_presence_sensor
+              entity_id: binary_sensor.kuche_kueche_motion_sensor
               state: "off"
             - condition: state
               entity_id: input_boolean.cleaning_mode
@@ -434,12 +425,13 @@
   description: Controls bathroom lights based on True Presence and Adaptive Lighting
   trigger:
     - platform: state
-      entity_id: binary_sensor.badezimmer_presence_sensor
+      entity_id: binary_sensor.badezimmer_badezimmer_motion_sensor
       to: "on"
       id: occupied
     - platform: state
-      entity_id: binary_sensor.badezimmer_presence_sensor
+      entity_id: binary_sensor.badezimmer_badezimmer_motion_sensor
       to: "off"
+      for: "00:02:00"
       id: vacant
     - platform: time_pattern
       minutes: "/5"
@@ -449,7 +441,7 @@
         # Case 1: Occupied AND (Dark OR Night) -> Turn ON
         - conditions:
             - condition: state
-              entity_id: binary_sensor.badezimmer_presence_sensor
+              entity_id: binary_sensor.badezimmer_badezimmer_motion_sensor
               state: "on"
             - condition: or
               conditions:
@@ -471,7 +463,7 @@
         # Case 2: Vacant -> Turn OFF
         - conditions:
             - condition: state
-              entity_id: binary_sensor.badezimmer_presence_sensor
+              entity_id: binary_sensor.badezimmer_badezimmer_motion_sensor
               state: "off"
             - condition: state
               entity_id: input_boolean.cleaning_mode
@@ -488,12 +480,13 @@
   description: Controls bedroom lights based on True Presence and Adaptive Lighting
   trigger:
     - platform: state
-      entity_id: binary_sensor.schlafzimmer_presence_sensor
+      entity_id: binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
       to: "on"
       id: occupied
     - platform: state
-      entity_id: binary_sensor.schlafzimmer_presence_sensor
+      entity_id: binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
       to: "off"
+      for: "00:00:30"
       id: vacant
     - platform: time_pattern
       minutes: "/5"
@@ -503,7 +496,7 @@
         # Case 1: Occupied AND Dark -> Turn ON
         - conditions:
             - condition: state
-              entity_id: binary_sensor.schlafzimmer_presence_sensor
+              entity_id: binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
               state: "on"
             - condition: sun
               after: sunset
@@ -520,7 +513,7 @@
         # Case 2: Vacant -> Turn OFF
         - conditions:
             - condition: state
-              entity_id: binary_sensor.schlafzimmer_presence_sensor
+              entity_id: binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
               state: "off"
             - condition: state
               entity_id: input_boolean.cleaning_mode
@@ -537,12 +530,13 @@
   description: Controls Kiffzimmer lights based on True Presence and Adaptive Lighting
   trigger:
     - platform: state
-      entity_id: binary_sensor.kiffzimmer_presence_sensor
+      entity_id: binary_sensor.kiffzimmer_kiffzimmer_motion_sensor
       to: "on"
       id: occupied
     - platform: state
-      entity_id: binary_sensor.kiffzimmer_presence_sensor
+      entity_id: binary_sensor.kiffzimmer_kiffzimmer_motion_sensor
       to: "off"
+      for: "00:01:00"
       id: vacant
     - platform: time_pattern
       minutes: "/5"
@@ -556,7 +550,7 @@
         # Case 1: Occupied AND Dark -> Turn ON
         - conditions:
             - condition: state
-              entity_id: binary_sensor.kiffzimmer_presence_sensor
+              entity_id: binary_sensor.kiffzimmer_kiffzimmer_motion_sensor
               state: "on"
             - condition: sun
               after: sunset
@@ -573,7 +567,7 @@
         # Case 2: Vacant -> Turn OFF
         - conditions:
             - condition: state
-              entity_id: binary_sensor.kiffzimmer_presence_sensor
+              entity_id: binary_sensor.kiffzimmer_kiffzimmer_motion_sensor
               state: "off"
             - condition: state
               entity_id: input_boolean.cleaning_mode
@@ -789,10 +783,10 @@
       after: "22:00"
       before: 08:00
     - condition: state
-      entity_id: binary_sensor.wohnzimmer_presence_sensor
+      entity_id: binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
       state: "off"
     - condition: state
-      entity_id: binary_sensor.wohnzimmer_presence_sensor
+      entity_id: binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
       state: "off"
     - condition: state
       entity_id: binary_sensor.kuche_kueche_motion_sensor
@@ -832,6 +826,7 @@
       data:
         cover_entity: cover.wohnzimmer_wohnzimmer_rollladen_vorhang
         tracker_entity: input_boolean.blind_wohnzimmer_last_opened
+    - action: rest_command.n8n_cinema_mode
   mode: single
 - id: movie_mode_off
   alias: Filmzeit - Deaktivieren
@@ -1057,7 +1052,7 @@
   trigger:
     - platform: state
       entity_id:
-        - binary_sensor.wohnzimmer_presence_sensor
+        - binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
         - binary_sensor.kuche_kueche_motion_sensor
       to: "on"
   condition:
@@ -1448,7 +1443,7 @@
   description: "Use low light when going to bathroom at night"
   trigger:
     - platform: state
-      entity_id: binary_sensor.badezimmer_presence_sensor
+      entity_id: binary_sensor.badezimmer_badezimmer_motion_sensor
       to: "on"
   condition:
     - condition: time
@@ -1471,7 +1466,7 @@
   description: "Turn off bathroom light when leaving at night"
   trigger:
     - platform: state
-      entity_id: binary_sensor.badezimmer_presence_sensor
+      entity_id: binary_sensor.badezimmer_badezimmer_motion_sensor
       to: "off"
   condition:
     - condition: time
@@ -1490,7 +1485,7 @@
   description: "Brief low light to guide to bathroom at night"
   trigger:
     - platform: state
-      entity_id: binary_sensor.schlafzimmer_presence_sensor
+      entity_id: binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
       to: "off"
   condition:
     - condition: time
@@ -1547,17 +1542,17 @@
   description: Light on when door open. Off when door closed OR bedroom vacant.
   trigger:
     - platform: state
-      entity_id: binary_sensor.no_area_aqara_door_and_window_sensor_tuer_2
+      entity_id: binary_sensor.no_area_aqara_door_and_window_sensor_tuer
       from: "off"
       to: "on"
       id: "door_open"
     - platform: state
-      entity_id: binary_sensor.no_area_aqara_door_and_window_sensor_tuer_2
+      entity_id: binary_sensor.no_area_aqara_door_and_window_sensor_tuer
       from: "on"
       to: "off"
       id: "door_close"
     - platform: state
-      entity_id: binary_sensor.schlafzimmer_presence_sensor
+      entity_id: binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
       to: "off"
       for: "00:02:00"
       id: "vacant"
@@ -1600,8 +1595,8 @@
           after: sunset
           before: sunrise
         - condition: state
-          entity_id: binary_sensor.dunkel_draussen
-          state: "on"
+          entity_id: sun.sun
+          state: "below_horizon"
   action:
     - action: light.turn_on
       target:
@@ -1631,6 +1626,22 @@
         humidity: "{{ states('sensor.kiffzimmer_kiffzimmer_zelt_humidity_sensor_luftfeuchtigkeit') }}"
         stage: "Early Flowering" # You might want to make this an input_select later
         timestamp: "{{ now().isoformat() }}"
+  mode: single
+
+- id: ai_grow_bot_daily
+  alias: "AI - Grow Bot Daily Log (08:00)"
+  description: "Sends daily summary data to n8n for logging"
+  trigger:
+    - platform: time
+      at: "08:00:00"
+  action:
+    - action: rest_command.n8n_grow_bot_check
+      data:
+        temperature: "{{ states('sensor.kiffzimmer_kiffzimmer_zelt_humidity_sensor_temperatur') }}"
+        humidity: "{{ states('sensor.kiffzimmer_kiffzimmer_zelt_humidity_sensor_luftfeuchtigkeit') }}"
+        stage: "Early Flowering"
+        timestamp: "{{ now().isoformat() }}"
+        report_type: "daily_summary"
   mode: single
 
 # 2. THE CLEANING TRACKER
@@ -1664,4 +1675,21 @@
       data:
         message: "Critical alert. Water leak detected in the apartment. Please check immediately."
         voice_id: "Rachel" # ElevenLabs Voice ID
+  mode: single
+
+# 4. MORNING BRIEFING (Jarvis)
+- id: ai_morning_briefing
+  alias: "AI - Morning Briefing"
+  description: "Triggers n8n to generate and play morning briefing"
+  trigger:
+    - platform: time
+      at: "05:15:00"
+  condition:
+    - condition: time
+      weekday: [mon, tue, wed, thu, fri]
+    - condition: state
+      entity_id: person.jonas_glawion
+      state: "home"
+  action:
+    - action: rest_command.n8n_morning_briefing
   mode: single

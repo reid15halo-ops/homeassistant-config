@@ -54,3 +54,4 @@ known_devices.yaml
 plex.conf
 phue.conf
 harmony_*.conf
+secrets.yaml

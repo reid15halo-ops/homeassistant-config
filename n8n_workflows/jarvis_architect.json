@@ -1,0 +1,159 @@
+{
+    "name": "Jarvis Automation Architect (PC Version - Local SSL)",
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "jarvis-generate",
+                "options": {}
+            },
+            "name": "Webhook",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 1,
+            "position": [
+                100,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "url": "https://192.168.178.70:8123/api/states",
+                "options": {
+                    "allowUnauthorizedCerts": true
+                },
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "Authorization",
+                            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI4ZWEyMGViNDBkMzY0YmE3YjI3MDdhNTlkMmJiNDM5YSIsImlhdCI6MTc2OTI1MDgzMywiZXhwIjoyMDg0NjEwODMzfQ.t4RP9piZ6KLCnnNEoTDoxq3Fif0k7CvRRuTjPHuyTpE"
+                        }
+                    ]
+                }
+            },
+            "name": "Get Entities",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 3,
+            "position": [
+                300,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "functionCode": "const entities = items[0].json.map(e => e.entity_id).join(', ');\nreturn [{ json: { entities } }];"
+            },
+            "name": "Extract Entity IDs",
+            "type": "n8n-nodes-base.function",
+            "typeVersion": 1,
+            "position": [
+                500,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent",
+                "sendQuery": true,
+                "queryParameters": {
+                    "parameters": [
+                        {
+                            "name": "key",
+                            "value": "AIzaSyDqrUf9cjC6Kg8unebYOvAZ8RHQ2UTroIU"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "contentType": "json",
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "contents",
+                            "value": "={{ [{\"parts\": [{\"text\": \"You are an expert Home Assistant Automation Engineer. \\n\\nTask: Generate a YAML automation based on the user request. \\nUser Request: \" + $(\"Webhook\").item.json.body.prompt + \"\\n\\nAvailable Entities: \" + $json.entities + \"\\n\\nRules:\\n1. Return ONLY the YAML code. No markdown, no explanations.\\n2. The automation must start with '- id: ' followed by a unique UUID.\\n3. Use 'action:' instead of 'service:'.\\n4. Ensure indentation is correct for appending to a package file (under 'automation:' key, but since we append to a list, start with '-').\\n\\nExample Output:\\n- id: '12345'\\n  alias: 'Example'\\n  trigger: ...\"}]}] }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "name": "Gemini Architect",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 3,
+            "position": [
+                700,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "requestMethod": "POST",
+                "url": "https://192.168.178.70:8123/api/services/notify/notify",
+                "jsonParameters": true,
+                "options": {
+                    "allowUnauthorizedCerts": true
+                },
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "Authorization",
+                            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI4ZWEyMGViNDBkMzY0YmE3YjI3MDdhNTlkMmJiNDM5YSIsImlhdCI6MTc2OTI1MDgzMywiZXhwIjoyMDg0NjEwODMzfQ.t4RP9piZ6KLCnnNEoTDoxq3Fif0k7CvRRuTjPHuyTpE"
+                        }
+                    ]
+                },
+                "bodyParametersJson": "{\n  \"message\": \"I have generated the automation code. Please check your email or clipboard (Not implemented yet). For now, here is the code:\\n\\n{{ $json.candidates[0].content.parts[0].text }}\",\n  \"title\": \"🤖 Automation Generated\"\n}"
+            },
+            "name": "Notify User",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 3,
+            "position": [
+                900,
+                300
+            ]
+        }
+    ],
+    "connections": {
+        "Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "Get Entities",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Get Entities": {
+            "main": [
+                [
+                    {
+                        "node": "Extract Entity IDs",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Extract Entity IDs": {
+            "main": [
+                [
+                    {
+                        "node": "Gemini Architect",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Gemini Architect": {
+            "main": [
+                [
+                    {
+                        "node": "Notify User",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}

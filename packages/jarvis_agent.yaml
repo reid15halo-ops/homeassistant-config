@@ -1,0 +1,35 @@
+# Jarvis AI Agent Interface
+# This package defines the input helpers and automations to interact with the n8n AI Agent.
+
+input_text:
+  jarvis_prompt:
+    name: "Jarvis Instruction"
+    icon: mdi:robot
+    mode: text
+    max: 255
+
+input_button:
+  jarvis_execute:
+    name: "Execute Jarvis"
+    icon: mdi:play
+
+automation:
+  - id: jarvis_send_request
+    alias: "Jarvis - Send Request to AI"
+    trigger:
+      - platform: state
+        entity_id: input_button.jarvis_execute
+    action:
+      - action: notify.notify
+        data:
+          message: "Sending request to Jarvis..."
+      - action: rest_command.n8n_jarvis_generate
+        data:
+          prompt: "{{ states('input_text.jarvis_prompt') }}"
+
+rest_command:
+  n8n_jarvis_generate:
+    url: "http://192.168.178.49:5678/webhook/jarvis-generate"
+    method: POST
+    payload: '{"prompt": "{{ prompt }}"}'
+    content_type: "application/json"

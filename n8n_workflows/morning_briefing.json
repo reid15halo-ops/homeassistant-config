@@ -1,0 +1,126 @@
+{
+  "name": "Jarvis Morning Briefing",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "morning-briefing",
+        "options": {}
+      },
+      "name": "HA Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://wttr.in/Berlin?format=%C+%t+%w",
+        "options": {}
+      },
+      "name": "Get Weather",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        300,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "AIzaSyDqrUf9cjC6Kg8unebYOvAZ8RHQ2UTroIU"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "contents",
+              "value": "={{ [{\"parts\": [{\"text\": \"You are Jarvis, a smart home assistant. \\n\\nCurrent Weather: \" + $json.data + \"\\nDate: \" + new Date().toDateString() + \"\\n\\nWrite a short, witty morning briefing for Jonas. Keep it under 50 words.\"}]}] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "AI Brain (Gemini HTTP)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        500,
+        300
+      ],
+      "notes": "API Key injected from secrets.yaml"
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "http://192.168.178.70:8123/api/services/notify/mobile_app_redmi_note_12_pro_5g",
+        "jsonParameters": true,
+        "options": {},
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI4ZWEyMGViNDBkMzY0YmE3YjI3MDdhNTlkMmJiNDM5YSIsImlhdCI6MTc2OTI1MDgzMywiZXhwIjoyMDg0NjEwODMzfQ.t4RP9piZ6KLCnnNEoTDoxq3Fif0k7CvRRuTjPHuyTpE"
+            }
+          ]
+        },
+        "bodyParametersJson": "{\n  \"message\": \"{{ $json.candidates[0].content.parts[0].text }}\",\n  \"title\": \"🎙️ Morning Briefing\"\n}"
+      },
+      "name": "Send to Phone",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        700,
+        300
+      ],
+      "notes": "HA Token injected from secrets.yaml"
+    }
+  ],
+  "connections": {
+    "HA Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get Weather",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Weather": {
+      "main": [
+        [
+          {
+            "node": "AI Brain (Gemini HTTP)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Brain (Gemini HTTP)": {
+      "main": [
+        [
+          {
+            "node": "Send to Phone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

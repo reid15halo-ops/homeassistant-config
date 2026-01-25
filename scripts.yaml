@@ -252,34 +252,36 @@ safe_open_blind:
             level: warning
 
 safe_close_blind:
-  alias: "Safe Close Blind"
-  description: "Closes a blind (always allowed, multiple closes OK)"
+  alias: Safe Close Blind
+  description: Closes a blind (always allowed, multiple closes OK)
   mode: single
   fields:
     cover_entity:
-      description: "Cover entity to close (e.g., cover.rollladen_computer_vorhang)"
-      example: "cover.rollladen_computer_vorhang"
+      description: Cover entity to close (e.g., cover.rollladen_computer_vorhang)
+      example: cover.rollladen_computer_vorhang
     tracker_entity:
-      description: "Tracker boolean (e.g., input_boolean.blind_wohnzimmer_last_opened)"
-      example: "input_boolean.blind_wohnzimmer_last_opened"
+      description: Tracker boolean (e.g., input_boolean.blind_wohnzimmer_last_opened)
+      example: input_boolean.blind_wohnzimmer_last_opened
   sequence:
     - choose:
-        # Special handling for inverted Schlafen blind
         - conditions:
             - condition: template
-              value_template: "{{ cover_entity == 'cover.schlafzimmer_schlafzimmer_rollladen_vorhang' }}"
+              value_template: >-
+                {{ cover_entity ==
+                'cover.schlafzimmer_schlafzimmer_rollladen_vorhang' }}
           sequence:
-            - action: cover.open_cover # Inverted!
+            - action: cover.open_cover
               target:
                 entity_id: "{{ cover_entity }}"
+              data: {}
       default:
         - action: cover.close_cover
           target:
             entity_id: "{{ cover_entity }}"
-    # Mark that we just closed it (allows future opens)
     - action: input_boolean.turn_off
       target:
         entity_id: "{{ tracker_entity }}"
+      data: {}
 
 # ============================================================================
 # HEATING SCRIPTS
