@@ -1271,7 +1271,13 @@
   description: Detects cleaning person entrance and prepares apartment
   trigger:
     - platform: state
-      entity_id: binary_sensor.no_area_aqara_door_and_window_sensor_tuer
+      entity_id:
+        - binary_sensor.no_area_aqara_door_and_window_sensor_tuer
+        - binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
+        - binary_sensor.kuche_kueche_motion_sensor
+        - binary_sensor.badezimmer_badezimmer_motion_sensor
+        - binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
+        - binary_sensor.kiffzimmer_kiffzimmer_motion_sensor
       to: "on"
   condition:
     - condition: time
