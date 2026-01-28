@@ -147,62 +147,10 @@ rest_command:
 # ============================================================================
 # INPUT NUMBER - Rollläden & Heizung
 # ============================================================================
-input_number:
-  # Heizung Sollwerte
-  heizung_solltemperatur_komfort:
-    name: "Heizung Komfort-Temperatur"
-    min: 18
-    max: 25
-    step: 0.5
-    initial: 23
-    unit_of_measurement: "°C"
-    mode: slider
-    icon: mdi:thermometer
-  heizung_solltemperatur_eco:
-    name: "Heizung Eco-Temperatur"
-    min: 16
-    max: 20
-    step: 0.5
-    initial: 18
-    unit_of_measurement: "°C"
-    mode: slider
-    icon: mdi:thermometer-low
-  heizung_solltemperatur_nacht:
-    name: "Heizung Nacht-Temperatur"
-    min: 15
-    max: 19
-    step: 0.5
-    initial: 17
-    unit_of_measurement: "°C"
-    mode: slider
-    icon: mdi:thermometer-low
-
-  # Motion Timeout
-  motion_timeout:
-    name: "Bewegungsmelder Timeout"
-    min: 30
-    max: 600
-    step: 30
-    initial: 120
-    unit_of_measurement: "sec"
-    mode: slider
-    icon: mdi:timer
 
 # ============================================================================
 # INPUT SELECT - Szenen & Modi
 # ============================================================================
-input_select:
-  home_mode:
-    name: "Zuhause Modus"
-    options:
-      - "Normal"
-      - "Arbeit"
-      - "Entspannen"
-      - "Schlafen"
-      - "Gäste"
-      - "Urlaub"
-    initial: "Normal"
-    icon: mdi:home-assistant
 
 # ============================================================================
 # TEMPLATE - Modern Syntax
@@ -234,19 +182,6 @@ template:
             mdi:snowflake
           {% endif %}
 
-      - name: "Rollladen Sonnenuntergang Offset"
-        unique_id: rollladen_offset_minuten
-        unit_of_measurement: "min"
-        state: >
-          {% set month = now().month %}
-          {% if month in [5, 6, 7, 8, 9] %}
-            120
-          {% elif month in [3, 4, 10] %}
-            60
-          {% else %}
-            0
-          {% endif %}
-
   - binary_sensor:
       - name: "Sommerbetrieb (Außentemperatur)"
         unique_id: sommerbetrieb_ortsbasiert
@@ -257,16 +192,6 @@ template:
           {% else %}
             mdi:snowflake
           {% endif %}
-
-      - name: "Heizperiode aktiv"
-        unique_id: heizperiode
-        state: "{{ now().month in [1, 2, 3, 4, 10, 11, 12] }}"
-        icon: mdi:radiator
-
-      - name: "Dunkel draußen"
-        unique_id: dunkel_draussen
-        state: "{{ is_state('sun.sun', 'below_horizon') }}"
-        icon: mdi:weather-night
 
 # ============================================================================
 # ============================================================================

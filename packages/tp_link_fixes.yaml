@@ -1,26 +1,108 @@
+# ============================================================================
+# TP-LINK FIXES (Radically Simplified)
+# ============================================================================
+
 automation:
-  - id: fix_tplink_presets
-    alias: "System - Fix TP-Link Presets"
-    description: "Forces a valid preset when TP-Link devices default to 'Not set'"
-    mode: queued
+  - id: fix_tplink_buffet
+    alias: "Fix TP-Link - Buffet"
     trigger:
       - platform: state
-        entity_id:
-          - select.wohnzimmer_wohnzimmer_buffet_lichtstreifen_lichtvoreinstellung
-          - select.kuche_kueche_deckenlicht_2_lichtvoreinstellung
-          - select.kuche_kueche_deckenlicht_1_lichtvoreinstellung
-          - select.kuche_kueche_lichtstreifen_lichtvoreinstellung
-          - select.schlafzimmer_schlafzimmer_kleiderschrank_lichtstreifen_lichtvoreinstellung
-          - select.schlafzimmer_badezimmer_lichtstreifen_lichtvoreinstellung
-          - select.schlafzimmer_schlafzimmer_bett_lichtstreifen_lichtvoreinstellung
-          - select.kiffzimmer_kiffzimmer_lichtstreifen_lichtvoreinstellung
+        entity_id: select.wohnzimmer_wohnzimmer_buffet_lichtstreifen_lichtvoreinstellung
         to: "Not set"
     action:
       - action: select.select_option
         target:
-          entity_id: "{{ trigger.entity_id }}"
+          entity_id: select.wohnzimmer_wohnzimmer_buffet_lichtstreifen_lichtvoreinstellung
         data:
           option: "Light preset 1"
-      - action: notify.mobile_app_redmi_note_12_pro_5g
+
+  - id: fix_tplink_kuche_1
+    alias: "Fix TP-Link - Küche 1"
+    trigger:
+      - platform: state
+        entity_id: select.kuche_kueche_deckenlicht_1_lichtvoreinstellung
+        to: "Not set"
+    action:
+      - action: select.select_option
+        target:
+          entity_id: select.kuche_kueche_deckenlicht_1_lichtvoreinstellung
         data:
-          message: "Fixed preset for {{ state_attr(trigger.entity_id, 'friendly_name') }}"
+          option: "Light preset 1"
+
+  - id: fix_tplink_kuche_2
+    alias: "Fix TP-Link - Küche 2"
+    trigger:
+      - platform: state
+        entity_id: select.kuche_kueche_deckenlicht_2_lichtvoreinstellung
+        to: "Not set"
+    action:
+      - action: select.select_option
+        target:
+          entity_id: select.kuche_kueche_deckenlicht_2_lichtvoreinstellung
+        data:
+          option: "Light preset 1"
+
+  - id: fix_tplink_kuche_strip
+    alias: "Fix TP-Link - Küche Strip"
+    trigger:
+      - platform: state
+        entity_id: select.kuche_kueche_lichtstreifen_lichtvoreinstellung
+        to: "Not set"
+    action:
+      - action: select.select_option
+        target:
+          entity_id: select.kuche_kueche_lichtstreifen_lichtvoreinstellung
+        data:
+          option: "Light preset 1"
+
+  - id: fix_tplink_schlaf_wardrobe
+    alias: "Fix TP-Link - Kleiderschrank"
+    trigger:
+      - platform: state
+        entity_id: select.schlafzimmer_schlafzimmer_kleiderschrank_lichtstreifen_lichtvoreinstellung
+        to: "Not set"
+    action:
+      - action: select.select_option
+        target:
+          entity_id: select.schlafzimmer_schlafzimmer_kleiderschrank_lichtstreifen_lichtvoreinstellung
+        data:
+          option: "Light preset 1"
+
+  - id: fix_tplink_bad_strip
+    alias: "Fix TP-Link - Bad Strip"
+    trigger:
+      - platform: state
+        entity_id: select.schlafzimmer_badezimmer_lichtstreifen_lichtvoreinstellung
+        to: "Not set"
+    action:
+      - action: select.select_option
+        target:
+          entity_id: select.schlafzimmer_badezimmer_lichtstreifen_lichtvoreinstellung
+        data:
+          option: "Light preset 1"
+
+  - id: fix_tplink_schlaf_bed
+    alias: "Fix TP-Link - Bett Strip"
+    trigger:
+      - platform: state
+        entity_id: select.schlafzimmer_schlafzimmer_bett_lichtstreifen_lichtvoreinstellung
+        to: "Not set"
+    action:
+      - action: select.select_option
+        target:
+          entity_id: select.schlafzimmer_schlafzimmer_bett_lichtstreifen_lichtvoreinstellung
+        data:
+          option: "Light preset 1"
+
+  - id: fix_tplink_kiff_strip
+    alias: "Fix TP-Link - Kiffzimmer Strip"
+    trigger:
+      - platform: state
+        entity_id: select.kiffzimmer_kiffzimmer_lichtstreifen_lichtvoreinstellung
+        to: "Not set"
+    action:
+      - action: select.select_option
+        target:
+          entity_id: select.kiffzimmer_kiffzimmer_lichtstreifen_lichtvoreinstellung
+        data:
+          option: "Light preset 1"

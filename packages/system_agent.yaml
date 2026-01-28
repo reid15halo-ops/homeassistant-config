@@ -1,218 +1,28 @@
 # ============================================================================
-# SYSTEM AGENT
-# Version: 1.1.0
-# Last Audit: 2026-01-28
-# Centralized control for system health, updates, and global logic.
+# SYSTEM AGENT (Radically Simplified)
+# System-wide logic and maintenance.
 # ============================================================================
-
-# ----------------------------------------------------------------------------
-# HELPERS (Encapsulated)
-# ----------------------------------------------------------------------------
-input_boolean:
-  system_agent_master:
-    name: "System Agent Master Switch"
-    icon: mdi:shield-check
-    initial: on
-
-  # Flux (Adaptive Lighting)
-  flux_kelvin:
-    name: "Flux Target Kelvin"
-    min: 2000
-    max: 6500
-    initial: 2700
-    step: 100
-    mode: box
-    icon: mdi:thermometer-lines
-
-  flux_brightness:
-    name: "Flux Target Brightness"
-    min: 1
-    max: 100
-    initial: 80
-    step: 1
-    mode: box
-    icon: mdi:brightness-6
-
-# ----------------------------------------------------------------------------
-# SENSORS
-# ----------------------------------------------------------------------------
-template:
-  - sensor:
-      - name: "Unavailable Entities"
-        unique_id: unavailable_entities_count
-        icon: mdi:alert-circle
-        unit_of_measurement: entities
-        state: >
-          {{ states | selectattr('state', 'in', ['unavailable', 'unknown', 'none']) | list | length }}
-        attributes:
-          entities: >
-            {{ states | selectattr('state', 'in', ['unavailable', 'unknown', 'none']) | map(attribute='entity_id') | list }}
-
-      - name: "System Agent Status"
-        unique_id: system_agent_status
-        state: >
-          {% if is_state('input_boolean.system_agent_master', 'on') %}
-            Active
-          {% else %}
-            Disabled
-          {% endif %}
-        attributes:
-          cleaning_mode: "{{ states('input_boolean.cleaning_mode') }}"
-          winter_mode: "{{ states('input_boolean.heizung_winter_mode') }}"
-          unavailable_count: "{{ states('sensor.unavailable_entities') }}"
-
-# ----------------------------------------------------------------------------
-# INPUT NUMBERS (Helpers)
-# ----------------------------------------------------------------------------
-input_number:
-  flux_kelvin:
-    name: "Flux Target Kelvin"
-    min: 2000
-    max: 6500
-    initial: 2700
-    step: 100
-    mode: box
-    icon: mdi:thermometer-lines
-
-  flux_brightness:
-    name: "Flux Target Brightness"
-    min: 1
-    max: 100
-    initial: 80
-    step: 1
-    mode: box
-    icon: mdi:brightness-6
 
 # ----------------------------------------------------------------------------
 # AUTOMATIONS
 # ----------------------------------------------------------------------------
 automation:
-  - id: system_startup_notification
-    alias: "System - Startup Notification"
+  - alias: "System - Startup Notification"
     trigger:
       - platform: homeassistant
         event: start
     action:
-      - action: notify.mobile_app_redmi_note_12_pro_5g
+      - action: notify.alle_geraete
         data:
           title: "System Started"
           message: "Home Assistant has successfully restarted."
 
-  - id: system_unavailable_entity_alert
-    alias: "System - Unavailable Entity Alert"
-    trigger:
-      - platform: numeric_state
-        entity_id: sensor.unavailable_entities
-        above: 5
-        for: "00:05:00"
-    condition:
-      - condition: state
-        entity_id: input_boolean.system_agent_master
-        state: "on"
-    action:
-      - action: notify.mobile_app_redmi_note_12_pro_5g
-        data:
-          title: "System Health Warning"
-          message: "There are {{ states('sensor.unavailable_entities') }} unavailable entities."
-
-  - id: flux_update_schedule
-    alias: Flux - Update Adaptive Values
-    description: Updates flux_kelvin and flux_brightness based on time of day
-    trigger:
-      - platform: time_pattern
-        minutes: "/5"
-    condition:
-      - condition: state
-        entity_id: input_boolean.system_agent_master
-        state: "on"
-    action:
-      - choose:
-          # Night (22:00 - 06:00)
-          - conditions:
-              - condition: or
-                conditions:
-                  - condition: time
-                    after: "22:00:00"
-                  - condition: time
-                    before: "06:00:00"
-            sequence:
-              - action: input_number.set_value
-                target:
-                  entity_id: input_number.flux_kelvin
-                data:
-                  value: 2200
-              - action: input_number.set_value
-                target:
-                  entity_id: input_number.flux_brightness
-                data:
-                  value: 30
-          # Morning (06:00 - 10:00)
-          - conditions:
-              - condition: time
-                after: "06:00:00"
-                before: "10:00:00"
-            sequence:
-              - action: input_number.set_value
-                target:
-                  entity_id: input_number.flux_kelvin
-                data:
-                  value: 2700
-              - action: input_number.set_value
-                target:
-                  entity_id: input_number.flux_brightness
-                data:
-                  value: 60
-          # Day (10:00 - 19:00)
-          - conditions:
-              - condition: time
-                after: "10:00:00"
-                before: "19:00:00"
-            sequence:
-              - action: input_number.set_value
-                target:
-                  entity_id: input_number.flux_kelvin
-                data:
-                  value: 5000
-              - action: input_number.set_value
-                target:
-                  entity_id: input_number.flux_brightness
-                data:
-                  value: 100
-          # Evening (19:00 - 22:00)
-          - conditions:
-              - condition: time
-                after: "19:00:00"
-                before: "22:00:00"
-            sequence:
-              - action: input_number.set_value
-                target:
-                  entity_id: input_number.flux_kelvin
-                data:
-                  value: 3000
-              - action: input_number.set_value
-                target:
-                  entity_id: input_number.flux_brightness
-                data:
-                  value: 80
-    mode: single
-
-  - id: cleaning_person_entrance
-    alias: "Putzfrau - Einzug/Eintritt erkannt"
-    description: Detects cleaning person entrance and prepares apartment
+  - alias: "Putzfrau - Einzug erkannt"
     trigger:
       - platform: state
-        entity_id:
-          - binary_sensor.no_area_aqara_door_and_window_sensor_tuer
-          - binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
-          - binary_sensor.kuche_kueche_motion_sensor
-          - binary_sensor.badezimmer_badezimmer_motion_sensor
-          - binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
-          - binary_sensor.kiffzimmer_kiffzimmer_motion_sensor
+        entity_id: binary_sensor.no_area_aqara_door_and_window_sensor_tuer
         to: "on"
     condition:
-      - condition: state
-        entity_id: input_boolean.system_agent_master
-        state: "on"
       - condition: time
         weekday: [wed, thu, fri]
         after: "08:00:00"
@@ -220,9 +30,6 @@ automation:
       - condition: state
         entity_id: person.jonas_glawion
         state: "not_home"
-      - condition: state
-        entity_id: input_boolean.cleaning_mode
-        state: "off"
     action:
       - action: input_boolean.turn_on
         target:
@@ -232,155 +39,81 @@ automation:
           entity_id:
             - input_boolean.auto_lights_enabled
             - input_boolean.auto_shutters_enabled
-            - input_boolean.auto_heating_enabled
-    mode: single
 
-  - id: cleaning_mode_active
-    alias: Reinigungsmodus - Aktivieren
-    description: Turn on all lights to max brightness for cleaning
+  # --- CLEANING MODE ON ---
+  - alias: "Reinigungsmodus - Blinds Open"
     trigger:
       - platform: state
         entity_id: input_boolean.cleaning_mode
         to: "on"
     action:
-      - action: script.all_covers_open
+      - action: cover.open_cover
+        target:
+          entity_id: all
+
+  - alias: "Reinigungsmodus - Lights On"
+    trigger:
+      - platform: state
+        entity_id: input_boolean.cleaning_mode
+        to: "on"
+    action:
       - action: light.turn_on
         target:
           entity_id: all
         data:
           brightness_pct: 100
           color_temp_kelvin: 6500
-          transition: 2
-      - action: notify.mobile_app_redmi_note_12_pro_5g
+
+  - alias: "Reinigungsmodus - Notify On"
+    trigger:
+      - platform: state
+        entity_id: input_boolean.cleaning_mode
+        to: "on"
+    action:
+      - action: notify.alle_geraete
         data:
           title: "🧹 Reinigung gestartet"
-          message: "Putzfrau ist eingetroffen. Modus AKTIVIERT. Honorar: 25€/Std."
-    mode: single
+          message: "Putzfrau ist eingetroffen. Modus AKTIVIERT."
 
-  - id: cleaning_person_exit
-    alias: "Putzfrau - Austritt/Ende"
-    description: Detects cleaning person exit (or manual off) and reports cost
+  # --- CLEANING MODE OFF ---
+  - alias: "Reinigungsmodus - Lights Off"
     trigger:
       - platform: state
         entity_id: input_boolean.cleaning_mode
         to: "off"
     action:
+      - action: light.turn_off
+        target:
+          entity_id: all
+
+  - alias: "Reinigungsmodus - Notify Off"
+    trigger:
+      - platform: state
+        entity_id: input_boolean.cleaning_mode
+        to: "off"
+    action:
+      - action: notify.alle_geraete
+        data:
+          title: "🧹 Reinigung beendet"
+          message: "Reinigung beendet. Willkommen zurück!"
       - action: input_boolean.turn_on
         target:
           entity_id:
             - input_boolean.auto_lights_enabled
             - input_boolean.auto_shutters_enabled
-            - input_boolean.auto_heating_enabled
-      - action: light.turn_off
+
+  - alias: "Reinigungsmodus - Auto Aus bei Ankunft"
+    trigger:
+      - platform: state
+        entity_id: person.jonas_glawion
+        to: "home"
+    condition:
+      - condition: state
+        entity_id: input_boolean.cleaning_mode
+        state: "on"
+    action:
+      - action: input_boolean.turn_off
         target:
-          entity_id: all
-        data:
-          transition: 2
-      - action: notify.mobile_app_redmi_note_12_pro_5g
-        data:
-          title: "🧹 Reinigung beendet"
-          message: >
-            {% set duration = (as_timestamp(now()) - as_timestamp(states.input_boolean.cleaning_mode.last_changed)) / 3600 %}
-            {% set cost = duration * 25 %}
-            Reinigung beendet.
-            Dauer: {{ duration | round(2) }} Std.
-            Honorar: {{ cost | round(2) }} €
-    mode: single
+          entity_id: input_boolean.cleaning_mode
 
-  - id: system_heating_season_auto
-    alias: System - Heizperiode Automatik
-    description: Toggle heating mode based on outside temperature
-    trigger:
-      - platform: numeric_state
-        entity_id: weather.no_area_forecast_zuhause
-        attribute: temperature
-        below: 15
-        for: "24:00:00"
-        id: winter_start
-      - platform: numeric_state
-        entity_id: weather.no_area_forecast_zuhause
-        attribute: temperature
-        above: 20
-        for: "24:00:00"
-        id: winter_end
-    condition:
-      - condition: state
-        entity_id: input_boolean.system_agent_master
-        state: "on"
-    action:
-      - choose:
-          - conditions:
-              - condition: trigger
-                id: winter_start
-            sequence:
-              - action: input_boolean.turn_on
-                target:
-                  entity_id: input_boolean.heizung_winter_mode
-              - action: notify.mobile_app_redmi_note_12_pro_5g
-                data:
-                  message: Heizperiode aktiviert (unter 15°C für 24h)
-          - conditions:
-              - condition: trigger
-                id: winter_end
-            sequence:
-              - action: input_boolean.turn_off
-                target:
-                  entity_id: input_boolean.heizung_winter_mode
-              - action: notify.mobile_app_redmi_note_12_pro_5g
-                data:
-                  message: Heizperiode beendet (über 20°C für 24h)
-    mode: single
-
-  - id: system_auto_update_away
-    alias: System - Automatische Updates bei Abwesenheit
-    description: Install updates automatically when away
-    trigger:
-      - platform: state
-        entity_id:
-          - update.no_area_home_assistant_core_update
-          - update.no_area_home_assistant_supervisor_update
-          - update.no_area_home_assistant_operating_system_update
-        to: "on"
-      - platform: state
-        entity_id: person.jonas_glawion
-        to: not_home
-    condition:
-      - condition: state
-        entity_id: input_boolean.system_agent_master
-        state: "on"
-      - condition: state
-        entity_id: person.jonas_glawion
-        state: not_home
-    action:
-      - choose:
-          - conditions:
-              - condition: state
-                entity_id: update.no_area_home_assistant_core_update
-                state: "on"
-            sequence:
-              - action: update.install
-                target:
-                  entity_id: update.no_area_home_assistant_core_update
-                data:
-                  backup: true
-      - choose:
-          - conditions:
-              - condition: state
-                entity_id: update.no_area_home_assistant_supervisor_update
-                state: "on"
-            sequence:
-              - action: update.install
-                target:
-                  entity_id: update.no_area_home_assistant_supervisor_update
-      - choose:
-          - conditions:
-              - condition: state
-                entity_id: update.no_area_home_assistant_operating_system_update
-                state: "on"
-            sequence:
-              - action: update.install
-                target:
-                  entity_id: update.no_area_home_assistant_operating_system_update
-                data:
-                  backup: true
-    mode: single
+  # --- HEATING SEASON ---

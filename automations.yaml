@@ -1,69 +1,35 @@
-- id: morning_wakeup_weekday
-  alias: Morgen - Aufwachen Werktag (04:30 - 05:30)
-  description: Gradual wake-up light and heating on weekdays (Robust against restarts)
+# ============================================================================
+# AUTOMATIONS (Global Simplification)
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# MORNING ROUTINES (Simplified)
+# ----------------------------------------------------------------------------
+- id: wakeup_heat_weekday
+  alias: "Morgen - Heizung Werktag (04:30)"
   trigger:
     - platform: time
-      at: 04:30
-      id: heat_start
-    - platform: time
-      at: 05:00
-      id: light_start
-    - platform: time
-      at: 05:30
-      id: light_end
+      at: "04:30:00"
   condition:
     - condition: time
-      weekday:
-        - mon
-        - tue
-        - wed
-        - thu
-        - fri
+      weekday: [mon, tue, wed, thu, fri]
   action:
-    - choose:
-        - conditions:
-            - condition: trigger
-              id: heat_start
-          sequence:
-            - action: climate.set_temperature
-              target:
-                entity_id:
-                  - climate.badezimmer_thermostat_bad
-                  - climate.wohnzimmer_thermostat_computer
-              data:
-                temperature: 23
-        - conditions:
-            - condition: trigger
-              id: light_start
-          sequence:
-            - action: light.turn_on
-              target:
-                entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
-              data:
-                brightness_pct: 5
-                color_temp_kelvin: 2700
-                transition: 1800
-        - conditions:
-            - condition: trigger
-              id: light_end
-          sequence:
-            - action: light.turn_on
-              target:
-                entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
-              data:
-                brightness_pct: 80
-  mode: parallel
-- id: morning_wakeup_weekend
-  alias: Morgen - Aufwachen Wochenende (10:00)
-  description: Weekend wake-up routine
+    - action: climate.set_temperature
+      target:
+        entity_id:
+          - climate.badezimmer_thermostat_bad
+          - climate.wohnzimmer_thermostat_computer
+      data:
+        temperature: 23
+
+- id: wakeup_light_dim_weekday
+  alias: "Morgen - Licht Dimmen Werktag (05:00)"
   trigger:
     - platform: time
-      at: 09:30
+      at: "05:00:00"
   condition:
     - condition: time
-      weekday:
-        - sat
-        - sun
+      weekday: [mon, tue, wed, thu, fri]
   action:
     - action: light.turn_on
       target:
@@ -72,28 +38,50 @@
         brightness_pct: 5
         color_temp_kelvin: 2700
         transition: 1800
-  mode: single
-# Old Winter Shutter Automations Removed (Replaced by Blind Agent)
-# bedroom_shutters_sleep moved to blind_agent.yaml
 
-# heating_presence_on moved to climate_agent.yaml
-# heating_away_eco moved to climate_agent.yaml
-# heating_night_mode moved to climate_agent.yaml
-# heating_morning_restore moved to climate_agent.yaml
+- id: wakeup_light_bright_weekday
+  alias: "Morgen - Licht Hell Werktag (05:30)"
+  trigger:
+    - platform: time
+      at: "05:30:00"
+  condition:
+    - condition: time
+      weekday: [mon, tue, wed, thu, fri]
+  action:
+    - action: light.turn_on
+      target:
+        entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
+      data:
+        brightness_pct: 80
+
+- id: morning_wakeup_weekend
+  alias: "Morgen - Aufwachen Wochenende (10:00)"
+  trigger:
+    - platform: time
+      at: "09:30:00"
+  condition:
+    - condition: time
+      weekday: [sat, sun]
+  action:
+    - action: light.turn_on
+      target:
+        entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
+      data:
+        brightness_pct: 5
+        color_temp_kelvin: 2700
+        transition: 1800
+
+# ----------------------------------------------------------------------------
+# ROBOROCK
+# ----------------------------------------------------------------------------
 - id: roborock_clean_workday
-  alias: Roborock - Reinigung an Werktagen (12:00)
-  description: Start vacuum when away on workdays at 12:00
+  alias: "Roborock - Reinigung an Werktagen (12:00)"
   trigger:
     - platform: time
       at: "12:00:00"
   condition:
     - condition: time
-      weekday:
-        - mon
-        - tue
-        - wed
-        - thu
-        - fri
+      weekday: [mon, tue, wed, thu, fri]
     - condition: state
       entity_id: person.jonas_glawion
       state: not_home
@@ -101,10 +89,9 @@
     - action: vacuum.start
       target:
         entity_id: vacuum.wohnzimmer_roborock_q7_max
-  mode: single
+
 - id: roborock_stop_on_arrival
-  alias: Roborock - Stopp bei Heimkehr
-  description: Stop vacuum and return to dock when arriving home
+  alias: "Roborock - Stopp bei Heimkehr"
   trigger:
     - platform: state
       entity_id: person.jonas_glawion
@@ -117,10 +104,12 @@
     - action: vacuum.return_to_base
       target:
         entity_id: vacuum.wohnzimmer_roborock_q7_max
-  mode: single
-- id: welcome_home
-  alias: Willkommen - Licht an bei Heimkehr
-  description: Turn on lights when arriving home
+
+# ----------------------------------------------------------------------------
+# HOME / AWAY
+# ----------------------------------------------------------------------------
+- id: welcome_home_light
+  alias: "Willkommen - Licht an bei Heimkehr"
   trigger:
     - platform: state
       entity_id: person.jonas_glawion
@@ -132,27 +121,31 @@
   action:
     - action: light.turn_on
       target:
-        entity_id:
-          - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
+        entity_id: light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
       data:
         brightness_pct: 80
         color_temp_kelvin: 2700
-    - choose:
-        - conditions:
-            - condition: template
-              value_template: "{{ now().month in [11, 12, 1, 2] }}"
-          sequence:
-            - action: climate.set_temperature
-              target:
-                entity_id:
-                  - climate.badezimmer_thermostat_bad
-                  - climate.wohnzimmer_thermostat_computer
-              data:
-                temperature: 23
-  mode: single
+
+- id: welcome_home_heat
+  alias: "Willkommen - Heizung an bei Heimkehr (Winter)"
+  trigger:
+    - platform: state
+      entity_id: person.jonas_glawion
+      to: home
+  condition:
+    - condition: template
+      value_template: "{{ now().month in [11, 12, 1, 2] }}"
+  action:
+    - action: climate.set_temperature
+      target:
+        entity_id:
+          - climate.badezimmer_thermostat_bad
+          - climate.wohnzimmer_thermostat_computer
+      data:
+        temperature: 23
+
 - id: away_mode_activate
-  alias: Abwesenheit - Alles aus
-  description: Turn off lights and reduce heating when leaving
+  alias: "Abwesenheit - Alles aus"
   trigger:
     - platform: state
       entity_id: person.jonas_glawion
@@ -168,10 +161,12 @@
           - climate.wohnzimmer_thermostat_computer
       data:
         temperature: 18
-  mode: single
-- id: sleep_mode
-  alias: Schlafmodus - Aktivieren
-  description: Sleep mode when in bedroom for 15 min at night
+
+# ----------------------------------------------------------------------------
+# MODES
+# ----------------------------------------------------------------------------
+- id: sleep_mode_activate
+  alias: "Schlafmodus - Aktivieren"
   trigger:
     - platform: state
       entity_id: binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
@@ -180,19 +175,11 @@
         minutes: 15
   condition:
     - condition: time
-      after: "22:00"
-      before: 08:00
-    - condition: state
-      entity_id: binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
-      state: "off"
-    - condition: state
-      entity_id: binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
-      state: "off"
-    - condition: state
-      entity_id: binary_sensor.kuche_kueche_motion_sensor
-      state: "off"
+      after: "22:00:00"
+      before: "08:00:00"
   action:
     - action: script.all_lights_off
+    - action: script.all_covers_close
     - action: climate.set_temperature
       target:
         entity_id:
@@ -200,11 +187,9 @@
           - climate.wohnzimmer_thermostat_computer
       data:
         temperature: 17
-    - action: script.all_covers_close
-  mode: single
-- id: movie_mode
-  alias: Filmzeit - Aktivieren
-  description: Movie mode - dim lights, close shutters, ambient on
+
+- id: movie_mode_on
+  alias: "Filmzeit - Aktivieren"
   trigger:
     - platform: state
       entity_id: input_boolean.movie_mode
@@ -212,25 +197,22 @@
   action:
     - action: light.turn_off
       target:
-        entity_id: light.kuche_kueche_deckenlicht_1
-    - action: light.turn_off
-      target:
-        entity_id: light.kuche_kueche_deckenlicht_2
+        entity_id:
+          - light.kuche_kueche_deckenlicht_1
+          - light.kuche_kueche_deckenlicht_2
     - action: light.turn_on
       target:
         entity_id: light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
       data:
         brightness_pct: 20
         color_temp_kelvin: 2200
-    - action: script.safe_close_blind
-      data:
-        cover_entity: cover.wohnzimmer_wohnzimmer_rollladen_vorhang
-        tracker_entity: input_boolean.blind_wohnzimmer_last_opened
+    - action: cover.close_cover
+      target:
+        entity_id: cover.wohnzimmer_wohnzimmer_rollladen_vorhang
     - action: rest_command.n8n_cinema_mode
-  mode: single
+
 - id: movie_mode_off
-  alias: Filmzeit - Deaktivieren
-  description: End movie mode
+  alias: "Filmzeit - Deaktivieren"
   trigger:
     - platform: state
       entity_id: input_boolean.movie_mode
@@ -238,84 +220,39 @@
   action:
     - action: light.turn_on
       target:
-        entity_id:
-          - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
+        entity_id: light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
       data:
         brightness_pct: 60
         color_temp_kelvin: 2700
         transition: 2
-  mode: single
-- id: guest_mode_on
-  alias: Gästemodus - Längere Timeouts
-  description: Disable automatic shutters and keep lights on longer when guests
+
+- id: vacation_simulation_sunset
+  alias: "Urlaub - Licht an bei Sonnenuntergang"
   trigger:
-    - platform: state
-      entity_id: input_boolean.guest_mode
-      to: "on"
-  action:
-    - action: automation.turn_off
-      target:
-        entity_id: automation.rollladen_schliessen_bei_sonnenuntergang_winter
-  mode: single
-- id: sun_protection
-  alias: Sonnenschutz - Rollläden bei Hitze
-  description: Close shutters when too hot
-  trigger:
-    - platform: numeric_state
-      entity_id: weather.no_area_forecast_zuhause
-      attribute: temperature
-      above: 25
+    - platform: sun
+      event: sunset
   condition:
-    - condition: sun
-      after: sunrise
-      before: sunset
-  action:
-    - action: script.all_covers_close
-  mode: single
-- id: vacation_presence_simulation
-  alias: Urlaub - Anwesenheitssimulation
-  description: Simulate presence when on vacation
-  trigger:
-    - platform: state
+    - condition: state
       entity_id: input_boolean.vacation_mode
-      to: "on"
+      state: "on"
   action:
-    - repeat:
-        while:
-          - condition: state
-            entity_id: input_boolean.vacation_mode
-            state: "on"
-        sequence:
-          - action: light.turn_on
-            target:
-              entity_id:
-                "{{ ['light.wohnzimmer_wohnzimmer_buffet_lichtstreifen', 'light.kuche_kueche_deckenlicht_1'] | random
-                }}"
-            data:
-              brightness_pct: "{{ range(50, 100) | random }}"
-              transition: 2
-          - delay:
-              minutes: "{{ range(30, 120) | random }}"
-          - action: light.turn_off
-            target:
-              entity_id:
-                "{{ ['light.wohnzimmer_wohnzimmer_buffet_lichtstreifen', 'light.kuche_kueche_deckenlicht_1'] | random
-                }}"
-            data:
-              transition: 2
-          - delay:
-              minutes: "{{ range(15, 60) | random }}"
-  mode: single
+    - action: light.turn_on
+      target:
+        entity_id: light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
+      data:
+        brightness_pct: 70
+
+# ----------------------------------------------------------------------------
+# SECURITY & SAFETY
+# ----------------------------------------------------------------------------
 - id: security_motion_alert
-  alias: Sicherheit - Bewegung bei Abwesenheit
-  description: Alert when motion detected while away
+  alias: "Sicherheit - Bewegung bei Abwesenheit"
   trigger:
     - platform: state
       entity_id:
-        - binary_sensor.badezimmer_badezimmer_presence_sensor_bewegung
+        - binary_sensor.badezimmer_badezimmer_motion_sensor
         - binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
         - binary_sensor.kuche_kueche_motion_sensor
-        - binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
       to: "on"
   condition:
     - condition: state
@@ -326,12 +263,11 @@
   action:
     - action: notify.mobile_app_redmi_note_12_pro_5g
       data:
-        title: 🚨 Bewegung erkannt!
-        message: Bewegung in deiner Wohnung während Abwesenheit
-  mode: single
+        title: "🚨 Bewegung erkannt!"
+        message: "Bewegung in deiner Wohnung während Abwesenheit"
+
 - id: security_door_alert
-  alias: Sicherheit - TÃƒÆ’Ã‚Â¼r geÃƒÆ’Ã‚Â¶ffnet bei Abwesenheit
-  description: Alert when door opens while away
+  alias: "Sicherheit - Tür geöffnet bei Abwesenheit"
   trigger:
     - platform: state
       entity_id: binary_sensor.no_area_aqara_door_and_window_sensor_tuer
@@ -343,130 +279,33 @@
   action:
     - action: notify.mobile_app_redmi_note_12_pro_5g
       data:
-        title: "\U0001F6AA TÃƒÆ’Ã‚Â¼r geÃƒÆ’Ã‚Â¶ffnet!"
-        message: Die TÃƒÆ’Ã‚Â¼r wurde geÃƒÆ’Ã‚Â¶ffnet wÃƒÆ’Ã‚Â¤hrend du nicht zuhause bist
-  mode: single
-# System Auto Update Moved to system_agent.yaml
-# Old Reset Tracker Automation Removed
-- id: deckenventilator_wintermode
-  alias: Deckenventilator - Wintermodus (Heizung an)
-  description: Turn on fan when heating is on to distribute heat
-  mode: single
-  trigger:
-    - platform: state
-      entity_id: climate.wohnzimmer_thermostat_computer
-      to: heat
-      for:
-        minutes: 5
-  action:
-    - action: script.fan_winter_heat_now
-
-- id: sleep_detection_on
-  alias: Schlafmodus - Aktivieren
-  description: "Detect sleep: bedroom presence + no movement for 10 min after 22:00"
-  mode: single
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
-      to: "on"
-      for:
-        minutes: 10
-  condition:
-    - condition: time
-      after: "22:00:00"
-      before: 06:00:00
-  action:
-    - action: input_boolean.turn_on
-      target:
-        entity_id: input_boolean.someone_sleeping
-    - action: light.turn_off
-      target:
-        entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
-- id: sleep_detection_off
-  alias: Schlafmodus - Deaktivieren
-  description: Reset sleep mode when activity in living room or kitchen
-  mode: single
-  trigger:
-    - platform: state
-      entity_id:
-        - binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
-        - binary_sensor.kuche_kueche_motion_sensor
-      to: "on"
-  condition:
-    - condition: state
-      entity_id: input_boolean.someone_sleeping
-      state: "on"
-  action:
-    - action: input_boolean.turn_off
-      target:
-        entity_id: input_boolean.someone_sleeping
+        title: "🚪 Tür geöffnet!"
+        message: "Die Tür wurde geöffnet während du nicht zuhause bist"
 
 - id: climate_window_protection
-  alias: Heizung - Fenster offen Schutz
-  description: Turn off heating if window is open
+  alias: "Heizung - Fenster offen Schutz"
   trigger:
     - platform: state
       entity_id: binary_sensor.no_area_aqara_door_and_window_sensor_tuer
       to: "on"
-      for: 00:00:30
+      for: "00:00:30"
   action:
     - action: climate.set_hvac_mode
       target:
-        entity_id: climate.badezimmer_thermostat_bad
+        entity_id:
+          - climate.badezimmer_thermostat_bad
+          - climate.wohnzimmer_thermostat_computer
       data:
         hvac_mode: "off"
     - action: notify.mobile_app_redmi_note_12_pro_5g
       data:
         message: "Heizung aus: Fenster offen!"
-  # System Heating Season Moved to system_agent.yaml
 
-  # living_room_lights_on_blind_close moved to light_agent.yaml
-
-  # light_computer_fp2 moved to light_agent.yaml
-  mode: restart
-
-# Flux Update Moved to system_agent.yaml
-
-# Cleaning Automations Moved to system_agent.yaml
-
-# ============================================================================
-# SUMMER AUTOMATIONS
-# ============================================================================
-# summer_ceiling_fan_auto moved to climate_agent.yaml
-
-# summer_ceiling_fan_off moved to climate_agent.yaml
-
-# summer_evening_blinds_open moved to blind_agent.yaml
-
-# ============================================================================
-# NIGHT MODE AUTOMATIONS
-# ============================================================================
-# night_bathroom_low_light moved to light_agent.yaml
-
-# night_bathroom_light_off moved to light_agent.yaml
-
-# ============================================================================
-# COLD BEDROOM HEATING
-# ============================================================================
-# heating_cold_bedroom moved to climate_agent.yaml
-# ============================================================================
-# DOOR SENSOR AUTOMATIONS
-# ============================================================================
-
-# AI Automations merged
-# ============================================================================
-# AI AUTOMATIONS - Powered by n8n & LLMs
-# ============================================================================
-
-# 1. THE GROW BOT (Cannabis Manager)
-# Checks environment every hour and sends data to n8n for analysis
-# AI Grow Bot automations moved to plant_growing.yaml
-
-# 2. THE CLEANING TRACKER
-# Calculates cost and generates report when cleaning mode ends
+# ----------------------------------------------------------------------------
+# AI BRAIN
+# ----------------------------------------------------------------------------
 - id: ai_cleaning_tracker
   alias: "AI - Cleaning Tracker Report"
-  description: "Triggers n8n workflow when cleaning mode is disabled"
   trigger:
     - platform: state
       entity_id: input_boolean.cleaning_mode
@@ -478,10 +317,7 @@
         start_time: "{{ trigger.from_state.last_changed.isoformat() }}"
         end_time: "{{ now().isoformat() }}"
         hourly_rate: 25
-  mode: single
 
-# 3. VOICE NOTIFICATIONS (Jarvis)
-# Example trigger: Water Leak (Critical)
 - id: ai_voice_alert_leak
   alias: "AI - Voice Alert (Water Leak)"
   trigger:
@@ -492,13 +328,10 @@
     - action: rest_command.n8n_voice_notify
       data:
         message: "Critical alert. Water leak detected in the apartment. Please check immediately."
-        voice_id: "Rachel" # ElevenLabs Voice ID
-  mode: single
+        voice_id: "Rachel"
 
-# 4. MORNING BRIEFING (Jarvis)
 - id: ai_morning_briefing
   alias: "AI - Morning Briefing"
-  description: "Triggers n8n to generate and play morning briefing"
   trigger:
     - platform: time
       at: "05:15:00"
@@ -510,4 +343,3 @@
       state: "home"
   action:
     - action: rest_command.n8n_morning_briefing
-  mode: single

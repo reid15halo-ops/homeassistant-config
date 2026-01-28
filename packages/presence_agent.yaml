@@ -1,56 +1,22 @@
 # ============================================================================
-# PRESENCE AGENT
-# Centralized logic for presence detection, occupancy tracking, and guest modes.
+# PRESENCE AGENT (Simplified)
+# Centralized logic for presence detection.
 # ============================================================================
 
 # ----------------------------------------------------------------------------
-# INPUT BOOLEANS (Helpers)
-# ----------------------------------------------------------------------------
-input_boolean:
-  presence_guest_mode:
-    name: "Gäste Modus (Präsenz)"
-    icon: mdi:account-multiple-check
-    initial: off
-
-# ----------------------------------------------------------------------------
-# STATE MEMORY (Helpers)
-# ----------------------------------------------------------------------------
-input_text:
-  blind_state_wohnzimmer:
-    name: "Rollladen Status Wohnzimmer"
-    initial: "closed"
-    icon: mdi:window-shutter
-  blind_state_schlafzimmer:
-    name: "Rollladen Status Schlafzimmer"
-    initial: "closed"
-    icon: mdi:window-shutter
-  blind_state_kuche:
-    name: "Rollladen Status Küche"
-    initial: "closed"
-    icon: mdi:window-shutter
-  blind_state_kiffzimmer:
-    name: "Rollladen Status Kiffzimmer"
-    initial: "closed"
-    icon: mdi:window-shutter
-
-# ----------------------------------------------------------------------------
-# TEMPLATE SENSORS (The Core Logic)
+# TEMPLATE SENSORS
 # ----------------------------------------------------------------------------
 template:
   - binary_sensor:
-      # ----------------------------------------------------------------------
-      # GLOBAL HOME OCCUPANCY
-      # ----------------------------------------------------------------------
       - name: "Jemand Zuhause"
         unique_id: jemand_zuhause
         state: >
           {{ 
-             is_state('binary_sensor.wohnzimmer_presence_sensor', 'on') or
-             is_state('binary_sensor.kuche_presence_sensor', 'on') or
-             is_state('binary_sensor.badezimmer_presence_sensor', 'on') or
-             is_state('binary_sensor.schlafzimmer_presence_sensor', 'on') or
-             is_state('binary_sensor.kiffzimmer_presence_sensor', 'on') or
-             is_state('input_boolean.presence_guest_mode', 'on')
+             is_state('binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1', 'on') or
+             is_state('binary_sensor.kuche_kueche_motion_sensor', 'on') or
+             is_state('binary_sensor.badezimmer_badezimmer_motion_sensor', 'on') or
+             is_state('binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung', 'on') or
+             is_state('binary_sensor.kiffzimmer_kiffzimmer_motion_sensor', 'on')
           }}
         icon: >
           {% if is_state('binary_sensor.jemand_zuhause', 'on') %}
@@ -58,101 +24,3 @@ template:
           {% else %}
             mdi:home-outline
           {% endif %}
-
-      # ----------------------------------------------------------------------
-      # ROOM: WOHNZIMMER
-      # ----------------------------------------------------------------------
-      - name: "Wohnzimmer Presence Sensor"
-        unique_id: wohnzimmer_presence_sensor
-        delay_off: "00:01:00" # 1 min buffer
-        state: >
-          {{ 
-             is_state('binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1', 'on')
-             # Future: Add TV playing state here
-             # or is_state('media_player.living_room_tv', 'playing')
-          }}
-        icon: mdi:account-eye
-
-      # ----------------------------------------------------------------------
-      # ROOM: KÜCHE
-      # ----------------------------------------------------------------------
-      - name: "Küche Presence Sensor"
-        unique_id: kuche_presence_sensor
-        delay_off: "00:01:30" # 90s buffer for cooking
-        state: >
-          {{ 
-             is_state('binary_sensor.kuche_kueche_motion_sensor', 'on')
-             or is_state('binary_sensor.kuche_kueche_presence_sensor_bewegung', 'on')
-          }}
-        icon: mdi:chef-hat
-
-      # ----------------------------------------------------------------------
-      # ROOM: BADEZIMMER
-      # ----------------------------------------------------------------------
-      - name: "Badezimmer Presence Sensor"
-        unique_id: badezimmer_presence_sensor
-        delay_off: "00:02:00" # 2 min buffer (showering/brushing teeth)
-        state: >
-          {{ 
-             is_state('binary_sensor.badezimmer_badezimmer_motion_sensor', 'on')
-             or is_state('binary_sensor.badezimmer_badezimmer_presence_sensor_bewegung', 'on')
-          }}
-        icon: mdi:shower
-
-      # ----------------------------------------------------------------------
-      # ROOM: SCHLAFZIMMER
-      # ----------------------------------------------------------------------
-      - name: "Schlafzimmer Presence Sensor"
-        unique_id: schlafzimmer_presence_sensor
-        delay_off: "00:00:30" # Short buffer
-        state: >
-          {{ 
-             is_state('binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung', 'on')
-             or is_state('binary_sensor.schlafzimmer_schlafzimmer_tuersensor_opening', 'on')
-          }}
-        icon: mdi:bed
-
-      # ----------------------------------------------------------------------
-      # ROOM: KIFFZIMMER
-      # ----------------------------------------------------------------------
-      - name: "Kiffzimmer Presence Sensor"
-        unique_id: kiffzimmer_presence_sensor
-        delay_off: "00:01:00" # 1 min buffer
-        state: >
-          {{ 
-             is_state('binary_sensor.kiffzimmer_kiffzimmer_motion_sensor', 'on')
-             # Future: Add Door Sensor if needed
-             # or is_state('binary_sensor.kiffzimmer_kiffzimmer_tuersensor_opening', 'on')
-          }}
-        icon: mdi:cannabis
-
-# ----------------------------------------------------------------------------
-# AUTOMATIONS (Agent Logic)
-# ----------------------------------------------------------------------------
-automation:
-  - id: presence_agent_notify_arrival
-    alias: "Presence Agent - Notify Arrival"
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.jemand_zuhause
-        from: "off"
-        to: "on"
-    action:
-      - action: notify.mobile_app_redmi_note_12_pro_5g
-        data:
-          title: "Zuhause belegt"
-          message: "Willkommen zurück! Präsenz erkannt."
-
-  - id: presence_agent_notify_departure
-    alias: "Presence Agent - Notify Departure"
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.jemand_zuhause
-        from: "on"
-        to: "off"
-        for: "00:05:00" # 5 min confirmation
-    action:
-      - action: notify.mobile_app_redmi_note_12_pro_5g
-        data:
-          title: "Zuhause leer"
-          message: "Keine Präsenz mehr erkannt. Haus ist im Ruhemodus."

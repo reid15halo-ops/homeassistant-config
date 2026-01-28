@@ -1,350 +1,116 @@
 # ============================================================================
-# BLIND AGENT
-# Version: 1.1.0
-# Last Audit: 2026-01-28
-# Centralized control for all blinds/shutters.
+# BLIND AGENT (Radically Simplified)
+# Direct control for blinds/shutters.
 # ============================================================================
 
 # ----------------------------------------------------------------------------
-# HELPERS (Encapsulated)
+# HELPERS
 # ----------------------------------------------------------------------------
-input_boolean:
-  blind_agent_master:
-    name: "Blind Agent Master Switch"
-    icon: mdi:window-shutter-cog
-    initial: on
-
-input_text:
-  blind_state_wohnzimmer:
-    name: "Rollladen Status Wohnzimmer"
-    initial: "closed"
-    icon: mdi:window-shutter
-  blind_state_schlafzimmer:
-    name: "Rollladen Status Schlafzimmer"
-    initial: "closed"
-    icon: mdi:window-shutter
-  blind_state_kuche:
-    name: "Rollladen Status Küche"
-    initial: "closed"
-    icon: mdi:window-shutter
-  blind_state_kiffzimmer:
-    name: "Rollladen Status Kiffzimmer"
-    initial: "closed"
-    icon: mdi:window-shutter
-
-# ----------------------------------------------------------------------------
-# SENSORS
-# ----------------------------------------------------------------------------
-template:
-  - sensor:
-      - name: "Blind Agent Status"
-        unique_id: blind_agent_status
-        state: >
-          {% if is_state('input_boolean.blind_agent_master', 'on') %}
-            Active
-          {% else %}
-            Disabled
-          {% endif %}
-        attributes:
-          auto_shutters: "{{ states('input_boolean.auto_shutters_enabled') }}"
-          open_blinds: >
-            {{ [
-              states('input_text.blind_state_wohnzimmer'),
-              states('input_text.blind_state_schlafzimmer'),
-              states('input_text.blind_state_kuche'),
-              states('input_text.blind_state_kiffzimmer')
-            ] | select('eq', 'open') | list | length }}
-
-# ----------------------------------------------------------------------------
-# SCRIPTS
-# ----------------------------------------------------------------------------
-script:
-  blind_agent_control:
-    alias: "Blind Agent - Control"
-    description: "Intelligent blind control with state memory and force capability"
-    mode: parallel
-    fields:
-      entity_id:
-        description: "Cover entity to control"
-        example: "cover.wohnzimmer_wohnzimmer_rollladen_vorhang"
-      command:
-        description: "Command: 'open' or 'close'"
-        example: "open"
-      force:
-        description: "Force action even if state says it's already done"
-        example: false
-    sequence:
-      - variables:
-          state_entity: >
-            {% if entity_id == 'cover.wohnzimmer_wohnzimmer_rollladen_vorhang' %}
-              input_text.blind_state_wohnzimmer
-            {% elif entity_id == 'cover.schlafzimmer_schlafzimmer_rollladen_vorhang' %}
-              input_text.blind_state_schlafzimmer
-            {% elif entity_id == 'cover.kuche_kueche_rollladen_vorhang' %}
-              input_text.blind_state_kuche
-            {% elif entity_id == 'cover.kiffzimmer_kiffzimmer_rollladen_vorhang' %}
-              input_text.blind_state_kiffzimmer
-            {% endif %}
-          current_state: "{{ states(state_entity) }}"
-          is_inverted: "{{ entity_id == 'cover.schlafzimmer_schlafzimmer_rollladen_vorhang' }}"
-
-      - choose:
-          # OPEN COMMAND
-          - conditions:
-              - condition: template
-                value_template: "{{ command == 'open' }}"
-            sequence:
-              - choose:
-                  - conditions:
-                      - condition: template
-                        value_template: "{{ current_state == 'closed' or force }}"
-                    sequence:
-                      - action: >
-                          {% if is_inverted %}
-                            cover.close_cover
-                          {% else %}
-                            cover.open_cover
-                          {% endif %}
-                        target:
-                          entity_id: "{{ entity_id }}"
-                      - action: input_text.set_value
-                        target:
-                          entity_id: "{{ state_entity }}"
-                        data:
-                          value: "open"
-                default:
-                  - action: system_log.write
-                    data:
-                      message: "Blind Agent: Skipped OPEN for {{ entity_id }} (Already Open)"
-                      level: info
-
-          # CLOSE COMMAND
-          - conditions:
-              - condition: template
-                value_template: "{{ command == 'close' }}"
-            sequence:
-              - choose:
-                  - conditions:
-                      - condition: template
-                        value_template: "{{ current_state == 'open' or force }}"
-                    sequence:
-                      - action: >
-                          {% if is_inverted %}
-                            cover.open_cover
-                          {% else %}
-                            cover.close_cover
-                          {% endif %}
-                        target:
-                          entity_id: "{{ entity_id }}"
-                      - action: input_text.set_value
-                        target:
-                          entity_id: "{{ state_entity }}"
-                        data:
-                          value: "closed"
-                default:
-                  - action: system_log.write
-                    data:
-                      message: "Blind Agent: Skipped CLOSE for {{ entity_id }} (Already Closed)"
-                      level: info
-
-  all_covers_open:
-    alias: Open All Covers
-    mode: single
-    sequence:
-      - action: script.blind_agent_control
-        data:
-          {
-            entity_id: "cover.wohnzimmer_wohnzimmer_rollladen_vorhang",
-            command: "open",
-          }
-      - action: script.blind_agent_control
-        data:
-          { entity_id: "cover.kuche_kueche_rollladen_vorhang", command: "open" }
-      - action: script.blind_agent_control
-        data:
-          {
-            entity_id: "cover.kiffzimmer_kiffzimmer_rollladen_vorhang",
-            command: "open",
-          }
-      - action: script.blind_agent_control
-        data:
-          {
-            entity_id: "cover.schlafzimmer_schlafzimmer_rollladen_vorhang",
-            command: "open",
-          }
-
-  all_covers_close:
-    alias: Close All Covers
-    mode: single
-    sequence:
-      - action: script.blind_agent_control
-        data:
-          {
-            entity_id: "cover.wohnzimmer_wohnzimmer_rollladen_vorhang",
-            command: "close",
-          }
-      - action: script.blind_agent_control
-        data:
-          {
-            entity_id: "cover.kuche_kueche_rollladen_vorhang",
-            command: "close",
-          }
-      - action: script.blind_agent_control
-        data:
-          {
-            entity_id: "cover.kiffzimmer_kiffzimmer_rollladen_vorhang",
-            command: "close",
-          }
-      - action: script.blind_agent_control
-        data:
-          {
-            entity_id: "cover.schlafzimmer_schlafzimmer_rollladen_vorhang",
-            command: "close",
-          }
-
-  blind_travel_timed:
-    alias: "Rollladen - Zeitgesteuerte Fahrt"
-    description: "Fährt einen Rollladen für eine bestimmte Zeit und stoppt dann."
-    mode: parallel
-    fields:
-      cover_entity:
-        description: "Die Cover-Entität"
-        example: "cover.wohnzimmer_wohnzimmer_rollladen_vorhang"
-      direction:
-        description: "Richtung (open oder close)"
-        example: "open"
-      duration:
-        description: "Dauer in Sekunden"
-        example: 11
-    sequence:
-      - action: >
-          {% if direction == 'open' %}
-            {% if cover_entity == 'cover.schlafzimmer_schlafzimmer_rollladen_vorhang' %}
-              cover.close_cover
-            {% else %}
-              cover.open_cover
-            {% endif %}
-          {% else %}
-            {% if cover_entity == 'cover.schlafzimmer_schlafzimmer_rollladen_vorhang' %}
-              cover.open_cover
-            {% else %}
-              cover.close_cover
-            {% endif %}
-          {% endif %}
-        target:
-          entity_id: "{{ cover_entity }}"
-      - delay: "{{ duration }}"
-      - action: cover.stop_cover
-        target:
-          entity_id: "{{ cover_entity }}"
-
-  blind_half_open:
-    alias: "Rollladen - Halb öffnen (11s)"
-    sequence:
-      - action: script.blind_travel_timed
-        data:
-          cover_entity: "{{ cover_entity }}"
-          direction: "open"
-          duration: 11
-
-  blind_quarter_open:
-    alias: "Rollladen - Viertel öffnen (7s)"
-    sequence:
-      - action: script.blind_travel_timed
-        data:
-          cover_entity: "{{ cover_entity }}"
-          direction: "open"
-          duration: 7
-
-  blind_three_quarter_open:
-    alias: "Rollladen - Dreiviertel öffnen (15s)"
-    sequence:
-      - action: script.blind_travel_timed
-        data:
-          cover_entity: "{{ cover_entity }}"
-          direction: "open"
-          duration: 15
 
 # ----------------------------------------------------------------------------
 # AUTOMATIONS
 # ----------------------------------------------------------------------------
 automation:
-  - id: blind_agent_daily_reset
-    alias: Blind Agent - Daily Reset
-    trigger:
-      - platform: time
-        at: "04:00:00"
-    action:
-      - action: input_text.set_value
-        target:
-          entity_id:
-            - input_text.blind_state_wohnzimmer
-            - input_text.blind_state_schlafzimmer
-            - input_text.blind_state_kuche
-            - input_text.blind_state_kiffzimmer
-        data:
-          value: closed
-
-  - id: blind_agent_sun_control
-    alias: Blind Agent - Sun Control (Sunrise/Sunset)
+  # --- SUNRISE OPEN ---
+  - alias: "Rollladen Wohnzimmer - Auf (Sonnenaufgang)"
     trigger:
       - platform: sun
         event: sunrise
         offset: "01:00:00"
-        id: sunrise
+    condition:
+
+    action:
+      - action: cover.open_cover
+        target:
+          entity_id: cover.wohnzimmer_wohnzimmer_rollladen_vorhang
+
+  - alias: "Rollladen Küche - Auf (Sonnenaufgang)"
+    trigger:
+      - platform: sun
+        event: sunrise
+        offset: "01:00:00"
+    condition:
+
+    action:
+      - action: cover.open_cover
+        target:
+          entity_id: cover.kuche_kueche_rollladen_vorhang
+
+  - alias: "Rollladen Kiffzimmer - Auf (Sonnenaufgang)"
+    trigger:
+      - platform: sun
+        event: sunrise
+        offset: "01:00:00"
+    condition:
+
+    action:
+      - action: cover.open_cover
+        target:
+          entity_id: cover.kiffzimmer_kiffzimmer_rollladen_vorhang
+
+  - alias: "Rollladen Schlafzimmer - Auf (Sonnenaufgang)"
+    trigger:
+      - platform: sun
+        event: sunrise
+        offset: "01:00:00"
+    condition:
+
+    action:
+      - action: cover.close_cover # Inverted
+        target:
+          entity_id: cover.schlafzimmer_schlafzimmer_rollladen_vorhang
+
+  # --- SUNSET CLOSE ---
+  - alias: "Rollladen Wohnzimmer - Zu (Sonnenuntergang)"
+    trigger:
       - platform: sun
         event: sunset
         offset: "01:00:00"
-        id: sunset
     condition:
-      - condition: state
-        entity_id: input_boolean.blind_agent_master
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.auto_shutters_enabled
-        state: "on"
-    action:
-      - choose:
-          - conditions:
-              - condition: trigger
-                id: sunrise
-            sequence:
-              - action: script.all_covers_open
-          - conditions:
-              - condition: trigger
-                id: sunset
-            sequence:
-              - action: script.all_covers_close
 
-  - id: shutters_open_spring_fall
-    alias: Rollläden - Öffnen Frühling/Herbst
+    action:
+      - action: cover.close_cover
+        target:
+          entity_id: cover.wohnzimmer_wohnzimmer_rollladen_vorhang
+
+  - alias: "Rollladen Küche - Zu (Sonnenuntergang)"
     trigger:
       - platform: sun
-        event: sunrise
-        offset: 00:30:00
+        event: sunset
+        offset: "01:00:00"
     condition:
-      - condition: state
-        entity_id: input_boolean.blind_agent_master
-        state: "on"
-      - condition: template
-        value_template: "{{ now().month in [3, 4, 5, 9, 10] }}"
-      - condition: or
-        conditions:
-          - condition: time
-            after: 05:00
-            weekday: [mon, tue, wed, thu, fri]
-          - condition: time
-            after: "10:00"
-            weekday: [sat, sun]
-      - condition: state
-        entity_id: input_boolean.cleaning_mode
-        state: "off"
-    action:
-      - action: script.all_covers_open
-    mode: single
 
-  - id: bedroom_shutters_sleep
-    alias: Schlafzimmer - Rollläden schließen bei Schlaf
+    action:
+      - action: cover.close_cover
+        target:
+          entity_id: cover.kuche_kueche_rollladen_vorhang
+
+  - alias: "Rollladen Kiffzimmer - Zu (Sonnenuntergang)"
+    trigger:
+      - platform: sun
+        event: sunset
+        offset: "01:00:00"
+    condition:
+
+    action:
+      - action: cover.close_cover
+        target:
+          entity_id: cover.kiffzimmer_kiffzimmer_rollladen_vorhang
+
+  - alias: "Rollladen Schlafzimmer - Zu (Sonnenuntergang)"
+    trigger:
+      - platform: sun
+        event: sunset
+        offset: "01:00:00"
+    condition:
+
+    action:
+      - action: cover.open_cover # Inverted
+        target:
+          entity_id: cover.schlafzimmer_schlafzimmer_rollladen_vorhang
+
+  # --- SLEEP DETECTION ---
+  - alias: "Schlafzimmer - Zu bei Schlaf"
     trigger:
       - platform: state
         entity_id: binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
@@ -352,66 +118,29 @@ automation:
         for:
           minutes: 15
     condition:
-      - condition: state
-        entity_id: input_boolean.blind_agent_master
-        state: "on"
       - condition: time
-        after: "22:00"
-        before: 08:00
-      - condition: state
-        entity_id: binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
-        state: "off"
-      - condition: state
-        entity_id: binary_sensor.kuche_kueche_motion_sensor
-        state: "off"
-      - condition: state
-        entity_id: input_boolean.cleaning_mode
-        state: "off"
+        after: "22:00:00"
+        before: "08:00:00"
     action:
-      - action: script.blind_agent_control
-        data:
+      - action: cover.open_cover # Inverted
+        target:
           entity_id: cover.schlafzimmer_schlafzimmer_rollladen_vorhang
-          command: close
-    mode: single
 
-  - id: summer_peak_sun_blinds_close
-    alias: "Sommer - Rollläden bei Sonnenhöchststand"
+  # --- SUMMER PROTECTION ---
+  - alias: "Sommer - Zu bei Hitze"
     trigger:
       - platform: numeric_state
         entity_id: sensor.no_area_sun_solare_elevation
         above: 50
     condition:
-      - condition: state
-        entity_id: input_boolean.blind_agent_master
-        state: "on"
-      - condition: template
-        value_template: "{{ now().month in [5, 6, 7, 8, 9] }}"
       - condition: numeric_state
         entity_id: weather.no_area_forecast_zuhause
         attribute: temperature
         above: 22
     action:
-      - action: script.all_covers_close
-    mode: single
-
-  - id: summer_evening_blinds_open
-    alias: "Sommer - Rollläden öffnen am Abend"
-    trigger:
-      - platform: numeric_state
-        entity_id: sensor.no_area_sun_solare_elevation
-        below: 15
-    condition:
-      - condition: state
-        entity_id: input_boolean.blind_agent_master
-        state: "on"
-      - condition: template
-        value_template: "{{ now().month in [5, 6, 7, 8, 9] }}"
-      - condition: sun
-        before: sunset
-        after: sunrise
-      - condition: state
-        entity_id: person.jonas_glawion
-        state: "home"
-    action:
-      - action: script.all_covers_open
-    mode: single
+      - action: cover.close_cover
+        target:
+          entity_id:
+            - cover.wohnzimmer_wohnzimmer_rollladen_vorhang
+            - cover.kuche_kueche_rollladen_vorhang
+            - cover.kiffzimmer_kiffzimmer_rollladen_vorhang

@@ -1,18 +1,7 @@
 # ============================================================================
-# CLIMATE AGENT
-# Version: 1.0.0
-# Last Audit: 2026-01-28
-# Centralized control for all heating, cooling, and ventilation logic.
+# CLIMATE AGENT (Radically Simplified)
+# Centralized heating and cooling.
 # ============================================================================
-
-# ----------------------------------------------------------------------------
-# HELPERS (Encapsulated)
-# ----------------------------------------------------------------------------
-input_boolean:
-  climate_agent_master:
-    name: "Climate Agent Master Switch"
-    icon: mdi:thermostat-auto
-    initial: on
 
 # ----------------------------------------------------------------------------
 # SENSORS
@@ -21,14 +10,9 @@ template:
   - sensor:
       - name: "Climate Agent Status"
         unique_id: climate_agent_status
-        state: >
-          {% if is_state('input_boolean.climate_agent_master', 'on') %}
-            Active
-          {% else %}
-            Disabled
-          {% endif %}
+        state: "Active"
         attributes:
-          heating_mode: "{{ states('input_boolean.heizung_winter_mode') }}"
+          heating_mode: "{{ 'on' if now().month in [1, 2, 3, 4, 10, 11, 12] else 'off' }}"
           avg_temp: >
             {{ ( (states('sensor.wohnzimmer_thermostat_computer_temperatur') | float(0)) + 
                  (states('sensor.badezimmer_thermostat_bad_temperatur') | float(0)) ) / 2 | round(1) }}
@@ -39,7 +23,6 @@ template:
 script:
   heating_comfort_now:
     alias: "Heizung - Sofort Komfort"
-    description: "Manually set heating to comfort temperature"
     mode: single
     sequence:
       - action: climate.set_temperature
@@ -52,7 +35,6 @@ script:
 
   fan_winter_heat_now:
     alias: "Ventilator - Winter Wärmeverteilung starten"
-    description: "Manually start ceiling fan in winter heat distribution mode"
     mode: single
     sequence:
       - action: fan.turn_on
@@ -67,15 +49,12 @@ script:
 # ----------------------------------------------------------------------------
 automation:
   - id: heating_presence_on
-    alias: Heizung - Komfort bei Anwesenheit
+    alias: "Heizung - Komfort bei Anwesenheit"
     trigger:
       - platform: state
         entity_id: person.jonas_glawion
         to: home
     condition:
-      - condition: state
-        entity_id: input_boolean.climate_agent_master
-        state: "on"
       - condition: template
         value_template: "{{ now().month in [1, 2, 3, 4, 10, 11, 12] }}"
     action:
@@ -86,20 +65,15 @@ automation:
             - climate.wohnzimmer_thermostat_computer
         data:
           temperature: "{{ 23 if now().month in [11, 12, 1, 2] else 22 }}"
-    mode: single
 
   - id: heating_away_eco
-    alias: Heizung - Eco bei Abwesenheit
+    alias: "Heizung - Eco bei Abwesenheit"
     trigger:
       - platform: state
         entity_id: person.jonas_glawion
         to: not_home
         for:
           minutes: 10
-    condition:
-      - condition: state
-        entity_id: input_boolean.climate_agent_master
-        state: "on"
     action:
       - action: climate.set_temperature
         target:
@@ -108,17 +82,13 @@ automation:
             - climate.wohnzimmer_thermostat_computer
         data:
           temperature: 18
-    mode: single
 
   - id: heating_night_mode
-    alias: Heizung - Nachtmodus
+    alias: "Heizung - Nachtmodus"
     trigger:
       - platform: time
-        at: "22:00"
+        at: "22:00:00"
     condition:
-      - condition: state
-        entity_id: input_boolean.climate_agent_master
-        state: "on"
       - condition: template
         value_template: "{{ now().month in [1, 2, 3, 4, 10, 11, 12] }}"
     action:
@@ -129,51 +99,78 @@ automation:
             - climate.wohnzimmer_thermostat_computer
         data:
           temperature: 17
-    mode: single
 
-  - id: heating_cold_bedroom
-    alias: "Heizung - Kaltes Schlafzimmer"
-    description: "Keep bedroom cooler than other rooms (max 18°C)"
+  - id: heating_morning_restore_weekday
+    alias: "Heizung - Morgen Komfort Werktag (06:00)"
     trigger:
       - platform: time
         at: "06:00:00"
-      - platform: time
-        at: "22:00:00"
-      - platform: state
-        entity_id: input_boolean.heizung_winter_mode
-        to: "on"
     condition:
+      - condition: template
+        value_template: "{{ now().month in [1, 2, 3, 4, 10, 11, 12] }}"
       - condition: state
-        entity_id: input_boolean.climate_agent_master
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.heizung_winter_mode
-        state: "on"
+        entity_id: person.jonas_glawion
+        state: home
+      - condition: time
+        weekday: [mon, tue, wed, thu, fri]
     action:
       - action: climate.set_temperature
         target:
-          entity_id: climate.wohnzimmer_thermostat_computer
+          entity_id:
+            - climate.badezimmer_thermostat_bad
+            - climate.wohnzimmer_thermostat_computer
         data:
-          temperature: 18
-    mode: single
+          temperature: "{{ 23 if now().month in [11, 12, 1, 2] else 22 }}"
 
-  - id: summer_ceiling_fan_auto
-    alias: "Sommer - Deckenventilator bei Hitze"
+  - id: heating_morning_restore_weekend
+    alias: "Heizung - Morgen Komfort Wochenende (09:00)"
+    trigger:
+      - platform: time
+        at: "09:00:00"
+    condition:
+      - condition: template
+        value_template: "{{ now().month in [1, 2, 3, 4, 10, 11, 12] }}"
+      - condition: state
+        entity_id: person.jonas_glawion
+        state: home
+      - condition: time
+        weekday: [sat, sun]
+    action:
+      - action: climate.set_temperature
+        target:
+          entity_id:
+            - climate.badezimmer_thermostat_bad
+            - climate.wohnzimmer_thermostat_computer
+        data:
+          temperature: "{{ 23 if now().month in [11, 12, 1, 2] else 22 }}"
+
+  - id: summer_ceiling_fan_on_temp
+    alias: "Sommer - Deckenventilator AN (Hitze)"
     trigger:
       - platform: numeric_state
         entity_id: weather.no_area_forecast_zuhause
         attribute: temperature
         above: 24
+    condition:
+      - condition: state
+        entity_id: person.jonas_glawion
+        state: "home"
+      - condition: template
+        value_template: "{{ now().month in [5, 6, 7, 8, 9] }}"
+    action:
+      - action: fan.turn_on
+        target:
+          entity_id: fan.wohnzimmer_wohnzimmer_deckenventilator_u_licht
+        data:
+          percentage: 66
+
+  - id: summer_ceiling_fan_on_arrival
+    alias: "Sommer - Deckenventilator AN (Heimkehr)"
+    trigger:
       - platform: state
         entity_id: person.jonas_glawion
         to: "home"
     condition:
-      - condition: state
-        entity_id: input_boolean.climate_agent_master
-        state: "on"
-      - condition: state
-        entity_id: person.jonas_glawion
-        state: "home"
       - condition: numeric_state
         entity_id: weather.no_area_forecast_zuhause
         attribute: temperature
@@ -186,23 +183,18 @@ automation:
           entity_id: fan.wohnzimmer_wohnzimmer_deckenventilator_u_licht
         data:
           percentage: 66
-    mode: single
 
   - id: summer_ceiling_fan_off
-    alias: "Sommer - Deckenventilator aus bei Kühle"
+    alias: "Sommer - Deckenventilator AUS (Kühle)"
     trigger:
       - platform: numeric_state
         entity_id: weather.no_area_forecast_zuhause
         attribute: temperature
         below: 22
     condition:
-      - condition: state
-        entity_id: input_boolean.climate_agent_master
-        state: "on"
       - condition: template
         value_template: "{{ now().month in [5, 6, 7, 8, 9] }}"
     action:
       - action: fan.turn_off
         target:
           entity_id: fan.wohnzimmer_wohnzimmer_deckenventilator_u_licht
-    mode: single

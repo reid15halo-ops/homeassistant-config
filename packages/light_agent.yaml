@@ -1,445 +1,199 @@
 # ============================================================================
-# LIGHT AGENT
-# Version: 1.1.0
-# Last Audit: 2026-01-28
-# Centralized control for all light-related automations and scripts.
+# LIGHT AGENT (Radically Simplified)
+# Simple motion-based lighting.
 # ============================================================================
 
 # ----------------------------------------------------------------------------
-# HELPERS (Encapsulated)
+# SCRIPTS
 # ----------------------------------------------------------------------------
-input_boolean:
-  light_agent_master:
-    name: "Light Agent Master Switch"
-    icon: mdi:lightbulb-auto
-    initial: on
-
-input_select:
-  ambient_modus:
-    name: "Ambient Modus"
-    options:
-      - "Aus"
-      - "Warm Flicker"
-      - "Velvet Rainbow"
-      - "Entspannt"
-      - "Fokus"
-    initial: "Aus"
-    icon: mdi:palette
-
-# ----------------------------------------------------------------------------
-# SENSORS
-# ----------------------------------------------------------------------------
-template:
-  - sensor:
-      - name: "Light Agent Status"
-        unique_id: light_agent_status
-        state: >
-          {% if is_state('input_boolean.light_agent_master', 'on') %}
-            Active
-          {% else %}
-            Disabled
-          {% endif %}
-        attributes:
-          auto_lights: "{{ states('input_boolean.auto_lights_enabled') }}"
-          active_lights: "{{ states.light | selectattr('state', 'eq', 'on') | list | length }}"
+script:
+  all_lights_off:
+    alias: Turn Off All Lights
+    mode: single
+    sequence:
+      - action: light.turn_off
+        target:
+          entity_id: all
+        continue_on_error: true
 
 # ----------------------------------------------------------------------------
 # AUTOMATIONS
 # ----------------------------------------------------------------------------
 automation:
-  - id: light_wohnzimmer_smart_presence
-    alias: Wohnzimmer - Smartes Licht (True Presence)
+  # --- WOHNZIMMER ---
+  - id: light_wohnzimmer_motion_on
+    alias: "Wohnzimmer - Licht AN bei Bewegung"
     trigger:
       - platform: state
-        entity_id:
-          - binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
+        entity_id: binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
         to: "on"
-        id: occupied
-      - platform: state
-        entity_id:
-          - binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
-        to: "off"
-        for: 00:01:00
-        id: vacant
-      - platform: numeric_state
+    condition:
+      - condition: state
+        entity_id: input_boolean.auto_lights_enabled
+        state: "on"
+      - condition: numeric_state
         entity_id: sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_light_sensor_light_level
         below: 30
-        id: got_dark
-      - platform: time_pattern
-        minutes: "/5"
-        id: periodic_check
-    condition:
-      - condition: state
-        entity_id: input_boolean.light_agent_master
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.auto_lights_enabled
-        state: "on"
     action:
-      - choose:
-          # Case 1: Someone is present AND it is dark -> Turn ON
-          - conditions:
-              - condition: numeric_state
-                entity_id: sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_light_sensor_light_level
-                below: 30
-              - condition: state
-                entity_id: binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
-                state: "on"
-            sequence:
-              - action: light.turn_on
-                target:
-                  entity_id: light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
-                data:
-                  brightness_pct: 100
-                  color_temp_kelvin: 2700
-                  transition: 2
-              - action: light.turn_on
-                target:
-                  entity_id: light.wohnzimmer_wohnzimmer_deckenventilator_u_licht
-                data:
-                  brightness_pct: 50
-                  color_temp_kelvin: 2700
-                  transition: 2
+      - action: light.turn_on
+        target:
+          entity_id:
+            - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
+            - light.wohnzimmer_wohnzimmer_deckenventilator_u_licht
+        data:
+          brightness_pct: 80
+          color_temp_kelvin: 2700
 
-          # Case 2: No one is present -> Turn OFF
-          - conditions:
-              - condition: state
-                entity_id: binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
-                state: "off"
-            sequence:
-              - action: light.turn_off
-                target:
-                  entity_id:
-                    - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
-                    - light.wohnzimmer_wohnzimmer_deckenventilator_u_licht
-                data:
-                  transition: 2
-    mode: restart
-
-  - id: light_kuche_smart_presence
-    alias: Küche - Smartes Licht (True Presence)
-    description: Controls kitchen lights based on True Presence and Adaptive Lighting
+  - id: light_wohnzimmer_motion_off
+    alias: "Wohnzimmer - Licht AUS ohne Bewegung"
     trigger:
       - platform: state
-        entity_id:
-          - binary_sensor.kuche_kueche_motion_sensor
-        to: "on"
-        id: occupied
-      - platform: state
-        entity_id:
-          - binary_sensor.kuche_kueche_motion_sensor
-        to: "off"
-        for: "00:01:30"
-        id: vacant
-      - platform: time_pattern
-        minutes: "/5"
-        id: periodic_check
-    condition:
-      - condition: state
-        entity_id: input_boolean.light_agent_master
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.auto_lights_enabled
-        state: "on"
-    action:
-      - choose:
-          # Case 1: Occupied AND Dark -> Turn ON
-          - conditions:
-              - condition: state
-                entity_id: binary_sensor.kuche_kueche_motion_sensor
-                state: "on"
-              - condition: or
-                conditions:
-                  - condition: state
-                    entity_id: sun.sun
-                    state: "below_horizon"
-                  - condition: numeric_state
-                    entity_id: sun.sun
-                    attribute: elevation
-                    below: 4
-              - condition: state
-                entity_id: input_boolean.cleaning_mode
-                state: "off"
-            sequence:
-              - action: light.turn_on
-                target:
-                  entity_id:
-                    - light.kuche_kueche_deckenlicht_2
-                    - light.kuche_kueche_deckenlicht_1
-                    - light.kuche_kueche_lichtstreifen
-                data:
-                  transition: 2
-          # Case 2: Vacant -> Turn OFF
-          - conditions:
-              - condition: state
-                entity_id: binary_sensor.kuche_kueche_motion_sensor
-                state: "off"
-              - condition: state
-                entity_id: input_boolean.cleaning_mode
-                state: "off"
-            sequence:
-              - action: light.turn_off
-                target:
-                  entity_id:
-                    - light.kuche_kueche_deckenlicht_2
-                    - light.kuche_kueche_deckenlicht_1
-                    - light.kuche_kueche_lichtstreifen
-                data:
-                  transition: 2
-    mode: restart
-
-  - id: light_bad_smart_presence
-    alias: Bad - Smartes Licht (True Presence)
-    description: Controls bathroom lights based on True Presence and Adaptive Lighting
-    trigger:
-      - platform: state
-        entity_id:
-          - binary_sensor.badezimmer_badezimmer_motion_sensor
-        to: "on"
-        id: occupied
-      - platform: state
-        entity_id:
-          - binary_sensor.badezimmer_badezimmer_motion_sensor
+        entity_id: binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
         to: "off"
         for: "00:02:00"
-        id: vacant
-      - platform: time_pattern
-        minutes: "/5"
-        id: periodic_check
     condition:
-      - condition: state
-        entity_id: input_boolean.light_agent_master
-        state: "on"
       - condition: state
         entity_id: input_boolean.auto_lights_enabled
         state: "on"
     action:
-      - choose:
-          # Case 1: Occupied AND (Dark OR Night) -> Turn ON
-          - conditions:
-              - condition: state
-                entity_id: binary_sensor.badezimmer_badezimmer_motion_sensor
-                state: "on"
-              - condition: or
-                conditions:
-                  - condition: sun
-                    after: sunset
-                    before: sunrise
-                  - condition: time
-                    before: "08:00"
-                    after: "20:00"
-              - condition: state
-                entity_id: input_boolean.cleaning_mode
-                state: "off"
-            sequence:
-              - action: light.turn_on
-                target:
-                  entity_id: light.schlafzimmer_badezimmer_lichtstreifen
-                data:
-                  transition: 2
-          # Case 2: Vacant -> Turn OFF
-          - conditions:
-              - condition: state
-                entity_id: binary_sensor.badezimmer_badezimmer_motion_sensor
-                state: "off"
-              - condition: state
-                entity_id: input_boolean.cleaning_mode
-                state: "off"
-            sequence:
-              - action: light.turn_off
-                target:
-                  entity_id: light.schlafzimmer_badezimmer_lichtstreifen
-                data:
-                  transition: 2
-    mode: restart
+      - action: light.turn_off
+        target:
+          entity_id:
+            - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
+            - light.wohnzimmer_wohnzimmer_deckenventilator_u_licht
 
-  - id: light_schlafen_smart_presence
-    alias: Schlafzimmer - Smartes Licht (True Presence)
-    description: Controls bedroom lights based on True Presence and Adaptive Lighting
+  # --- KÜCHE ---
+  - id: light_kuche_motion_on
+    alias: "Küche - Licht AN bei Bewegung"
     trigger:
       - platform: state
-        entity_id:
-          - binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
+        entity_id: binary_sensor.kuche_kueche_motion_sensor
         to: "on"
-        id: occupied
-      - platform: state
-        entity_id:
-          - binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
-        to: "off"
-        for: "00:00:30"
-        id: vacant
-      - platform: time_pattern
-        minutes: "/5"
-        id: periodic_check
     condition:
       - condition: state
-        entity_id: input_boolean.light_agent_master
+        entity_id: input_boolean.auto_lights_enabled
         state: "on"
+      - condition: sun
+        after: sunset
+        before: sunrise
+    action:
+      - action: light.turn_on
+        target:
+          entity_id:
+            - light.kuche_kueche_deckenlicht_1
+            - light.kuche_kueche_deckenlicht_2
+            - light.kuche_kueche_lichtstreifen
+        data:
+          brightness_pct: 100
+
+  - id: light_kuche_motion_off
+    alias: "Küche - Licht AUS ohne Bewegung"
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.kuche_kueche_motion_sensor
+        to: "off"
+        for: "00:02:00"
+    condition:
       - condition: state
         entity_id: input_boolean.auto_lights_enabled
         state: "on"
     action:
-      - choose:
-          # Case 1: Occupied AND Dark -> Turn ON
-          - conditions:
-              - condition: state
-                entity_id: binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
-                state: "on"
-              - condition: sun
-                after: sunset
-                before: sunrise
-              - condition: state
-                entity_id: input_boolean.cleaning_mode
-                state: "off"
-            sequence:
-              - action: light.turn_on
-                target:
-                  entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
-                data:
-                  transition: 2
-          # Case 2: Vacant -> Turn OFF
-          - conditions:
-              - condition: state
-                entity_id: binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
-                state: "off"
-              - condition: state
-                entity_id: input_boolean.cleaning_mode
-                state: "off"
-            sequence:
-              - action: light.turn_off
-                target:
-                  entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
-                data:
-                  transition: 2
-    mode: restart
+      - action: light.turn_off
+        target:
+          entity_id:
+            - light.kuche_kueche_deckenlicht_1
+            - light.kuche_kueche_deckenlicht_2
+            - light.kuche_kueche_lichtstreifen
 
-  - id: light_kiffzimmer_smart_presence
-    alias: Kiffzimmer - Smartes Licht (True Presence)
-    description: Controls Kiffzimmer lights based on True Presence and Adaptive Lighting
+  # --- BAD ---
+  - id: light_bad_motion_on
+    alias: "Bad - Licht AN bei Bewegung"
     trigger:
       - platform: state
-        entity_id:
-          - binary_sensor.kiffzimmer_kiffzimmer_motion_sensor
+        entity_id: binary_sensor.badezimmer_badezimmer_motion_sensor
         to: "on"
-        id: occupied
-      - platform: state
-        entity_id:
-          - binary_sensor.kiffzimmer_kiffzimmer_motion_sensor
-        to: "off"
-        for: "00:01:00"
-        id: vacant
-      - platform: time_pattern
-        minutes: "/5"
-        id: periodic_check
     condition:
       - condition: state
-        entity_id: input_boolean.light_agent_master
+        entity_id: input_boolean.auto_lights_enabled
         state: "on"
+      - condition: sun
+        after: sunset
+        before: sunrise
+    action:
+      - action: light.turn_on
+        target:
+          entity_id: light.schlafzimmer_badezimmer_lichtstreifen
+        data:
+          brightness_pct: 100
+
+  - id: light_bad_motion_off
+    alias: "Bad - Licht AUS ohne Bewegung"
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.badezimmer_badezimmer_motion_sensor
+        to: "off"
+        for: "00:02:00"
+    condition:
       - condition: state
         entity_id: input_boolean.auto_lights_enabled
         state: "on"
     action:
-      - choose:
-          # Case 1: Occupied AND Dark -> Turn ON
-          - conditions:
-              - condition: state
-                entity_id: binary_sensor.kiffzimmer_kiffzimmer_motion_sensor
-                state: "on"
-              - condition: sun
-                after: sunset
-                before: sunrise
-              - condition: state
-                entity_id: input_boolean.cleaning_mode
-                state: "off"
-            sequence:
-              - action: light.turn_on
-                target:
-                  entity_id: light.kiffzimmer_kiffzimmer_lichtstreifen
-                data:
-                  transition: 2
-          # Case 2: Vacant -> Turn OFF
-          - conditions:
-              - condition: state
-                entity_id: binary_sensor.kiffzimmer_kiffzimmer_motion_sensor
-                state: "off"
-              - condition: state
-                entity_id: input_boolean.cleaning_mode
-                state: "off"
-            sequence:
-              - action: light.turn_off
-                target:
-                  entity_id: light.kiffzimmer_kiffzimmer_lichtstreifen
-                data:
-                  transition: 2
-    mode: restart
+      - action: light.turn_off
+        target:
+          entity_id: light.schlafzimmer_badezimmer_lichtstreifen
 
-  - id: wardrobe_light_auto
-    alias: Kleiderschrank - Licht Automatik
-    description: Light on when door open. Off when door closed OR bedroom vacant.
+  # --- SCHLAFZIMMER ---
+  - id: light_schlafzimmer_motion_on
+    alias: "Schlafzimmer - Licht AN bei Bewegung"
     trigger:
       - platform: state
-        entity_id: binary_sensor.no_area_aqara_door_and_window_sensor_tuer
-        from: "off"
+        entity_id: binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
         to: "on"
-        id: "door_open"
-      - platform: state
-        entity_id: binary_sensor.no_area_aqara_door_and_window_sensor_tuer
-        from: "on"
-        to: "off"
-        id: "door_close"
+    condition:
+      - condition: state
+        entity_id: input_boolean.auto_lights_enabled
+        state: "on"
+      - condition: sun
+        after: sunset
+        before: sunrise
+    action:
+      - action: light.turn_on
+        target:
+          entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
+        data:
+          brightness_pct: 50
+          color_temp_kelvin: 2700
+
+  - id: light_schlafzimmer_motion_off
+    alias: "Schlafzimmer - Licht AUS ohne Bewegung"
+    trigger:
       - platform: state
         entity_id: binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
         to: "off"
-        for: "00:02:00"
-        id: "vacant"
+        for: "00:01:00"
     condition:
       - condition: state
-        entity_id: input_boolean.light_agent_master
+        entity_id: input_boolean.auto_lights_enabled
         state: "on"
     action:
-      - choose:
-          - conditions:
-              - condition: trigger
-                id: "door_open"
-            sequence:
-              - action: light.turn_on
-                target:
-                  entity_id: light.schlafzimmer_schlafzimmer_kleiderschrank_lichtstreifen
-                data:
-                  brightness_pct: 100
-                  color_temp_kelvin: 4000
-          - conditions:
-              - condition: or
-                conditions:
-                  - condition: trigger
-                    id: "door_close"
-                  - condition: trigger
-                    id: "vacant"
-            sequence:
-              - action: light.turn_off
-                target:
-                  entity_id: light.schlafzimmer_schlafzimmer_kleiderschrank_lichtstreifen
-    mode: restart
+      - action: light.turn_off
+        target:
+          entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
 
-  - id: kiffzimmer_door_light
-    alias: Kiffzimmer - Licht bei Türöffnung
-    description: Turn on light when door opens if dark
+  # --- KIFFZIMMER ---
+  - id: light_kiffzimmer_motion_on
+    alias: "Kiffzimmer - Licht AN bei Bewegung"
     trigger:
       - platform: state
-        entity_id: binary_sensor.no_area_aqara_door_and_window_sensor_tuer
+        entity_id: binary_sensor.kiffzimmer_kiffzimmer_motion_sensor
         to: "on"
     condition:
       - condition: state
-        entity_id: input_boolean.light_agent_master
+        entity_id: input_boolean.auto_lights_enabled
         state: "on"
-      - condition: or
-        conditions:
-          - condition: sun
-            after: sunset
-            before: sunrise
-          - condition: state
-            entity_id: sun.sun
-            state: "below_horizon"
+      - condition: sun
+        after: sunset
+        before: sunrise
     action:
       - action: light.turn_on
         target:
@@ -447,113 +201,67 @@ automation:
         data:
           brightness_pct: 50
           color_temp_kelvin: 3000
-    mode: single
 
-  - id: night_hallway_guide_light
-    alias: "Nacht - Orientierungslicht Flur"
-    description: "Brief low light to guide to bathroom at night"
+  - id: light_kiffzimmer_motion_off
+    alias: "Kiffzimmer - Licht AUS ohne Bewegung"
     trigger:
       - platform: state
-        entity_id: binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
+        entity_id: binary_sensor.kiffzimmer_kiffzimmer_motion_sensor
         to: "off"
+        for: "00:02:00"
     condition:
       - condition: state
-        entity_id: input_boolean.light_agent_master
+        entity_id: input_boolean.auto_lights_enabled
         state: "on"
-      - condition: time
-        after: "22:00:00"
-        before: "07:00:00"
+    action:
+      - action: light.turn_off
+        target:
+          entity_id: light.kiffzimmer_kiffzimmer_lichtstreifen
+
+  # --- UTILITY ---
+  - id: wardrobe_light_auto
+    alias: "Kleiderschrank - Licht AN bei Türöffnung"
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.no_area_aqara_door_and_window_sensor_tuer
+        to: "on"
+    condition:
       - condition: state
-        entity_id: input_boolean.sleep_mode
+        entity_id: input_boolean.auto_lights_enabled
         state: "on"
     action:
       - action: light.turn_on
         target:
-          entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
-        data:
-          brightness_pct: 5
-          color_temp_kelvin: 2200
-      - delay:
-          minutes: 5
-      - action: light.turn_off
-        target:
-          entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
-    mode: restart
+          entity_id: light.schlafzimmer_schlafzimmer_kleiderschrank_lichtstreifen
 
-  - id: light_computer_fp2
-    alias: Computer - Licht bei Anwesenheit (FP2)
-    description: Turn on computer lights when presence detected by FP2, especially when blinds are closed.
+  - id: wardrobe_light_off
+    alias: "Kleiderschrank - Licht AUS bei Türschließung"
     trigger:
       - platform: state
-        entity_id: binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
-        to: "on"
-        id: occupied
-      - platform: state
-        entity_id: binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
+        entity_id: binary_sensor.no_area_aqara_door_and_window_sensor_tuer
         to: "off"
-        for: 00:01:00
-        id: vacant
     condition:
       - condition: state
-        entity_id: input_boolean.light_agent_master
+        entity_id: input_boolean.auto_lights_enabled
         state: "on"
     action:
-      - choose:
-          - conditions:
-              - condition: trigger
-                id: occupied
-              - condition: or
-                conditions:
-                  - condition: state
-                    entity_id: cover.wohnzimmer_wohnzimmer_rollladen_vorhang
-                    state: "closed"
-                  - condition: numeric_state
-                    entity_id: cover.wohnzimmer_wohnzimmer_rollladen_vorhang
-                    attribute: current_position
-                    below: 10
-                  - condition: sun
-                    after: sunset
-                    before: sunrise
-            sequence:
-              - action: light.turn_on
-                target:
-                  entity_id: light.wohnzimmer_computer_licht
-                data:
-                  transition: 2
-              - action: fan.turn_on
-                target:
-                  entity_id: fan.wohnzimmer_wohnzimmer_deckenventilator_u_licht
-          - conditions:
-              - condition: trigger
-                id: vacant
-            sequence:
-              - action: light.turn_off
-                target:
-                  entity_id: light.wohnzimmer_computer_licht
-                data:
-                  transition: 2
-              - action: fan.turn_off
-                target:
-                  entity_id: fan.wohnzimmer_wohnzimmer_deckenventilator_u_licht
-    mode: restart
+      - action: light.turn_off
+        target:
+          entity_id: light.schlafzimmer_schlafzimmer_kleiderschrank_lichtstreifen
 
   - id: night_bathroom_low_light
     alias: "Nacht - Dimmbeleuchtung Bad"
-    description: "Use low light when going to bathroom at night"
     trigger:
       - platform: state
         entity_id: binary_sensor.badezimmer_badezimmer_motion_sensor
         to: "on"
     condition:
       - condition: state
-        entity_id: input_boolean.light_agent_master
+        entity_id: input_boolean.auto_lights_enabled
         state: "on"
       - condition: time
         after: "22:00:00"
         before: "07:00:00"
-      - condition: state
-        entity_id: input_boolean.sleep_mode
-        state: "on"
     action:
       - action: light.turn_on
         target:
@@ -561,18 +269,38 @@ automation:
         data:
           brightness_pct: 10
           color_temp_kelvin: 2200
-    mode: single
 
-  - id: night_bathroom_light_off
-    alias: "Nacht - Bad Licht aus"
-    description: "Turn off bathroom light when leaving at night"
+  - id: night_hallway_guide_light_on
+    alias: "Nacht - Orientierungslicht Flur AN"
     trigger:
       - platform: state
-        entity_id: binary_sensor.badezimmer_badezimmer_motion_sensor
+        entity_id: binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
         to: "off"
     condition:
       - condition: state
-        entity_id: input_boolean.light_agent_master
+        entity_id: input_boolean.auto_lights_enabled
+        state: "on"
+      - condition: time
+        after: "22:00:00"
+        before: "07:00:00"
+    action:
+      - action: light.turn_on
+        target:
+          entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
+        data:
+          brightness_pct: 5
+          color_temp_kelvin: 2200
+
+  - id: night_hallway_guide_light_off
+    alias: "Nacht - Orientierungslicht Flur AUS"
+    trigger:
+      - platform: state
+        entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
+        to: "on"
+        for: "00:02:00"
+    condition:
+      - condition: state
+        entity_id: input_boolean.auto_lights_enabled
         state: "on"
       - condition: time
         after: "22:00:00"
@@ -580,154 +308,4 @@ automation:
     action:
       - action: light.turn_off
         target:
-          entity_id:
-            - light.schlafzimmer_badezimmer_lichtstreifen
-    mode: single
-
-# ----------------------------------------------------------------------------
-# SCRIPTS
-# ----------------------------------------------------------------------------
-script:
-  ambient_feuerlicht_warm_flicker:
-    alias: KL430 - Random Fire (Amber + Dynamic Dim)
-    mode: restart
-    sequence:
-      - target:
-          entity_id:
-            - light.wohnzimmer_computer_licht
-            - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
-        data:
-          init_states: 30,55,62
-          backgrounds:
-            - [28, 50, 62]
-            - [31, 45, 74]
-            - [33, 35, 88]
-            - [26, 55, 66]
-          segments: 0
-          brightness: 70
-          transition: 900
-          transition_range: 500,1500
-          hue_range: 26,42
-          saturation_range: 35,70
-          brightness_range: 10,92
-          random_seed: 321
-        action: tplink.random_effect
-
-  ambient_velvet_rainbow:
-    alias: Ambient – Velvet Rainbow
-    mode: restart
-    sequence:
-      - variables:
-          hue: 12
-          sat: 55
-          bri: 46
-          step_h: 2
-          t: 3
-      - repeat:
-          while:
-            - condition: state
-              entity_id: input_select.ambient_modus
-              state: "Velvet Rainbow"
-          sequence:
-            - target:
-                entity_id: light.wohnzimmer_computer_licht
-              data:
-                hs_color:
-                  - "{{ hue }}"
-                  - "{{ sat }}"
-                brightness_pct: "{{ bri }}"
-                transition: "{{ t }}"
-              action: light.turn_on
-            - delay: "{{ t }}"
-            - variables:
-                hue: "{{ (hue + step_h) % 360 }}"
-
-  lights_bedtime:
-    alias: Bedtime Light Scene
-    mode: single
-    sequence:
-      - action: script.all_lights_off
-      - action: light.turn_on
-        target:
           entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
-        data:
-          brightness_pct: "{{ states('input_number.night_mode_brightness')|int(15) }}"
-          color_temp_kelvin: 2700
-        continue_on_error: true
-
-  all_lights_off:
-    alias: Turn Off All Lights
-    mode: single
-    sequence:
-      - action: light.turn_off
-        target:
-          entity_id:
-            - light.schlafzimmer_badezimmer_lichtstreifen
-            - light.schlafzimmer_badezimmer_lichtstreifen
-            - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
-            - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
-            - light.schlafzimmer_schlafzimmer_bett_lichtstreifen
-            - light.schlafzimmer_schlafzimmer_bett_lichtstreifen
-            - light.wohnzimmer_computer_licht
-            - light.schlafzimmer_schlafzimmer_kleiderschrank_lichtstreifen
-            - light.kuche_kueche_deckenlicht_1
-            - light.kuche_kueche_deckenlicht_2
-            - light.kuche_kueche_lichtstreifen
-            - light.kuche_kueche_rollladen_hintergrundbeleuchtung
-            - light.wohnzimmer_wohnzimmer_rollladen_hintergrundbeleuchtung
-            - light.kiffzimmer_kiffzimmer_rollladen_hintergrundbeleuchtung
-            - light.schlafzimmer_schlafzimmer_rollladen_hintergrundbeleuchtung
-            - light.wohnzimmer_wohnzimmer_deckenventilator_u_licht
-        continue_on_error: true
-
-  light_toggle_with_brightness:
-    alias: Toggle Light with Smart Brightness
-    mode: single
-    fields:
-      target_light:
-        description: Light entity to toggle
-        required: true
-      brightness_day:
-        default: 100
-      brightness_night:
-        default: 15
-    sequence:
-      - choose:
-          - conditions:
-              - condition: template
-                value_template: "{{ is_state(target_light, 'on') }}"
-            sequence:
-              - action: light.turn_off
-                target:
-                  entity_id: "{{ target_light }}"
-        default:
-          - action: light.turn_on
-            target:
-              entity_id: "{{ target_light }}"
-            data:
-              brightness_pct: >
-                {% set hour = now().hour %}
-                {% if hour >= 22 or hour < 6 %}
-                  {{ brightness_night }}
-                {% else %}
-                  {{ brightness_day }}
-                {% endif %}
-
-  living_room_lights_on_blind_close:
-    alias: "Wohnzimmer - Licht an wenn Rollladen zu"
-    sequence:
-      - action: light.turn_on
-        target:
-          entity_id:
-            - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
-            - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
-            - light.wohnzimmer_wohnzimmer_rollladen_hintergrundbeleuchtung
-        data:
-          color_temp_kelvin: 2700
-          brightness_pct: 80
-      - action: light.turn_on
-        target:
-          entity_id: light.wohnzimmer_wohnzimmer_deckenventilator_u_licht
-        data:
-          brightness_pct: 50
-          color_temp_kelvin: 2700
