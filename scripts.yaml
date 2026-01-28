@@ -3,62 +3,8 @@
 # Duplikate entfernt - nur die aktive Version behalten
 # ============================================================================
 
-ambient_feuerlicht_warm_flicker:
-  alias: KL430 - Random Fire (Amber + Dynamic Dim)
-  mode: restart
-  sequence:
-    - target:
-        entity_id:
-          - light.wohnzimmer_computer_licht
-          - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
-      data:
-        init_states: 30,55,62
-        backgrounds:
-          - [28, 50, 62]
-          - [31, 45, 74]
-          - [33, 35, 88]
-          - [26, 55, 66]
-        segments: 0
-        brightness: 70
-        transition: 900
-        transition_range: 500,1500
-        hue_range: 26,42
-        saturation_range: 35,70
-        brightness_range: 10,92
-        random_seed: 321
-      action: tplink.random_effect
-
-ambient_velvet_rainbow:
-  alias: Ambient â€“ Velvet Rainbow
-  mode: restart
-  sequence:
-    - variables:
-        hue: 12
-        sat: 55
-        bri: 46
-        step_h: 2
-        t: 3
-    - repeat:
-        while:
-          - condition: state
-            entity_id: input_select.ambient_modus
-            state: "Velvet Rainbow"
-        sequence:
-          - target:
-              entity_id: light.wohnzimmer_computer_licht
-            data:
-              hs_color:
-                - "{{ hue }}"
-                - "{{ sat }}"
-              brightness_pct: "{{ bri }}"
-              transition: "{{ t }}"
-            action: light.turn_on
-          - delay: "{{ t }}"
-          - variables:
-              hue: "{{ (hue + step_h) % 360 }}"
-
 ventilator_wintermodus_low:
-  alias: Ventilator â€“ Wintermodus Low
+  alias: Ventilator – Wintermodus Low
   mode: single
   sequence:
     - action: fan.decrease_speed
@@ -88,248 +34,23 @@ notify_all:
         message: "{{ message }}"
       continue_on_error: true
 
-lights_bedtime:
-  alias: Bedtime Light Scene
-  mode: single
-  sequence:
-    - action: script.all_lights_off
-    - action: light.turn_on
-      target:
-        entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
-      data:
-        brightness_pct: "{{ states('input_number.night_mode_brightness')|int(15) }}"
-        color_temp_kelvin: 2700
-      continue_on_error: true
-
-all_lights_off:
-  alias: Turn Off All Lights
-  mode: single
-  sequence:
-    - action: light.turn_off
-      target:
-        entity_id:
-          - light.schlafzimmer_badezimmer_lichtstreifen
-          - light.schlafzimmer_badezimmer_lichtstreifen
-          - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
-          - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
-          - light.schlafzimmer_schlafzimmer_bett_lichtstreifen
-          - light.schlafzimmer_schlafzimmer_bett_lichtstreifen
-          - light.wohnzimmer_computer_licht
-          - light.schlafzimmer_schlafzimmer_kleiderschrank_lichtstreifen
-          - light.kuche_kueche_deckenlicht_1
-          - light.kuche_kueche_deckenlicht_2
-          - light.kuche_kueche_lichtstreifen
-          - light.kuche_kueche_rollladen_hintergrundbeleuchtung
-          - light.wohnzimmer_wohnzimmer_rollladen_hintergrundbeleuchtung
-          - light.kiffzimmer_kiffzimmer_rollladen_hintergrundbeleuchtung
-          - light.schlafzimmer_schlafzimmer_rollladen_hintergrundbeleuchtung
-          - light.wohnzimmer_wohnzimmer_deckenventilator_u_licht
-      continue_on_error: true
-
-all_covers_open:
-  alias: Open All Covers
-  mode: single
-  fields:
-    position:
-      description: Target position (0-100)
-      default: 100
-  sequence:
-    - action: script.safe_open_blind
-      data:
-        cover_entity: cover.wohnzimmer_wohnzimmer_rollladen_vorhang
-        tracker_entity: input_boolean.blind_wohnzimmer_last_opened
-    - action: script.safe_open_blind
-      data:
-        cover_entity: cover.kuche_kueche_rollladen_vorhang
-        tracker_entity: input_boolean.blind_kuche_last_opened
-    - action: script.safe_open_blind
-      data:
-        cover_entity: cover.kiffzimmer_kiffzimmer_rollladen_vorhang
-        tracker_entity: input_boolean.blind_kiffzimmer_last_opened
-    - action: script.safe_open_blind
-      data:
-        cover_entity: cover.schlafzimmer_schlafzimmer_rollladen_vorhang
-        tracker_entity: input_boolean.blind_schlafzimmer_last_opened
-
-all_covers_close:
-  alias: Close All Covers
-  mode: single
-  sequence:
-    - action: script.safe_close_blind
-      data:
-        cover_entity: cover.wohnzimmer_wohnzimmer_rollladen_vorhang
-        tracker_entity: input_boolean.blind_wohnzimmer_last_opened
-    - action: script.safe_close_blind
-      data:
-        cover_entity: cover.kuche_kueche_rollladen_vorhang
-        tracker_entity: input_boolean.blind_kuche_last_opened
-    - action: script.safe_close_blind
-      data:
-        cover_entity: cover.kiffzimmer_kiffzimmer_rollladen_vorhang
-        tracker_entity: input_boolean.blind_kiffzimmer_last_opened
-    - action: script.safe_close_blind
-      data:
-        cover_entity: cover.schlafzimmer_schlafzimmer_rollladen_vorhang
-        tracker_entity: input_boolean.blind_schlafzimmer_last_opened
-
-light_toggle_with_brightness:
-  alias: Toggle Light with Smart Brightness
-  mode: single
-  fields:
-    target_light:
-      description: Light entity to toggle
-      required: true
-    brightness_day:
-      default: 100
-    brightness_night:
-      default: 15
-  sequence:
-    - choose:
-        - conditions:
-            - condition: template
-              value_template: "{{ is_state(target_light, 'on') }}"
-          sequence:
-            - action: light.turn_off
-              target:
-                entity_id: "{{ target_light }}"
-      default:
-        - action: light.turn_on
-          target:
-            entity_id: "{{ target_light }}"
-          data:
-            brightness_pct: >
-              {% set hour = now().hour %}
-              {% if hour >= 22 or hour < 6 %}
-                {{ brightness_night }}
-              {% else %}
-                {{ brightness_day }}
-              {% endif %}
+# All cover scripts moved to blind_agent.yaml
 
 # ============================================================================
 # SAFE BLIND CONTROL - Prevents opening twice in a row
 # ============================================================================
 
-safe_open_blind:
-  alias: "Safe Open Blind"
-  description: "Opens a blind only if it wasn't already opened (prevents jamming)"
-  mode: single
-  fields:
-    cover_entity:
-      description: "Cover entity to open (e.g., cover.rollladen_computer_vorhang)"
-      example: "cover.rollladen_computer_vorhang"
-    tracker_entity:
-      description: "Tracker boolean (e.g., input_boolean.blind_wohnzimmer_last_opened)"
-      example: "input_boolean.blind_wohnzimmer_last_opened"
-  sequence:
-    # Only open if the last action was NOT an open (tracker = false)
-    - choose:
-        - conditions:
-            - condition: template
-              value_template: "{{ is_state(tracker_entity, 'off') }}"
-          sequence:
-            - choose:
-                # Special handling for inverted Schlafen blind
-                - conditions:
-                    - condition: template
-                      value_template: "{{ cover_entity == 'cover.schlafzimmer_schlafzimmer_rollladen_vorhang' }}"
-                  sequence:
-                    - action: cover.close_cover # Inverted!
-                      target:
-                        entity_id: "{{ cover_entity }}"
-              default:
-                - action: cover.open_cover
-                  target:
-                    entity_id: "{{ cover_entity }}"
-            # Mark that we just opened it
-            - action: input_boolean.turn_on
-              target:
-                entity_id: "{{ tracker_entity }}"
-      default:
-        # Skip opening - it was already opened
-        - action: system_log.write
-          data:
-            message: "Skipped opening {{ cover_entity }} - already opened (prevents jamming)"
-            level: warning
+# ============================================================================
+# BLIND AGENT - SUBAGENT CONTROL
+# ============================================================================
 
-safe_close_blind:
-  alias: Safe Close Blind
-  description: Closes a blind (always allowed, multiple closes OK)
-  mode: single
-  fields:
-    cover_entity:
-      description: Cover entity to close (e.g., cover.rollladen_computer_vorhang)
-      example: cover.rollladen_computer_vorhang
-    tracker_entity:
-      description: Tracker boolean (e.g., input_boolean.blind_wohnzimmer_last_opened)
-      example: input_boolean.blind_wohnzimmer_last_opened
-  sequence:
-    - choose:
-        - conditions:
-            - condition: template
-              value_template: >-
-                {{ cover_entity ==
-                'cover.schlafzimmer_schlafzimmer_rollladen_vorhang' }}
-          sequence:
-            - action: cover.open_cover
-              target:
-                entity_id: "{{ cover_entity }}"
-              data: {}
-      default:
-        - action: cover.close_cover
-          target:
-            entity_id: "{{ cover_entity }}"
-    - action: input_boolean.turn_off
-      target:
-        entity_id: "{{ tracker_entity }}"
-      data: {}
+# blind_agent_control moved to blind_agent.yaml
 
 # ============================================================================
 # HEATING SCRIPTS
 # ============================================================================
 
-heating_comfort_now:
-  alias: "Heizung - Sofort Komfort"
-  description: "Manually set heating to comfort temperature"
-  mode: single
-  sequence:
-    - action: climate.set_temperature
-      target:
-        entity_id:
-          - climate.badezimmer_thermostat_bad
-          - climate.wohnzimmer_thermostat_computer
-      data:
-        temperature: "{{ 23 if now().month in [11, 12, 1, 2] else 22 }}"
-
-fan_winter_heat_now:
-  alias: "Ventilator - Winter WÃ¤rmeverteilung starten"
-  description: "Manually start ceiling fan in winter heat distribution mode"
-  mode: single
-  sequence:
-    - action: fan.turn_on
-      target:
-        entity_id: fan.wohnzimmer_wohnzimmer_deckenventilator_u_licht
-      data:
-        percentage: 33 # Low speed to avoid draft
-        direction: "reverse" # Updraft to mix warm air at ceiling
-
-living_room_lights_on_blind_close:
-  alias: "Wohnzimmer - Licht an wenn Rollladen zu"
-  sequence:
-    - action: light.turn_on
-      target:
-        entity_id:
-          - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
-          - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
-          - light.wohnzimmer_wohnzimmer_rollladen_hintergrundbeleuchtung
-      data:
-        color_temp_kelvin: 2700
-        brightness_pct: 80
-    - action: light.turn_on
-      target:
-        entity_id: light.wohnzimmer_wohnzimmer_deckenventilator_u_licht
-      data:
-        brightness_pct: 50
-        color_temp_kelvin: 2700
+# Heating scripts moved to climate_agent.yaml
 
 # ============================================================================
 # NEW UTILITY SCRIPTS
@@ -451,3 +172,8 @@ coming_home:
       entity_id: sun.sun
       state: "above_horizon"
     - action: script.all_covers_open
+# ============================================================================
+# TIMED BLIND CONTROL
+# ============================================================================
+
+# Timed travel scripts moved to blind_agent.yaml

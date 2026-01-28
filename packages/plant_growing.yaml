@@ -1,14 +1,26 @@
 # ============================================================================
-# PLANT GROWING PACKAGE
-# Dynamic control based on growth stages
-# Audited: 2026-01-22
+# PLANT GROWING AGENT
+# Version: 1.2.0
+# Last Audit: 2026-01-28
+# Strain: Strawberry Lemonade (Barney's Farm)
+# Dynamic control based on growth stages and strain-specific requirements.
 # ============================================================================
+
+# ----------------------------------------------------------------------------
+# HELPERS (Encapsulated)
+# ----------------------------------------------------------------------------
+input_boolean:
+  plant_agent_master:
+    name: "Plant Agent Master Switch"
+    icon: mdi:leaf-maple
+    initial: on
 
 input_select:
   cannabis_stage:
     name: "Cannabis Growth Stage"
     options:
       - "Off"
+      - "Germination"
       - "Seedling"
       - "Vegetative"
       - "Early Flower"
@@ -17,14 +29,32 @@ input_select:
     initial: "Off"
     icon: mdi:leaf
 
+# ----------------------------------------------------------------------------
+# SENSORS
+# ----------------------------------------------------------------------------
 template:
   - sensor:
+      - name: "Plant Agent Status"
+        unique_id: plant_agent_status
+        state: >
+          {% if is_state('input_boolean.plant_agent_master', 'on') %}
+            Active ({{ states('input_select.cannabis_stage') }})
+          {% else %}
+            Disabled
+          {% endif %}
+        attributes:
+          stage: "{{ states('input_select.cannabis_stage') }}"
+          avg_moisture: "{{ states('sensor.cannabis_average_soil_moisture') }}%"
+          temp: "{{ states('sensor.kiffzimmer_kiffzimmer_zelt_humidity_sensor_temperatur') }}Â°C"
+          humidity: "{{ states('sensor.kiffzimmer_kiffzimmer_zelt_humidity_sensor_luftfeuchtigkeit') }}%"
+
       - name: "Cannabis Target Temp High"
         unique_id: cannabis_target_temp_high
         unit_of_measurement: "Â°C"
         state: >
           {% set stage = states('input_select.cannabis_stage') %}
-          {% if stage == 'Seedling' %} 25
+          {% if stage == 'Germination' %} 26
+          {% elif stage == 'Seedling' %} 25
           {% elif stage == 'Vegetative' %} 28
           {% elif stage == 'Early Flower' %} 26
           {% elif stage == 'Late Flower' %} 24
@@ -36,7 +66,8 @@ template:
         unit_of_measurement: "Â°C"
         state: >
           {% set stage = states('input_select.cannabis_stage') %}
-          {% if stage == 'Seedling' %} 22
+          {% if stage == 'Germination' %} 24
+          {% elif stage == 'Seedling' %} 22
           {% elif stage == 'Vegetative' %} 21
           {% elif stage == 'Early Flower' %} 20
           {% elif stage == 'Late Flower' %} 18
@@ -48,7 +79,8 @@ template:
         unit_of_measurement: "%"
         state: >
           {% set stage = states('input_select.cannabis_stage') %}
-          {% if stage == 'Seedling' %} 70
+          {% if stage == 'Germination' %} 80
+          {% elif stage == 'Seedling' %} 70
           {% elif stage == 'Vegetative' %} 65
           {% elif stage == 'Early Flower' %} 55
           {% elif stage == 'Late Flower' %} 45
@@ -60,7 +92,8 @@ template:
         unit_of_measurement: "%"
         state: >
           {% set stage = states('input_select.cannabis_stage') %}
-          {% if stage == 'Seedling' %} 65
+          {% if stage == 'Germination' %} 70
+          {% elif stage == 'Seedling' %} 65
           {% elif stage == 'Vegetative' %} 55
           {% elif stage == 'Early Flower' %} 50
           {% elif stage == 'Late Flower' %} 40
@@ -75,10 +108,13 @@ template:
                (states('sensor.cap_junky_m_cannabis_soil_moisture') | float(0)) + 
                (states('sensor.candy_store_r_cannabis_soil_moisture') | float(0)) ) / 3 | round(1) }}
 
+# ----------------------------------------------------------------------------
+# AUTOMATIONS
+# ----------------------------------------------------------------------------
 automation:
   - id: cannabis_tent_fan_control
     alias: "Kiffzimmer - Aktivkohlefilter Steuerung (Dynamic)"
-    description: "Controls exhaust fan based on stage-specific RH/Temp thresholds"
+    description: "Controls exhaust fan based on strain-specific RH/Temp thresholds"
     trigger:
       - platform: state
         entity_id:
@@ -86,6 +122,9 @@ automation:
           - sensor.kiffzimmer_kiffzimmer_zelt_humidity_sensor_temperatur
           - input_select.cannabis_stage
     condition:
+      - condition: state
+        entity_id: input_boolean.plant_agent_master
+        state: "on"
       - condition: not
         conditions:
           - condition: state
@@ -119,13 +158,16 @@ automation:
 
   - id: cannabis_tent_heater_control
     alias: "Kiffzimmer - HeizlÃ¼fter Steuerung (Dynamic)"
-    description: "Controls heater based on stage-specific Temp thresholds"
+    description: "Controls heater based on strain-specific Temp thresholds"
     trigger:
       - platform: state
         entity_id:
           - sensor.kiffzimmer_kiffzimmer_zelt_humidity_sensor_temperatur
           - input_select.cannabis_stage
     condition:
+      - condition: state
+        entity_id: input_boolean.plant_agent_master
+        state: "on"
       - condition: not
         conditions:
           - condition: state
@@ -180,6 +222,9 @@ automation:
       - platform: state
         entity_id: input_select.cannabis_stage
     condition:
+      - condition: state
+        entity_id: input_boolean.plant_agent_master
+        state: "on"
       - condition: not
         conditions:
           - condition: state
@@ -221,6 +266,7 @@ automation:
                 state:
                   - "Vegetative"
                   - "Seedling"
+                  - "Germination"
             sequence:
               - action: switch.turn_off
                 target:
@@ -238,7 +284,7 @@ automation:
                         conditions:
                           - condition: state
                             entity_id: input_select.cannabis_stage
-                            state: ["Seedling", "Vegetative"]
+                            state: ["Germination", "Seedling", "Vegetative"]
                           - condition: time
                             after: "06:00:00"
                             before: "00:00:00"
@@ -259,3 +305,42 @@ automation:
                     target:
                       entity_id: switch.kiffzimmer_kiffzimmer_cannabis_zelt_heizluefter_schalter_1_2
     mode: restart
+
+  - id: ai_grow_bot_check
+    alias: "AI - Grow Bot Check (Hourly)"
+    description: "Sends sensor data to n8n every hour for LLM analysis"
+    trigger:
+      - platform: time_pattern
+        hours: "/1"
+    condition:
+      - condition: state
+        entity_id: input_boolean.plant_agent_master
+        state: "on"
+    action:
+      - action: rest_command.n8n_grow_bot_check
+        data:
+          temperature: "{{ states('sensor.kiffzimmer_kiffzimmer_zelt_humidity_sensor_temperatur') }}"
+          humidity: "{{ states('sensor.kiffzimmer_kiffzimmer_zelt_humidity_sensor_luftfeuchtigkeit') }}"
+          stage: "{{ states('input_select.cannabis_stage') }}"
+          timestamp: "{{ now().isoformat() }}"
+    mode: single
+
+  - id: ai_grow_bot_daily
+    alias: "AI - Grow Bot Daily Log (08:00)"
+    description: "Sends daily summary data to n8n for logging"
+    trigger:
+      - platform: time
+        at: "08:00:00"
+    condition:
+      - condition: state
+        entity_id: input_boolean.plant_agent_master
+        state: "on"
+    action:
+      - action: rest_command.n8n_grow_bot_check
+        data:
+          temperature: "{{ states('sensor.kiffzimmer_kiffzimmer_zelt_humidity_sensor_temperatur') }}"
+          humidity: "{{ states('sensor.kiffzimmer_kiffzimmer_zelt_humidity_sensor_luftfeuchtigkeit') }}"
+          stage: "{{ states('input_select.cannabis_stage') }}"
+          timestamp: "{{ now().isoformat() }}"
+          report_type: "daily_summary"
+    mode: single
