@@ -153,8 +153,24 @@
       for:
         minutes: 10
   condition:
+    # Only turn off if guest_mode is OFF AND no presence detected anywhere
     - condition: state
       entity_id: input_boolean.guest_mode
+      state: "off"
+    - condition: state
+      entity_id: binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
+      state: "off"
+    - condition: state
+      entity_id: binary_sensor.kuche_kueche_motion_sensor
+      state: "off"
+    - condition: state
+      entity_id: binary_sensor.badezimmer_badezimmer_motion_sensor
+      state: "off"
+    - condition: state
+      entity_id: binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
+      state: "off"
+    - condition: state
+      entity_id: binary_sensor.kiffzimmer_kiffzimmer_motion_sensor
       state: "off"
   action:
     - action: script.all_lights_off
