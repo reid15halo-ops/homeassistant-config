@@ -196,8 +196,117 @@ States → Filter: binary_sensor.room
 Test the True Presence sensor logic:
 ```
 Developer Tools → Template:
-{{ 
+{{
    is_state('binary_sensor.sensor_1', 'on')
    or is_state('binary_sensor.sensor_2', 'on')
 }}
 ```
+
+## Tuya ZigBee mmWave Sensor Limitations (ZY-M100 / WZ-M100)
+
+Based on extensive user feedback and testing, the Tuya ZigBee presence sensors have known limitations:
+
+### Known Issues
+
+| Issue | Description | Impact |
+|-------|-------------|--------|
+| **60-second absence delay** | Firmware-level delay before sensor reports "off" | Lights stay on longer than expected |
+| **Intermittent unavailability** | Sensor goes offline randomly | Automations don't trigger |
+| **False positives** | Reports "present" even when room is empty | Lights won't turn off |
+| **No obstacle penetration** | Requires direct line of sight | Misses people behind furniture |
+| **Limited ZHA functionality** | Only presence/illuminance in ZHA, no distance | Missing advanced features |
+
+### Vendor Warning
+
+Tuya officially states their ZigBee products do **NOT** support:
+- Zigbee2MQTT
+- Home Assistant (directly)
+
+They recommend using their Tuya Smart app only. However, with custom ZHA quirks, the sensors can work in Home Assistant with limitations.
+
+### Workarounds
+
+#### 1. Increase Off-Delay in Automations
+Account for the 60-second sensor delay plus buffer time:
+```yaml
+trigger:
+  - platform: state
+    entity_id: binary_sensor.tuya_presence
+    to: "off"
+    for: "00:03:00"  # 3 minutes total = 60s sensor + 2min buffer
+```
+
+#### 2. Handle Unavailable State
+Add fallback for when sensor goes offline:
+```yaml
+condition:
+  - condition: not
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.tuya_presence
+        state: "unavailable"
+```
+
+#### 3. Power Cycle Script
+Create a script to power cycle the sensor when it gets stuck:
+```yaml
+script:
+  reset_tuya_presence:
+    sequence:
+      - service: zha.remove
+        data:
+          ieee: "your_sensor_ieee"
+      - delay: "00:00:30"
+      - service: zha.permit
+```
+
+#### 4. Use Custom Quirks
+For full functionality with ZHA, custom quirks are required. See the community guide:
+https://community.home-assistant.io/t/tuya-zha-quirk-for-zy-m100
+
+Custom quirks location: `/config/custom_zha_quirks/`
+
+### Alternative Sensors
+
+If Tuya sensors don't work well for your setup, consider:
+
+| Sensor | Protocol | Pros | Cons |
+|--------|----------|------|------|
+| **Aqara FP2** | WiFi | Reliable, multi-zone, no quirks needed | Expensive, cloud-dependent |
+| **Sonoff SNZB-03** | ZigBee | Cheap, reliable PIR | Motion only, not presence |
+| **Everything Presence One** | ESPHome | Local, configurable | DIY, requires ESP32 |
+
+### Current Sensor Configuration
+
+This Home Assistant uses the following presence sensors:
+
+| Room | Sensor | Type | Notes |
+|------|--------|------|-------|
+| Wohnzimmer | FP2 | WiFi mmWave | Most reliable |
+| Küche | Tuya | ZigBee mmWave | Has 60s delay |
+| Bad | Tuya | ZigBee mmWave | Has 60s delay |
+| Schlafzimmer | Tuya | ZigBee mmWave | Has 60s delay |
+| Kiffzimmer | Tuya | ZigBee mmWave | Has 60s delay |
+
+### Debugging Tuya Sensors
+
+1. **Check ZHA logs for communication issues:**
+   ```
+   Developer Tools → Logs → Filter: zha
+   ```
+
+2. **Monitor sensor state changes:**
+   ```
+   Developer Tools → States → binary_sensor.room_motion_sensor
+   ```
+
+3. **Test if sensor is responsive:**
+   - Wave hand in front of sensor
+   - Check if state changes within 1-2 seconds for "on"
+   - Check if state changes within 60-90 seconds for "off"
+
+4. **If sensor is stuck "on":**
+   - Power cycle the sensor (unplug USB-C)
+   - Wait 30 seconds
+   - Plug back in
+   - Re-interview in ZHA if needed

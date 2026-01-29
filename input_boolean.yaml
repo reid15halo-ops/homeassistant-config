@@ -16,3 +16,9 @@ cleaning_mode:
   name: "Putzmodus"
   icon: mdi:broom
   initial: false
+
+# Automation Master Switches
+auto_lights_enabled:
+  name: "Automatische Beleuchtung"
+  icon: mdi:lightbulb-auto
+  initial: true

@@ -1,6 +1,13 @@
 # ============================================================================
-# LIGHT AGENT (Radically Simplified)
-# Simple motion-based lighting.
+# LIGHT AGENT - Ultra Simple Automations
+# ============================================================================
+# Pattern: 1 trigger, 1 condition, X devices
+#
+# TUYA SENSOR NOTES (ZY-M100 / WZ-M100):
+# - 60-second built-in delay before detecting absence (firmware limitation)
+# - May show "unavailable" intermittently - this is normal
+# - Works best with direct line of sight
+# - If sensor stays "on" after leaving: power cycle the sensor
 # ============================================================================
 
 # ----------------------------------------------------------------------------
@@ -14,15 +21,16 @@ script:
       - action: light.turn_off
         target:
           entity_id: all
-        continue_on_error: true
 
 # ----------------------------------------------------------------------------
-# AUTOMATIONS
+# AUTOMATIONS - Simple format: 1 trigger, 1 condition, X devices
 # ----------------------------------------------------------------------------
 automation:
-  # --- WOHNZIMMER ---
-  - id: light_wohnzimmer_motion_on
-    alias: "Wohnzimmer - Licht AN bei Bewegung"
+  # ==========================================================================
+  # WOHNZIMMER (FP2 Sensor - more reliable than Tuya)
+  # ==========================================================================
+  - id: light_wohnzimmer_on
+    alias: "Wohnzimmer Licht AN"
     trigger:
       - platform: state
         entity_id: binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
@@ -31,9 +39,6 @@ automation:
       - condition: state
         entity_id: input_boolean.auto_lights_enabled
         state: "on"
-      - condition: numeric_state
-        entity_id: sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_light_sensor_light_level
-        below: 30
     action:
       - action: light.turn_on
         target:
@@ -44,13 +49,13 @@ automation:
           brightness_pct: 80
           color_temp_kelvin: 2700
 
-  - id: light_wohnzimmer_motion_off
-    alias: "Wohnzimmer - Licht AUS ohne Bewegung"
+  - id: light_wohnzimmer_off
+    alias: "Wohnzimmer Licht AUS"
     trigger:
       - platform: state
         entity_id: binary_sensor.wohnzimmer_wohnzimmer_presence_sensor_fp2_presence_sensor_fp2_f9cf_presence_sensor_1
         to: "off"
-        for: "00:02:00"
+        for: "00:03:00"
     condition:
       - condition: state
         entity_id: input_boolean.auto_lights_enabled
@@ -62,9 +67,11 @@ automation:
             - light.wohnzimmer_wohnzimmer_buffet_lichtstreifen
             - light.wohnzimmer_wohnzimmer_deckenventilator_u_licht
 
-  # --- KÜCHE ---
-  - id: light_kuche_motion_on
-    alias: "Küche - Licht AN bei Bewegung"
+  # ==========================================================================
+  # KÜCHE (Tuya Sensor)
+  # ==========================================================================
+  - id: light_kuche_on
+    alias: "Küche Licht AN"
     trigger:
       - platform: state
         entity_id: binary_sensor.kuche_kueche_motion_sensor
@@ -73,9 +80,6 @@ automation:
       - condition: state
         entity_id: input_boolean.auto_lights_enabled
         state: "on"
-      - condition: sun
-        after: sunset
-        before: sunrise
     action:
       - action: light.turn_on
         target:
@@ -86,13 +90,13 @@ automation:
         data:
           brightness_pct: 100
 
-  - id: light_kuche_motion_off
-    alias: "Küche - Licht AUS ohne Bewegung"
+  - id: light_kuche_off
+    alias: "Küche Licht AUS"
     trigger:
       - platform: state
         entity_id: binary_sensor.kuche_kueche_motion_sensor
         to: "off"
-        for: "00:02:00"
+        for: "00:03:00"
     condition:
       - condition: state
         entity_id: input_boolean.auto_lights_enabled
@@ -105,9 +109,11 @@ automation:
             - light.kuche_kueche_deckenlicht_2
             - light.kuche_kueche_lichtstreifen
 
-  # --- BAD ---
-  - id: light_bad_motion_on
-    alias: "Bad - Licht AN bei Bewegung"
+  # ==========================================================================
+  # BADEZIMMER (Tuya Sensor)
+  # ==========================================================================
+  - id: light_bad_on
+    alias: "Bad Licht AN"
     trigger:
       - platform: state
         entity_id: binary_sensor.badezimmer_badezimmer_motion_sensor
@@ -116,9 +122,6 @@ automation:
       - condition: state
         entity_id: input_boolean.auto_lights_enabled
         state: "on"
-      - condition: sun
-        after: sunset
-        before: sunrise
     action:
       - action: light.turn_on
         target:
@@ -126,13 +129,13 @@ automation:
         data:
           brightness_pct: 100
 
-  - id: light_bad_motion_off
-    alias: "Bad - Licht AUS ohne Bewegung"
+  - id: light_bad_off
+    alias: "Bad Licht AUS"
     trigger:
       - platform: state
         entity_id: binary_sensor.badezimmer_badezimmer_motion_sensor
         to: "off"
-        for: "00:02:00"
+        for: "00:03:00"
     condition:
       - condition: state
         entity_id: input_boolean.auto_lights_enabled
@@ -142,9 +145,11 @@ automation:
         target:
           entity_id: light.schlafzimmer_badezimmer_lichtstreifen
 
-  # --- SCHLAFZIMMER ---
-  - id: light_schlafzimmer_motion_on
-    alias: "Schlafzimmer - Licht AN bei Bewegung"
+  # ==========================================================================
+  # SCHLAFZIMMER (Tuya Sensor)
+  # ==========================================================================
+  - id: light_schlafzimmer_on
+    alias: "Schlafzimmer Licht AN"
     trigger:
       - platform: state
         entity_id: binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
@@ -153,9 +158,6 @@ automation:
       - condition: state
         entity_id: input_boolean.auto_lights_enabled
         state: "on"
-      - condition: sun
-        after: sunset
-        before: sunrise
     action:
       - action: light.turn_on
         target:
@@ -164,13 +166,13 @@ automation:
           brightness_pct: 50
           color_temp_kelvin: 2700
 
-  - id: light_schlafzimmer_motion_off
-    alias: "Schlafzimmer - Licht AUS ohne Bewegung"
+  - id: light_schlafzimmer_off
+    alias: "Schlafzimmer Licht AUS"
     trigger:
       - platform: state
         entity_id: binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
         to: "off"
-        for: "00:01:00"
+        for: "00:03:00"
     condition:
       - condition: state
         entity_id: input_boolean.auto_lights_enabled
@@ -180,9 +182,11 @@ automation:
         target:
           entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
 
-  # --- KIFFZIMMER ---
-  - id: light_kiffzimmer_motion_on
-    alias: "Kiffzimmer - Licht AN bei Bewegung"
+  # ==========================================================================
+  # KIFFZIMMER (Tuya Sensor)
+  # ==========================================================================
+  - id: light_kiffzimmer_on
+    alias: "Kiffzimmer Licht AN"
     trigger:
       - platform: state
         entity_id: binary_sensor.kiffzimmer_kiffzimmer_motion_sensor
@@ -191,9 +195,6 @@ automation:
       - condition: state
         entity_id: input_boolean.auto_lights_enabled
         state: "on"
-      - condition: sun
-        after: sunset
-        before: sunrise
     action:
       - action: light.turn_on
         target:
@@ -202,13 +203,13 @@ automation:
           brightness_pct: 50
           color_temp_kelvin: 3000
 
-  - id: light_kiffzimmer_motion_off
-    alias: "Kiffzimmer - Licht AUS ohne Bewegung"
+  - id: light_kiffzimmer_off
+    alias: "Kiffzimmer Licht AUS"
     trigger:
       - platform: state
         entity_id: binary_sensor.kiffzimmer_kiffzimmer_motion_sensor
         to: "off"
-        for: "00:02:00"
+        for: "00:03:00"
     condition:
       - condition: state
         entity_id: input_boolean.auto_lights_enabled
@@ -218,9 +219,11 @@ automation:
         target:
           entity_id: light.kiffzimmer_kiffzimmer_lichtstreifen
 
-  # --- UTILITY ---
-  - id: wardrobe_light_auto
-    alias: "Kleiderschrank - Licht AN bei Türöffnung"
+  # ==========================================================================
+  # KLEIDERSCHRANK (Aqara Door Sensor - very reliable)
+  # ==========================================================================
+  - id: light_kleiderschrank_on
+    alias: "Kleiderschrank Licht AN"
     trigger:
       - platform: state
         entity_id: binary_sensor.no_area_aqara_door_and_window_sensor_tuer
@@ -234,8 +237,8 @@ automation:
         target:
           entity_id: light.schlafzimmer_schlafzimmer_kleiderschrank_lichtstreifen
 
-  - id: wardrobe_light_off
-    alias: "Kleiderschrank - Licht AUS bei Türschließung"
+  - id: light_kleiderschrank_off
+    alias: "Kleiderschrank Licht AUS"
     trigger:
       - platform: state
         entity_id: binary_sensor.no_area_aqara_door_and_window_sensor_tuer
@@ -248,64 +251,3 @@ automation:
       - action: light.turn_off
         target:
           entity_id: light.schlafzimmer_schlafzimmer_kleiderschrank_lichtstreifen
-
-  - id: night_bathroom_low_light
-    alias: "Nacht - Dimmbeleuchtung Bad"
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.badezimmer_badezimmer_motion_sensor
-        to: "on"
-    condition:
-      - condition: state
-        entity_id: input_boolean.auto_lights_enabled
-        state: "on"
-      - condition: time
-        after: "22:00:00"
-        before: "07:00:00"
-    action:
-      - action: light.turn_on
-        target:
-          entity_id: light.schlafzimmer_badezimmer_lichtstreifen
-        data:
-          brightness_pct: 10
-          color_temp_kelvin: 2200
-
-  - id: night_hallway_guide_light_on
-    alias: "Nacht - Orientierungslicht Flur AN"
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.schlafzimmer_schlafzimmer_presence_sensor_bewegung
-        to: "off"
-    condition:
-      - condition: state
-        entity_id: input_boolean.auto_lights_enabled
-        state: "on"
-      - condition: time
-        after: "22:00:00"
-        before: "07:00:00"
-    action:
-      - action: light.turn_on
-        target:
-          entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
-        data:
-          brightness_pct: 5
-          color_temp_kelvin: 2200
-
-  - id: night_hallway_guide_light_off
-    alias: "Nacht - Orientierungslicht Flur AUS"
-    trigger:
-      - platform: state
-        entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
-        to: "on"
-        for: "00:02:00"
-    condition:
-      - condition: state
-        entity_id: input_boolean.auto_lights_enabled
-        state: "on"
-      - condition: time
-        after: "22:00:00"
-        before: "07:00:00"
-    action:
-      - action: light.turn_off
-        target:
-          entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
