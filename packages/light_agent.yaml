@@ -89,6 +89,7 @@ automation:
             - light.kuche_kueche_lichtstreifen
         data:
           brightness_pct: 100
+          color_temp_kelvin: 4000
 
   - id: light_kuche_off
     alias: "Küche Licht AUS"
@@ -128,6 +129,7 @@ automation:
           entity_id: light.schlafzimmer_badezimmer_lichtstreifen
         data:
           brightness_pct: 100
+          color_temp_kelvin: 2700
 
   - id: light_bad_off
     alias: "Bad Licht AUS"
@@ -201,7 +203,7 @@ automation:
           entity_id: light.kiffzimmer_kiffzimmer_lichtstreifen
         data:
           brightness_pct: 50
-          color_temp_kelvin: 3000
+          color_temp_kelvin: 2700
 
   - id: light_kiffzimmer_off
     alias: "Kiffzimmer Licht AUS"
@@ -236,6 +238,9 @@ automation:
       - action: light.turn_on
         target:
           entity_id: light.schlafzimmer_schlafzimmer_kleiderschrank_lichtstreifen
+        data:
+          brightness_pct: 100
+          color_temp_kelvin: 2700
 
   - id: light_kleiderschrank_off
     alias: "Kleiderschrank Licht AUS"
