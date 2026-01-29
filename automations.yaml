@@ -152,6 +152,10 @@
       to: not_home
       for:
         minutes: 10
+  condition:
+    - condition: state
+      entity_id: input_boolean.guest_mode
+      state: "off"
   action:
     - action: script.all_lights_off
     - action: climate.set_temperature
