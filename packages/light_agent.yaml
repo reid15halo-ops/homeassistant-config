@@ -163,7 +163,9 @@ automation:
     action:
       - action: light.turn_on
         target:
-          entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
+          entity_id:
+            - light.schlafzimmer_schlafzimmer_bett_lichtstreifen
+            - light.schlafzimmer_schlafzimmer_deckenventilator_u_licht
         data:
           brightness_pct: 50
           color_temp_kelvin: 2700
@@ -182,7 +184,9 @@ automation:
     action:
       - action: light.turn_off
         target:
-          entity_id: light.schlafzimmer_schlafzimmer_bett_lichtstreifen
+          entity_id:
+            - light.schlafzimmer_schlafzimmer_bett_lichtstreifen
+            - light.schlafzimmer_schlafzimmer_deckenventilator_u_licht
 
   # ==========================================================================
   # KIFFZIMMER (Tuya Sensor)
